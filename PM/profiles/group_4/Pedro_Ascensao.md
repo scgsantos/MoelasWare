@@ -6,5 +6,5 @@ Roles: `PM`
 ## Sprints
 ### 1
 
-* Finished: 
+* Finished: #7
 * Pending:
