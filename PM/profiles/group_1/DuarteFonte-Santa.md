@@ -7,7 +7,7 @@ Roles: `D`
 
 ### 1
 
-* Finished: #3
+* Finished: #3, #19
 * Pending:
 
 ...
