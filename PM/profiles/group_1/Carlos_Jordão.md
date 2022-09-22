@@ -7,7 +7,7 @@ Roles: `-`
 
 ### 1
 
-* Completed: 
+* Finished: 
 * Pending:
 
 ...
