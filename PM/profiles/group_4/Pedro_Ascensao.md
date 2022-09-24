@@ -7,4 +7,4 @@ Roles: `PM`
 ### 1
 
 * Finished: #7
-* Pending:
+* Pending: #23
