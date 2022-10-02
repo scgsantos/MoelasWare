@@ -1,6 +1,6 @@
 # Duarte Fonte-Santa
 
-Student No: `2018274628`
+Student No: `2018274628`  
 Roles: `D`
 
 ## Sprints
@@ -9,6 +9,3 @@ Roles: `D`
 
 * Finished: #3, #19, #35
 * Pending:
-
-...
-

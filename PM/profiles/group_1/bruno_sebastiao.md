@@ -1,6 +1,6 @@
 # Bruno Sebastião
 
-Student No: `2019217538`
+Student No: `2019217538`  
 Roles: `-`
 
 ## Sprints
@@ -9,5 +9,3 @@ Roles: `-`
 
 * Finished: #2, #20
 * Pending:
-
-...

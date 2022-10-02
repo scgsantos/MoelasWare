@@ -1,6 +1,6 @@
 # Daniela Borges Costa
 
-Student No.: `2020216801`
+Student No.: `2020216801`  
 Roles: `-`
 
 ## Sprints
@@ -8,3 +8,4 @@ Roles: `-`
 ### 1
 
 * Finished: #18
+* Pending:

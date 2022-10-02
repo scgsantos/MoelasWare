@@ -1,6 +1,6 @@
 # Carlos Jordão
 
-Student No: `2018274628`
+Student No: `2018274628`  
 Roles: `-`
 
 ## Sprints
@@ -9,6 +9,3 @@ Roles: `-`
 
 * Finished: #17
 * Pending:
-
-...
-
