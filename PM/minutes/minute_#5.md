@@ -46,7 +46,7 @@ On the 3rd of October 2022 at 11 AM, the fifth "MoelasWare" meeting was held in 
 		* Pedro Cardoso (Group 1)
 		* Sofia Trindade (Group 2)
 		* Hugo Barros (Group 3)
-		* Pedro Ascensão (Group 4)
+		* Henrique Lobo (Group 4)
 		* Afonso Duarte (Group 5)
 	
 	- GitLab Manager:
