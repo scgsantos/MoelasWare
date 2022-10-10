@@ -9,3 +9,8 @@ Roles: `PM`
 
 * Finished: #7, #23
 * Pending:
+
+### 2
+
+* Finished: #49, #79
+* Pending:
