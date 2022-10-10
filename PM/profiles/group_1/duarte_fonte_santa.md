@@ -9,3 +9,7 @@ Roles: `D`
 
 * Finished: #3, #19, #35
 * Pending:
+
+### 2
+* Finished: #66
+* Pending: #94
