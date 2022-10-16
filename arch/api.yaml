@@ -431,6 +431,9 @@ components:
           items:
             $ref: "#/components/schemas/id"
           example: [1,5,2,10]
+      oneOf:
+        - required: [num_quizzes, allowed_tags]
+        - required: [quizzes]
     partial_quiz:
       type: object
       properties:
