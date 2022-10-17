@@ -33,7 +33,7 @@ class Test(models.Model):
     quizzes = models.ManyToManyField(Quiz)
 
     name = models.TextField()
-    num_quizzes = models.IntegerField(default=4, validators=MinValueValidator(1))
+    num_quizzes = models.IntegerField(default=4, validators=[MinValueValidator(1)])
 
 class Submission(models.Model):
     test = fk(Test)
