@@ -33,13 +33,13 @@ class Test(models.Model):
     quizzes = models.ManyToManyField(Quiz)
 
     name = models.TextField()
-    num_quizzes = models.IntegerField(default=4, validators=[MinValueValidator(1)])
+    num_quizzes = models.IntegerField(default=1, validators=[MinValueValidator(1)])
 
 class Submission(models.Model):
     test = fk(Test)
     submitter = fk(User)
 
-class Review:
+class Review(models.Model):
     reviewer = fk(User)
     quiz = fk(Quiz)
 
