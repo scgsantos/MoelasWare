@@ -1,36 +1,29 @@
 ## Use Case 3
-Create test by manually picking quizzes
+Create a test by picking the quizzes.
 
 ### Primary Actor
-
-User
+User.
 
 ### Level
-
-User goal
+User goal.
 
 ### Precondition 
-
 * User must be logged in.
 * User must have reviewed at least 3 quizzes.
 
 ### Success Guarantee
-
-The server creates a new test record with the selected quizzes and name.
+A test is created with the selected quizzes and a name.
 
 ### Main Success Scenario
-
-1. User selects to create a test by manually picking quizzes.
-2. User gets a list of all available quizzes, optionally filtered by tags.
-3. User selects which quizzes to include in the test.
-4. User gives the test a name.
-5. User submits the test and the server creates a record.
-6. The test becomes available for students to solve.
+1. The user chooses the option to create a test by picking the quizzes.
+2. The user gets a list of all available quizzes, optionally filtered by tags.
+3. The user selects which quizzes to include in the test.
+4. The user gives the test a name.
+5. The user submits the test.
+6. The test is shown to the user.
 
 ### Extensions
-
-* 2. (a) There are no valid questions to be chosen for the selected tags:
-        1. The app suggests other tags.
-* 5. (a) Web failure of any sort during submission:
-        1. The user's selection and test name are cached in the browser (or in the server?).
-        2. User either backs out of this use case or tries again.
+2a. There are no valid questions to be chosen for the selected tags:
+   - 2a1. The system shows a message suggesting other tags.
+5a. Web failure of any sort during submission:
+   - 5b1. The system shows a message saying web failure, try again and the user go back to "Create a test by picking the quizzes".

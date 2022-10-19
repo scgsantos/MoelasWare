@@ -1,31 +1,33 @@
-## Use Case 2 - Randomly create a test with a config.
+## Use Case 2
+Create a random test with a config.
 
 ### Primary Actor
-User
+User.
 
 ### Level
-User goal
+User goal.
 
 ### Precondition 
-- Must have an account with at least 3 reviews.
-- Must have at least N quizzes in the database, where N is the number of specified quizzes in the Config.
+* User must be logged in.
+* User must have reviewed at least 3 quizzes.
+* The system must have at least N quizzes, where N is the number chosen by the user (minimum 4 quizzes).
 
 ### Success Guarantee
-The Test is created according to the given Config; 
+A test is created according to the given config and a name.
 
 ### Main Success Scenario
-1. The User selects the option to create a test with a Configuration.
-2. The User specifies the number of quizzes in the test.
-3. The User specifies the tags allowed in the test.
-4. The Backend selects randomly N unique quizzes.
-5. The selected quizzes have at least one tag belonging to the allowed tags.
-6. A Test is randomly generated according to the supplied Configuration.
-7. The User is shown the test he created.
+1. The user chooses the option to create a random test with a config.
+2. The user writes the number of quizzes he wants to have in the test.
+3. The user gets a list of all available tags.
+4. The user selects the tags allowed in the test.
+5. The user gives the test a name.
+6. The user submits the test.
+7. The test is shown to the user.
 
 ### Extensions
-
-4a. The Backend fails to select the required quizzes...
-   - 4a1. Because there just aren't enough quizzes in the Database.
-      - It suggests selecting a lower number of quizzes.
-   - 4a2. Because there aren't enough quizzes after filtering by tags.
-      - It suggests choosing different tags.
+6a. The system fails selecting the quizzes because there aren't enough quizzes:
+   - 6a1. The system shows a message suggesting a lower number of quizzes and the user go back to "Create a random test with a config" page.
+6b. The system fails selecting the quizzes because there aren't enough quizzes after filtering by tags:
+   - 6b1. The system shows a message suggesting different tags and the user go back to "Create a random test with a config" page.
+6c. Web failure of any sort during submission:
+   - 6c1. The system shows a message saying web failure, try again and the user go back to "Create a random test with a config".
