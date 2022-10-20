@@ -2,6 +2,11 @@ from django.contrib.auth.models import User as AuthUser
 from django.db import DatabaseError, IntegrityError
 from moelasware.models import *
 
+
+# RUN WITH
+#   python manage.py shell < populate_db.py
+
+
 SAVE = False
 
 
@@ -99,15 +104,14 @@ try:
 
     tests = Test.objects.bulk_create(
         [
-            Test(author=User.objects.get(user=manel), name="Test1", num_quizzes=2),
-            Test(author=User.objects.get(user=manel), name="Test2", num_quizzes=3),
-            Test(author=User.objects.get(user=manel), name="Test3", num_quizzes=4),
+            Test(author=User.objects.get(user=manel), name="Test1"),
+            Test(author=User.objects.get(user=manel), name="Test2"),
+            Test(author=User.objects.get(user=manel), name="Test3"),
         ]
     )
 
     for test in tests:
-        test.quizzes.set(quizzes[: test.num_quizzes])
-        test.allowed_tags.set(tags)
+        test.quizzes.set(quizzes)
 
     # Submissions
     submissions = Submission.objects.bulk_create(
