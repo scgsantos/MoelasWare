@@ -38,11 +38,9 @@ class Test(models.Model):
     """
     author = fk(User)
 
-    allowed_tags = models.ManyToManyField(Tag)
     quizzes = models.ManyToManyField(Quiz)
 
     name = models.TextField()
-    num_quizzes = models.IntegerField(default=1, validators=[MinValueValidator(1)])
 
 class Submission(models.Model):
     """
