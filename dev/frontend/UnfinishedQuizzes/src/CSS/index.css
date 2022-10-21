@@ -1,0 +1,37 @@
+body{
+    background-color: #BACDD1;
+}
+
+
+.button{
+    background-color: #BACDD1;
+    border: 2px solid black;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 10px;
+    width: 200px;
+    font-weight: bold;
+}
+
+.button:hover {
+    background-color: black;
+    color: #BACDD1;
+}
+
+.toptitle{
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    padding-left: 10px;
+    color: #000000;
+    text-align: left;
+}
+
+.unfinishedquiz{
+    padding:5px 50px;
+}
