@@ -12,7 +12,6 @@ function App() {
         <div class = "logo" style={{ flex: 2}}>
           <img src={logo} alt="logo" />
         </div>
-
         <div class = "username" style={{ flex: 4}}>
           <text style={styles.geral}>Hi, username</text>
         </div>
@@ -65,7 +64,6 @@ function App() {
               <Button buttonNumber = {23}/>
               <Button buttonNumber = {24}/>
             </div>
-
         </div>
       </div>
     </div>

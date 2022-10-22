@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import "../CSS/index.css";
 
 class Counter extends Component {
-
     render() { 
         return (
             <div class = 'unfinishedquiz'>
