@@ -20,22 +20,36 @@ def get_test_view( request, pk, *args, **kwargs ):
 
 
 
-@api_view(['POST'])
+@api_view(['GET','POST'])
 def create_test_view( request ):
-	serializer = CreateTestSerializer(data=request.data)
+	if request.method == 'GET':
+		# get all tests -> list view
+		queryset = Test.objects.all()
+		serializer = GetTestSerializer(queryset, many=True)
 
-	if serializer.is_valid(raise_exception=True): # raises exception on why its not valid
-		#instance = serializer.save()
-		
-		#print(instance)
-		return Response(serializer.data)
+		return JsonResponse({'tests': serializer.data}, status=status.HTTP_200_OK)
+	
+	elif request.method == 'POST':
+		''' Body:
+		{
+    		"author": 1,
+    		"quizzes": [1],
+    		"name": "teste123"
+		}
+		'''
+		serializer = CreateTestSerializer(data=request.data)
 
-	return Response({'invalid': 'not good data'}, status=400)
+		if serializer.is_valid(raise_exception=True): # raises exception on why its not valid
+			#instance = serializer.save()
+			
+			#print(instance)
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-@api_view(['GET'])
+	return Response({'invalid': 'not good data'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'POST'])
 # function that selects the test that the user wants to solve
 def submission_view(request, pk):
-	
 	# verify if the user has created at least one test
 	done_quiz = Quiz.objects.filter(author=request.user.pk)
 	
@@ -50,11 +64,22 @@ def submission_view(request, pk):
 	elif not available_test.exists():
 		return JsonResponse({'error': 'There are no tests available to solve'}, status = status.HTTP_404_NOT_FOUND)
 	else:
-		# get the test that the user wants to solve
-		test = get_object_or_404(Test, pk=pk)
-		serializer = GetTestSerializer(test, many=False)
+		if request.method == 'GET':
+			# get the test that the user wants to solve
+			test = get_object_or_404(Test, pk=pk)
+			serializer = GetTestSerializer(test, many=False)
 		
-		return JsonResponse({'test': serializer.data})
+			return JsonResponse({'test': serializer.data})
+		elif request.method == 'POST':
+			# Add new submission by changing the awnsers
+			test = get_object_or_404(Test, pk=pk)
+			# change the awnsers according to request's Body
+			test.awnsers = request.data['awnsers']
+			serializer = GetTestSerializer(test, many=False)
+
+			return JsonResponse({'message': 'Submited test successfully'}, status=status.HTTP_201_CREATED)
+
+			
 
 
 
@@ -65,5 +90,3 @@ def submission_view(request, pk):
 
 
 
-
-	

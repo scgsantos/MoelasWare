@@ -10,4 +10,4 @@ class GetTestSerializer( serializers.ModelSerializer ):
 class CreateTestSerializer( serializers.ModelSerializer ):
 	class Meta:
 		model = Test
-		fields = ['author', 'allowed_tags', 'quizzes', 'name', 'num_quizzes']
+		fields = ['author', 'quizzes', 'name']
