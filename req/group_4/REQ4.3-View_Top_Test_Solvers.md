@@ -3,7 +3,7 @@
 *	As a user I want to view the other users performance in order to compare results
 
 # **Use case 3** 
-*   As a user I want a page to be able in order to view the users who have solved the most tests as well as the number of correct answers
+*   As a user I want a page to be able to view the users who have solved the most tests as well as the number of correct answers
 
 ## **Primary actor: User**
 ## **Level: User goal**
@@ -31,3 +31,4 @@
 3. 
 *   The user inserted is yet to take a test
 *   A message is displayed informing the user inserted hasn't taken any tests
+
