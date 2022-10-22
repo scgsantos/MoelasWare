@@ -1,5 +1,4 @@
 import logo from './images/logo.png';
-import { StyleSheet, Text, View } from "react-native";
 import './App.css';
 import Button from './components/buttons';
 
@@ -8,29 +7,24 @@ function App() {
 
   return (
     <div class="App">
-      <View style={[styles.container, {
-        // Try setting `flexDirection` to `"row"`.
-        flexDirection: "row"
-      }]}>
-        <View style={{ flex: 1}}></View>
-        <View style={{ flex: 2}}>
+      <div class = "topbar">
+        <div style={{ flex: 1}}></div>
+        <div class = "logo" style={{ flex: 2}}>
           <img src={logo} alt="logo" />
-        </View>
-        <View style={{ flex: 17}}></View>
-        <View style={{ flex: 4}}>
-          <Text style={styles.geral}>Hi, username</Text>
-        </View>
-      </View>
-      <View>
-          <Text style = {styles.middletitle}>LIST OF UNFINISHED QUIZZES</Text>
-      </View>
+        </div>
+        
+        <div class = "username" style={{ flex: 4}}>
+          <text style={styles.geral}>Hi, username</text>
+        </div>
+        <div>
+          <text style = {styles.middletitle}>LIST OF UNFINISHED QUIZZES</text>
+        </div>
+      </div>
+      
       <div class = 'columns'>
         <div class = 'middlecolumn'>
-          <View style={[styles.container, {
-            // Try setting `flexDirection` to `"column"`.
-            flexDirection: "column"
-          }]}>
-            <View style={{flex: 1}}>
+          
+            <div style={{flex: 1}}>
               <Button buttonNumber = {1}/>
               <Button buttonNumber = {2}/>
               <Button buttonNumber = {3}/>
@@ -39,17 +33,14 @@ function App() {
               <Button buttonNumber = {6}/>
               <Button buttonNumber = {7}/>
               <Button buttonNumber = {8}/>
-            </View>
+            </div>
             
-          </View>
+          
         </div>
       
         <div class = 'leftcolumn'>
-          <View style={[styles.container, {
-            // Try setting `flexDirection` to `"column"`.
-            flexDirection: "column"
-          }]}>
-            <View style={{flex: 1}}>
+          
+            <div style={{flex: 1}}>
               <Button buttonNumber = {9}/>
               <Button buttonNumber = {10}/>
               <Button buttonNumber = {11}/>
@@ -58,16 +49,13 @@ function App() {
               <Button buttonNumber = {14}/>
               <Button buttonNumber = {15}/>
               <Button buttonNumber = {16}/>
-            </View>
+            </div>
             
-          </View>
+          
         </div>
         <div class = 'rightcolumn'>
-          <View style={[styles.container, {
-            // Try setting `flexDirection` to `"column"`.
-            flexDirection: "column"
-          }]}>
-            <View style={{flex: 1}}>
+         
+            <div style={{flex: 1}}>
               <Button buttonNumber = {17}/>
               <Button buttonNumber = {18}/>
               <Button buttonNumber = {19}/>
@@ -76,9 +64,8 @@ function App() {
               <Button buttonNumber = {22}/>
               <Button buttonNumber = {23}/>
               <Button buttonNumber = {24}/>
-            </View>
-            
-          </View>
+            </div>
+          
         </div>
       </div>
     </div>
@@ -88,7 +75,7 @@ function App() {
 }
 
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
     padding: 20,
@@ -112,6 +99,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
 
-});
+};
 
 export default App;
