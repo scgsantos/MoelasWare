@@ -84,7 +84,6 @@ def get_n_quizzes_view(request):
 
     return JsonResponse({"quizzes": quizzes_serializer.data})
 
-
 @api_view(['GET'])
 def get_answers_for_quiz(request, quiz_id):
     answers_set = QuizAnswer.objects.filter(quiz__id = quiz_id)
@@ -92,7 +91,6 @@ def get_answers_for_quiz(request, quiz_id):
     answers_serializer = QuizAnswerSerializer(answers_set, many=True)
 
     return JsonResponse({"answers": answers_serializer.data})
-
 
 # @api_view(['GET'])
 def get_all_tests_view(request):
