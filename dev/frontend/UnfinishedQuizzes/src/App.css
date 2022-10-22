@@ -11,13 +11,36 @@
 .leftcolumn{
   display: inline-block;
   vertical-align: middle;
+  text-align: column;
 }
 .middlecolumn{
   display: inline-block;
   vertical-align: middle;
+  text-align: column;
 }
 
 .rightcolumn{
   display: inline-block;
   vertical-align: middle;
+  text-align: column;
+}
+
+img{
+  width: 10%;
+}
+
+.logo{
+  display: inline;
+  vertical-align: middle;
+  margin-right: 70%;
+}
+
+.username{
+  display: inline;
+  vertical-align: middle;
+}
+
+.topbar{
+  text-align: center; 
+  margin-top: 20px;
 }

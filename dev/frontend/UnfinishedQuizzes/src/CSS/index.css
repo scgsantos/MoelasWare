@@ -17,6 +17,7 @@ body{
     border-radius: 10px;
     width: 200px;
     font-weight: bold;
+    transition: all ease-in-out 0.2s;
 }
 
 .button:hover {
