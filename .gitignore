@@ -1,6 +1,9 @@
 *.bak
 *.old
+# For the time-tracking graph script
+.timegraphtoken
 
 *.py[cod]
 
 *.log
+*.db

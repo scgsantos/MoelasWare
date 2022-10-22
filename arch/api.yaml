@@ -2,8 +2,6 @@ openapi: 3.0.3
 # ADD REQUIRED TO REQUIRED FIELDS
 # TODO: Remove GET quizzes/{quiz_id}/revisions???
 # TODO: Change revisions to rejected??
-# TODO: Endpoints that can return an unbounded payload should have a start-at/after query parameter.
-
 info:
   title: Moelasware
   description: ''
@@ -420,8 +418,6 @@ components:
     test_config:
       type: object
       properties:
-        id:
-          $ref: '#/components/schemas/id'
         num_quizzes:
           type: integer
           minimum: 4
@@ -429,7 +425,15 @@ components:
           type: array
           items: 
             type: string
-          example: ["Animals", "Namse", "Space", "Math", "Literature"]
+          example: ["Animals", "Names", "Space", "Math", "Literature"]
+        quizzes:
+          type: array
+          items:
+            $ref: "#/components/schemas/id"
+          example: [1,5,2,10]
+      oneOf:
+        - required: [num_quizzes, allowed_tags]
+        - required: [quizzes]
     partial_quiz:
       type: object
       properties:

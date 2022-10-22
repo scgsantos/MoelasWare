@@ -18,7 +18,7 @@
 
 
 /label ~feature
-/milestone %"Sprint 1"
+/milestone %"Sprint 3"
 
 <!--- /estimate time_spent -->
 /estimate 1h

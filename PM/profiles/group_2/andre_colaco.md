@@ -9,3 +9,8 @@ Roles: `-`
 
 * Finished: #14, #26
 * Pending:
+
+### 2
+
+* Finished: #52
+* Pending:
