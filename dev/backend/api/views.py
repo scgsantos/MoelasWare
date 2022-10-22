@@ -34,32 +34,36 @@ def create_test_view( request ):
 
 @api_view(['GET'])
 # function that selects the test that the user wants to solve
-def select_test_view(request, pk):
+def submission_view(request, pk):
+	
 	# verify if the user has created at least one test
-	done_quiz = Quiz.objects.filter(author=request.user.username)
+	done_quiz = Quiz.objects.filter(author=request.user.pk)
+	
 	# verify if there is at least one test available to solve
-	available_test = Test.objects.all()
-	if request.method == 'GET':
-	#verify if the user is logged in
-		if request.user.is_authenticated:
-			if done_quiz.exists():
-				if available_test.exists():
-					# get the test by id
-					object = Test.objects.filter(Test, pk=pk)
-					serializer = GetTestSerializer(object, many=False)
-					return JsonResponse({'test': serializer.data})
-				else:
-					data = {
-						'error' : 'There are no tests available to solve'
-					}
-					return JsonResponse(data, status = status.HTTP_404_NOT_FOUND)
-			else:
-				data = {
-					'error' : 'You have not created any test yet'
-				}
-				return JsonResponse(data, status = status.HTTP_412_PRECONDITION_FAILED)
-		else:
-			data = {
-				'error' : 'You are not logged in'
-			}
-			return JsonResponse(data, status = status.HTTP_401_UNAUTHORIZED)
+	available_test = Test.objects.first()
+	
+	# verify if the user is not logged in
+	if not request.user.is_authenticated:
+		return JsonResponse({'error': 'You must be logged in to solve a test'}, status = status.HTTP_401_UNAUTHORIZED)
+	elif not done_quiz.exists():
+		return JsonResponse({'error': 'You must create at least one quiz to solve a test'}, status = status.HTTP_412_PRECONDITION_FAILED)
+	elif not available_test.exists():
+		return JsonResponse({'error': 'There are no tests available to solve'}, status = status.HTTP_404_NOT_FOUND)
+	else:
+		# get the test that the user wants to solve
+		test = get_object_or_404(Test, pk=pk)
+		serializer = GetTestSerializer(test, many=False)
+		
+		return JsonResponse({'test': serializer.data})
+
+
+
+
+
+
+
+
+
+
+
+	
