@@ -3,7 +3,7 @@
 *	As a user I want to view the other users performance in order to compare results
 
 # **Use case 2** 
-*   As a user I want a page in order to view all attempts of a given test
+*   As a user I want a page to be able to view all attempts of a given test
 
 ## **Primary actor: User**
 ## **Level: User goal**

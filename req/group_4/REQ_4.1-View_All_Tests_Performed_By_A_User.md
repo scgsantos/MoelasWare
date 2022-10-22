@@ -3,7 +3,7 @@
 *	As a user I want to view the other users performance in order to compare results
 
 # **Use case 1** 
-*   As a user I want a page to be able in order to view all tests performed by a user that I specify to compare performances
+*   As a user I want a page to be able to view all tests performed by a user that I specify to compare performances
 
 ## **Primary actor: User**
 ## **Level: User goal**
