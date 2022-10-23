@@ -11,6 +11,11 @@ def fk(model):
 class User(models.Model):
     user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
 
+    # needs to be haved created at least one quizz
+    def can_solve_tests(self) -> bool:
+        # the user needs to have created at least one quizz
+        return self.quizzes.exists()
+        
 class Tag(models.Model):
     """
     Is associated with a Quiz to display what the Quiz is about

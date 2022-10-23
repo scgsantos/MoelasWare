@@ -12,135 +12,90 @@ DEFAULT_TEST_PAGE_LIMIT = 20
 DEFAULT_TAG_PAGE_LIMIT = 20
 
 
-@api_view(["GET"])
+@api_view(['GET'])
 def get_test_view(request, pk, *args, **kwargs):
+    # check if the uer is able to solve the test
+    if not request.user.can_solve_tests():
+        return JsonResponse({'error': 'User is not allowed to solve tests. Needs to have created at least one quizz'}, status=status.HTTP_403_FORBIDDEN)
+
     # get test by id -> detail view
     instance = get_object_or_404(Test, pk=pk)
     serializer = GetTestSerializer(instance, many=False)
-    return JsonResponse({"test": serializer.data})
+
+    return JsonResponse({'test': serializer.data})
 
 
-# Create a test
-# @api_view(['POST'])
-# TODO: ADD DECORATOR WHEN LOGIN IS IMPLEMENTED
-# @login_required
-def post_test_view(request):
-    # TODO: ADD THIS LINE WHEN LOGIN IS IMPLEMENTED
-    # author_id = request.user.id
-    author_id = 1
+@api_view(['GET', 'POST'])
+def create_view(request):
+    if request.method == 'GET':
+        # get all tests -> list view
+        queryset = Test.objects.all()
+        serializer = GetTestSerializer(queryset, many=True)
 
-    # Required data was all in request (quizzes list was given)
-    if "quizzes" in request.data.keys():
-        quizzes = request.data.get("quizzes")
+        return JsonResponse({'tests': serializer.data}, status=status.HTTP_200_OK)
 
-    else:
-        quizzes_set = get_n_quizzes_view(request)["quizzes"]
-        quizzes = quizzes_set.values_list("id", flat=True)
+    if request.method == 'POST':
+        ''' Body:
+        {
+            "author": 1,
+            "quizzes": [1],
+            "name": "teste123"
+        }
+        '''
+        serializer = CreateTestSerializer(data=request.data)
 
-    name = request.data.get("name")
-    deserializer_data = {"author": author_id, "name": name, "quizzes": quizzes}
-    test_deserializer = CreateTestSerializer(data=deserializer_data)
+        # raises exception on why its not valid
+        if serializer.is_valid(raise_exception=True):
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    if test_deserializer.is_valid(raise_exception=True):
-        test = test_deserializer.save()
-        response_serializer = GetTestSerializer(test)
-        return JsonResponse({"test": response_serializer.data})
-
-
-@api_view(["POST"])
-def get_n_quizzes_view(request):
-    # If no quizzes are sent in the request -> quizzes are selected randomly
-    # User gave config (num_quizes, allowed_tags (optional))
-
-    if not "num_quizzes" in request.data.keys():
-        return HttpResponseBadRequest("You must provide the number of quizzes")
-
-    try:
-        num_quizzes = int(request.data.get("num_quizzes"))
-    except ValueError:
-        return HttpResponseBadRequest(
-            f"The number of quizzes must be a number and not {request.data.get('num_quizzes')}"
-        )
-
-    tags = request.data.get("allowed_tags")
-    quizzes_set = Quiz.objects.order_by("?")
-
-    quizzes_set = (
-        quizzes_set.all()
-        if not tags
-        else quizzes_set.filter(tags__text__in=tags).distinct()
-    )
-
-    quizzes_set = quizzes_set[:num_quizzes]
-
-    # Not enough quizzes that meet the specs
-    if len(quizzes_set) < num_quizzes:
-        return HttpResponseBadRequest(
-            "The number of requested quizzes is bigger than the number of existing quizzes meeting the given specifications"
-        )
-
-    quizzes_serializer = QuizSerializer(quizzes_set, many=True)
+    return Response({'invalid': 'not good data'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-    return JsonResponse({"quizzes": quizzes_serializer.data})
+@api_view(['GET', 'POST'])
+@login_required
+# function that selects the test that the user wants to solve
+def submission_view(request, pk):
+    # verify if the user has created at least one test
+    done_quiz = Quiz.objects.filter(author=request.user.pk)
 
-@api_view(['GET'])
-def get_answers_for_quiz(request, quiz_id):
-    answers_set = QuizAnswer.objects.filter(quiz__id = quiz_id)
+    # verify if there is at least one test available to solve
+    available_test = Test.objects.exists()
 
-    answers_serializer = QuizAnswerSerializer(answers_set, many=True)
+    # verify if the user is not logged in
+    if not done_quiz.exists():
+        return JsonResponse({'error': 'You must create at least one quiz to solve a test'}, status=status.HTTP_412_PRECONDITION_FAILED)
 
-    return JsonResponse({"answers": answers_serializer.data})
+    if not available_test:
+        return JsonResponse({'error': 'There are no tests available to solve'}, status=status.HTTP_404_NOT_FOUND)
 
-# @api_view(['GET'])
-def get_all_tests_view(request):
-    try:
-        offset = int(request.query_params.get("offset", default=0))
-        limit = int(request.query_params.get("limit", default=DEFAULT_TEST_PAGE_LIMIT))
-    except ValueError:
-        return HttpResponseBadRequest("Invalid offset and/or limit")
+    test = get_object_or_404(Test, pk=pk)
 
-    # TODO: think about actually returning +1 records, for simplifying "Next"-type buttons on frontend
-    tests = Test.objects.filter(pk__range=(offset, offset + limit - 1))
+    if request.method == 'GET':
+        serializer = GetTestSerializer(test, many=False)
+        # get the test that the user wants to solve
+        return JsonResponse({'test': serializer.data}, status=status.HTTP_200_OK)
 
-    serializer = GetTestSerializer(tests, many=True)
-    return JsonResponse({"tests": serializer.data})
+    if request.method == 'POST':
+        # change the awnsers according to request's Body
+        # TODO: Change answers from being an array of array of integers
+        # to allow for questions being out of order
+        # for example:
+        """  
+        {
+                "answers": [
+                    {
+                        "quiz_id": 1,
+                        "quiz_answers": [1, 2]
+                    },
+                    {
+                        "quiz_id": 2,
+                        "quiz_answers": [2]
+                    }
+                ]
+            }
+            """
+        serializer = CreateTestSerializer(data=request.data)
 
-
-# HIGHLY TEMPORARY SOLUTION!
-# TODO: move these to class based views once overall implementation is in better shape
-# ~tomasduarte
-@api_view(["GET", "POST"])
-def tests_view(request):
-    proxy = {
-        "GET": get_all_tests_view,
-        "POST": post_test_view,
-    }
-    return proxy[request.method](request)
-    #return Response({"invalid": "not good data"}, status=400)
-
-
-@api_view(["GET"])
-def get_tag_view(request, pk, *args, **kwargs):
-
-    if pk is not None:
-        instance = get_object_or_404(Tag, pk=pk)
-        serializer = GetTagSerializer(instance, many=False)
-
-        return JsonResponse({"tag": serializer.data})
-
-    return Response({"invalid": "not good data"}, status=400)
-
-
-@api_view(["GET"])
-def get_all_tags_view(request, *args, **kwargs):
-    try:
-        offset = int(request.query_params.get("offset", default=0))
-        limit = int(request.query_params.get("limit", default=DEFAULT_TAG_PAGE_LIMIT))
-    except ValueError:
-        return HttpResponseBadRequest("Invalid offset and/or limit")
-
-    queryset = Tag.objects.filter(pk__range=(offset, offset + limit))
-
-    serializer = GetTagSerializer(queryset, many=True)
-    return JsonResponse({"tags": serializer.data})
+        # raises exception on why its not valid
+        if serializer.is_valid(raise_exception=True):
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
