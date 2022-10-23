@@ -1,3 +1,5 @@
+from random import sample
+
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
@@ -7,7 +9,7 @@ from rest_framework.decorators import api_view
 from moelasware.models import Test, Quiz, Tag
 from api.serializers import CreateTestSerializer, GetTestSerializer, QuizSerializer
 
-from random import sample
+DEFAULT_TEST_PAGE_LIMIT = 20
 
 @api_view(['GET']) 
 def get_test_view( request, pk, *args, **kwargs ):
@@ -20,7 +22,7 @@ def get_test_view( request, pk, *args, **kwargs ):
 
 
 # Create a test
-@api_view(['POST'])
+# @api_view(['POST'])
 # TODO: ADD DECORATOR WHEN LOGIN IS IMPLEMENTED
 # @login_required
 def post_test_view(request):
@@ -79,3 +81,30 @@ def post_test_view(request):
 
 
     return JsonResponse({'invalid': 'not good data'}, status=400)
+
+
+# @api_view(['GET'])
+def get_all_tests_view(request):
+    try:
+        offset = int(request.query_params.get('offset', default=0))
+        limit = int(request.query_params.get('limit', default=DEFAULT_TEST_PAGE_LIMIT))
+    except ValueError:
+        return HttpResponseBadRequest("Invalid offset and/or limit")
+
+    # TODO: think about actually returning +1 records, for simplifying "Next"-type buttons on frontend
+    tests = Test.objects.filter(pk__range=(offset, offset+limit-1))
+
+    serializer = GetTestSerializer(tests, many=True)
+    return JsonResponse({'tests': serializer.data})
+
+
+# HIGHLY TEMPORARY SOLUTION!
+# TODO: move these to class based views once overall implementation is in better shape
+# ~tomasduarte
+@api_view(['GET', 'POST'])
+def tests_view(request):
+    proxy = {
+        'GET': get_all_tests_view,
+        'POST': post_test_view,
+    }
+    return proxy[request.method](request)
