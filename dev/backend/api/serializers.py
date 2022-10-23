@@ -2,16 +2,19 @@ from rest_framework import serializers
 
 from moelasware.models import Test, Tag, Quiz, User
 
+
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ["text"]
+
 
 class QuizSerializer(serializers.ModelSerializer):
     tags = TagSerializer(read_only=True, many=True)
     class Meta:
         model = Quiz
         fields = ["id", "author", "tags", "question", "description"]
+
 
 class GetTestSerializer(serializers.ModelSerializer):
     quizzes = QuizSerializer(read_only=True, many=True)
@@ -23,6 +26,7 @@ class GetTestSerializer(serializers.ModelSerializer):
             "author",
             "quizzes",
         ]
+
 
 class CreateTestSerializer(serializers.ModelSerializer):
     class Meta:
@@ -39,7 +43,3 @@ class CreateTestSerializer(serializers.ModelSerializer):
             t.quizzes.add(quiz)
 
         return t
-
-
-
-
