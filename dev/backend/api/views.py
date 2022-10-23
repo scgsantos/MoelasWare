@@ -1,5 +1,3 @@
-from random import sample
-
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
@@ -20,6 +18,7 @@ def get_test_view(request, pk, *args, **kwargs):
 
     return JsonResponse({'test': serializer.data})
 
+    return JsonResponse({'test': serializer.data})
 
 # Create a test
 # @api_view(['POST'])
