@@ -7,10 +7,16 @@ Roles:
 
 ### 1
 
-* Finished: #4, #34, #80
+* Finished: #4, #34
 * Pending:
 
 ### 2
 
-* Finished:
+* Finished: #80
 * Pending:
+
+### 3
+
+* Finished: #145, #218, #219
+* Pending:
+
