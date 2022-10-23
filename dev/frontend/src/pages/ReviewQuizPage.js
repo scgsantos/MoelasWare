@@ -1,12 +1,16 @@
-import './ReviewQuizPage.css';
+import Container from './ReviewQuizPage.css';
 import React from 'react';
 import Logo from '../components/Logo';
+
 function ReviewQuizPage() {
     return (
-        <div className="ReviewQuizPage">
-            <Logo />
-        </div>
+        <body className='Container'>
+            <div>
+                <Logo />
+            </div>
+        </body>
     );
   }
+
   
 export default ReviewQuizPage;
