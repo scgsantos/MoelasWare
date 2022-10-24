@@ -15,7 +15,7 @@ function ReviewQuizPage() {
           <text style={styles.geral}>Hi, username</text>
         </div>
         <div>
-          <text style = {styles.middletitle}>LIST OF UNFINISHED QUIZZES</text>
+          <text style = {styles.middletitle}>LIST OF QUIZZES TO BE REVIEWED</text>
         </div>
       </div>
 </div>
