@@ -36,6 +36,6 @@ def create_quizz(self):
     users = User.objects.all()
     array = self.request.query_params.get('question','description','id_autor')
     id = Quiz.objects.all()
-    id = id.max()
+    id = id.objects.grt(id=max(id))
     if(User.objects.filter(id=array[2]).exists()):
-    	Quiz.objects.create(id=id,question=array[0],description=array[1],id_autor=array[2])
+    	Quiz.objects.create(id=id+1,question=array[0],description=array[1],id_autor=array[2])
