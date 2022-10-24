@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 
-from moelasware.models import Test
-from .serializers import GetTestSerializer, CreateTestSerializer
+from moelasware.models import Test, User, Quiz
+from .serializers import GetTestSerializer, CreateTestSerializer, GetUserSerializer
 
 
 @api_view(['GET']) # allowed method(s)
@@ -29,3 +29,13 @@ def create_test_view( request ):
 		return Response(serializer.data)
 
 	return Response({'invalid': 'not good data'}, status=400)
+
+
+@api_view(['POST'])
+def create_quizz(self):
+    users = User.objects.all()
+    array = self.request.query_params.get('question','description','id_autor')
+    id = Quiz.objects.all()
+    id = id.max()
+    if(User.objects.filter(id=array[2]).exists()):
+    	Quiz.objects.create(id=id,question=array[0],description=array[1],id_autor=array[2])
