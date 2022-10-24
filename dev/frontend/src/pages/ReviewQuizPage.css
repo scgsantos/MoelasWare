@@ -1,6 +1,43 @@
-.Container{
-    
-    flex:1;
-    display:flex;
+.Container {
+    text-align: center;
     background-color: #aeb884;
+    width: 100%;
+    height: 100vh;
 }
+
+.topbar{
+  text-align: center; 
+}
+  .columns{
+  
+    text-align: center;
+  }
+  
+  .leftcolumn{
+    display: inline-block;
+    vertical-align: middle;
+    text-align: column;
+  }
+  .middlecolumn{
+    display: inline-block;
+    vertical-align: middle;
+    text-align: column;
+  }
+  
+  .rightcolumn{
+    display: inline-block;
+    vertical-align: middle;
+    text-align: column;
+  }
+  
+  .logo{
+    display: inline;
+    vertical-align: middle;
+    margin-right: 70%;
+  }
+  
+  .username{
+    display: inline;
+    vertical-align: middle;
+  }
+  
