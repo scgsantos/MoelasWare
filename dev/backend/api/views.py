@@ -11,9 +11,12 @@ from django.contrib.auth.decorators import login_required
 
 
 @api_view(['GET'])
+@login_required
 def get_test_view(request, pk, *args, **kwargs):
+    # get the user object
+    user = request.user
     # check if the uer is able to solve the test
-    if not request.user.can_solve_tests():
+    if not user.can_solve_tests():
         return JsonResponse({'error': 'User is not allowed to solve tests. Needs to have created at least one quizz'}, status=status.HTTP_403_FORBIDDEN)
 
     # get test by id -> detail view
