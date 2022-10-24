@@ -7,3 +7,9 @@
 
 *.log
 *.db
+
+# virtual environments
+.venv/
+venv/
+.env/
+env/
