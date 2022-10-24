@@ -10,13 +10,13 @@ from moelasware.models import Test, Quiz, Tag
 from api.serializers import CreateTestSerializer, GetTestSerializer, QuizSerializer
 
 DEFAULT_TEST_PAGE_LIMIT = 20
+DEFAULT_TAG_PAGE_LIMIT = 20
 
 @api_view(['GET']) 
-def get_test_view( request, pk, *args, **kwargs ):
-
-    # get test by id -> detail view
-    instance = get_object_or_404(Test, pk=pk)
-    serializer = GetTestSerializer(instance, many=False)
+def get_test_view(request, pk, *args, **kwargs):
+	# get test by id -> detail view
+	instance = get_object_or_404(Test, pk=pk)
+	serializer = GetTestSerializer(instance, many=False)
 
     return JsonResponse({'test': serializer.data})
 
@@ -97,3 +97,30 @@ def tests_view(request):
         'POST': post_test_view,
     }
     return proxy[request.method](request)
+	return Response({'invalid': 'not good data'}, status=400)
+
+
+@api_view(['GET'])
+def get_tag_view(request, pk, *args, **kwargs):
+
+	if pk is not None:
+		instance = get_object_or_404(Tag, pk=pk)
+		serializer = GetTagSerializer(instance, many=False)
+
+		return JsonResponse({'tag': serializer.data})
+
+	return Response({'invalid': 'not good data'}, status=400)
+
+
+@api_view(['GET'])
+def get_all_tags_view(request, *args, **kwargs):
+	try:
+		offset = int(request.query_params.get('offset', default=0))
+		limit = int(request.query_params.get('limit', default=DEFAULT_TAG_PAGE_LIMIT))
+	except ValueError:
+		return HttpResponseBadRequest("Invalid offset and/or limit")
+
+	queryset = Tag.objects.filter(pk__range=(offset, offset+limit))
+
+	serializer = GetTagSerializer( queryset, many=True)
+	return JsonResponse({'tags': serializer.data})
