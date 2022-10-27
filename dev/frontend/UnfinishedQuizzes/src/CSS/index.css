@@ -36,3 +36,14 @@ body{
 .unfinishedquiz{
     padding:5px 50px;
 }
+
+@font-face {
+    font-family: "BasicRegular";
+    src: local("BasicRegular"),
+     url("../fonts/Basic-Regular.ttf") format("truetype");
+    font-weight: bold;
+}
+
+.midtitle{
+    font-weight: bold;
+}

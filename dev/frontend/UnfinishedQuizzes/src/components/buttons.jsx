@@ -7,7 +7,7 @@ class Counter extends Component {
         return (
             <div class = 'unfinishedquiz'>
                 <h1 class = "toptitle">Quiz #<span>{this.props.buttonNumber}</span></h1>
-                <button class = 'button'>Quiz #<span>{this.props.buttonNumber}</span></button>
+                <button onclick = "location.href = 'https://www.culturagenial.com/monumento-cristo-redentor/'" class = 'button'>Quiz #<span>{this.props.buttonNumber}</span></button>
             </div>
             
         );
