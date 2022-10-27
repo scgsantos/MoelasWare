@@ -1,9 +1,13 @@
 import logo from './images/logo.png';
+import "./CSS/index.css";
 import './App.css';
 import Button from './components/buttons';
+import './fonts/Basic-Regular.ttf';
+
 
 function App() {
   var numberOfunfinishedquizzes = 0;
+  var username = "Rodrigo"
 
   return (
     <div class="App">
@@ -13,7 +17,7 @@ function App() {
           <img src={logo} alt="logo" />
         </div>
         <div class = "username" style={{ flex: 4}}>
-          <text style={styles.geral}>Hi, username</text>
+          <text style={styles.geral}>Hi, {username}</text>
         </div>
         <div>
           <text style = {styles.middletitle}>LIST OF UNFINISHED QUIZZES</text>
@@ -24,7 +28,7 @@ function App() {
         <div class = 'middlecolumn'>
 
             <div style={{flex: 1}}>
-              <Button buttonNumber = {1}/>
+              <Button  buttonNumber = {1}/>
               <Button buttonNumber = {2}/>
               <Button buttonNumber = {3}/>
               <Button buttonNumber = {4}/>
@@ -93,8 +97,9 @@ const styles = {
     textAlign: "left"
   },
   middletitle:{
-    fontSize: 20,
-    fontWeight: "bold"
+    fontSize: 30,
+    marginTop: 20,
+    fontWeight: "bold",
   },
 
 };
