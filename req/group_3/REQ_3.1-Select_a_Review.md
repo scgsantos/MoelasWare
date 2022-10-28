@@ -2,6 +2,11 @@
 # **User story**
 * As a reviewer I want to choose a quiz and give it a review	
 
+# **Layouts**
+https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
+
+(each requirement is identified on the Figma canvas)
+
 # **Use case 1** 
 *   As a reviewer I want a where I can see all the reviews assigned to me and be able to choose one to start reviewing
 
