@@ -2,6 +2,11 @@
 * As a user, I want to solve a test so that I can check my knowledge.
 * Comment - The user must be able to see the obtained grade
 
+# Layouts
+https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
+
+(each requirement is identified on the Figma canvas)
+
 # ---REQ_3.Solve_test - USE CASE---
 
 # Primary Actor:
