@@ -1,7 +1,7 @@
-from moelasware.models import User
 from rest_framework import serializers
 
-from moelasware.models import Test
+from moelasware.models import Test, Quiz, QuizAnswer, QuizTag, Tag, Submission, SubmissionAnswer
+from moelasware.models import User as AuthUser
 
 class GetTestSerializer( serializers.ModelSerializer ):
 	class Meta:
@@ -12,9 +12,33 @@ class CreateTestSerializer( serializers.ModelSerializer ):
 	class Meta:
 		model = Test
 		fields = ['author', 'allowed_tags', 'quizzes', 'name', 'num_quizzes']
+
+class GetAuthUserSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = AuthUser
+		fields = ['id' ,'username','email', "date_joined"]
   
-  
-class GetUserSerializer( serializers.ModelSerializer ):
+class GetQuizSerializer( serializers.ModelSerializer ):
+    	class Meta:
+         model = Quiz
+         fields = ['author','tags','question','description']
+
+class CreateQuizSerializer( serializers.ModelSerializer ):
+	class Meta:
+		model =	Quiz
+		fields = ['author','tags','question','description']
+    
+class CreateQuizAnswerSerializer(serializers.ModelSerializer):
+    	class Meta:
+         model = QuizAnswer
+         fields = ['id','text','correct','justification']
+
+class CreateQuizTagSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        field= ["id","user","name","email","password","is_staff","is_active","is_superuser","last_login","date_joined"]
+        model = QuizTag
+        fields = ['id','quiz_id','tag_id']
+
+class CreateTagSerializer(serializers.ModelSerializer):
+    	class Meta:
+         model = Tag
+         fields = ['id','text']

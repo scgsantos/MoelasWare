@@ -125,4 +125,20 @@ class SubmissionAnswer(models.Model):
     """
     submission = fk(Submission)
     answer = fk(QuizAnswer)
+    
+class QuizTag(models.Model):
+    """
+    Represents a Quiz Tag. 
+
+    Applies a category to a Quiz.
+    """
+    quiz = fk(Quiz)
+    tag = fk(Tag)
+    
+class Tag(models.Model):
+    """
+    Is associated with a Quiz to display what the Quiz is about
+    """
+    text = models.TextField()
+
 
