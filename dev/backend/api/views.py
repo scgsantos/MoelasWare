@@ -1,10 +1,17 @@
+from http.client import ACCEPTED
 from django.shortcuts import get_object_or_404
 
 from django.http import JsonResponse
+from dev.backend.moelasware.models import QuizAnswer, Review
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.decorators import login_required
+from django.http.response import HttpResponseBadRequest
 
-from moelasware.models import Test
-from .serializers import GetTestSerializer, CreateTestSerializer
+from moelasware.models import Test, User, Quiz, QuizAnswer, QuizTag, Tag, Submission, SubmissionAnswer
+from .serializers import CreateReviewSerializer, GetQuizReviewSerializer, GetQuizSerializer, GetReviewSerializer, GetTestSerializer, CreateTestSerializer, GetAuthUserSerializer, CreateQuizSerializer, CreateQuizAnswerSerializer, CreateQuizTagSerializer, CreateTagSerializer
+from dev.backend.api import serializers
 
 
 @api_view(['GET']) # allowed method(s)
@@ -29,3 +36,68 @@ def create_test_view( request ):
 		return Response(serializer.data)
 
 	return Response({'invalid': 'not good data'}, status=400)
+
+
+@api_view(['GET', 'POST'])
+@login_required
+# function that selects the quizz that the user wants to review
+def submission_review(request, pk):
+    # verify if the user has created at least one quiz
+    done_quiz = Quiz.objects.filter(author=request.user.pk)
+
+    # verify if there is at least one quiz available to review
+    available_quiz = Quiz.objects.filter(approved = False)
+
+    if not done_quiz.exists():
+        return JsonResponse({'error': 'You must create at least one quiz to review a quiz'}, status=status.HTTP_412_PRECONDITION_FAILED)
+
+    if not available_quiz:
+        return JsonResponse({'error': 'There are no quizes available to review'}, status=status.HTTP_404_NOT_FOUND)
+
+    quiz = get_object_or_404(Quiz, pk=pk)
+
+    if request.method == 'GET':
+        serializer = GetQuizReviewSerializer(quiz, many=False)
+        # get the quiz that the user wants to review
+        return JsonResponse({'quiz': serializer.data}, status=status.HTTP_200_OK)
+
+    if request.method == 'POST':
+        serializer = CreateReviewSerializer(data=request.data)
+
+        review = Review.objects.create(id_quiz=serializer.data['id'], user = serializer.data['reviewer'], accepted=serializer.data['accepted'], comment=serializer.data['comment'])
+
+        # raises exception on why its not valid
+        if serializer.is_valid(raise_exception=True):
+            review.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+@login_required
+#function that updates the data if review was accepted
+def review_accepted(request, id):
+    
+    quiz = get_object_or_404(Quiz, pk=id)
+    serializer = GetQuizReviewSerializer(quiz, many=False)
+
+    review_count = serializer.review_count
+    review_count += 1
+
+    if review_count == 3:
+        serializer.approved = True
+
+    if serializer.is_valid(raise_exception=True):
+        quiz.save()
+        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+
+    return JsonResponse({'quiz': serializer.data}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@login_required
+def get_quiz_reviewers(request, id):
+    
+    chosen_quiz = get_object_or_404(Review, pk=id)
+    serializer = GetReviewSerializer(chosen_quiz, many=True)
+
+    return JsonResponse({'quiz': serializer.data['reviewer']}, status=status.HTTP_200_OK)
