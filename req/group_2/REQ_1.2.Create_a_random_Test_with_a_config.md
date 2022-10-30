@@ -31,3 +31,8 @@ A test is created according to the given config and a name.
    - 6b1. The system shows a message suggesting different tags and the user go back to "Create a random test with a config" page.
 6c. Web failure of any sort during submission:
    - 6c1. The system shows a message saying web failure, try again and the user go back to "Create a random test with a config".
+
+# Layouts
+https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
+
+(each requirement is identified on the Figma canvas)
