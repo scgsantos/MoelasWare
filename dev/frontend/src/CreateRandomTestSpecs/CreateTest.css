@@ -1,0 +1,48 @@
+* {
+    background-color: var(--pink);
+    font-size: 1rem;
+    color: black;
+}
+
+.CreateTest-header {
+    text-align: center;
+}
+
+.CreateTest-header .title {
+    font-size: 25px;
+}
+
+.CreateTest-header .subtitle {
+    font-size: 30px;
+}
+
+.choose-panel {
+    text-align: center;
+    justify-content: center;
+    margin-top: 70px;
+}
+
+.choose-panel .choose-title {
+    margin-top: 80px;
+}
+
+.choose-panel .select {
+    width: 125px;
+}
+
+.specify-panel {
+    text-align: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.specify-panel .write {
+    height: 0.1em; 
+    width: 400px; 
+}
+
+.create-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
