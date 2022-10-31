@@ -27,12 +27,24 @@ def get_test_view(request, pk, *args, **kwargs):
 # TODO: ADD DECORATOR WHEN LOGIN IS IMPLEMENTED
 # @login_required
 def post_test_view(request):
-    # If no quizzes are sent in the request -> quizzes are selected randomly
-    # User gave config (num_quizes, allowed_tags (optional))
-
     # TODO: ADD THIS LINE WHEN LOGIN IS IMPLEMENTED
     # author_id = request.user.id
     author_id = 1
+
+    quizzes = get_n_quizzes_view(request)
+
+    name = request.data.get('name')
+    deserializer_data = {'author': author_id, 'name': name, 'quizzes': quizzes}
+    test_deserializer = CreateTestSerializer(data=deserializer_data)
+    if test_deserializer.is_valid(raise_exception=True): 
+        test = test_deserializer.save()
+        response_serializer = GetTestSerializer(test)
+        return JsonResponse({'test': response_serializer.data})
+
+@api_view(['GET']) 
+def get_n_quizzes_view(request):
+    # If no quizzes are sent in the request -> quizzes are selected randomly
+    # User gave config (num_quizes, allowed_tags (optional))
 
     if 'quizzes' not in request.data.keys() and not {'num_quizzes', 'allowed_tags'} <= request.data.keys():
         return HttpResponseBadRequest(
@@ -45,15 +57,7 @@ def post_test_view(request):
         return HttpResponseBadRequest(
             f"The number of quizzes must be a number and not {request.data.get('num_quizzes')}"
         )
-                    
-    def respond(quizzes):
-        name = request.data.get('name')
-        deserializer_data = {'author': author_id, 'name': name, 'quizzes': quizzes}
-        test_deserializer = CreateTestSerializer(data=deserializer_data)
-        if test_deserializer.is_valid(raise_exception=True): 
-            test = test_deserializer.save()
-            response_serializer = GetTestSerializer(test)
-            return JsonResponse({'test': response_serializer.data})
+                
 
     # Required data was all in request (quizzes list was given)
     if 'quizzes' in request.data.keys():
@@ -70,7 +74,7 @@ def post_test_view(request):
             "The number of requested quizzes is bigger than the number of existing quizzes meeting the given specifications"
         )
 
-    return respond(quizzes_set.values_list('id', flat=True))
+    return quizzes_set.values_list('id', flat=True)
 
 
 # @api_view(['GET'])
