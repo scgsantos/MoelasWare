@@ -54,3 +54,16 @@ input[type=text] {
   border-radius: 10px;
   border: 1px solid black;
 }
+
+textarea[type=text] {
+  padding: 0.5em;
+  text-align: left;
+  background-color: transparent;
+  color: black;
+  border-radius: 10px;
+  border: 1px solid black;
+  width: 13.5em;
+  height: 4em;
+  resize: none;
+  overflow:hidden;
+}
