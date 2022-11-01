@@ -22,3 +22,15 @@ class CreateQuizSerializer( serializers.ModelSerializer ):
 	class Meta:
 		model =	Quiz
 		fields = ['author','tags','question','description']
+
+class LoginSerializer(ModelSerializer):
+
+	class Meta:
+			model = Login
+			fields = ['username', 'password']
+
+class RegsitrationSerializer(ModelSerializer):
+
+	class Meta:
+		model = Registration
+		fields = ['username', 'email', 'password1', 'password2']
