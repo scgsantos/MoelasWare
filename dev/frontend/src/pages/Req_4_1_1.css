@@ -1,0 +1,53 @@
+ 
+  .centrar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .center{
+    width: 50%;
+    position: relative;
+    left: 25%;
+    text-align: center;
+  }
+
+  .line1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 5em;
+  }
+
+  .line11{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  .line2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 2em;
+  }
+
+  .line22{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  .line3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 2em;
+  }
+  .line33{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+    
