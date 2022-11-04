@@ -16,6 +16,8 @@ function IncDecCounter(props) {
   let handleChange = (e) => {
     if (numberValidation.test(e.target.value)) {
       props.setNum(e.target.value);
+    } else {
+      props.setNum(1);
     }
   };
 
