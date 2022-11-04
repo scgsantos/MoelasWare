@@ -23,6 +23,9 @@ function App() {
         <Route path="/tests" element={<Tests />}>
           <Route path=":id" element={<History selected="tests" />} />
         </Route>
+        <Routes>
+            <Route path="/create/test/random" element={<CreateRandomTest />} />
+        </Routes>
       </Routes>
     </Router>
   );
