@@ -13,3 +13,7 @@
 venv/
 .env/
 env/
+
+*.sqlite3
+
+.coverage
