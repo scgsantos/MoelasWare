@@ -8,7 +8,6 @@ import Req_4_3 from './pages/Req_4_3';
 import Error_1 from './pages/Error_1';
 import Error_2 from './pages/Error_2';
 
-import QuizList from "./QuizList.js";
 
 function App() {
   return (
@@ -25,4 +24,3 @@ function App() {
   );
 }
 
-export default App;
