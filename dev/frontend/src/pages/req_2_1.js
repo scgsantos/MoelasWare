@@ -8,6 +8,26 @@ function CreateRandomTest() {
   const [num, setNum] = useState(1);
   const [isPage1, setIsPage1] = useState(true);
   const [text, setText] = useState("");
+  const [quizzes, setQuizzes] = useState([]);
+
+
+
+  function getFirstQuiz() {
+
+    fetch('http://localhost:8000/api/quizzes/gen/', {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ num_quizzes: 4 })
+    })
+      .then(response => response.json())
+      .then(data => {
+        setQuizzes(data.quizzes)
+      });
+
+  }
 
   function handleCreateButtonChange() {
     setIsPage1(false);
@@ -62,7 +82,7 @@ function CreateRandomTest() {
         </div>
 
         <div className="req-2-1-quizList">
-          <QuizList num={num} name={text} />
+
         </div>
 
         <div className="req-2-1-Publish-GoBack-buttons">
