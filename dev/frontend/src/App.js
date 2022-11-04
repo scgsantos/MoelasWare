@@ -2,14 +2,10 @@ import CreateRandomTest from "./pages/req_2_1";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./common.css";
 
+import QuizList from "./QuizList.js";
+
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="create/test/random" element={<CreateRandomTest />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  return <QuizList/>
 }
 
 export default App;
