@@ -9,6 +9,8 @@ import Users from "./pages/users";
 import Tests from "./pages/tests";
 import History from "./components/history";
 
+import QuizList from "./QuizList.js";
+
 function App() {
   return (
     <Router>
