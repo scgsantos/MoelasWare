@@ -71,11 +71,8 @@
   display: flex;
   padding: 1em;
   margin: 1em;
-
-  width: 30em;
-
   text-align: center;
-  background-color: var(--green);
+  background-color: green;
   color: black;
   border-radius: 10px;
   border: 1px solid black;
