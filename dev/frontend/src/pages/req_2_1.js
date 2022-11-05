@@ -8,13 +8,16 @@ import { useNavigate } from "react-router-dom";
 
 import history from '../history.js';
 
+
 function CreateRandomTest() {
   const [num, setNum] = useState(1);
   const [isPage1, setIsPage1] = useState(true);
   const [text, setText] = useState("");
+
   const [quizzes, setQuizzes] = useState([]);
 
-  history.push("/CreateTest");
+
+  let navigate = useNavigate();
 
   function getFirstQuiz() {
 
@@ -24,31 +27,39 @@ function CreateRandomTest() {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ num_quizzes: 4 })
+      body: JSON.stringify({ num_quizzes: num })
     })
       .then(response => response.json())
       .then(data => {
-        setQuizzes(data.quizzes)
+        setQuizzes(data.quizzes);
       });
 
   }
 
   function handleCreateButtonChange() {
     setIsPage1(false);
+    getFirstQuiz();
   }
-
+    console.log(quizzes);
   function handleNameChange(e) {
     setText(e.target.value);
+
   }
 
   function handleNextButtonChange() {
-    history.push("/TestPreview");
+    history.push("/CreateTest");
+
+    navigate("/TestPreview",
+             {state: {name:text, quizzes: quizzes }},
+    );
     window.location.reload();
   }
 
   function handleGoBackChange() {
     setIsPage1(true);
   }
+
+  console.log(quizzes);
 
   if (isPage1) {
     return (
