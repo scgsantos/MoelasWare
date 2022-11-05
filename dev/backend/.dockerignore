@@ -1,0 +1,14 @@
+*.py[cod]
+
+*.log
+*.db
+
+# virtual environments
+.venv/
+venv/
+.env/
+env/
+
+*.sqlite3
+
+.coverage
