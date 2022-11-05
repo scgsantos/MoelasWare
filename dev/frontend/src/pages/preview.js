@@ -9,28 +9,14 @@ import history from '../history.js';
 
 class QuizList extends React.Component {
 
-  constructor() {
-    super()
-    this.state = { quizzes: [] , quiz_id:0, answers: [], i:1}
-    this.getFirstQuiz();
-  }
-  getFirstQuiz() {
+  constructor(props) {
+    super();
 
-    fetch('http://localhost:8000/api/quizzes/gen/', {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ num_quizzes: 4 })
-    })
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ quizzes: data.quizzes })
-        this.getQuizAnswers(data.quizzes[0]?.id);
-      });
+    //console.log(history.location);
 
+    this.state = { quizzes: history.location.state?.quizzes , quiz_id:0, answers: [], i:1, name: history.location.state?.name}
   }
+
 
   getQuizAnswers(id){
 
@@ -102,71 +88,72 @@ class QuizList extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ quizzes: quizzes_ids, name: "WOOOOOOOOO", author:1 })
+      body: JSON.stringify({ quizzes: quizzes_ids, name: this.state.name, author:1 })
     })
       .then(response => response.json());
   }
 
-
   render() {
-    const quiz = this.state.quizzes[this.state.quiz_id];
+
+    if( this.state.quizzes != null)
+      var quiz = this.state.quizzes[this.state.quiz_id];
+
+      if(this.state.answers.length == 0)
+        this.getQuizAnswers(quiz?.id);
 
 
 
-    /* TODO: - [ ] recieve test name and author;
-     *       - [ ] go back to last page on Go Back button;
+    /* TODO: - [x| ] recieve test name and author;
+     *       - [x] go back to last page on Go Back button;
      *       - [x] post quiz on Confirm button;
      *       - [ ] add logo;
     */
-    return (
-      <div>
-        <h2 className="preview-title">Create a Test</h2>
+      return (
+        <div>
+          <h2 className="preview-title">Create a Test</h2>
+          <h1 className="preview-title">Name: {this.state.name}</h1>
 
-            <div className="preview-container">
-              <button className="preview-arrowButtons" style={{float:'left'}}  onClick={() => this.prevQuiz() }>
-                  &lt;
-              </button>
+              <div className="preview-container">
+                <button className="preview-arrowButtons" style={{float:'left'}}  onClick={() => this.prevQuiz() }>
+                    &lt;
+                </button>
 
-              <h1 className="preview-subTitle">Quizz #{this.state.quiz_id + 1} &ensp; {quiz?.question}</h1>
+                <h1 className="preview-subTitle">Quizz #{this.state.quiz_id + 1} &ensp; {quiz?.question}</h1>
 
-              <button className="preview-arrowButtons" style={{float:'right'}} onClick={() => this.nextQuiz()}>
-                  &gt;
-              </button>
+                <button className="preview-arrowButtons" style={{float:'right'}} onClick={() => this.nextQuiz()}>
+                    &gt;
+                </button>
 
-            </div>
+              </div>
 
-            <div className="preview-split">
+              <div className="preview-split">
 
-            <ul className="preview-quizList">
-              {this.state.answers.map((answer => this.renderAnswer(answer)))
+              <ul className="preview-quizList">
+                {this.state.answers.map((answer => this.renderAnswer(answer)))
 
-              }
-            </ul>
-
-
-            {this.state.answers.map((answer => this.renderJustification(answer)))}
+                }
+              </ul>
 
 
+              {this.state.answers.map((answer => this.renderJustification(answer)))}
 
-        </div>
 
 
-        <div className="preview-container">
-          <button className="preview-buttonPublish" onClick={() => this.goBack()}>
-                  Go Back
-          </button>
-          &ensp;
-          <button className="preview-buttonPublish"  onClick={() => this.confirmTest() }>
-                  Confirm
-          </button>
-        </div>
-      </div >
-    )
-  }
-}
+          </div>
 
-class Quiz extends React.Component {
 
+          <div className="preview-container">
+            <button className="preview-buttonPublish" onClick={() => this.goBack()}>
+                    Go Back
+            </button>
+            &ensp;
+            <button className="preview-buttonPublish"  onClick={() => this.confirmTest() }>
+                    Confirm
+            </button>
+          </div>
+        </div >
+      )
+    }
 }
 
 export default QuizList;
