@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { format } from 'react-string-format';
+import { useNavigate } from "react-router-dom";
 
 import "../common.css"
 import "./TestPreview.css"
@@ -7,59 +8,60 @@ import "./TestPreview.css"
 import history from '../history.js';
 
 
-class QuizList extends React.Component {
 
-  constructor(props) {
-    super();
+function Preview(){
+  const [quizzes, setQuizzes] = useState(history.location.state?.quizzes);
+  var [answers, setAnswers] = useState([]);
+  var [quiz_id, setId] = useState(0);
+  var [i, setIndex] = useState(1);
+  const [name, setName] = useState(history.location.state?.name);
 
-    //console.log(history.location);
-
-    this.state = { quizzes: history.location.state?.quizzes , quiz_id:0, answers: [], i:1, name: history.location.state?.name}
-  }
+  let navigate = useNavigate();
+  console.log(history.location);
 
 
-  getQuizAnswers(id){
+  function getQuizAnswers(id){
 
     var url = format('http://localhost:8000/api/quizzes/{0}/answers/', id);
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        this.setState({ answers: data.answers })
-        this.setState({i: 1})
+        setAnswers( data.answers )
+        setIndex( 1 )
       });
 
   }
 
-  nextQuiz(id){
-    if( this.state.quiz_id + 1 < this.state.quizzes.length){
-      this.setState({quiz_id: this.state.quiz_id + 1})
-      this.getQuizAnswers(this.state.quizzes[this.state.quiz_id+1]?.id);
+  function nextQuiz(id){
+    if( quiz_id + 1 < quizzes.length){
+        setId(quiz_id + 1)
+        getQuizAnswers(quizzes[quiz_id+1]?.id);
     }else{
-      this.setState({quiz_id: 0})
-      this.getQuizAnswers(this.state.quizzes[0]?.id);
+      setId(0)
+      getQuizAnswers(quizzes[0]?.id);
     }
 
   }
 
-  prevQuiz(id){
-    if( this.state.quiz_id - 1 < 0){
-      this.setState({quiz_id: this.state.quizzes.length - 1})
-      this.getQuizAnswers(this.state.quizzes[this.state.quizzes.length - 1]?.id);
+  function prevQuiz(id){
+    if( quiz_id - 1 < 0){
+      setId(quizzes.length - 1)
+      getQuizAnswers(quizzes[quizzes.length - 1]?.id);
     }else{
-      this.setState({quiz_id: this.state.quiz_id - 1})
-      this.getQuizAnswers(this.state.quizzes[this.state.quiz_id-1]?.id);
+      setId(quiz_id - 1)
+      getQuizAnswers(quizzes[quiz_id-1]?.id);
     }
   }
 
-  renderAnswer(answer){
+  function renderAnswer(answer){
       if(answer?.correct){
-        return <li className="quiz-correct"> Answer {this.state.i++}: &ensp;{answer?.text} </li>
+        return <li className="quiz-correct"> Answer {i++}: &ensp;{answer?.text} </li>
       }else{
-        return <li className="quiz-wrong"> Answer {this.state.i++}: &ensp;{answer?.text} </li>
+        return <li className="quiz-wrong"> Answer {i++}: &ensp;{answer?.text} </li>
       }
   }
 
-    renderJustification(answer){
+    function renderJustification(answer){
       if(answer?.correct){
         return <div className="preview-justification"><h3> Justification:</h3> <br></br>{answer?.justification}</div>
       }else{
@@ -68,19 +70,20 @@ class QuizList extends React.Component {
   }
 
 
-  goBack(){
-    history.go(-1);
+  function goBack(){
+
+    navigate("/CreateTest", {state: history.location.state});
+
   }
 
-  confirmTest(){
+  function confirmTest(){
 
     var quizzes_ids = [];
 
-    for( var j=0; j < this.state.quizzes.length; j++){
-      quizzes_ids.push(this.state.quizzes[j]?.id);
+    for( var j=0; j < quizzes.length; j++){
+      quizzes_ids.push(quizzes[j]?.id);
     }
 
-    console.log(quizzes_ids);
 
     fetch('http://localhost:8000/api/tests/', {
       method: "POST",
@@ -88,18 +91,17 @@ class QuizList extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ quizzes: quizzes_ids, name: this.state.name, author:1 })
+      body: JSON.stringify({ quizzes: quizzes_ids, name: name, author:1 })
     })
       .then(response => response.json());
   }
 
-  render() {
 
-    if( this.state.quizzes != null)
-      var quiz = this.state.quizzes[this.state.quiz_id];
+    if( quizzes != null)
+      var quiz = quizzes[quiz_id];
 
-      if(this.state.answers.length == 0)
-        this.getQuizAnswers(quiz?.id);
+      if(answers.length == 0)
+        getQuizAnswers(quiz?.id);
 
 
 
@@ -111,16 +113,16 @@ class QuizList extends React.Component {
       return (
         <div>
           <h2 className="preview-title">Create a Test</h2>
-          <h1 className="preview-title">Name: {this.state.name}</h1>
+          <h1 className="preview-title">Name: {name}</h1>
 
               <div className="preview-container">
-                <button className="preview-arrowButtons" style={{float:'left'}}  onClick={() => this.prevQuiz() }>
+                <button className="preview-arrowButtons" style={{float:'left'}}  onClick={() => prevQuiz() }>
                     &lt;
                 </button>
 
-                <h1 className="preview-subTitle">Quizz #{this.state.quiz_id + 1} &ensp; {quiz?.question}</h1>
+                <h1 className="preview-subTitle">Quizz #{quiz_id + 1} &ensp; {quiz?.question}</h1>
 
-                <button className="preview-arrowButtons" style={{float:'right'}} onClick={() => this.nextQuiz()}>
+                <button className="preview-arrowButtons" style={{float:'right'}} onClick={() => nextQuiz()}>
                     &gt;
                 </button>
 
@@ -129,13 +131,13 @@ class QuizList extends React.Component {
               <div className="preview-split">
 
               <ul className="preview-quizList">
-                {this.state.answers.map((answer => this.renderAnswer(answer)))
+                {answers.map((answer => renderAnswer(answer)))
 
                 }
               </ul>
 
 
-              {this.state.answers.map((answer => this.renderJustification(answer)))}
+              {answers.map((answer => renderJustification(answer)))}
 
 
 
@@ -143,17 +145,17 @@ class QuizList extends React.Component {
 
 
           <div className="preview-container">
-            <button className="preview-buttonPublish" onClick={() => this.goBack()}>
+            <button className="preview-buttonPublish" onClick={() => goBack()}>
                     Go Back
             </button>
             &ensp;
-            <button className="preview-buttonPublish"  onClick={() => this.confirmTest() }>
+            <button className="preview-buttonPublish"  onClick={() => confirmTest() }>
                     Confirm
             </button>
           </div>
         </div >
       )
-    }
+
 }
 
-export default QuizList;
+export default Preview;
