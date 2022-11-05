@@ -33,6 +33,9 @@ class Quiz(models.Model):
     question = models.TextField()
     description = models.TextField()
 
+    def get_number_of_options(self) -> int:
+        return self.options.count()
+
     # Accepted should be queried instead of stored as a field?
     def is_accepted(self):
         pass
@@ -41,6 +44,55 @@ class Test(models.Model):
     """
     A collection of Quizzes.
     """
+    def create_submission(self, user, answers):
+        # create a submission from the answers according to this json:
+        """  
+        {
+            "answers": [
+                {
+                    "quiz_id": 1,
+                    "quiz_answers": [1, 2]
+                },
+                {
+                    "quiz_id": 2,
+                    "quiz_answers": [2]
+                }
+            ]
+        }
+        """
+        # create a submission 
+        submission = Submission.objects.create(
+            test=self,
+            user=user,
+        )
+
+        # add answers to this submission
+        for answer in answers:
+            quiz_id = answer.get('quiz_id', None)
+            quiz_answers = answer.get('quiz_answers', None)
+
+            for quizAnswerId in quiz_answers:
+                quiz_answer_obj = QuizAnswer.objects.get(pk=quizAnswerId)
+                if quiz_answer_obj is None:
+                    raise ValueError("QuizAnswer not found")
+                    
+                # chck if quizz answer is in quizz
+                if quiz_answer_obj.quiz.pk != quiz_id:
+                    raise ValueError("QuizAnswer not in quiz")
+                
+                # create a submission answer
+                SubmissionAnswer.objects.create(
+                    submission=submission,
+                    answer=quiz_answer_obj
+                )
+
+        return submission
+
+
+
+
+
+
     author = fk(User)
 
     quizzes = models.ManyToManyField(Quiz)
