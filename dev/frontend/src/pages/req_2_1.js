@@ -4,13 +4,17 @@ import QuizList from "../components/QuizList";
 import logo from "../logo.png";
 import "./req_2_1.css";
 
+import { useNavigate } from "react-router-dom";
+
+import history from '../history.js';
+
 function CreateRandomTest() {
   const [num, setNum] = useState(1);
   const [isPage1, setIsPage1] = useState(true);
   const [text, setText] = useState("");
   const [quizzes, setQuizzes] = useState([]);
 
-
+  history.push("/CreateTest");
 
   function getFirstQuiz() {
 
@@ -38,7 +42,8 @@ function CreateRandomTest() {
   }
 
   function handleNextButtonChange() {
-    // goes to the
+    history.push("/TestPreview");
+    window.location.reload();
   }
 
   function handleGoBackChange() {
