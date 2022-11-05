@@ -16,6 +16,14 @@ function CreateRandomTest() {
 
   const [quizzes, setQuizzes] = useState([]);
 
+  if( history.location.state != null && quizzes.length == 0){
+    setNum(history.location.state.quizzes?.length);
+    setText(history.location.state.name);
+    setQuizzes(history.location.state?.quizzes);
+  }
+
+  console.log(history.location);
+  console.log(quizzes)
 
   let navigate = useNavigate();
 
@@ -38,9 +46,13 @@ function CreateRandomTest() {
 
   function handleCreateButtonChange() {
     setIsPage1(false);
-    getFirstQuiz();
+      console.log(quizzes)
+
+    if(quizzes.length == 0){
+      getFirstQuiz();
+    }
   }
-    console.log(quizzes);
+
   function handleNameChange(e) {
     setText(e.target.value);
 
@@ -59,7 +71,6 @@ function CreateRandomTest() {
     setIsPage1(true);
   }
 
-  console.log(quizzes);
 
   if (isPage1) {
     return (
