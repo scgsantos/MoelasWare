@@ -72,6 +72,13 @@
   width: 8em;
 }
 
+.req-2-2-inputText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 0.5em;
+}
+
 .req-2-1-quizList {
   margin-top: 2em;
   justify-content: center;
