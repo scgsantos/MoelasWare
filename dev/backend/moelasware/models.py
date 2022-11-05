@@ -45,21 +45,6 @@ class Test(models.Model):
     A collection of Quizzes.
     """
     def create_submission(self, user, answers):
-        # create a submission from the answers according to this json:
-        """  
-        {
-            "answers": [
-                {
-                    "quiz_id": 1,
-                    "quiz_answers": [1, 2]
-                },
-                {
-                    "quiz_id": 2,
-                    "quiz_answers": [2]
-                }
-            ]
-        }
-        """
         # create a submission 
         submission = Submission.objects.create(
             test=self,
