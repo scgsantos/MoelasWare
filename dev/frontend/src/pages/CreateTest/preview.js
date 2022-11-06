@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { format } from 'react-string-format';
 import { useNavigate } from "react-router-dom";
 
-import logo from "../logo.png";
-import "../common.css"
+import logo from "../../logo.png";
+import "../../common.css"
 import "./TestPreview.css"
 
-import history from '../history.js';
+import history from '../../history.js';
 
 
 
