@@ -13,11 +13,6 @@ class CreateTestSerializer( serializers.ModelSerializer ):
 		model = Test
 		fields = ['author', 'allowed_tags', 'quizzes', 'name', 'num_quizzes']
 
-class CreateReviewSerializer( serializers.ModelSerializer ):
-	class Meta:
-		model = Review
-		fields = ['reviewer', 'quiz', 'accepted', 'comment']
-
 class GetQuizReviewSerializer ( serializers.ModelSerializer ):
 	class Meta:
 		model = Quiz
@@ -26,5 +21,9 @@ class GetQuizReviewSerializer ( serializers.ModelSerializer ):
 class GetReviewSerializer ( serializers.ModelSerializer ):
 	class Meta:
 		model = Review
-		fields = ['id', 'accepted', 'comment', 'quiz', 'reviwer']
+		fields = ['id', 'accepted', 'comment', 'quiz', 'reviewer', 'approved']
 
+class CreateReviewSerializer( serializers.ModelSerializer ):
+	class Meta:
+		model = Review
+		fields = ['reviewer', 'quiz', 'accepted', 'comment', 'approved']

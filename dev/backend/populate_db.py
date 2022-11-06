@@ -9,7 +9,6 @@ from moelasware.models import *
 
 SAVE = False
 
-
 def save(*obj):
     if SAVE:
         for o in obj:
