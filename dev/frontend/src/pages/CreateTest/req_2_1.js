@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import IncDecCounter from "../components/input_number";
-import QuizList from "../components/QuizList";
-import logo from "../logo.png";
+import IncDecCounter from "../../components/input_number";
+import QuizList from "../../components/QuizList";
+import logo from "../../logo.png";
 import "./req_2_1.css";
 
 import { useNavigate } from "react-router-dom";
 
-import history from '../history.js';
+import history from '../../history.js';
 
 
 function CreateRandomTest() {
@@ -22,8 +22,8 @@ function CreateRandomTest() {
     setQuizzes(history.location.state?.quizzes);
   }
 
-  console.log(history.location);
-  console.log(quizzes)
+  //console.log(history.location);
+  //console.log(quizzes)
 
   let navigate = useNavigate();
 
@@ -46,7 +46,7 @@ function CreateRandomTest() {
 
   function handleCreateButtonChange() {
     setIsPage1(false);
-      console.log(quizzes)
+      //console.log(quizzes)
 
     if(quizzes.length == 0){
       getFirstQuiz();
@@ -71,6 +71,10 @@ function CreateRandomTest() {
     setIsPage1(true);
   }
 
+  function handleGoBackToMenu() {
+    navigate("/");
+  }
+
 
   if (isPage1) {
     return (
@@ -84,9 +88,14 @@ function CreateRandomTest() {
           setNum={setNum}
           label={"Choose the number o quizzes you want in your test"}
         />
-
-        <div className="req-2-1-buttonCreate">
-          <button onClick={handleCreateButtonChange}>Next</button>
+        <div className="req-2-1-Publish-GoBack-buttons">
+          <div className="req-2-1-buttonCreate">
+            <button onClick={handleGoBackToMenu}>Back</button>
+          </div>
+          &ensp;&ensp;
+          <div className="req-2-1-buttonCreate">
+            <button onClick={handleCreateButtonChange}>Next</button>
+          </div>
         </div>
       </div>
     );
