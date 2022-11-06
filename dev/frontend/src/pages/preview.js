@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { format } from 'react-string-format';
 import { useNavigate } from "react-router-dom";
 
+import logo from "../logo.png";
 import "../common.css"
 import "./TestPreview.css"
 
@@ -108,10 +109,11 @@ function Preview(){
     /* TODO: - [x| ] recieve test name and author;
      *       - [x] go back to last page on Go Back button;
      *       - [x] post quiz on Confirm button;
-     *       - [ ] add logo;
+     *       - [x] add logo;
     */
       return (
         <div>
+          <img src={logo} className="req-2-1-logo" alt="logo" />
           <h2 className="preview-title">Create a Test</h2>
           <h1 className="preview-title">Name: {name}</h1>
 
