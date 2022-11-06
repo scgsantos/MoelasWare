@@ -104,18 +104,26 @@ function CreateRandomTest() {
             className="req-2-1-inputText"
             type="text"
             name="name"
+            value={text}
             onChange={handleNameChange}
           />
         </div>
 
-        <div className="req-2-1-quizList">
+         <h3 className="req-2-1-title"> Chosen Quizzes: </h3>
+         <ul className="req-2-1-quizList">
+                {quizzes.map((quiz) => <li className="quiz">{quiz.question}</li>)}
+        </ul>
 
-        </div>
 
         <div className="req-2-1-Publish-GoBack-buttons">
           <button className="req-2-1-GoBackbutton" onClick={handleGoBackChange}>
             Go Back
           </button>
+
+          <button className="req-2-1-GoBackbutton" onClick={getFirstQuiz}>
+            Reroll Quizzes
+          </button>
+
           <button
             className="req-2-1-NextButton"
             onClick={handleNextButtonChange}
