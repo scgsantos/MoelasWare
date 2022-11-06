@@ -1,7 +1,11 @@
-.Container {
-    background-color: #CAD0B1;
-    width: 100%;
+.background {
+    width: 100vw;
     height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #CAD0B1;
+    z-index: -1;
 }
 
 .topbar{
@@ -46,7 +50,7 @@
   }
   .row{
     margin: 0 15%;
-    
+    flex: 1,
   }
   
   /* Clear floats after the columns */
@@ -54,6 +58,23 @@
     content: "";
     display: table;
     clear: both;
+  }
+
+  .btn{
+    border: 2px solid black;
+    background-color: #CAD0B1;
+    color: black;
+    padding: 10px 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border-color: black;
+    color: black;
+    float: left;
+  }
+
+
+  .success:hover {
+    background-color: #B2BB8A;
   }
 
   .answer {
