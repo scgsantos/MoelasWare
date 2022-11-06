@@ -56,7 +56,7 @@ GROUPS = [
         "scgsantos": "Sofia Santos",
     },
     {
-        "af0onso_duarte": "Afonso Duarte",
+        "af0nso_duarte": "Afonso Duarte",
         "itsdanielalopes": "Daniela Lopes",
         "PolpEdu": "Eduardo Nunes",
         "GuilhermeFFaria": "Guilherme Faria",

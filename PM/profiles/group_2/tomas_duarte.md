@@ -14,3 +14,8 @@ Roles: `D`
 
 * Finished: #63
 * Pending:
+
+### 3
+
+* Finished: #199, #201, #211, #245, #245, #246, #248
+* Pending: #166, #229
