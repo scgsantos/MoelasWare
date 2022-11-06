@@ -68,7 +68,7 @@ Revision: ...
 
 
 /label ~minute
-/milestone %"Sprint 3"
+/milestone %"Sprint 4"
 
 <!--- /estimate time_spent -->
 /estimate 1h

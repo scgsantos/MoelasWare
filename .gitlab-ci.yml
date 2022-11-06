@@ -1,0 +1,62 @@
+stages:
+  - lint
+  - coverage
+  - test
+  - deploy
+
+cache:
+  paths:
+    - .cache/pip
+    - .nox/
+
+image: python:3.10-slim
+
+default:
+  before_script:
+    - python -V
+    - pip install -U nox
+
+format:
+  stage: lint
+  script:
+    - nox -s format
+
+deadcode:
+  stage: lint
+  script:
+    - nox -s deadcode
+
+lint:
+  stage: lint
+  script:
+    - nox -s lint
+
+security:
+  stage: lint
+  script:
+    - nox -s security
+
+metrics:
+  stage: coverage
+  script:
+    - nox -s metrics
+
+coverage:
+  stage: coverage
+  script:
+    - nox -s coverage
+
+test:
+  stage: test
+  script:
+    - nox -s test
+
+pages:
+  stage: deploy
+  only:
+    - tags
+  script:
+    - nox -s deploy
+  artifacts:
+    paths:
+      - public
