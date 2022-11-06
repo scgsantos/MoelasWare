@@ -1,10 +1,14 @@
+* {
+  background-color: var(--green) !important;
+}
+
 .background {
     width: 100vw;
     height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
-    background: #CAD0B1;
+    background-color: #CAD0B1;
     z-index: -1;
 }
 
