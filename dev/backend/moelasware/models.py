@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.core.validators import MinValueValidator 
 from django.contrib.auth.models import User as AuthUser
@@ -11,6 +12,11 @@ def fk(model):
 class User(models.Model):
     user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
 
+    # needs to be haved created at least one quizz
+    def can_solve_tests(self) -> bool:
+        # the user needs to have created at least one quizz
+        return self.quizzes.exists()
+        
 class Tag(models.Model):
     """
     Is associated with a Quiz to display what the Quiz is about
@@ -27,6 +33,9 @@ class Quiz(models.Model):
 
     question = models.TextField()
     description = models.TextField()
+
+    review_count = models.IntegerField(default=0)
+    approved = models.BooleanField(default=False)
 
     # Accepted should be queried instead of stored as a field?
     def is_accepted(self):
@@ -70,13 +79,13 @@ class Review(models.Model):
     Represents a Quiz Review. 
 
     It can either be accepted or rejected,
-    being a comment mandatory if it is rejected.
+    being a comment mandatory.
     """
     reviewer = fk(User)
     quiz = fk(Quiz)
 
     accepted = models.BooleanField(default=False)
-    comment = models.TextField()
+    comment = models.TextField(default = 0) 
 
 class QuizAnswer(models.Model):
     """
@@ -126,3 +135,4 @@ class SubmissionAnswer(models.Model):
     submission = fk(Submission)
     answer = fk(QuizAnswer)
 
+    
