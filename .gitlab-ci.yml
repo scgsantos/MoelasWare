@@ -11,48 +11,60 @@ cache:
 
 image: python:3.10-slim
 
-default:
-  before_script:
+.job_template: &job_template
+  before_script: &before_script
     - python -V
     - pip install -U nox
+  only:
+    - main
+    - /^group_\d\/dev$/
+
 
 format:
   stage: lint
+  <<: *job_template
   script:
     - nox -s format
 
 deadcode:
   stage: lint
+  <<: *job_template
   script:
     - nox -s deadcode
 
 lint:
   stage: lint
+  <<: *job_template
   script:
     - nox -s lint
 
 security:
   stage: lint
+  <<: *job_template
   script:
     - nox -s security
 
 metrics:
   stage: coverage
+  <<: *job_template
   script:
     - nox -s metrics
 
 coverage:
   stage: coverage
+  <<: *job_template
   script:
     - nox -s coverage
 
 test:
   stage: test
+  <<: *job_template
   script:
     - nox -s test
 
 pages:
   stage: deploy
+  before_script: *before_script
   only:
     - tags
   script:
