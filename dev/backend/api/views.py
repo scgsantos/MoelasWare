@@ -1,4 +1,3 @@
-from http.client import BAD_REQUEST
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.http.response import HttpResponseNotFound
@@ -149,7 +148,7 @@ def submission_of_a_test_view(request, pk):
     return JsonResponse({"submissions": info_list})   
 
 @api_view(['GET'])
-def get_all_tests(request):
+def get_all_tests_view(request):
     
     tests = Test.objects.all().order_by('id') 
     if not tests.exists():
