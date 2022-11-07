@@ -73,11 +73,6 @@ class Test(models.Model):
 
         return submission
 
-
-
-
-
-
     author = fk(User)
 
     quizzes = models.ManyToManyField(Quiz)

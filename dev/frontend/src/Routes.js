@@ -1,22 +1,30 @@
 
 import React, { Component } from "react";
-import { Router, Routes, Route } from "react-router-dom";
+import { Link, Routes, Route, useRoutes, BrowserRouter as Router} from "react-router-dom";
 
 import App from "./App.js";
-import CreateRandomTest from "./pages/req_2_1.js";
-import PreviewTest from "./pages/preview.js";
-
+import MainSelectionPage from './pages/Req_4_1AllTests';
+import SingleTestPage from './pages/Req_4_1SingleTest';
+import Req_4_1_2 from './pages/Req_4_1SingleTest';
+import SolveQuizz from './pages/Req_4_2SolveQuizz';
+import Req_4_2_2 from './pages/Req_4_2_2';
+import Req_4_2_3 from './pages/Req_4_2_3';
+import Req_4_3 from './pages/Req_4_3';
 
 import history from './history.js';
 
 export default class App_Routes extends Component {
     render() {
         return (
-            <Router history={history}>
+            <Router history={history} location={history.location}>
                 <Routes>
-                    <Route path="/" exact component={CreateRandomTest} />
-                    <Route path="/RandomTest" component={CreateRandomTest} />
-                    <Route path="/TestPreview" component={PreviewTest} />
+                    <Route path="/" exact element={<App/>} />
+                    <Route path="/selecttest" element={<MainSelectionPage/>} >
+                        <Route path=":test" element={<SingleTestPage/>} />
+                    </Route>
+                    <Route path="/solvequizz" element={<SolveQuizz/>} >
+                        <Route path=":quizz" element={<Req_4_2_2/>} />
+                    </Route>
                 </Routes>
             </Router>
         )
