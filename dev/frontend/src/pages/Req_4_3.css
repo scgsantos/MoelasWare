@@ -1,12 +1,6 @@
  .hh{
     line-height: 1.4;
   }
-  .centrar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
   .center{
     width: 50%;
     position: relative;

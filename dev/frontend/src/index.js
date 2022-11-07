@@ -5,9 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import App_Routes from './Routes.js';
 
-
-import "./index.css";
-import App from "./App.js";
+// import App from "./App.js";
 import reportWebVitals from "./reportWebVitals";
 import "./common.css";
 import App from "./App";
@@ -20,13 +18,11 @@ root.render(
 
 );*/
 
-ReactDOM.render(
-  <Router>
-    <div className="App"> Hello
-      <App_Routes/>
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+    <div className="App">
+      <App_Routes/>    
     </div>
-  </Router>,
-  document.getElementById('root')
 );
 
 
