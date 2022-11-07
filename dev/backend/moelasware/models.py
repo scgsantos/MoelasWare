@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator 
 from django.contrib.auth.models import User as AuthUser
+import datetime
 
 def fk(model):
     return models.ForeignKey(model, on_delete=models.CASCADE)
@@ -27,6 +28,8 @@ class Quiz(models.Model):
 
     question = models.TextField()
     description = models.TextField()
+
+    creation_date = models.DateField(default=datetime.date.today)
 
     approved = models.BooleanField(default=False)
 
@@ -73,6 +76,7 @@ class Review(models.Model):
     reviewer = fk(User)
     quiz = fk(Quiz)
 
+    creation_date = models.DateField(default=datetime.date.today)
     accepted = models.BooleanField(default=False)
     comment = models.TextField()
 

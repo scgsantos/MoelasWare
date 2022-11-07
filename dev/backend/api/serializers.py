@@ -6,24 +6,29 @@ from moelasware.models import User as AuthUser
 class GetTestSerializer( serializers.ModelSerializer ):
 	class Meta:
 		model = Test
-		fields = ['id', 'author', 'allowed_tags', 'quizzes', 'name', 'num_quizzes']
+		fields = ['id', 'author', 'quizzes', 'name']
 
 class CreateTestSerializer( serializers.ModelSerializer ):
 	class Meta:
 		model = Test
-		fields = ['author', 'allowed_tags', 'quizzes', 'name', 'num_quizzes']
-
+		fields = ['author', 'quizzes', 'name', 'num_quizzes']
+		
 class GetQuizReviewSerializer ( serializers.ModelSerializer ):
 	class Meta:
 		model = Quiz
-		fields = ['id', 'tags', 'author_id', 'creation_date', 'review_count', 'approved']
+		fields = ['id', 'author', 'author_id', 'tags', 'question', 'description', 'creation_date']
+
+class GetQuizAnswerSerializer ( serializers.ModelSerializer ):
+	class Meta:
+		model = QuizAnswer
+		fields = ['id', 'text', 'correct', 'justification']
 
 class GetReviewSerializer ( serializers.ModelSerializer ):
 	class Meta:
 		model = Review
-		fields = ['id', 'accepted', 'comment', 'quiz', 'reviewer', 'approved']
+		fields = ['id', 'comment', 'quiz', 'reviewer', 'approved']
 
 class CreateReviewSerializer( serializers.ModelSerializer ):
 	class Meta:
 		model = Review
-		fields = ['reviewer', 'quiz', 'accepted', 'comment', 'approved']
+		fields = ['reviewer', 'quiz', 'accepted', 'comment']
