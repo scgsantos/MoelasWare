@@ -1,9 +1,31 @@
 import './ReviewQuizPage.css';
 import React from 'react';
 import Logo from '../components/Logo';
+import { useNavigate } from "react-router-dom";
+
 
 function ReviewQuizPage() {
-    return (
+  let navigate = useNavigate();
+  let data = [
+    {
+      "id": 1,
+      "name": "Quiz 1",
+      "tag": "tag1",
+      "creator": "creator1",
+      "creation_date": "2021-05-01",
+      "reviews": 1,
+    },
+    {
+      "id": 2,
+      "name": "Quiz 2",
+      "tag": "tag2",
+      "creator": "creator2",
+      "creation_date": "2021-05-02",
+      "reviews": 2,
+    },
+  ]
+  
+  return (
     <div>
         <div class="background"></div>
       <div class = "topbar">
