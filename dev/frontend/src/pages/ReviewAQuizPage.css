@@ -1,58 +1,124 @@
 * {
-    background-color: var(--green) !important;
+  background-color: var(--green) !important;
 }
 
-button, select, input[type=button] {
-    border-spacing: 0px;
+.Container {
+  width: 100%;
 }
 
-button:hover, input[type=button]:hover{
-    width: 100%;
-    position: relative;
-    background-color: black !important;
-    color: var(--green)  !important;
+.topbar{
+  text-align: center; 
 }
-
-button, input[type=button] {
-    width: 100%;
-}
-
-.start {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+  .columns{
   
-.click {
-    cursor: pointer;
-}
-
-.center {
     text-align: center;
-}
+  }
+  
+  .leftcolumn{
+    display: inline-block;
+    vertical-align: middle;
+    text-align: column;
+  }
+  .middlecolumn{
+    display: inline-block;
+    vertical-align: middle;
+    text-align: column;
+  }
+  
+  .rightcolumn{
+    display: inline-block;
+    vertical-align: middle;
+    text-align: column;
+  }
+  
+  .logo{
+    display: inline;
+    vertical-align: middle;
+    margin-right: 70%;
+  }
+  
+  .username{
+    display: inline;
+    vertical-align: middle;
+  }
+  
+  .column {
+    float: left;
+    width: 50%;
+  }
+  .row{
+    margin: 0 15%;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 
-.center_tab {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    padding: 3rem;
-}
+  .btn{
+    border: 2px solid black;
+    background-color: #CAD0B1;
+    color: black;
+    padding: 10px 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border-color: black;
+    color: black;
+    float: left;
+    width: 150px;
+  }
 
-.button1 {
-    border-radius: 12px 12px 0px 0px;
-    border-bottom: 0px;
-}
 
-.other_buttons {
-    border-radius: 0px 0px 0px 0px;
-    border-bottom: 0px;
-}
+  .success:hover {
+    background-color: #B2BB8A;
+    width: 150px;
+  }
 
-.button_end {
-    border-radius: 0px 0px 12px 12px;
-}
+  .answer {
+    border: 2px solid black;
+    background-color: #CAD0B1;
+    color: black;
+    padding: 10px 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border-color: black;
+    color: black;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    align-items: flex-start;
+    margin-right: 10%;
+  }
 
-.button_uniq {
-    border-radius: 12px 12px 12px 12px; 
-}
+  .correct {
+    background-color: #B2BB8A;
+  }
+
+  .explanation{
+    margin-left: 10%;
+  }
+
+  .justification{
+    border: 2px solid black !important;
+    background-color: #CAD0B1;
+    color: black;
+    padding: 10px 10px;
+    font-size: 16px;
+    border-radius: 10px !important;
+    border-color: black !important;
+    color: black;
+    align-items: flex-start;
+    width: 100% !important;
+    height: 100px;
+    
+  }
+
+  .start {
+    text-align: start;
+    margin: 0 auto;
+  }
+
+  .centered {
+    text-align: center;
+  }
