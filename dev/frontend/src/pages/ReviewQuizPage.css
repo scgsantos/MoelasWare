@@ -2,14 +2,8 @@
   background-color: var(--green) !important;
 }
 
-.background {
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #CAD0B1;
-    z-index: -1;
+.Container {
+  width: 100%;
 }
 
 .topbar{
@@ -54,7 +48,6 @@
   }
   .row{
     margin: 0 15%;
-    flex: 1,
   }
   
   /* Clear floats after the columns */
@@ -105,17 +98,18 @@
   }
 
   .justification{
-    border: 2px solid black;
+    border: 2px solid black !important;
     background-color: #CAD0B1;
     color: black;
     padding: 10px 10px;
     font-size: 16px;
-    border-radius: 10px;
-    border-color: black;
+    border-radius: 10px !important;
+    border-color: black !important;
     color: black;
     align-items: flex-start;
-    width: 100%;
+    width: 100% !important;
     height: 100px;
+    
   }
 
   .start {
