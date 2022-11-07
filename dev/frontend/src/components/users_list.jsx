@@ -41,7 +41,7 @@ function UsersList() {
         <input
           className="searchbar"
           type="search"
-          placeholder="search user by username or e-mail..."
+          placeholder="Search user by username or e-mail"
           size="30"
           onChange={(event) => setQuery(event.target.value)}
         />
@@ -62,6 +62,10 @@ function UsersList() {
                 return u;
               } else if (
                 Object.values(u)[0][0].toLowerCase().includes(query.toLowerCase())
+              ) {
+                return u;
+              } else if (
+                Object.values(u)[0][5].toLowerCase().includes(query.toLowerCase())
               ) {
                 return u;
               }
