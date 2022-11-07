@@ -1,0 +1,58 @@
+* {
+    background-color: var(--green) !important;
+}
+
+button, select, input[type=button] {
+    border-spacing: 0px;
+}
+
+button:hover, input[type=button]:hover{
+    width: 100%;
+    position: relative;
+    background-color: black !important;
+    color: var(--green)  !important;
+}
+
+button, input[type=button] {
+    width: 100%;
+}
+
+.start {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+  
+.click {
+    cursor: pointer;
+}
+
+.center {
+    text-align: center;
+}
+
+.center_tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 3rem;
+}
+
+.button1 {
+    border-radius: 12px 12px 0px 0px;
+    border-bottom: 0px;
+}
+
+.other_buttons {
+    border-radius: 0px 0px 0px 0px;
+    border-bottom: 0px;
+}
+
+.button_end {
+    border-radius: 0px 0px 12px 12px;
+}
+
+.button_uniq {
+    border-radius: 12px 12px 12px 12px; 
+}
