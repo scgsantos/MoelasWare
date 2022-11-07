@@ -9,6 +9,7 @@ cache:
   paths:
     - .cache/pip
     - .nox/
+    - dev/frontend/node_modules
 
 image: python:3.10-slim
 
@@ -64,7 +65,7 @@ test:
 
 build_backend:
   image: docker:20.10.16
-  stage: build
+  stage: deploy
   only:
     - tags
   services:
@@ -79,12 +80,16 @@ build_backend:
     - docker push -a $CI_REGISTRY_IMAGE
 
 pages:
+  image: node
   stage: deploy
-  before_script: *before_script
+  before_script:
+    - cd dev/frontend
+    - npm i
   only:
     - tags
   script:
-    - nox -s deploy
+    - npm run build
+    - mv -f build/ ../../public/
   artifacts:
     paths:
       - public
