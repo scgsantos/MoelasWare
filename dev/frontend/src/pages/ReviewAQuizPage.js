@@ -1,4 +1,4 @@
-import './ReviewQuizPage.css';
+import './ReviewAQuizPage.css';
 import React from 'react';
 import Logo from '../components/Logo';
 
@@ -20,7 +20,7 @@ function ReviewAQuizPage() {
         </div>
       </div>
       <div style={{ height: "20px" }}></div>
-      <p style={styles.center}><text>REVIEW A QUIZ</text></p>
+      <p style={styles.center}><text>"QUESTION"</text></p>
       <div class="row">
         <div class="column">
           <div class="answer">Answer #1</div>

@@ -1,20 +1,23 @@
-import './ReviewAQuizPage.css';
-import logo from '../logo.svg';
+import './ReviewQuizPage.css';
+import Logo from 'components/Logo';
+import { useNavigate } from "react-router-dom";
+import React from 'react';
 
 function ReviewQuizPage() {
-  const data = [["Quiz #1 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews"],
-                ["Quiz #2 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews"],
-                ["Quiz #3 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews"],
-                ["Quiz #4 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews"],
-                ["Quiz #5 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews"],
-                ["Quiz #6 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews"],
-                ["Quiz #7 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews"],
-                ["Quiz #8 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews"]];
+  let navigate = useNavigate();
+  const data = [["Quiz #1 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 1],
+                ["Quiz #2 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 2],
+                ["Quiz #3 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 3],
+                ["Quiz #4 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 4],
+                ["Quiz #5 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 5],
+                ["Quiz #6 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 6],
+                ["Quiz #7 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 7],
+                ["Quiz #8 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 8]];
     return (
       <div>
         <div className="start">
           <div className="click">
-            <img src={logo} alt="Logo Moelas Ware" />
+            <Logo></Logo>
           </div>
           <div className="click">
             <h1>Hi, username</h1>
@@ -32,7 +35,7 @@ function ReviewQuizPage() {
                   if (i === 0 && data.length === 1) {
                     d.push(
                       <tr>
-                      <button className='button_uniq'>
+                      <button className='button_uniq' onClick={()=>{navigate("/review/" + data[i][5])}}>
                         {data[i][0]}-
                         {data[i][1]}-
                         {data[i][2]}-
@@ -43,7 +46,7 @@ function ReviewQuizPage() {
                   } else if (i === 0 && data.length > 0) {
                     d.push(
                       <tr>
-                      <button className='button1'>
+                      <button className='button1' onClick={()=>{navigate("/review/" + data[i][5])}}>
                       {data[i][0]}-
                       {data[i][1]}-
                       {data[i][2]}-
@@ -54,7 +57,7 @@ function ReviewQuizPage() {
                   } else if (i > 0 && i !== data.length-1) {
                     d.push(
                       <tr>
-                      <button className='other_buttons'>
+                      <button className='other_buttons' onClick={()=>{navigate("/review/" + data[i][5])}}>
                         {data[i][0]}-
                         {data[i][1]}-
                         {data[i][2]}-
@@ -65,7 +68,7 @@ function ReviewQuizPage() {
                   } else if (i === data.length-1) {
                     d.push(
                       <tr>
-                      <button className='button_end'>
+                      <button className='button_end' onClick={ ()=>{navigate("/review/" + data[i][5])}}>
                         {data[i][0]}-
                         {data[i][1]}-
                         {data[i][2]}-
