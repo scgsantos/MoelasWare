@@ -1,5 +1,5 @@
 FROM python:3.10-slim
-COPY . /app
 WORKDIR /app
+COPY . .
 RUN pip install gunicorn -r requirements.txt
-CMD gunicorn -b 0.0.0.0:8000 moelasware.wsgi 
+CMD ./run.sh
