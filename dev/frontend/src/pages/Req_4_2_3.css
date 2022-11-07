@@ -10,7 +10,6 @@
   }
   
   * {
-    background-color: var(--beige);
     font-family: 'Basic', sans-serif;
     font-size: 1rem;
     -webkit-font-smoothing: antialiased;
@@ -56,11 +55,6 @@
   }
   .hh{
     line-height: 1.4;
-  }
-  .centrar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
   }
 
   .center{
