@@ -5,8 +5,7 @@ import Logo from '../components/Logo';
 function ReviewAQuizPage() {
   return (
     
-    <div>
-      <div class="background"></div>
+    <div class="Container">
       <div class="topbar">
         <div style={{ flex: 1 }}></div>
         <div class="logo" style={{ flex: 2 }}>
