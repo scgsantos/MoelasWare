@@ -1,5 +1,5 @@
 import './ReviewQuizPage.css';
-import Logo from 'components/Logo';
+import logo from '../logo.svg';
 import { useNavigate } from "react-router-dom";
 import React from 'react';
 
@@ -17,7 +17,7 @@ function ReviewQuizPage() {
       <div>
         <div className="start">
           <div className="click">
-            <Logo></Logo>
+            <img src={logo} alt="Logo Moelas Ware" />
           </div>
           <div className="click">
             <h1>Hi, username</h1>
