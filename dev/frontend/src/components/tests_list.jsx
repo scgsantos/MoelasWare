@@ -12,20 +12,6 @@ function TestsList() {
     "DATE MODIFIED",
   ];
 
-  //const numAscending = [...tests].sort((a, b) => a.id - b.id);
-
-  /*
-  const fetchData = () => {
-    fetch("../tests_data.json")
-      .then((response) => response.json())
-      .then((data) => setUsers(data));
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-*/
-
 useEffect(() => {
   fetch("http://localhost:8000/api/tests", {
     method: "get",
