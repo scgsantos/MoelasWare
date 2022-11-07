@@ -1,4 +1,4 @@
-input[type=username] {
+input[type=email], [type=password] {
   padding: 1em;
   margin: 1em;
   text-align: center;
@@ -6,21 +6,6 @@ input[type=username] {
   color: black;
   border-radius: 10px;
   border: 1px solid #000000;
-}
-
-input[type=password] {
-  padding: 1em;
-  margin: 1em;
-  text-align: center;
-  background-color: transparent;
-  color: black;
-  border-radius: 10px;
-  border: 1px solid black;
-}
-
-.logo {
-  display: inline;
-  margin-right: 70%;
 }
 
 .start {
