@@ -31,7 +31,7 @@
 
 .box-button {
     width: var(--buttonwidth);
-    height: 5.5vh;
+    height: 3rem;
     justify-content: center;
     align-items: center;
     font-weight: 700;
