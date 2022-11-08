@@ -8,6 +8,11 @@ input[type=email], [type=password] {
   border: 1px solid #000000;
 }
 
+* {
+  background-color: var(--beige) !important;
+}
+
+
 .start {
   display: flex;
   align-items: center;
