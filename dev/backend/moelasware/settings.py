@@ -41,9 +41,6 @@ ALLOWED_HOSTS = ["moelasware", "api.moelasware.xyz"]
 if DEBUG:
     ALLOWED_HOSTS.append("localhost")
 
-# TODO: Check if we really want to allow all origins
-CORS_ALLOW_ALL_ORIGINS = True
-
 
 # Application definition
 
