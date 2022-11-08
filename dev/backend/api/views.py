@@ -1,7 +1,6 @@
 from django.shortcuts import get_object_or_404
 
 from django.http import JsonResponse
-from dev.backend.moelasware.models import QuizAnswer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,7 +9,7 @@ from django.http.response import HttpResponseBadRequest
 
 
 from moelasware.models import Test, User, Quiz, QuizAnswer, QuizTag, Tag, Submission, SubmissionAnswer
-from .serializers import GetTestSerializer, CreateTestSerializer, GetAuthUserSerializer, CreateQuizSerializer, CreateQuizAnswerSerializer, CreateQuizTagSerializer, CreateTagSerializer
+from .serializers import GetTestSerializer, CreateTestSerializer, GetAuthUserSerializer, CreateQuizSerializer, CreateQuizAnswerSerializer, CreateQuizTagSerializer, CreateTagSerializer, GetQuizSerializer, GetTagSerializer, GetQuizTagSerializer,CreateQuizTagSerializer, GetQuizAnswerSerializer     
 
 @api_view(['GET']) # allowed method(s)
 def get_test_view( request, pk, *args, **kwargs ):
@@ -23,7 +22,7 @@ def get_test_view( request, pk, *args, **kwargs ):
 
 
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def create_test_view( request ):
 	serializer = CreateTestSerializer(data=request.data)
 
@@ -35,48 +34,71 @@ def create_test_view( request ):
 
 	return Response({'invalid': 'not good data'}, status=400)
 
-@api_view(['POST'])
-@login_required
-def create_quizz(request, pk):
+@api_view(['GET'])
+def create_quizz(request):    
     #Get user by id
-    user = User.objects.filter(id=pk) 
+
+    user = request.data.get("user")
+    user = User.objects.get(pk=user)
     if not user:
         return HttpResponseBadRequest('User not found')
-    user = User.objects.get(id=pk).user.username 
+    user = user.id    
+    #Create a quiz    
     
-    #Create a quiz
-    serializer = CreateQuizSerializer(data=request.data)
-    quiz = Quiz.objects.create(question=serializer.data['question'], description=serializer.data['description'], id_autor=user)
-    
-    if serializer.is_valid(raise_exception=True):
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
- 
-    #Create 6 quiz answers
-    for i in range(6):
-        serializer = CreateQuizAnswerSerializer(data=request.data)
-        answer = QuizAnswer.objects.create(id_quiz=quiz.id, text=serializer.data['text'], correct=serializer.data['correct'], justification=serializer.data['justification'])
-        if serializer.is_valid(raise_exception=True):
-            answer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-    
-    
-    #Assosiete a tag to the quiz
-    serializer = CreateQuizTagSerializer(data=request.data)
-    
-    if serializer.is_valid(raise_exception=True):
-        quiz.save()
-        return JsonResponse({"Quiz was submited for review"},serializer.data, status=status.HTTP_201_CREATED)
-    else:
+    #Request a quizz tag
+    text = request.data.get("text")
+    tag = Tag.objects.filter(text=text)
+    if not tag:
+        HttpResponseBadRequest('Tags not found, please create a tag')
         #Create a tag
-        serializer = CreateTagSerializer({'Need to create the Tag'},data=request.data['text'])
-        tag = Tag.objects.create(text=serializer.data['text'])
-        tag.save()
-        serializer = CreateQuizTagSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            quiz.save()
-            return JsonResponse({"Quiz was submited for review"},serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse({"Need to create the tag"})
+        deserializer_data = {"text": text}
+        tag_deserializer = CreateTagSerializer(data=deserializer_data)
+        if tag_deserializer.is_valid(raise_exception=True):
+            tag = tag_deserializer.save()
+            response_serializer = GetTagSerializer(tag)
+            JsonResponse({"tag": response_serializer.data})
+    tag = Tag.objects.get(text=text)
+    tag = tag.id
     
+    question = request.data.get("question")
+    description = request.data.get("description")
+        
+    deserializer_data = {"author": user, "tags": [tag], "question": question, "description": description}
+    quiz_deserializer = CreateQuizSerializer(data=deserializer_data)
+
+    if quiz_deserializer.is_valid(raise_exception=True):
+        quiz = quiz_deserializer.save()
+        response_serializer = GetQuizSerializer(quiz) 
+        JsonResponse({"quiz": response_serializer.data})
     
-    
-    
+    #Associate the quiz with the tag
+    quiz_id = response_serializer.data.get("id")
+    deserializer_data = {"quiz_id": quiz_id, "tag_id": tag}
+    quiz_tag_deserializer = CreateQuizTagSerializer(data=deserializer_data)
+    """
+    if quiz_tag_deserializer.is_valid(raise_exception=True):
+        
+            Esta a dar erro n sei pq
+            quiz_tag = quiz_tag_deserializer.save()
+        
+        response_serializer = GetQuizTagSerializer(quiz_tag)
+        JsonResponse({"quiz_tag": response_serializer.data})
+    """
+    #Create 6 quiz answers
+    text = request.data.get("text_answer")
+    correct = request.data.get("correct")
+    justification = request.data.get("justification")
+        
+    deserializer_data = {"quiz": quiz_id, "text": text, "correct": correct, "justification": justification}
+    answer_deserializer = CreateQuizAnswerSerializer(data=deserializer_data)
+    """    
+    if answer_deserializer.is_valid(raise_exception=True):
+        
+            Esta a dar erro n sei pq
+            answer = answer_deserializer.save() 
+        
+        response_serializer = GetQuizAnswerSerializer(answer) 
+        JsonResponse({"answer": response_serializer.data})
+    """
+    print(0)
+    return JsonResponse({"Quiz was submited for review"})

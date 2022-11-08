@@ -10,6 +10,7 @@ def fk(model):
 # subclass the User in django.contrib.auth
 class User(models.Model):
     user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
+    
 
 class Tag(models.Model):
     """
@@ -105,8 +106,6 @@ class QuizAnswer(models.Model):
     correct = models.BooleanField(default=False)
     justification = models.TextField()
 
-
-
 class SubmissionAnswer(models.Model):
     """
     Represents an Answer made by a User while 
@@ -132,13 +131,6 @@ class QuizTag(models.Model):
 
     Applies a category to a Quiz.
     """
-    quiz = fk(Quiz)
-    tag = fk(Tag)
+    quiz_id = fk(Quiz)
+    tag_id = fk(Tag)
     
-class Tag(models.Model):
-    """
-    Is associated with a Quiz to display what the Quiz is about
-    """
-    text = models.TextField()
-
-
