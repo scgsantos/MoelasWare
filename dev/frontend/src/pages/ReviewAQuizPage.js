@@ -1,7 +1,6 @@
 import './ReviewAQuizPage.css';
 import React from 'react';
-import Logo from '../components/Logo';
-
+import logo from '../logo.svg';
 function ReviewAQuizPage() {
   return (
     
@@ -9,7 +8,7 @@ function ReviewAQuizPage() {
       <div class="topbar">
         <div style={{ flex: 1 }}></div>
         <div class="logo" style={{ flex: 2 }}>
-          <Logo />
+          <img src={logo} alt="Logo Moelas Ware" />
         </div>
 
         <div class="username" style={{ flex: 4 }}>
