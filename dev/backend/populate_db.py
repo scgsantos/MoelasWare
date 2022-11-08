@@ -54,18 +54,18 @@ try:
             ),
             Quiz(
                 author=User.objects.get(user=manel),
-                question="Baby is ____?",
-                description="How would you describe baby?",
+                question="Question2",
+                description="description2",
             ),
             Quiz(
                 author=User.objects.get(user=manel),
-                question="What is the best fruit?",
-                description="objectively, what fruit is the best ever",
+                question="Question3",
+                description="description3",
             ),
             Quiz(
                 author=User.objects.get(user=manel),
-                question="A B C _ ?",
-                description="do you know lettets?",
+                question="Question4",
+                description="description3",
             ),
         ]
     )
@@ -96,80 +96,6 @@ try:
             QuizAnswer(
                 quiz=quizzes[0],
                 text="answer4",
-                correct=False,
-                justification="justification",
-            ),
-            QuizAnswer(
-                quiz=quizzes[1],
-                text="ugly",
-                correct=False,
-                justification="justification",
-            ),
-            QuizAnswer(
-                quiz=quizzes[1],
-                text="old cat",
-                correct=False,
-                justification="justification",
-            ),
-            QuizAnswer(
-                quiz=quizzes[1],
-                text="BABY",
-                correct=True,
-                justification="justification",
-            ),
-            QuizAnswer(
-                quiz=quizzes[1],
-                text="bad",
-                correct=False,
-                justification="justification",
-            ),
-
-            QuizAnswer(
-                quiz=quizzes[2],
-                text="banana",
-                correct=False,
-                justification="disgusting",
-            ),
-            QuizAnswer(
-                quiz=quizzes[2],
-                text="grapes",
-                correct=False,
-                justification="just ok",
-            ),
-            QuizAnswer(
-                quiz=quizzes[2],
-                text="apple",
-                correct=True,
-                justification="is best",
-            ),
-            QuizAnswer(
-                quiz=quizzes[2],
-                text="tomato",
-                correct=False,
-                justification="u weirdo",
-            ),
-
-            QuizAnswer(
-                quiz=quizzes[3],
-                text="69",
-                correct=False,
-                justification="justification",
-            ),
-            QuizAnswer(
-                quiz=quizzes[3],
-                text="D",
-                correct=False,
-                justification="justification",
-            ),
-            QuizAnswer(
-                quiz=quizzes[3],
-                text="deeeeezzzz nuutsss",
-                correct=True,
-                justification="justification",
-            ),
-            QuizAnswer(
-                quiz=quizzes[3],
-                text="green",
                 correct=False,
                 justification="justification",
             ),

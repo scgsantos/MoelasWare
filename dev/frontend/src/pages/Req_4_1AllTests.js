@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import SingleTestPage from './Req_4_1SingleTest';
 import './TestSelection.css';
 import HeaderComp from '../components/Header';
+import Button from '../components/Button';
 
 function MainSelectionPage() {
     const [loading, setLoading] = useState(true);
@@ -46,10 +47,7 @@ function MainSelectionPage() {
     if (error) {
         return (
             <div>
-                <div className='centraHeader'>
-                    <img src={logoMoelasWare} alt="logoMoelasWare" />
-                    <span>Hi, username</span>
-                </div>
+                <HeaderComp /> 
                 <div className="center">
                     <span className='main-title'>SOLVE A TEST</span>
                     <span className="sub-title">Something Wrong Happened</span>
@@ -93,10 +91,10 @@ function MainSelectionPage() {
                         <div key={i} className="box-test">
                             <span className='testTitle'>Test #{i + 1} - {test.quizzes[0].tags[0].text
                             }</span>
-                            <button className='box-button' onClick={() => {
+                            <Button onClick={()=>{
                                 navigate(`/selecttest/${test.id}`);
                                 setSelectedTest(test.id);
-                            }}>{test.name.length > 18 ? test.name.substring(0, 15) + "..." : test.name}</button>
+                            }} name={test.name}/>
                         </div>
                     ))}
                 </div>
