@@ -27,3 +27,8 @@ A test is created with the selected quizzes and a name.
    - 2a1. The system shows a message suggesting other tags.
 5a. Web failure of any sort during submission:
    - 5b1. The system shows a message saying web failure, try again and the user go back to "Create a test by picking the quizzes".
+
+# Layouts
+https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
+
+(each requirement is identified on the Figma canvas)

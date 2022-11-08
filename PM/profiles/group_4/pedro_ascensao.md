@@ -17,5 +17,10 @@ Roles: `PM`
 
 ### 3
 
-* Finished: #102
-* Pending: #110
+* Finished: #102, #110, #121, #204, #205
+* Pending:
+
+### 4
+
+* Finished: #278, #280, #357
+* Pending:

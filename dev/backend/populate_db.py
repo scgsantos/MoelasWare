@@ -1,3 +1,5 @@
+import traceback
+
 from django.contrib.auth.models import User as AuthUser
 from django.db import DatabaseError, IntegrityError
 from moelasware.models import *
@@ -136,4 +138,5 @@ try:
         ])
 
 except DatabaseError:
+    traceback.print_exc()
     print("Oops")
