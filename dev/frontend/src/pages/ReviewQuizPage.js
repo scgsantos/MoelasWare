@@ -14,7 +14,7 @@ function ReviewQuizPage() {
                 ["Quiz #7 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 7],
                 ["Quiz #8 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 8]];
     return (
-      <div>
+      <div className="cor">
         <div className="start">
           <div className="click">
             <img src={logo} alt="Logo Moelas Ware" />
