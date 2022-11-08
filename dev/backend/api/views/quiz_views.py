@@ -7,6 +7,12 @@ from moelasware.models import Quiz, QuizAnswer, Tag, Test
 from rest_framework.decorators import api_view
 
 
+@api_view(["GET"])
+def get_total_number_of_quizzes_view(request):
+    count = Quiz.objects.count()
+    return JsonResponse({"quizzes_count": count})
+
+
 @api_view(["POST"])
 def get_n_quizzes_view(request):
     # If no quizzes are sent in the request -> quizzes are selected randomly
