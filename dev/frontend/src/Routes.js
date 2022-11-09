@@ -7,7 +7,7 @@ import MainSelectionPage from './pages/Req_4_1AllTests';
 import SingleTestPage from './pages/Req_4_1SingleTest';
 import Req_4_1_2 from './pages/Req_4_1SingleTest';
 import SolveQuizz from './pages/Req_4_2SolveQuizz';
-import Req_4_2_2 from './pages/Req_4_2_2';
+import SolvingQuizz from './pages/Req_4_2SolvedAllQuizzes';
 import Req_4_2_3 from './pages/Req_4_2_3';
 import Req_4_3 from './pages/Req_4_3';
 
@@ -23,7 +23,7 @@ export default class App_Routes extends Component {
                         <Route path=":test" element={<SingleTestPage/>} />
                     </Route>
                     <Route path="/solvequizz" element={<SolveQuizz/>} >
-                        <Route path=":quizz" element={<Req_4_2_2/>} />
+                        <Route path=":quizz" element={<SolvingQuizz/>} />
                     </Route>
                 </Routes>
             </Router>
