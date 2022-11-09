@@ -38,6 +38,7 @@ PYTEST = "pytest"
 REQUIREMENTS_TXT = "dev/backend/requirements.txt"
 
 U = "-U"
+R = "-r"
 EXIT_ZERO = "--exit-zero"
 ZERO_EXIT = "--zero-exit"
 DEADCODE_MIN_CONFIDENCE = "80"
@@ -64,7 +65,7 @@ def deadcode(s: S):
 
 @nox.session(tags=[LINT_STAGE], python=PYTHON_VERSION)
 def lint(s: S):
-    s.install(U, PROSPECTOR+"==1.7.7", "-r", REQUIREMENTS_TXT)  # need to pin that version for some reason
+    s.install(U, PROSPECTOR+"==1.7.7", R, REQUIREMENTS_TXT)  # need to pin that version for some reason
     s.run(PROSPECTOR, ZERO_EXIT, *ALL_BACKEND_CODE, env={"DJANGO_SETTINGS_MODULE": "moelasware.settings"})
 
 
@@ -95,7 +96,7 @@ def coverage(s: S):
 
 @nox.session(tags=[TEST_STAGE], python=PYTHON_VERSION)
 def test(s: S):
-    s.install(U, PYTEST)
+    s.install(U, PYTEST, R, REQUIREMENTS_TXT)
     s.run(PYTEST, success_codes=[0, 5])
 
 
