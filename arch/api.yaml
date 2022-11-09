@@ -187,7 +187,7 @@ paths:
               schema:
                 # TODO: Return a partial test that doesn't 
                 # include the author
-                $ref: '#/components/schemas/test'
+                $ref: '#/components/schemas/return_test'
                 
     get:
       description: "Get all tests"
@@ -202,7 +202,7 @@ paths:
               schema:
                 type: array
                 items: 
-                  $ref: "#/components/schemas/test"
+                  $ref: "#/components/schemas/return_test"
   /tests/{test_id}:
     description: Tests made of reviewed quizzes
     parameters:
@@ -271,6 +271,41 @@ paths:
                   return_id:
                     value:
                       id: 2
+                      
+  /tags:
+    description: Quiz Tags
+  
+    get:
+      description: "Get all Tags"
+      parameters:
+        - $ref: '#/components/parameters/offsetParam'
+        - $ref: '#/components/parameters/limitParam'
+      responses:
+        '200':
+          description: "Successfully fetched all tags"
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/tag"
+  /tags/{tag_id}:
+    description: A Quiz Tag
+    parameters:
+      - in: path
+        name: tag_id
+        schema:
+          type: integer
+        required: true
+    get:
+      description: "Get a specific Tags"
+      responses:
+        '200':
+          description: "Successfully fetched tag"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/tag"
   # TODO: merge both endpoints with a path enum schema??
   /users/{user_id}:
     description: "Users"
@@ -399,6 +434,20 @@ components:
             type: array
             items:
               type: integer
+    return_test:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        name: 
+          type: string
+        author:
+          $ref: '#/components/schemas/id'
+          
+        quizzes:
+          type: array
+          items:
+            $ref: '#/components/schemas/quiz'
     test:
       type: object
       properties:
@@ -425,7 +474,7 @@ components:
           type: array
           items: 
             type: string
-          example: ["Animals", "Names", "Space", "Math", "Literature"]
+
         quizzes:
           type: array
           items:
@@ -434,6 +483,20 @@ components:
       oneOf:
         - required: [num_quizzes, allowed_tags]
         - required: [quizzes]
+    
+    tag:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/id"
+        text:
+          type: string
+          
+    partial_tag:
+      type: object
+      properties:
+        text:
+          type: string
     partial_quiz:
       type: object
       properties:

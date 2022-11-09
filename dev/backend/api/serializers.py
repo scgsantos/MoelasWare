@@ -19,7 +19,7 @@ class QuizSerializer(serializers.ModelSerializer):
 class QuizAnswerSerializer( serializers.ModelSerializer ):
     class Meta:
         model = QuizAnswer
-        fields = ["text", "correct", "justification"]
+        fields = ["text", "justification"]
 
 
 class GetTestSerializer(serializers.ModelSerializer):
