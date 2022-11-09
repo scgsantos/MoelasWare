@@ -37,6 +37,9 @@ class Quiz(models.Model):
     def is_accepted(self):
         pass
 
+    def can_be_added_to_a_test(self):
+        return self.test_set.count() < 2
+
 
 class Test(models.Model):
     """
