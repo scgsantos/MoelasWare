@@ -29,7 +29,31 @@ def create_test_view( request ):
 
 	return Response({'invalid': 'not good data'}, status=400)
 
-'''
+
+def handle_serializer(obj):
+    obj_list = []
+    id = 0
+
+    for i in obj:
+        test_id = i["submission"]["test"]["id"]
+        author = i["submission"]["test"]["author"]["user"]["username"]
+
+        tags = ""
+        for j in i["submission"]["test"]["quizzes"]:
+            for tag in j["tags"]:
+                if tag["text"] not in tags:
+                    tags += tag["text"]
+                    tags += ","
+        
+        tags = tags[0:len(tags)-1]
+        obj_list.append({test_id : [test_id, tags, author, id]})
+        id += 1
+
+    print(obj_list, "--->")
+
+    return obj_list
+
+
 @api_view(['GET'])
 def submissions_by_user_view(request, pk):
 
@@ -45,8 +69,9 @@ def submissions_by_user_view(request, pk):
 
 
     submission = GetSubmissionsAnsweredByTest(submissions, many=True)
+    submission = handle_serializer(submission.data)
 
-    return JsonResponse({'submissions_by_user' : ["potetu"]})
+    return JsonResponse({'submissions_by_user' : submission})
 '''
 @api_view(['GET'])
 def submissions_by_user_view(request, pk):
@@ -80,6 +105,7 @@ def submissions_by_user_view(request, pk):
 
 
     return JsonResponse({"submissions": info_list})
+'''
 
 def return_date(date:str):
 	date_months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
