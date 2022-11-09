@@ -1,108 +1,80 @@
-from django.http import JsonResponse
-from django.http.response import HttpResponseNotFound
+from random import sample
+
+from api.serializers import (CreateTestSerializer, GetTestSerializer,
+                             QuizAnswerSerializer, QuizSerializer)
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404
-from moelasware.models import SubmissionAnswer, Test
+from moelasware.models import Quiz, QuizAnswer, Tag, Test
 from rest_framework.decorators import api_view
 
-from api.serializers import CreateTestSerializer, GetTestSerializer
+from api.views import get_n_quizzes_view
+
+DEFAULT_TEST_PAGE_LIMIT = 20
 
 
-@api_view(["GET"])  # allowed method(s)
-def get_test_view(request, pk):
+@api_view(["GET"])
+def get_test_view(request, pk, *args, **kwargs):
     # get test by id -> detail view
     instance = get_object_or_404(Test, pk=pk)
     serializer = GetTestSerializer(instance, many=False)
-
     return JsonResponse({"test": serializer.data})
 
 
-@api_view(["POST"])
-def create_test_view(request):
-    serializer = CreateTestSerializer(data=request.data)
+# Create a test
+@api_view(['POST'])
+# TODO: ADD DECORATOR WHEN LOGIN IS IMPLEMENTED
+# @login_required
+def post_test_view(request):
+    # TODO: ADD THIS LINE WHEN LOGIN IS IMPLEMENTED
+    # author_id = request.user.id
+    author_id = 1
 
-    if serializer.is_valid(
-        raise_exception=True
-    ):  # raises exception on why its not valid
-        # instance = serializer.save()
+    # TODO: Instead of generating the quizzes with get_n_quizzes_view
+    # just require having the quizzes in the request.
+    # This would require making two API calls
+    #   one to generate the quizzes
+    #   and another to create the test
 
-        # print(instance)
-        return Response(serializer.data)
+    # Required data was all in request (quizzes list was given)
+    if "quizzes" in request.data.keys():
+        quizzes = request.data.get("quizzes")
 
-    return Response({"invalid": "not good data"}, status=400)
+    else:
+        quizzes_set = get_n_quizzes_view(request)["quizzes"]
+        quizzes = quizzes_set.values_list("id", flat=True)
 
+    name = request.data.get("name")
+    deserializer_data = {"author": author_id, "name": name, "quizzes": quizzes}
+    test_deserializer = CreateTestSerializer(data=deserializer_data)
 
-#@api_view(['GET'])
-#def submission_of_a_test_view(request, pk):
-#
-#
-#    test = get_object_or_404(Test, id=pk)
-#
-#    submissions = SubmissionAnswer.objects.filter(submission__test__id=pk)
-#
-#    if not submissions.exists():
-#        #print("This is user hasn't taken any tests yet...")
-#    
-#    submission = GetSubmissionsAnsweredByTest(submissions, many=True)
-#
-#    #TODO Add Time
-#    return JsonResponse({"submissions_by_test": submission.data})    
-
-
-@api_view(["GET"])
-def submission_of_a_test_view(request, pk):
-
-    # TODO USE SERIALZIER
-    test = get_object_or_404(Test, id=pk)
-
-    submissions = SubmissionAnswer.objects.filter(submission__test__id=pk).order_by(
-        "submission__submitter__user__id"
-    )
-
-    if not submissions.exists():
-        # print("This is user hasn't taken any tests yet...")
-        return HttpResponseNotFound("Submissions not found")
-
-    info_list = []
-    id = 0
-    for sub in submissions:
-        user_id = sub.submission.submitter.user.id
-        username = sub.submission.submitter.user.username
-        id += 1
-        info_list.append({user_id: [username, 0, id]})
-
-    # submission = GetSubmissionsAnsweredByTest(submissions, many=True)
-
-    # TODO Add Time
-    return JsonResponse({"submissions": info_list})
+    if test_deserializer.is_valid(raise_exception=True):
+        test = test_deserializer.save()
+        response_serializer = GetTestSerializer(test)
+        return JsonResponse({"test": response_serializer.data})
 
 
-@api_view(["GET"])
+@api_view(['GET'])
 def get_all_tests_view(request):
+    try:
+        offset = int(request.query_params.get("offset", default=0))
+        limit = int(request.query_params.get("limit", default=DEFAULT_TEST_PAGE_LIMIT))
+    except ValueError:
+        return HttpResponseBadRequest("Invalid offset and/or limit")
 
-    tests = Test.objects.all().order_by("id")
-    if not tests.exists():
-        return HttpResponseNotFound("User not found")
+    # TODO: think about actually returning +1 records, for simplifying "Next"-type buttons on frontend
+    tests = Test.objects.filter(pk__range=(offset, offset + limit - 1))
 
-    submissions = SubmissionAnswer.objects.all()
-    if not submissions.exists():
-        return HttpResponseNotFound("Submissions not found")
+    serializer = GetTestSerializer(tests, many=True)
+    return JsonResponse({"tests": serializer.data})
 
-    info_list = []
-    for test in tests:
-        solved_tests = SubmissionAnswer.objects.filter(
-            submission__test__id=test.id
-        ).count()
-        tags = ""
-        for quiz in test.quizzes.all():
-            for tag in quiz.tags.all():
-                if tag.text not in tags:
-                    tags += tag.text
-                    tags += ","
 
-        tags = tags[0 : len(tags) - 1]
-        info_list.append(
-            {test.id: [test.id, solved_tests, tags, test.author.user.username]}
-        )
-
-    # TODO Create Serializer for this
-    return JsonResponse({"submissions_by_test": info_list})
+# HIGHLY TEMPORARY SOLUTION!
+# TODO: move these to class based views once overall implementation is in better shape
+# ~tomasduarte
+@api_view(["GET", "POST"])
+def tests_view(request):
+    proxy = {
+        "GET": get_all_tests_view,
+        "POST": post_test_view,
+    }
+    return proxy[request.method](request)
