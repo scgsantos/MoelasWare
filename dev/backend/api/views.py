@@ -46,10 +46,8 @@ def handle_serializer(obj):
                     tags += ","
         
         tags = tags[0:len(tags)-1]
-        obj_list.append({test_id : [test_id, tags, author, id]})
         id += 1
-
-    print(obj_list, "--->")
+        obj_list.append({test_id : [test_id, tags, author, id]})
 
     return obj_list
 
@@ -71,7 +69,7 @@ def submissions_by_user_view(request, pk):
     submission = GetSubmissionsAnsweredByTest(submissions, many=True)
     submission = handle_serializer(submission.data)
 
-    return JsonResponse({'submissions_by_user' : submission})
+    return JsonResponse({'submissions' : submission})
 '''
 @api_view(['GET'])
 def submissions_by_user_view(request, pk):

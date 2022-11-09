@@ -31,7 +31,7 @@ function UsersList() {
 
   const handleBtnClick = (selectedBtn) => {
     setSelectedBtn(selectedBtn);
-    console.log(selectedBtn.target.id);
+    //console.log(selectedBtn.target.id);
     navigate(`./${selectedBtn.target.id}`);
   };
 
