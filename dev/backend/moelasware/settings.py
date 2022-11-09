@@ -20,12 +20,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2n^n*c)$l7f=!rl3!u&!(r_=vtiq^6jbu=#im2u_om_btnon*h'
+SECRET_KEY = (
+    "django-insecure-2n^n*c)$l7f=!rl3!u&!(r_=vtiq^6jbu=#im2u_om_btnon*h"  # nosec
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True  # nosec
 
 ALLOWED_HOSTS = []
+
+# TODO: Check if we really want to allow all origins
+CORS_ALLOW_ALL_ORIGINS = True 
 
 
 # Application definition

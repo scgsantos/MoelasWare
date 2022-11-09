@@ -17,7 +17,7 @@ function MainSelectionPage() {
     const {test } = useParams();
     const navigate = useNavigate();
     function getTests() {
-        fetch('http://localhost:8000/api/tests/', {
+        fetch('http://localhost:8000/api/tests', {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -48,7 +48,7 @@ function MainSelectionPage() {
         return (
             <div>
                 <HeaderComp /> 
-                <div className="center">
+                <div className="centerTitles">
                     <span className='main-title'>SOLVE A TEST</span>
                     <span className="sub-title">Something Wrong Happened</span>
                 </div>
