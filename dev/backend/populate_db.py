@@ -44,7 +44,23 @@ try:
     )
 
     tags = Tag.objects.bulk_create(
-        [Tag(text="Math"), Tag(text="Travel"), Tag(text="Culture")]
+        [
+            Tag(text="Math"),
+            Tag(text="Travel"),
+            Tag(text="Culture"),
+            Tag(text="REQ"),
+            Tag(text="PM"),
+            Tag(text="A&D"),
+            Tag(text="IMP"),
+            Tag(text="TST"),
+            Tag(text="V&V"),
+            Tag(text="DEP"),
+            Tag(text="CI"),
+            Tag(text="PRC"),
+            Tag(text="PPL"),
+            Tag(text="CCM"),
+            Tag(text="RSK"),
+        ]
     )
 
     quizzes = Quiz.objects.bulk_create(
@@ -133,9 +149,16 @@ try:
     )
 
     # Reviews
-    reviews = Review.objects.bulk_create([
-           Review(reviewer=User.objects.get(user=manel), quiz=quizzes[0], accepted=False, comment="comment"),
-        ])
+    reviews = Review.objects.bulk_create(
+        [
+            Review(
+                reviewer=User.objects.get(user=manel),
+                quiz=quizzes[0],
+                accepted=False,
+                comment="comment",
+            ),
+        ]
+    )
 
 except DatabaseError:
     traceback.print_exc()
