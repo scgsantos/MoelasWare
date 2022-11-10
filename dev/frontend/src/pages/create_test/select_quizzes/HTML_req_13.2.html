@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <meta name="viewport" content="with=device-width, 
+        initial-scale=1.0" >
+        <title>REQ1_3</title>
+        <link rel="stylesheet" href="css/Style_req_13.2.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Basic&display=swap" rel="stylesheet">
+
+
+                
+        </head>
+        <body>
+            <section class="header">
+                <img src="images/LogoMoelas.png">
+            <div class="login">
+                <p>Hi,<a href="">username</a></p>
+            </div>
+            </section>
+
+            <section class="centerText">
+                <h2>Create a Test</h2>
+                <h1>Choose Quizzes for the Test</h1>
+        
+                </section>
+
+              
+               
+
+            <section class="listTest">
+                <input placeholder="search the #tag you want here" type="text">
+
+<ul>
+    <li> <p>QUIZ NAME</p>
+        <p>#tags</p>
+        <a href="">VIEW</a>  
+        
+
+        <label class="switch">
+          <input type="checkbox">
+          <div class="slider">SELECT</div>
+        </label>
+    </li>
+
+  
+    
+
+  
+  
+   
+    
+</ul>
+            </section>
+           
+           <section id="createTest">
+            <input type="button" id="createTestButton" value="CREATE">
+        </section>
+
+        <script>
+                document.addEventListener('DOMContentLoaded', function() {
+    var checkbox = document.querySelector('input[type="checkbox"]');
+
+    checkbox.addEventListener('change', function() {
+        if (checkbox.checked) {
+            // do this
+            console.log('Checked');
+            document.querySelector('div[class="slider"]').innerHTML="SELECTED";
+        } else {
+            // do that
+            console.log('Not checked');
+            document.querySelector('div[class="slider"]').innerHTML="SELECT";
+        }
+    });
+});
+                            </script>
+            
+ 
+        </body>
+</html>

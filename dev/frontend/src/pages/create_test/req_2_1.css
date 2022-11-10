@@ -116,3 +116,18 @@
 .req-2-1-NextButton {
   margin: 0.5em;
 }
+
+
+.checkbox{
+  justify-content: center;
+  margin: 2em;
+  cursor: pointer;
+
+  color: var(--pink);
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+}
+
