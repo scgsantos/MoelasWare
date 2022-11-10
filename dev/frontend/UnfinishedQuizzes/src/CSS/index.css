@@ -36,6 +36,8 @@ body{
 
 .unfinishedquiz{
     padding:5px 50px;
+    width: 15.166666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666em;
+
 }
 
 @font-face {
@@ -89,3 +91,15 @@ input[type='radio']:after {
         flex-flow: row wrap;
         justify-content: flex-start;
     }
+
+   .vski{
+    color: #BACDD1;
+    width: 10px;
+    transition: all ease-in-out 0.2s;
+   }
+
+   .vski:hover{
+    color: black;
+
+   }
+
