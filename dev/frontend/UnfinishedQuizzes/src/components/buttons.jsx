@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import "../CSS/index.css";
 
-class Counter extends Component {
+class buttons extends Component {
+
     render() { 
         return (
             <div class = 'unfinishedquiz'>
@@ -13,4 +14,4 @@ class Counter extends Component {
     }
 }
  
-export default Counter;
+export default buttons;

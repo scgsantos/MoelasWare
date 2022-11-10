@@ -1,18 +1,19 @@
 import logo from './images/logo.png';
 import "./CSS/index.css";
 import './App.css';
-import Button from './components/buttons';
+import Grid from './components/grid-quizzes';
 import './fonts/Basic-Regular.ttf';
+import Radiobutton from './components/radiobutton';
 
 
 function App() {
-  var numberOfunfinishedquizzes = 0;
+  var numberOfunfinishedquizzes = 24;
   var username = "Rodrigo"
 
   return (
     <div class="App">
       <div class = "topbar">
-        <div style={{ flex: 1}}></div>
+        <div style={{flex: 1}}></div>
         <div class = "logo" style={{ flex: 2}}>
           <img src={logo} alt="logo" />
         </div>
@@ -24,52 +25,12 @@ function App() {
         </div>
       </div>
 
-      <div class = 'columns'>
-        <div class = 'middlecolumn'>
+      {/* <div class = "choose-page">
+        {Array.from(Array(Math.ceil(numberOfunfinishedquizzes/24)).keys()).map((i) => {return <Radiobutton page = {i + 1} unquiz = {numberOfunfinishedquizzes}/>})}
+      </div> */}
 
-            <div style={{flex: 1}}>
-              <Button  buttonNumber = {1}/>
-              <Button buttonNumber = {2}/>
-              <Button buttonNumber = {3}/>
-              <Button buttonNumber = {4}/>
-              <Button buttonNumber = {5}/>
-              <Button buttonNumber = {6}/>
-              <Button buttonNumber = {7}/>
-              <Button buttonNumber = {8}/>
-            </div>
+      <Grid number = {numberOfunfinishedquizzes}/>
 
-
-        </div>
-
-        <div class = 'leftcolumn'>
-
-            <div style={{flex: 1}}>
-              <Button buttonNumber = {9}/>
-              <Button buttonNumber = {10}/>
-              <Button buttonNumber = {11}/>
-              <Button buttonNumber = {12}/>
-              <Button buttonNumber = {13}/>
-              <Button buttonNumber = {14}/>
-              <Button buttonNumber = {15}/>
-              <Button buttonNumber = {16}/>
-            </div>
-
-
-        </div>
-        <div class = 'rightcolumn'>
-
-            <div style={{flex: 1}}>
-              <Button buttonNumber = {17}/>
-              <Button buttonNumber = {18}/>
-              <Button buttonNumber = {19}/>
-              <Button buttonNumber = {20}/>
-              <Button buttonNumber = {21}/>
-              <Button buttonNumber = {22}/>
-              <Button buttonNumber = {23}/>
-              <Button buttonNumber = {24}/>
-            </div>
-        </div>
-      </div>
     </div>
     
   );
