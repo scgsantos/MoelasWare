@@ -1,17 +1,13 @@
-from random import sample
-
-from api.serializers import (CreateTestSerializer, GetTestSerializer,
-                             QuizAnswerSerializer, QuizSerializer)
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404
-from moelasware.models import Quiz, QuizAnswer, Tag, Test
+from moelasware.models import Tag
 from rest_framework.decorators import api_view
 
 DEFAULT_TAG_PAGE_LIMIT = 20
 
 
 @api_view(["GET"])
-def get_tag_view(request, pk, *args, **kwargs):
+def get_tag_view(request, pk):
 
     if pk is not None:
         instance = get_object_or_404(Tag, pk=pk)
@@ -23,7 +19,7 @@ def get_tag_view(request, pk, *args, **kwargs):
 
 
 @api_view(["GET"])
-def get_all_tags_view(request, *args, **kwargs):
+def get_all_tags_view(request):
     try:
         offset = int(request.query_params.get("offset", default=0))
         limit = int(request.query_params.get("limit", default=DEFAULT_TAG_PAGE_LIMIT))

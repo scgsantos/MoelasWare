@@ -1,10 +1,7 @@
-from random import sample
-
-from api.serializers import (CreateTestSerializer, GetTestSerializer,
-                             QuizAnswerSerializer, QuizSerializer)
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from api.serializers import CreateTestSerializer, GetTestSerializer
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404
-from moelasware.models import Quiz, QuizAnswer, Tag, Test
+from moelasware.models import Test
 from rest_framework.decorators import api_view
 
 from api.views import get_n_quizzes_view
@@ -13,7 +10,7 @@ DEFAULT_TEST_PAGE_LIMIT = 20
 
 
 @api_view(["GET"])
-def get_test_view(request, pk, *args, **kwargs):
+def get_test_view(request, pk):
     # get test by id -> detail view
     instance = get_object_or_404(Test, pk=pk)
     serializer = GetTestSerializer(instance, many=False)

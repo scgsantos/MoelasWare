@@ -1,9 +1,6 @@
-from random import sample
-
-from api.serializers import (CreateTestSerializer, GetTestSerializer,
-                             QuizAnswerSerializer, QuizSerializer)
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from moelasware.models import Quiz, QuizAnswer, Tag, Test
+from api.serializers import QuizAnswerSerializer, QuizSerializer
+from django.http import HttpResponseBadRequest, JsonResponse
+from moelasware.models import Quiz, QuizAnswer
 from rest_framework.decorators import api_view
 
 
