@@ -1,7 +1,10 @@
 *.bak
 *.old
-# For the time-tracking graph script
+
+# Secrets
 .timegraphtoken
+.gitlab-token
+.pgpass
 
 *.py[cod]
 
