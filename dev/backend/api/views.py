@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 
 from django.shortcuts import get_object_or_404
-from moelasware.models import Test, Quiz, Tag, QuizAnswer
+from moelasware.models import Test, Quiz, Tag, QuizAnswer, User
 from api.serializers import CreateTestSerializer, GetTestSerializer, QuizSerializer, QuizAnswerSerializer, TagSerializer
 
 DEFAULT_TEST_PAGE_LIMIT = 20
@@ -184,7 +184,7 @@ def create_submission(request, pk, user):
     {
         "answers": [
             {
-                "quiz_id": 1,
+                "quiz_id": 1, # pergunta
                 "quiz_answers": [1, 2] # id's of the answers choosen
             },
             {
@@ -278,10 +278,13 @@ def get_self_submission_view(request, pk, user):
 # @login_required
 # function that selects the test SOLVED
 def submission_view(request, pk):
-    user = request.user
-
+    # test user
+    user = User.objects.get(pk=1)
+    
+    '''
     if not user.is_authenticated:
         return HttpResponseForbidden('Not logged in')
+    '''
     
     proxy = {
         "GET": get_self_submission_view,

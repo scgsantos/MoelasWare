@@ -46,14 +46,13 @@ input[type="button"] {
   padding: 0.3em 0.8em;
 }
 
-button:hover,
-input[type="button"]:hover {
+button:hover, input[type=button]:hover {
   background-color: black;
   color: var(--beige);
   cursor: pointer;
 }
 
-input[type="text"] {
+input[type=text] {
   padding: 1em;
   margin: 1em;
   text-align: left;
