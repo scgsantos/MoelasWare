@@ -12,7 +12,8 @@ body{
     text-decoration: none;
     display: block;
     font-size: 16px;
-    margin: 4px 2px;
+    margin: 4px 30px;
+
     cursor: pointer;
     border-radius: 10px;
     width: 200px;
@@ -28,7 +29,7 @@ body{
 .toptitle{
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
-    padding-left: 10px;
+    padding-left: 30px;
     color: #000000;
     text-align: left;
 }
@@ -47,3 +48,44 @@ body{
 .midtitle{
     font-weight: bold;
 }
+
+input[type='radio']:after {
+    width: 12px;
+    height: 12px;
+    border-radius: 15px;
+    top: 0px;
+    left: 0px;
+    position: relative;
+    background-color: #BACDD1;
+    content: '';
+    display: inline-block;
+   
+    border: 1px solid black;
+    
+    }
+    
+    input[type='radio']:checked:after {
+    width: 12px;
+    height: 12px;
+    border-radius: 15px;
+    top: 0px;
+    left: 0px;
+    position: relative;
+    background-color: black;
+    content: '';
+    display: inline-block;
+    
+    border: 1px solid black;
+    }
+    
+    .grid{
+        margin-top: 30px;
+        display: grid;
+        grid-template-rows: repeat(8, 1fr);
+        grid-auto-flow: column;
+        max-width: 1200px;
+        margin-left: 15%;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: flex-start;
+    }
