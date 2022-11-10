@@ -3,12 +3,21 @@ import "./CSS/index.css";
 import './App.css';
 import Grid from './components/grid-quizzes';
 import './fonts/Basic-Regular.ttf';
+import React, { useState } from 'react';
+import { format } from 'react-string-format';
 import Radiobutton from './components/radiobutton';
 
 
 function App() {
-  var numberOfunfinishedquizzes = 24;
-  var username = "Rodrigo"
+  var id = 1;
+  var numberOfunfinishedquizzes = 14;
+  var [username, setUsername] = useState("");
+  let url =  format('http://localhost:8000/api/users/{0}', id);
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        setUsername(data.username);
+    });
 
   return (
     <div class="App">
@@ -31,7 +40,7 @@ function App() {
       </div> */}
 
       <Grid number = {numberOfunfinishedquizzes}/>
-      
+  
     </div>
     
   );
