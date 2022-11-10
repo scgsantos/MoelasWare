@@ -4,8 +4,9 @@ import HeaderComp from '../components/Header';
 import './TestSelection.css';
 
 function SingleTestPage(props) {
-    const [testinfo, setTestinfo] = useState();
+    const [testinfo, setTestinfo] = useState(undefined);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const { test } = useParams();
     const navigate = useNavigate();
@@ -18,8 +19,7 @@ function SingleTestPage(props) {
 
 
     function fetchTestInfo() {
-        const testid=  test-1;
-        fetch('http://localhost:8000/api/tests/' + testid, {
+        fetch('http://localhost:8000/api/tests/' + test, {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -30,11 +30,29 @@ function SingleTestPage(props) {
         .then(data => {
             console.log(data.test);
             setTestinfo(data.test);
+            setError(null);
         }).catch(error => {
             console.log(error);
+            setError("Error: " + error);
         }).finally(() => {
             setLoading(false);
         });
+    }
+
+    if (error || testinfo===undefined) {
+        return (
+            <div>
+                <HeaderComp /> 
+                <div className="centerTitles">
+                    <span className='main-title'>SOLVE A TEST</span>
+                    <span className="sub-title">Something Wrong Happened</span>
+                </div>
+
+                <div className="centerLoad">
+                    <span>{error}</span>
+                </div>
+            </div>
+        )
     }
 
     return (

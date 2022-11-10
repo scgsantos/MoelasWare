@@ -29,6 +29,7 @@ function QuestionSolving() {
         .then(data => {
             console.log(data.test);
             setTest(data.test);
+            setError(null);
         }).catch(error => {
             console.log(error);
             setError("Error loading test");
@@ -37,6 +38,21 @@ function QuestionSolving() {
         });
     }
 
+    if (error) {
+        return (
+            <div>
+                <HeaderComp /> 
+                <div className="centerTitles">
+                    <span className='main-title'>SOLVE A TEST</span>
+                    <span className="sub-title">Something Wrong Happened</span>
+                </div>
+
+                <div className="centerLoad">
+                    <span>{error}</span>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div>
