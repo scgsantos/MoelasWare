@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import IncDecCounter from "../components/input_number";
 import QuizList from "../components/QuizList";
 import logo from "../logo.png";
-import "./req_2_1.css";
+import "./create_test/number_only/req_2_1.css";
 
 function CreateRandomTestWithSpecs() {
   const [num, setNum] = useState(1);
@@ -39,7 +39,9 @@ function CreateRandomTestWithSpecs() {
         />
 
         <div className="req-2-1-inputDiv">
-          <h1 className="req-2-1-inputTitle">{"Specify the tags you must have in the quizzes"}</h1>
+          <h1 className="req-2-1-inputTitle">
+            {"Specify the tags you must have in the quizzes"}
+          </h1>
           <input
             className="req-2-2-inputText"
             type="text"
@@ -51,7 +53,6 @@ function CreateRandomTestWithSpecs() {
         <div className="req-2-1-buttonCreate">
           <button onClick={handleCreateButtonChange}>Next</button>
         </div>
-
       </div>
     );
   } else {
