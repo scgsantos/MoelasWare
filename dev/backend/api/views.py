@@ -1,5 +1,4 @@
 from random import sample
-from itertools import groupby
 
 from django.http import JsonResponse, HttpResponseForbidden, HttpResponseBadRequest, Http404
 from rest_framework.decorators import api_view
