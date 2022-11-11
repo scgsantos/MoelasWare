@@ -2,8 +2,17 @@ import { useEffect, useState } from 'react';
 import HeaderComp from '../components/Header';
 import { useParams, useNavigate, useLocation } from 'react-router';
 import utils from '../utils';
+import Popup from 'reactjs-popup';
+
 
 import './TestSelection.css';
+import { LeaveTest } from '../components/Errors/PopupStopTest';
+
+
+const contentStylePopup = {
+    maxWidth: "660px",
+    width: "90%",
+}
 
 function SolveQuizz() {
     const navigate = useNavigate();
@@ -232,9 +241,17 @@ function SolveQuizz() {
 
                     <div className="centro">
                         <button onClick={submitAnswers}>Submit answers</button>
-                        <button onClick={() => {
-                            navigate('/selecttest');
-                        }}>Back to test selection</button>
+
+                        <Popup trigger={
+                            <button>Back to test selection</button>
+                        } position="center center"
+                            modal
+                            contentStyle={contentStylePopup}
+                        >
+                            <LeaveTest onClick={() => {
+                                navigate('/selecttest');
+                            }} />
+                        </Popup>
                     </div>
 
                 </>
