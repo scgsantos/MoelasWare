@@ -27,7 +27,6 @@ function MainSelectionPage() {
             .then(response => response.json())
             .then(data => {
                 const testsArray = data.tests;
-                console.log(testsArray);
                 setTests(testsArray);
             }).catch(error => {
                 console.log(error);

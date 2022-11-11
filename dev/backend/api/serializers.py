@@ -23,6 +23,12 @@ class QuizAnswerSerializer(serializers.ModelSerializer):
         fields = ["id", "text", "justification"]
 
 
+class QuizAnswerSerializerWithRes(serializers.ModelSerializer):
+    class Meta:
+        model = QuizAnswer
+        fields = ["id", "text", "justification", "correct"]
+
+
 class GetTestSerializer(serializers.ModelSerializer):
     quizzes = QuizSerializer(read_only=True, many=True)
 
@@ -62,4 +68,4 @@ class SubmissionSerializer(serializers.ModelSerializer):
 class SubmissionAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubmissionAnswer
-        fields = ["id", "submission", "answer"]
+        fields = ["answer"]

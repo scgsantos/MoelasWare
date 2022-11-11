@@ -1,4 +1,3 @@
-import 'reactjs-popup/dist/index.css';
 import './common.css';
 import React, { Component } from 'react';
 import history from './history';

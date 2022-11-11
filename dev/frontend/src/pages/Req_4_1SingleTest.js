@@ -29,7 +29,6 @@ function SingleTestPage(props) {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data.test);
                 setTestinfo(data.test);
                 setError(null);
             }).catch(error => {

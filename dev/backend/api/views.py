@@ -1,12 +1,13 @@
 from random import sample
+from itertools import groupby
 
 from django.http import JsonResponse, HttpResponseForbidden, HttpResponseBadRequest, Http404
 from rest_framework.decorators import api_view
 from rest_framework import status
 
 from django.shortcuts import get_object_or_404
-from moelasware.models import Test, Quiz, Tag, QuizAnswer, User, Submission
-from api.serializers import CreateTestSerializer, GetTestSerializer, QuizSerializer, QuizAnswerSerializer, TagSerializer, SubmissionSerializer
+from moelasware.models import Test, Quiz, Tag, QuizAnswer, User, Submission, SubmissionAnswer
+from api.serializers import CreateTestSerializer, GetTestSerializer, QuizSerializer, QuizAnswerSerializer, TagSerializer, SubmissionSerializer, QuizAnswerSerializerWithRes, SubmissionAnswerSerializer
 
 DEFAULT_TEST_PAGE_LIMIT = 20
 DEFAULT_TAG_PAGE_LIMIT = 20
@@ -265,17 +266,48 @@ def create_submission(request, pk, user):
 
 
 def get_self_submission_view(request, pk, user):
-
     # check if the uer is able to solve the test
     if not user.can_solve_tests():
         # You should just return a simple plain-text response, no need for JSON. Use HttpResponseForbidden.
         return HttpResponseForbidden('You are not allowed to solve tests')
 
-    # get test by id -> detail view
-    instance = get_object_or_404(Test, pk=pk)
-    serializer = GetTestSerializer(instance, many=False)
+    # get all quizzes that are in the test
+    quizzes = Quiz.objects.filter(test__id=pk)
 
-    return JsonResponse({'test': serializer.data}, status=status.HTTP_200_OK)
+    # get all the answers for the quizzes
+    quizzes_serializer = QuizSerializer(quizzes, many=True)
+
+    for quiz in quizzes_serializer.data:
+        answers = QuizAnswer.objects.filter(quiz__id=quiz["id"])
+        answers_serializer = QuizAnswerSerializerWithRes(answers, many=True)
+        quiz["answers"] = answers_serializer.data
+
+    # get the submission
+    submission = Submission.objects.filter(test__id=pk, submitter=user).last()
+
+    # get all the SubmissionAnswer for the submissions with the user and the submission
+    submission_answers = SubmissionAnswer.objects.filter(
+        submission__id=submission.id)
+    submission_answers_serializer = SubmissionAnswerSerializer(
+        submission_answers, many=True)
+
+    # append the quizz id to the submission answer
+    for submission_answer in submission_answers_serializer.data:
+        # from the quizz answer get the quiz id
+        quiz_answer = QuizAnswer.objects.filter(
+            id=submission_answer["answer"]).first()
+        submission_answer["quiz_id"] = quiz_answer.quiz.id
+
+    """
+    answers: {
+        "quiz_id1": [1,2,3],
+        "quiz_id2: [4,5,7],
+    }
+    """
+    grouped_answers = {
+        quiz_id: [answer["answer"] for answer in submission_answers_serializer.data if answer["quiz_id"] == quiz_id] for quiz_id in [quiz["id"] for quiz in quizzes_serializer.data]
+    }
+    return JsonResponse({'answers': grouped_answers, 'quizzes': quizzes_serializer.data}, status=status.HTTP_200_OK)
 
 
 @api_view(["GET", "POST"])
@@ -284,7 +316,6 @@ def get_self_submission_view(request, pk, user):
 def submission_view(request, pk):
     # test user
     user = User.objects.get(pk=1)
-    print("yo")
     '''
     if not user.is_authenticated:
         return HttpResponseForbidden('Not logged in')
