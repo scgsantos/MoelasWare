@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import HeaderComp from '../components/Header';
 import './Req_4_2_2.css';
 import './TestSelection.css';
+import utils from '../utils';
 
 function QuestionSolving() {
 
@@ -10,45 +11,33 @@ function QuestionSolving() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
 
-    const { quizz } = useParams();
+    const { location } = useLocation();
+    const { testId } = useParams();
+
 
     useEffect(() => {
         document.title = "Test Solving";
-        getTest(test);
+        console.log(location.state)
+        if (!location.state.test) {
+            setError("Test not found in location state");
+        }
     })
 
-    function getTest(testid) {
-        fetch('http://localhost:8000/api/tests/'+ testid, {
-            method: "GET",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.test);
-            setTest(data.test);
-            setError(null);
-        }).catch(error => {
-            console.log(error);
-            setError("Error loading test");
-        }).finally(() => {
-            setLoading(false);
-        });
-    }
 
     if (error) {
         return (
             <div>
-                <HeaderComp /> 
+                <HeaderComp />
                 <div className="centerTitles">
                     <span className='main-title'>SOLVE A TEST</span>
                     <span className="sub-title">Something Wrong Happened</span>
                 </div>
 
-                <div className="centerLoad">
+                <div className="centerLoad just-column">
                     <span>{error}</span>
+                    <button className='solve-quizbtn' onClick={() => {
+                        setError(null);
+                    }}>Ok</button>
                 </div>
             </div>
         )
@@ -57,15 +46,11 @@ function QuestionSolving() {
     return (
         <div>
             <HeaderComp />
-            
-            <div className="center">
-                <h3>TEST #2 NAME</h3>
 
-                <h6 class="hh">You have solved all the quizzes in this test</h6>
-
-
+            <div className="centerTitles">
+                <span className='main-title'>TEST { }</span>
+                <span className='sub-title'>Please choose the test you would like to take</span>
             </div>
-
             <div className="grade">
                 <h6>Your final test grade was</h6>
                 <h3>TEST #2 grade</h3>

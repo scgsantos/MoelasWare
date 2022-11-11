@@ -2,6 +2,7 @@ from django.contrib.auth.models import User as AuthUser
 from django.db import models
 
 
+
 def fk(model):
     return models.ForeignKey(model, on_delete=models.CASCADE)
 
@@ -9,13 +10,18 @@ def fk(model):
 # Mock User model that should function alongside Django's authentication
 # Either add a ForeignKey to Django's Builtin User or
 # subclass the User in django.contrib.auth
+
+
 class User(models.Model):
     user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
 
     # needs to be haved created at least one quizz
     def can_solve_tests(self) -> bool:
         # the user needs to have created at least one quizz
-        return self.quizzes.exists()
+        # query all the quizzes that has author as the current user
+        instance = Quiz.objects.filter(author=self)
+        return instance.exists()
+
 
 class Tag(models.Model):
     """
@@ -36,9 +42,6 @@ class Quiz(models.Model):
     name = models.TextField()
     question = models.TextField()
     description = models.TextField()
-
-    def get_number_of_options(self) -> int:
-        return self.options.count()
 
     # Accepted should be queried instead of stored as a field?
     def is_accepted(self):
@@ -73,11 +76,12 @@ class Test(models.Model):
             ]
         }
         """
-        # create a submission
+        # create a submission and calculate a grade
         submission = Submission.objects.create(
             test=self,
-            user=user,
+            submitter=user,
         )
+        grade = 0
 
         # add answers to this submission
         for answer in answers:
@@ -86,6 +90,10 @@ class Test(models.Model):
 
             for quizAnswerId in quiz_answers:
                 quiz_answer_obj = QuizAnswer.objects.get(pk=quizAnswerId)
+
+                if quiz_answer_obj.correct is True:
+                    grade += 1
+
                 if quiz_answer_obj is None:
                     raise ValueError("QuizAnswer not found")
 
@@ -94,12 +102,18 @@ class Test(models.Model):
                     raise ValueError("QuizAnswer not in quiz")
 
                 # create a submission answer
-                SubmissionAnswer.objects.create(
+                subanswrs = SubmissionAnswer.objects.create(
                     submission=submission,
                     answer=quiz_answer_obj
                 )
 
-        return submission
+                # No need:
+                # add the submission answer to the submission
+                # submission.answers.add(subanswrs)
+        print(grade, len(quiz_answers))
+        grade = grade / len(quiz_answers) * 100
+        return submission, grade
+
 
 
 class Submission(models.Model):
