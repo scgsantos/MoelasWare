@@ -1,28 +1,29 @@
 import { useEffect, useState } from 'react';
 import HeaderComp from '../components/Header';
-import { useParams, useNavigate, useLocation } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import utils from '../utils';
 import Popup from 'reactjs-popup';
 
 
 import './TestSelection.css';
-import { LeaveTest } from '../components/Errors/PopupStopTest';
+import { PopupInside } from '../components/Errors/PopupStopTest';
 
 
 const contentStylePopup = {
-    maxWidth: "660px",
-    width: "90%",
+    maxWidth: "650px",
+    width: "80%",
 }
 
 function SolveQuizz() {
     const navigate = useNavigate();
+    const { test } = useParams();
+
     const [quizzInfo, setQuizzQuestions] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [submissionAnswers, setSub] = useState(null);
+    const [submissionAnswers, setSub] = useState(JSON.parse(localStorage.getItem('subs#' + test)) !== null ? JSON.parse(localStorage.getItem('subs#' + test)).answers : []);
     const [rerender, setRerender] = useState(false); // used to trigger a rerender
-
-    const { test } = useParams();
+    const [open, setOpen] = useState(false);
 
     function isbtnSelected(quizz_id, answerid) {
         /* "submissionAnswers": [
@@ -38,6 +39,10 @@ function SolveQuizz() {
         return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_id === quizz_id && sub.quiz_answers.includes(answerid)) ? true : false;
     }
 
+    function checkEmptyAnswers() {
+        // if quiz_answers len is 0, then it's empty
+        return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_answers.length === 0) ? true : false;
+    }
 
     function addAnswer(answeridgiven, quiz_id) {
         /* "submissionAnswers": [
@@ -74,8 +79,6 @@ function SolveQuizz() {
                 answer.quiz_answers = quizz_answers;
             }
         });
-
-        console.log(sub);
         setSub(sub);
     }
 
@@ -84,16 +87,8 @@ function SolveQuizz() {
         const body = {
             "answers": submissionAnswers
         }
-        // check if quiz_answers for every quiz_id is empty
-        submissionAnswers.forEach((answer) => {
-            if (answer.quiz_answers.length === 0) {
-                setError("Please answer all questions");
-                setLoading(false);
-                return;
-            }
-        });
+        localStorage.setItem('subs#' + test, JSON.stringify(body));
 
-        console.log(JSON.stringify(body));
         fetch(utils.svurl + `/api/tests/${test}/submissions`, {
             method: 'POST',
             headers: {
@@ -104,11 +99,10 @@ function SolveQuizz() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 navigate(`/grade/${test}/result`, {
                     state: {
-                        data: data,
-                        test: quizzInfo
+                        grade: data.grade,
+                        id: test
                     }
                 });
             }).catch(error => {
@@ -129,19 +123,14 @@ function SolveQuizz() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 let answer = []; /* quiz_id: 0, answers: [] */
                 data.quizzes.forEach((question) => { answer.push({ quiz_id: question.id, quiz_answers: [] }) });
-                setSub(answer);
                 setQuizzQuestions(data);
-                setError(null);
-                // for every answer in every quiz create a '' in the isActivated array
-                let l = [];
-                data.quizzes.forEach((question) => {
-                    question.answers.forEach(() => {
-                        l.push(false);
-                    });
-                });
+
+                // if not, they are already in the localstorage
+                if (submissionAnswers === null || submissionAnswers.length === 0 || submissionAnswers === undefined) {
+                    setSub(answer);
+                }
             }).catch(error => {
                 console.log(error);
                 setError("Error: " + error);
@@ -152,11 +141,11 @@ function SolveQuizz() {
 
 
     useEffect(() => {
+        document.title = "Test " + test;
         if (!quizzInfo) {
             getQuizzQuestions();
-            document.title = "Test " + test;
         }
-
+        setRerender(false);
     }, []);
 
     if (error || !quizzInfo) {
@@ -239,8 +228,22 @@ function SolveQuizz() {
                     </div>
 
 
-                    <div className="centro">
-                        <button onClick={submitAnswers}>Submit answers</button>
+                    <div className="bottomcenterntns">
+                        <button className='button' onClick={() => {
+                            checkEmptyAnswers() ? setOpen(o => !o) : submitAnswers();
+                        }}>Submit answers</button>
+                        <Popup
+                            position="center center"
+                            modal
+                            contentStyle={contentStylePopup}
+                            open={open}
+                        >
+                            {close => (
+                                <PopupInside onClick={() => {
+                                    setOpen(o => !o)
+                                }} close={close} title={"You still have unanswered questions."} singleButton={true} />
+                            )}
+                        </Popup>
 
                         <Popup trigger={
                             <button>Back to test selection</button>
@@ -248,9 +251,15 @@ function SolveQuizz() {
                             modal
                             contentStyle={contentStylePopup}
                         >
-                            <LeaveTest onClick={() => {
-                                navigate('/selecttest');
-                            }} />
+                            {close => (
+                                <PopupInside onClick={() => {
+                                    navigate('/selecttest');
+                                    const save = {
+                                        answers: submissionAnswers,
+                                    }
+                                    localStorage.setItem('subs#' + test, JSON.stringify(save));
+                                }} close={close} title={"Do you wish to return to test selection?"} subtitle={"Your progress will be saved"} singleButton={false} />
+                            )}
                         </Popup>
                     </div>
 

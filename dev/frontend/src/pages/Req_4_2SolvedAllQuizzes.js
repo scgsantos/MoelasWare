@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router';
+import { useParams } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
 import HeaderComp from '../components/Header';
-import './Req_4_2_2.css';
 import './TestSelection.css';
 import utils from '../utils';
 
-function QuestionSolving() {
-
-    const [test, setTest] = useState(undefined);
+function QuestionSolving(props) {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
 
-    const { location } = useLocation();
-    const { testId } = useParams();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { test } = useParams();
 
 
     useEffect(() => {
         document.title = "Test Solving";
-        console.log(location.state)
-        if (!location.state.test) {
-            setError("Test not found in location state");
+        console.log(location.state);
+        if (!location.state) {
+            //TODO: need to make a request to get the grade of the test given.
+
         }
     })
 
@@ -48,17 +48,22 @@ function QuestionSolving() {
             <HeaderComp />
 
             <div className="centerTitles">
-                <span className='main-title'>TEST { }</span>
-                <span className='sub-title'>Please choose the test you would like to take</span>
+                <span className='main-title'>TEST #{location.state.id}</span>
+                <span className='sub-title'>You have solved all the quizzes in this test.</span>
             </div>
-            <div className="grade">
-                <h6>Your final test grade was</h6>
-                <h3>TEST #2 grade</h3>
+            <div className="quizcenter mt-2">
+                <span className='sub-title mt-2'>Your final test grade was</span>
+                <span className='main-name mt-2'>{location.state.grade}</span>
             </div>
 
-            <div className="centro">
-                <button href='/Req_4_2_3'>Check the answers</button>
-                <button href='/Req_4_1_1'>Back to test selection</button>
+            <div className="bottomcenterntns mt-10">
+                <button onClick={() => {
+                    navigate('/solved/' + test);
+
+                }}>Check the answers</button>
+                <button onClick={() => {
+                    navigate('/selecttest');
+                }}>Back to test selection</button>
             </div>
 
         </div>
