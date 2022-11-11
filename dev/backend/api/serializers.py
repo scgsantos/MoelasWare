@@ -31,7 +31,7 @@ class CreateQuizSerializer( serializers.ModelSerializer ):
 class CreateQuizAnswerSerializer(serializers.ModelSerializer):
     	class Meta:
          model = QuizAnswer
-         fields = ['id','text','correct','justification']
+         fields = ['quiz','text','correct','justification']
 
 class GetQuizAnswerSerializer(serializers.ModelSerializer):
     	class Meta:

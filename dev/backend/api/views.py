@@ -37,14 +37,12 @@ def create_test_view( request ):
 @api_view(['GET'])
 def create_quizz(request):    
     #Get user by id
-
     user = request.data.get("user")
     user = User.objects.get(pk=user)
     if not user:
         return HttpResponseBadRequest('User not found')
     user = user.id    
     #Create a quiz    
-    
     #Request a quizz tag
     text = request.data.get("text")
     tag = Tag.objects.filter(text=text)
@@ -62,7 +60,6 @@ def create_quizz(request):
     
     question = request.data.get("question")
     description = request.data.get("description")
-        
     deserializer_data = {"author": user, "tags": [tag], "question": question, "description": description}
     quiz_deserializer = CreateQuizSerializer(data=deserializer_data)
 
@@ -70,35 +67,24 @@ def create_quizz(request):
         quiz = quiz_deserializer.save()
         response_serializer = GetQuizSerializer(quiz) 
         JsonResponse({"quiz": response_serializer.data})
-    
     #Associate the quiz with the tag
     quiz_id = response_serializer.data.get("id")
     deserializer_data = {"quiz_id": quiz_id, "tag_id": tag}
     quiz_tag_deserializer = CreateQuizTagSerializer(data=deserializer_data)
-    """
+    print(quiz_id, deserializer_data,quiz_tag_deserializer)
     if quiz_tag_deserializer.is_valid(raise_exception=True):
-        
-            Esta a dar erro n sei pq
-            quiz_tag = quiz_tag_deserializer.save()
-        
+        quiz_tag = quiz_tag_deserializer.save()
         response_serializer = GetQuizTagSerializer(quiz_tag)
         JsonResponse({"quiz_tag": response_serializer.data})
-    """
     #Create 6 quiz answers
+
     text = request.data.get("text_answer")
     correct = request.data.get("correct")
     justification = request.data.get("justification")
-        
     deserializer_data = {"quiz": quiz_id, "text": text, "correct": correct, "justification": justification}
     answer_deserializer = CreateQuizAnswerSerializer(data=deserializer_data)
-    """    
     if answer_deserializer.is_valid(raise_exception=True):
-        
-            Esta a dar erro n sei pq
-            answer = answer_deserializer.save() 
-        
+        answer = answer_deserializer.save() 
         response_serializer = GetQuizAnswerSerializer(answer) 
         JsonResponse({"answer": response_serializer.data})
-    """
-    print(0)
-    return JsonResponse({"Quiz was submited for review"})
+    return JsonResponse({'Quiz was submited for review':'here'}, status=200)
