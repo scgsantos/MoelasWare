@@ -1,12 +1,14 @@
-from django.db import models
-from django.core.validators import MinValueValidator 
 from django.contrib.auth.models import User as AuthUser
+from django.core.validators import MinValueValidator
+from django.db import models
+
 
 def fk(model):
     return models.ForeignKey(model, on_delete=models.CASCADE)
 
-# Mock User model that should function alongside Django's authentication 
-# Either add a ForeignKey to Django's Builtin User or 
+
+# Mock User model that should function alongside Django's authentication
+# Either add a ForeignKey to Django's Builtin User or
 # subclass the User in django.contrib.auth
 class User(models.Model):
     user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
@@ -15,11 +17,13 @@ class User(models.Model):
     def can_solve_tests(self) -> bool:
         # the user needs to have created at least one quizz
         return self.quizzes.exists()
-        
+
+
 class Tag(models.Model):
     """
     Is associated with a Quiz to display what the Quiz is about
     """
+
     text = models.TextField()
 
 
@@ -27,6 +31,7 @@ class Quiz(models.Model):
     """
     Question that has several answers and associated tags.
     """
+
     author = fk(User)
     tags = models.ManyToManyField(Tag)
 
@@ -40,12 +45,14 @@ class Quiz(models.Model):
     def is_accepted(self):
         pass
 
+
 class Test(models.Model):
     """
     A collection of Quizzes.
     """
+
     def create_submission(self, user, answers):
-        # create a submission 
+        # create a submission
         submission = Submission.objects.create(
             test=self,
             user=user,
@@ -53,22 +60,21 @@ class Test(models.Model):
 
         # add answers to this submission
         for answer in answers:
-            quiz_id = answer.get('quiz_id', None)
-            quiz_answers = answer.get('quiz_answers', None)
+            quiz_id = answer.get("quiz_id", None)
+            quiz_answers = answer.get("quiz_answers", None)
 
             for quizAnswerId in quiz_answers:
                 quiz_answer_obj = QuizAnswer.objects.get(pk=quizAnswerId)
                 if quiz_answer_obj is None:
                     raise ValueError("QuizAnswer not found")
-                    
+
                 # chck if quizz answer is in quizz
                 if quiz_answer_obj.quiz.pk != quiz_id:
                     raise ValueError("QuizAnswer not in quiz")
-                
+
                 # create a submission answer
                 SubmissionAnswer.objects.create(
-                    submission=submission,
-                    answer=quiz_answer_obj
+                    submission=submission, answer=quiz_answer_obj
                 )
 
         return submission
@@ -78,6 +84,7 @@ class Test(models.Model):
     quizzes = models.ManyToManyField(Quiz)
 
     name = models.TextField()
+
 
 class Submission(models.Model):
     """
@@ -92,28 +99,32 @@ class Submission(models.Model):
         Quiz: What color is an orange?
             [x] Red
             [ ] Blue
-            [x] Orange 
+            [x] Orange
 
-        Two SubmissionAnswer's would be created: 
+        Two SubmissionAnswer's would be created:
             One that has a ForeignKey to the "Red" QuizAnswer
             and another that has a ForeignKey "Orange" QuizAnswer
-    
+
     """
+
     test = fk(Test)
     submitter = fk(User)
 
+
 class Review(models.Model):
     """
-    Represents a Quiz Review. 
+    Represents a Quiz Review.
 
     It can either be accepted or rejected,
     being a comment mandatory if it is rejected.
     """
+
     reviewer = fk(User)
     quiz = fk(Quiz)
 
     accepted = models.BooleanField(default=False)
     comment = models.TextField()
+
 
 class QuizAnswer(models.Model):
     """
@@ -136,30 +147,30 @@ class QuizAnswer(models.Model):
     Every QuizAnswer needs to justify why
     it is or isn't correct.
     """
-    quiz = fk(Quiz) 
+
+    quiz = fk(Quiz)
 
     text = models.TextField()
     correct = models.BooleanField(default=False)
     justification = models.TextField()
 
 
-
 class SubmissionAnswer(models.Model):
     """
-    Represents an Answer made by a User while 
+    Represents an Answer made by a User while
     doing a Test.
 
     For example:
         Quiz: What color is an orange?
             [x] Red
             [ ] Blue
-            [x] Orange 
+            [x] Orange
 
-        Two SubmissionAnswer's would be created: 
+        Two SubmissionAnswer's would be created:
             One that has a ForeignKey to the "Red" QuizAnswer
             and another that has a ForeignKey "Orange" QuizAnswer
 
     """
+
     submission = fk(Submission)
     answer = fk(QuizAnswer)
-

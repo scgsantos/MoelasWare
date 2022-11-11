@@ -35,6 +35,8 @@ RADON = "radon"
 COVERAGE = "coverage"
 PYTEST = "pytest"
 
+REQUIREMENTS_TXT = "dev/backend/requirements.txt"
+
 U = "-U"
 EXIT_ZERO = "--exit-zero"
 ZERO_EXIT = "--zero-exit"
@@ -62,17 +64,8 @@ def deadcode(s: S):
 
 @nox.session(tags=[LINT_STAGE], python=PYTHON_VERSION)
 def lint(s: S):
-    s.install(U, PROSPECTOR+"==1.7.7")  # need to pin that version for some reason
-    # s.run(FLAKE, EXIT_ZERO, *ALL_BACKEND_CODE)
-    # s.run(
-    #     PYLINT,
-    #     EXIT_ZERO,
-    #     "--load-plugins",
-    #     "pylint_django",
-    #     *ALL_BACKEND_CODE,
-    #     env={"DJANGO_SETTINGS_MODULE": "moelasware.settings"}
-    # )
-    s.run(PROSPECTOR, ZERO_EXIT, *ALL_BACKEND_CODE)
+    s.install(U, PROSPECTOR+"==1.7.7", "-r", REQUIREMENTS_TXT)  # need to pin that version for some reason
+    s.run(PROSPECTOR, ZERO_EXIT, *ALL_BACKEND_CODE, env={"DJANGO_SETTINGS_MODULE": "moelasware.settings"})
 
 
 @nox.session(tags=[LINT_STAGE], python=PYTHON_VERSION)

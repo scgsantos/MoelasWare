@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  database:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/pgpass
+    secrets:
+      - pgpass
+    volumes:
+      - ./database:/var/lib/postgresql/data
+      - ./createdb.sh:/docker-entrypoint-initdb.d/createdb.sh:ro
+
+  backend:
+    image: registry.gitlab.com/moelasware/app
+    restart: always
+    ports:
+      - 1337:8000
+    environment:
+      DATABASE_URL: postgresql://moelasware@database:5432/moelasware?passfile=/run/secrets/pgpass
+    secrets:
+      - pgpass
+    depends_on:
+      - database
+
+secrets:
+  pgpass:
+    file: ./.pgpass
