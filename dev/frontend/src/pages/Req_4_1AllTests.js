@@ -11,7 +11,7 @@ function MainSelectionPage() {
     const [loading, setLoading] = useState(true);
     const [tests, setTests] = useState();
     const [error, setError] = useState("");
-    const [selectedTags, setSelectedTags] = useState("random");
+    const [selectedTags, setSelectedTags] = useState("manual");
     const [selectedTest, setSelectedTest] = useState();
 
     const { test } = useParams();
@@ -26,8 +26,7 @@ function MainSelectionPage() {
         })
             .then(response => response.json())
             .then(data => {
-                const testsArray = data.tests;
-                setTests(testsArray);
+                setTests(data.tests);
             }).catch(error => {
                 console.log(error);
                 setError("Error loading tests");
@@ -53,8 +52,12 @@ function MainSelectionPage() {
                     <span className="sub-title">Something Wrong Happened</span>
                 </div>
 
-                <div className="centerLoad">
+                <div className="centerLoad just-column">
                     <span>{error}</span>
+                    <button className='solve-quizbtn' onClick={() => {
+                        setError(null);
+                        getTests();
+                    }}>Ok</button>
                 </div>
             </div>
         )
@@ -75,9 +78,33 @@ function MainSelectionPage() {
                 <span className='sub-title'>Please choose the test you would like to take</span>
                 <div className="radio-buttons mt-2">
                     <span className="f-text">Filters</span>
-                    <Radiobutton text={"random"} selected={"random" === selectedTags} onClick={() => setSelectedTags("random")} />
-                    <Radiobutton text={"tag"} selected={"tag" === selectedTags} onClick={() => setSelectedTags("tag")} />
-                    <Radiobutton text={"manual"} selected={"manual" === selectedTags} onClick={() => setSelectedTags("manual")} />
+                    <Radiobutton text={"random"} selected={"random" === selectedTags} onClick={() => {
+                        setSelectedTags("random")
+                        // mix the tests order
+                        const newtests = tests.sort(() => Math.random() - 0.5);
+                        setTests(newtests);
+                    }} />
+                    <Radiobutton text={"tag"} selected={"tag" === selectedTags} onClick={() => {
+                        let newtests = tests.sort(() => Math.random() - 0.5);
+                        setSelectedTags("tag")
+                        // a test has a list of tags, we need to sort by the first tag
+                        newtests = tests.sort((a, b) => {
+                            if (a.tags[0] < b.tags[0]) {
+                                return -1;
+                            }
+                            if (a.tags[0] > b.tags[0]) {
+                                return 1;
+                            }
+                            return 0;
+                        });
+                        setTests(newtests);
+                    }} />
+                    <Radiobutton text={"manual"} selected={"manual" === selectedTags} onClick={() => {
+                        setSelectedTags("manual")
+                        // restore the tests order
+                        const newtests = tests.sort((a, b) => a.id - b.id);
+                        setTests(newtests);
+                    }} />
                 </div>
             </div>
 
@@ -93,7 +120,7 @@ function MainSelectionPage() {
                     <div className='line'>
                         {tests.map((test, i) => (
                             <div key={i} className="box-test">
-                                <span className='testTitle'>Test #{i + 1} - {test.quizzes[0].tags[0].text
+                                <span className='testTitle'>Test #{test.id} - {test.quizzes[0].tags[0].text
                                 }</span>
                                 <Button onClick={() => {
                                     navigate(`/selecttest/${test.id}`);
