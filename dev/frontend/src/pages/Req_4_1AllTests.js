@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import logoMoelasWare from '../logoMoelasWare.png';
 import Radiobutton from '../components/Radiobutton';
 import { useParams, useNavigate } from "react-router-dom";
 import SingleTestPage from './Req_4_1SingleTest';
 import './TestSelection.css';
 import HeaderComp from '../components/Header';
 import Button from '../components/Button';
+import utils from '../utils';
 
 function MainSelectionPage() {
     const [loading, setLoading] = useState(true);
@@ -14,26 +14,27 @@ function MainSelectionPage() {
     const [selectedTags, setSelectedTags] = useState("random");
     const [selectedTest, setSelectedTest] = useState();
 
-    const {test } = useParams();
+    const { test } = useParams();
     const navigate = useNavigate();
     function getTests() {
-        fetch('http://localhost:8000/api/tests', {
+        fetch(utils.svurl + '/api/tests', {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            const testsArray = data.tests;
-            setTests(testsArray);
-        }).catch(error => {
-            console.log(error);
-            setError("Error loading tests");
-        }).finally(() => {
-            setLoading(false);
-        });
+            .then(response => response.json())
+            .then(data => {
+                const testsArray = data.tests;
+                console.log(testsArray);
+                setTests(testsArray);
+            }).catch(error => {
+                console.log(error);
+                setError("Error loading tests");
+            }).finally(() => {
+                setLoading(false);
+            });
     }
 
 
@@ -47,7 +48,7 @@ function MainSelectionPage() {
     if (error) {
         return (
             <div>
-                <HeaderComp /> 
+                <HeaderComp />
                 <div className="centerTitles">
                     <span className='main-title'>SOLVE A TEST</span>
                     <span className="sub-title">Something Wrong Happened</span>
@@ -60,9 +61,9 @@ function MainSelectionPage() {
         )
     }
 
-    if(selectedTest) {
+    if (selectedTest) {
         return (
-            <SingleTestPage test={selectedTest}/>
+            <SingleTestPage test={selectedTest} />
         )
     }
 
@@ -71,7 +72,7 @@ function MainSelectionPage() {
             <HeaderComp />
 
             <div className="centerTitles">
-            <span className='main-title'>SOLVE A TEST</span>
+                <span className='main-title'>SOLVE A TEST</span>
                 <span className='sub-title'>Please choose the test you would like to take</span>
                 <div className="radio-buttons mt-2">
                     <span className="f-text">Filters</span>
@@ -80,24 +81,29 @@ function MainSelectionPage() {
                     <Radiobutton text={"manual"} selected={"manual" === selectedTags} onClick={() => setSelectedTags("manual")} />
                 </div>
             </div>
-            
+
             {loading === true ? (
                 <div className="centerLoad">
                     <span>Loading...</span>
                 </div>
             ) : (
-                <div className='line'>
-                    {tests.map((test, i) => (
-                        <div key={i} className="box-test">
-                            <span className='testTitle'>Test #{i + 1} - {test.quizzes[0].tags[0].text
-                            }</span>
-                            <Button onClick={()=>{
-                                navigate(`/selecttest/${test.id}`);
-                                setSelectedTest(test.id);
-                            }} name={test.name}/>
-                        </div>
-                    ))}
-                </div>
+                tests.length === 0 ? (
+                    <div className="centerLoad">
+                        <span>No tests available</span>
+                    </div>) : (
+                    <div className='line'>
+                        {tests.map((test, i) => (
+                            <div key={i} className="box-test">
+                                <span className='testTitle'>Test #{i + 1} - {test.quizzes[0].tags[0].text
+                                }</span>
+                                <Button onClick={() => {
+                                    navigate(`/selecttest/${test.id}`);
+                                    setSelectedTest(test.id);
+                                }} name={test.name} />
+                            </div>
+                        ))}
+                    </div>
+                )
             )}
         </div>
     );

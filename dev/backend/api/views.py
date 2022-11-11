@@ -5,8 +5,8 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 
 from django.shortcuts import get_object_or_404
-from moelasware.models import Test, Quiz, Tag, QuizAnswer, User
-from api.serializers import CreateTestSerializer, GetTestSerializer, QuizSerializer, QuizAnswerSerializer, TagSerializer
+from moelasware.models import Test, Quiz, Tag, QuizAnswer, User, Submission
+from api.serializers import CreateTestSerializer, GetTestSerializer, QuizSerializer, QuizAnswerSerializer, TagSerializer, SubmissionSerializer
 
 DEFAULT_TEST_PAGE_LIMIT = 20
 DEFAULT_TAG_PAGE_LIMIT = 20
@@ -81,13 +81,12 @@ def get_n_quizzes_view(request):
 
     quizzes_serializer = QuizSerializer(quizzes_set, many=True)
 
-
     return JsonResponse({"quizzes": quizzes_serializer.data})
 
 
 @api_view(['GET'])
 def get_answers_for_quiz(request, quiz_id):
-    answers_set = QuizAnswer.objects.filter(quiz__id = quiz_id)
+    answers_set = QuizAnswer.objects.filter(quiz__id=quiz_id)
 
     answers_serializer = QuizAnswerSerializer(answers_set, many=True)
 
@@ -98,7 +97,8 @@ def get_answers_for_quiz(request, quiz_id):
 def get_all_tests_view(request):
     try:
         offset = int(request.query_params.get("offset", default=0))
-        limit = int(request.query_params.get("limit", default=DEFAULT_TEST_PAGE_LIMIT))
+        limit = int(request.query_params.get(
+            "limit", default=DEFAULT_TEST_PAGE_LIMIT))
     except ValueError:
         return HttpResponseBadRequest("Invalid offset and/or limit")
 
@@ -119,7 +119,7 @@ def tests_view(request):
         "POST": post_test_view,
     }
     return proxy[request.method](request)
-    #return Response({"invalid": "not good data"}, status=400)
+    # return Response({"invalid": "not good data"}, status=400)
 
 
 @api_view(["GET"])
@@ -138,7 +138,8 @@ def get_tag_view(request, pk, *args, **kwargs):
 def get_all_tags_view(request, *args, **kwargs):
     try:
         offset = int(request.query_params.get("offset", default=0))
-        limit = int(request.query_params.get("limit", default=DEFAULT_TAG_PAGE_LIMIT))
+        limit = int(request.query_params.get(
+            "limit", default=DEFAULT_TAG_PAGE_LIMIT))
     except ValueError:
         return HttpResponseBadRequest("Invalid offset and/or limit")
 
@@ -146,6 +147,7 @@ def get_all_tags_view(request, *args, **kwargs):
 
     serializer = TagSerializer(queryset, many=True)
     return JsonResponse({"tags": serializer.data})
+
 
 @api_view(["GET"])
 def get_quiz_view(request, pk):
@@ -167,9 +169,6 @@ def get_quiz_view(request, pk):
         return JsonResponse({"test": serializer.data, "quizzes": quizzes_serializer.data})
 
     return JsonResponse({"invalid": "not good data"}, status=status.HTTP_400_BAD_REQUEST)
-    
-
-    
 
 
 # @api_view(['POST'])
@@ -213,6 +212,11 @@ def create_submission(request, pk, user):
     if not isinstance(answers, list):
         return HttpResponseBadRequest('Answers must be a list')
 
+    # TODO: not sure if this is intended or not, can a user Repeat Quizzes? If so this should be changed
+    # check if user alreadysubmitted the quizz in this test
+    # if Submission.objects.filter(test__id=pk, user=user).exists():
+    #    return HttpResponseBadRequest('You already submitted this test')
+
     # check if the answers are valid
     for answer in answers:
         if not isinstance(answer, dict):
@@ -244,22 +248,22 @@ def create_submission(request, pk, user):
             if not isinstance(quiz_answer, int):
                 return HttpResponseBadRequest('quiz_answers must be a list of integers')
 
-            if quiz_answer < 0 or quiz_answer >= quiz.get_number_of_options():
-                return HttpResponseBadRequest('quiz_answers must be a list of integers between 0 and the number of options')
-
     # create the submission
     try:
-        submission = instance.create_submission(user, answers)
+        new_sub, grade = instance.create_submission(user, answers)
     except Exception as e:
-        if isinstance(e, ValueError):
-            return HttpResponseBadRequest(e)
+        return HttpResponseBadRequest(e)
+
+    submission_serializer = SubmissionSerializer(new_sub, many=False)
 
     # return the submission
-    return JsonResponse({'submission': submission}, status=status.HTTP_200_OK)
+    return JsonResponse({'submission': submission_serializer.data, 'grade': grade}, status=status.HTTP_200_OK)
 
 # @api_view(['GET'])
 # @login_required
 # function that gets a submission from a test, we should allow the user to get someone else's submission
+
+
 def get_self_submission_view(request, pk, user):
 
     # check if the uer is able to solve the test
@@ -280,15 +284,14 @@ def get_self_submission_view(request, pk, user):
 def submission_view(request, pk):
     # test user
     user = User.objects.get(pk=1)
-    
+    print("yo")
     '''
     if not user.is_authenticated:
         return HttpResponseForbidden('Not logged in')
     '''
-    
+
     proxy = {
         "GET": get_self_submission_view,
         "POST": create_submission,
     }
     return proxy[request.method](request, pk, user)
-    

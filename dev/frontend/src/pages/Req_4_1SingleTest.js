@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import HeaderComp from '../components/Header';
 import './TestSelection.css';
+import utils from '../utils';
 
 function SingleTestPage(props) {
     const [testinfo, setTestinfo] = useState(undefined);
@@ -19,30 +20,30 @@ function SingleTestPage(props) {
 
 
     function fetchTestInfo() {
-        fetch('http://localhost:8000/api/tests/' + test, {
+        fetch(utils.svurl + '/api/tests/' + test, {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.test);
-            setTestinfo(data.test);
-            setError(null);
-        }).catch(error => {
-            console.log(error);
-            setError("Error: " + error);
-        }).finally(() => {
-            setLoading(false);
-        });
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.test);
+                setTestinfo(data.test);
+                setError(null);
+            }).catch(error => {
+                console.log(error);
+                setError("Error: " + error);
+            }).finally(() => {
+                setLoading(false);
+            });
     }
 
-    if (error || testinfo===undefined) {
+    if (error || testinfo === undefined) {
         return (
             <div>
-                <HeaderComp /> 
+                <HeaderComp />
                 <div className="centerTitles">
                     <span className='main-title'>SOLVE A TEST</span>
                     <span className="sub-title">Something Wrong Happened</span>
@@ -60,9 +61,9 @@ function SingleTestPage(props) {
             <HeaderComp />
 
             {loading ? (
-            <div className="centerLoad">
-                <span>Loading...</span>
-            </div>
+                <div className="centerLoad">
+                    <span>Loading...</span>
+                </div>
             ) : (
                 <>
                     <div className="centerTitles">
@@ -76,11 +77,12 @@ function SingleTestPage(props) {
                     </div>
 
                     <div className="quizbottom">
-                        <button className='solve-quizbtn' onClick={()=>{
-                            navigate('/solvequizz/' + testinfo.quizzes[0].id);
+                        <button className='solve-quizbtn' onClick={() => {
+                            console.log('/solvequizz/' + testinfo.id);
+                            navigate('/solvequizz/' + testinfo.id);
                         }}>Solve quiz</button>
-                        
-                        <button className='back-btn' onClick={()=>{
+
+                        <button className='back-btn' onClick={() => {
                             navigate('/selecttest');
                             window.location.reload();
                         }}>Back to test selection</button>

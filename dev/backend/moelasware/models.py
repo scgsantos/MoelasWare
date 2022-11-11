@@ -1,21 +1,27 @@
 from django.db import models
-from django.core.validators import MinValueValidator 
+from django.core.validators import MinValueValidator
 from django.contrib.auth.models import User as AuthUser
+
 
 def fk(model):
     return models.ForeignKey(model, on_delete=models.CASCADE)
 
-# Mock User model that should function alongside Django's authentication 
-# Either add a ForeignKey to Django's Builtin User or 
+# Mock User model that should function alongside Django's authentication
+# Either add a ForeignKey to Django's Builtin User or
 # subclass the User in django.contrib.auth
+
+
 class User(models.Model):
     user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
 
     # needs to be haved created at least one quizz
     def can_solve_tests(self) -> bool:
         # the user needs to have created at least one quizz
-        return self.quizzes.exists()
-        
+        # query all the quizzes that has author as the current user
+        instance = Quiz.objects.filter(author=self)
+        return instance.exists()
+
+
 class Tag(models.Model):
     """
     Is associated with a Quiz to display what the Quiz is about
@@ -33,23 +39,23 @@ class Quiz(models.Model):
     question = models.TextField()
     description = models.TextField()
 
-    def get_number_of_options(self) -> int:
-        return self.options.count()
-
     # Accepted should be queried instead of stored as a field?
     def is_accepted(self):
         pass
+
 
 class Test(models.Model):
     """
     A collection of Quizzes.
     """
+
     def create_submission(self, user, answers):
-        # create a submission 
+        # create a submission and calculate a grade
         submission = Submission.objects.create(
             test=self,
-            user=user,
+            submitter=user,
         )
+        grade = 0
 
         # add answers to this submission
         for answer in answers:
@@ -58,26 +64,36 @@ class Test(models.Model):
 
             for quizAnswerId in quiz_answers:
                 quiz_answer_obj = QuizAnswer.objects.get(pk=quizAnswerId)
+
+                if quiz_answer_obj.correct is True:
+                    grade += 1
+
                 if quiz_answer_obj is None:
                     raise ValueError("QuizAnswer not found")
-                    
+
                 # chck if quizz answer is in quizz
                 if quiz_answer_obj.quiz.pk != quiz_id:
                     raise ValueError("QuizAnswer not in quiz")
-                
+
                 # create a submission answer
-                SubmissionAnswer.objects.create(
+                subanswrs = SubmissionAnswer.objects.create(
                     submission=submission,
                     answer=quiz_answer_obj
                 )
 
-        return submission
+                # No need:
+                # add the submission answer to the submission
+                # submission.answers.add(subanswrs)
+        print(grade, len(quiz_answers))
+        grade = grade / len(quiz_answers) * 100
+        return submission, grade
 
     author = fk(User)
 
     quizzes = models.ManyToManyField(Quiz)
 
     name = models.TextField()
+
 
 class Submission(models.Model):
     """
@@ -97,10 +113,11 @@ class Submission(models.Model):
         Two SubmissionAnswer's would be created: 
             One that has a ForeignKey to the "Red" QuizAnswer
             and another that has a ForeignKey "Orange" QuizAnswer
-    
+
     """
     test = fk(Test)
     submitter = fk(User)
+
 
 class Review(models.Model):
     """
@@ -114,6 +131,7 @@ class Review(models.Model):
 
     accepted = models.BooleanField(default=False)
     comment = models.TextField()
+
 
 class QuizAnswer(models.Model):
     """
@@ -136,12 +154,11 @@ class QuizAnswer(models.Model):
     Every QuizAnswer needs to justify why
     it is or isn't correct.
     """
-    quiz = fk(Quiz) 
+    quiz = fk(Quiz)
 
     text = models.TextField()
     correct = models.BooleanField(default=False)
     justification = models.TextField()
-
 
 
 class SubmissionAnswer(models.Model):
@@ -162,4 +179,3 @@ class SubmissionAnswer(models.Model):
     """
     submission = fk(Submission)
     answer = fk(QuizAnswer)
-
