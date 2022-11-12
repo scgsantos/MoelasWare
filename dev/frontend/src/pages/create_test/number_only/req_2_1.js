@@ -55,7 +55,7 @@ function CreateRandomTest() {
   }
 
   function handleNextButtonChange() {
-    if(text.length != 0){
+    if (text.length != 0) {
       history.push(CREATE_RANDOM_TEST_URL);
 
       navigate(PREVIEW_URL,
@@ -84,7 +84,7 @@ function CreateRandomTest() {
         <IncDecCounter
           num={num}
           setNum={setNum}
-          label={"Choose the number o quizzes you want in your test"}
+          label={"Choose the number of quizzes you want in your test"}
         />
         <div className="req-2-1-Publish-GoBack-buttons">
           <div className="req-2-1-buttonCreate">
