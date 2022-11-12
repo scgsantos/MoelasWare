@@ -1,35 +1,39 @@
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render
-from django.http.response import HttpResponseNotFound
 from django.http import JsonResponse
+from django.http.response import HttpResponseNotFound
+from django.shortcuts import get_object_or_404, render
+from moelasware.models import (AuthUser, Submission, SubmissionAnswer, Test,
+                               User)
 from rest_framework.decorators import api_view
 
-from moelasware.models import Test, Submission, SubmissionAnswer, User, AuthUser
-from .serializers import GetSubmissionsAnsweredByTest, GetTestSerializer, CreateTestSerializer, Quiz
+from .serializers import (CreateTestSerializer, GetSubmissionsAnsweredByTest,
+                          GetTestSerializer, Quiz)
 
 
-@api_view(['GET']) # allowed method(s)
-def get_test_view( request, pk, *args, **kwargs ):
-	# get test by id -> detail view
-	instance = get_object_or_404(Test, pk=pk)
-	serializer = GetTestSerializer(obj, many=False)
+@api_view(["GET"])  # allowed method(s)
+def get_test_view(request, pk, *args, **kwargs):
+    # get test by id -> detail view
+    instance = get_object_or_404(Test, pk=pk)
+    serializer = GetTestSerializer(obj, many=False)
 
-	return JsonResponse({'test': serializer.data})
+    return JsonResponse({"test": serializer.data})
 
 
-@api_view(['POST'])
-def create_test_view( request ):
-	serializer = CreateTestSerializer(data=request.data)
+@api_view(["POST"])
+def create_test_view(request):
+    serializer = CreateTestSerializer(data=request.data)
 
-	if serializer.is_valid(raise_exception=True): # raises exception on why its not valid
-		#instance = serializer.save()
-		
-		#print(instance)
-		return Response(serializer.data)
+    if serializer.is_valid(
+        raise_exception=True
+    ):  # raises exception on why its not valid
+        # instance = serializer.save()
 
-	return Response({'invalid': 'not good data'}, status=400)
+        # print(instance)
+        return Response(serializer.data)
 
-'''
+    return Response({"invalid": "not good data"}, status=400)
+
+
+"""
 @api_view(['GET'])
 def submissions_by_user_view(request, pk):
 
@@ -47,19 +51,23 @@ def submissions_by_user_view(request, pk):
     submission = GetSubmissionsAnsweredByTest(submissions, many=True)
 
     return JsonResponse({'submissions_by_user' : ["potetu"]})
-'''
-@api_view(['GET'])
+"""
+
+
+@api_view(["GET"])
 def submissions_by_user_view(request, pk):
 
     # TO DO CHANGE SERIALIZER
     user = get_object_or_404(User, id=pk)
 
-    user = user.user.username 
+    user = user.user.username
 
-    submissions = SubmissionAnswer.objects.filter(submission__submitter__user__username=user)
+    submissions = SubmissionAnswer.objects.filter(
+        submission__submitter__user__username=user
+    )
 
     if not submissions.exists():
-        return HttpResponseNotFound('Submissions not found')
+        return HttpResponseNotFound("Submissions not found")
 
     info_list = []
     id = 0
@@ -72,44 +80,75 @@ def submissions_by_user_view(request, pk):
                 if tag.text not in tags:
                     tags += tag.text
                     tags += ","
-        
 
-        tags = tags[0:len(tags)-1]
+        tags = tags[0 : len(tags) - 1]
         id += 1
         info_list.append({test_id: [test_id, tags, author, id]})
 
-
     return JsonResponse({"submissions": info_list})
 
-def return_date(date:str):
-	date_months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
-	x = date.replace(" ", "-").split("-")
-	date_string = date_months[int(x[1]) - 1] + " " + x[2] + " " + x[0]
-	return date_string
 
-@api_view(['GET'])
+def return_date(date: str):
+    date_months = [
+        "jan",
+        "feb",
+        "mar",
+        "apr",
+        "may",
+        "jun",
+        "jul",
+        "aug",
+        "sep",
+        "oct",
+        "nov",
+        "dec",
+    ]
+    x = date.replace(" ", "-").split("-")
+    date_string = date_months[int(x[1]) - 1] + " " + x[2] + " " + x[0]
+    return date_string
+
+
+@api_view(["GET"])
 def hall_of_fame_view(request):
 
-	users = User.objects.all().order_by('-user') 
-	if not users.exists():
-		return HttpResponseNotFound('User not found')
+    users = User.objects.all().order_by("-user")
+    if not users.exists():
+        return HttpResponseNotFound("User not found")
 
-	submissions = SubmissionAnswer.objects.all()
-	if not submissions.exists():
-		return HttpResponseNotFound('Submissions not found')
+    submissions = SubmissionAnswer.objects.all()
+    if not submissions.exists():
+        return HttpResponseNotFound("Submissions not found")
 
-	info_list = []
-	for user in users:
-		username = user.user.username
-		solved_tests = SubmissionAnswer.objects.filter(submission__submitter__user__username=user.user.username).count()
-		date_joined = return_date(str(user.user.date_joined))
-		correct_answers = SubmissionAnswer.objects.filter(submission__submitter=user).filter(answer__correct=True).count()
-		info_list.append({user.user.id: [username, date_joined, solved_tests, correct_answers, user.user.id, user.user.email]})
+    info_list = []
+    for user in users:
+        username = user.user.username
+        solved_tests = SubmissionAnswer.objects.filter(
+            submission__submitter__user__username=user.user.username
+        ).count()
+        date_joined = return_date(str(user.user.date_joined))
+        correct_answers = (
+            SubmissionAnswer.objects.filter(submission__submitter=user)
+            .filter(answer__correct=True)
+            .count()
+        )
+        info_list.append(
+            {
+                user.user.id: [
+                    username,
+                    date_joined,
+                    solved_tests,
+                    correct_answers,
+                    user.user.id,
+                    user.user.email,
+                ]
+            }
+        )
 
-    #TODO Create Serializer for this
-	return JsonResponse({'fame': info_list})
-    
-'''
+        # TODO Create Serializer for this
+    return JsonResponse({"fame": info_list})
+
+
+"""
 @api_view(['GET'])
 def submission_of_a_test_view(request, pk):
 
@@ -126,18 +165,22 @@ def submission_of_a_test_view(request, pk):
 
     #TODO Add Time
     return JsonResponse({"submissions_by_test": submission.data})    
-'''
-@api_view(['GET'])
+"""
+
+
+@api_view(["GET"])
 def submission_of_a_test_view(request, pk):
 
-    #TODO USE SERIALZIER
+    # TODO USE SERIALZIER
     test = get_object_or_404(Test, id=pk)
 
-    submissions = SubmissionAnswer.objects.filter(submission__test__id=pk).order_by('submission__submitter__user__id')
+    submissions = SubmissionAnswer.objects.filter(submission__test__id=pk).order_by(
+        "submission__submitter__user__id"
+    )
 
     if not submissions.exists():
-        #print("This is user hasn't taken any tests yet...")
-        return HttpResponseNotFound('Submissions not found')
+        # print("This is user hasn't taken any tests yet...")
+        return HttpResponseNotFound("Submissions not found")
 
     info_list = []
     id = 0
@@ -145,28 +188,30 @@ def submission_of_a_test_view(request, pk):
         user_id = sub.submission.submitter.user.id
         username = sub.submission.submitter.user.username
         id += 1
-        info_list.append({user_id : [username, 0, id]})
-    
-    #submission = GetSubmissionsAnsweredByTest(submissions, many=True)
+        info_list.append({user_id: [username, 0, id]})
 
-    #TODO Add Time
-    return JsonResponse({"submissions": info_list})   
+    # submission = GetSubmissionsAnsweredByTest(submissions, many=True)
 
-@api_view(['GET'])
+    # TODO Add Time
+    return JsonResponse({"submissions": info_list})
+
+
+@api_view(["GET"])
 def get_all_tests_view(request):
-    
-    tests = Test.objects.all().order_by('id') 
+
+    tests = Test.objects.all().order_by("id")
     if not tests.exists():
-        return HttpResponseNotFound('User not found')
+        return HttpResponseNotFound("User not found")
 
     submissions = SubmissionAnswer.objects.all()
     if not submissions.exists():
-        return HttpResponseNotFound('Submissions not found')
-
+        return HttpResponseNotFound("Submissions not found")
 
     info_list = []
     for test in tests:
-        solved_tests = SubmissionAnswer.objects.filter(submission__test__id=test.id).count()
+        solved_tests = SubmissionAnswer.objects.filter(
+            submission__test__id=test.id
+        ).count()
         tags = ""
         for quiz in test.quizzes.all():
             for tag in quiz.tags.all():
@@ -174,8 +219,10 @@ def get_all_tests_view(request):
                     tags += tag.text
                     tags += ","
 
-        tags = tags[0:len(tags)-1]
-        info_list.append({test.id: [test.id, solved_tests, tags, test.author.user.username]})
+        tags = tags[0 : len(tags) - 1]
+        info_list.append(
+            {test.id: [test.id, solved_tests, tags, test.author.user.username]}
+        )
 
-    #TODO Create Serializer for this
-    return JsonResponse({'submissions_by_test': info_list})
+    # TODO Create Serializer for this
+    return JsonResponse({"submissions_by_test": info_list})
