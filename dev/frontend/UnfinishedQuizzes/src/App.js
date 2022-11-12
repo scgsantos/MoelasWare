@@ -7,16 +7,17 @@ import React, { useState } from 'react';
 import { format } from 'react-string-format';
 
 function App() {
-  var id = 1;
+  
   var numberOfunfinishedquizzes = 14;
   var [username, setUsername] = useState("");
-  let url =  format('http://localhost:8000/api/users/{0}', id);
+  let url =  format('http://localhost:8000/api/users/@me');
     fetch(url)
       .then(response => response.json())
       .then(data => {
         setUsername(data.username);
     });
-
+  
+    
   return (
     <div class="App">
       <div class = "topbar">
