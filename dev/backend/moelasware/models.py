@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator 
 from django.contrib.auth.models import User as AuthUser
 
+
 def fk(model):
     return models.ForeignKey(model, on_delete=models.CASCADE)
 
@@ -10,7 +11,6 @@ def fk(model):
 # subclass the User in django.contrib.auth
 class User(models.Model):
     user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
-    
 
 class Tag(models.Model):
     """
@@ -28,10 +28,6 @@ class Quiz(models.Model):
 
     question = models.TextField()
     description = models.TextField()
-    
-    reviwer1 = models.TextField()
-    reviwer2 = models.TextField()
-    reviwer3 = models.TextField()
 
     # Accepted should be queried instead of stored as a field?
     def is_accepted(self):
@@ -110,6 +106,8 @@ class QuizAnswer(models.Model):
     correct = models.BooleanField(default=False)
     justification = models.TextField()
 
+
+
 class SubmissionAnswer(models.Model):
     """
     Represents an Answer made by a User while 
@@ -129,24 +127,4 @@ class SubmissionAnswer(models.Model):
     submission = fk(Submission)
     answer = fk(QuizAnswer)
     
-class QuizTag(models.Model):
-    """
-    Represents a Quiz Tag. 
 
-    Applies a category to a Quiz.
-    """
-    quiz_id = fk(Quiz)
-    tag_id = fk(Tag)
-    
-class QuizReview(models.Model):
-    """
-    Represents a Quiz Review. 
-
-    It can either be accepted or rejected,
-    being a comment mandatory if it is rejected.
-    """
-    reviewer_id = fk(User)
-    quiz_id = fk(Quiz)
-
-    accepted = models.BooleanField(default=False)
-    comment = models.TextField()

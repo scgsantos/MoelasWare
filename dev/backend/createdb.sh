@@ -1,7 +1,0 @@
-#!/bin/sh
-PGPASS=$(cat POSTGRES_PASSWORD_FILE)
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
-  CREATE USER moelasware WITH PASSWORD '$PGPASS';
-  CREATE DATABASE moelasware;
-  GRANT ALL PRIVILEGES ON DATABASE moelasware TO moelasware;
-EOSQL
