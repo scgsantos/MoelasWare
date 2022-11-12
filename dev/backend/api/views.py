@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 
 from moelasware.models import Test, Submission, SubmissionAnswer, User, AuthUser
-from .serializers import GetSubmissionsAnsweredByTest, GetTestSerializer, CreateTestSerializer, Quiz
+from .serializers import GetSubmissionsAnsweredByTest, GetTestSerializer, CreateTestSerializer, HallOfFame, HallOfFameGetTestInfo
 
 
 @api_view(['GET']) # allowed method(s)
@@ -51,10 +51,8 @@ def handle_serializer(obj):
 
     return obj_list
 
-
 @api_view(['GET'])
 def submissions_by_user_view(request, pk):
-
 
     user = get_object_or_404(User, id=pk)
 
@@ -64,46 +62,11 @@ def submissions_by_user_view(request, pk):
 
     if not submissions.exists():
         return HttpResponseNotFound('Submissions not found')
-
 
     submission = GetSubmissionsAnsweredByTest(submissions, many=True)
     submission = handle_serializer(submission.data)
 
     return JsonResponse({'submissions' : submission})
-'''
-@api_view(['GET'])
-def submissions_by_user_view(request, pk):
-
-    # TO DO CHANGE SERIALIZER
-    user = get_object_or_404(User, id=pk)
-
-    user = user.user.username 
-
-    submissions = SubmissionAnswer.objects.filter(submission__submitter__user__username=user)
-
-    if not submissions.exists():
-        return HttpResponseNotFound('Submissions not found')
-
-    info_list = []
-    id = 0
-    for sub in submissions:
-        test_id = sub.submission.test.id
-        author = sub.submission.test.author.user.username
-        tags = ""
-        for quiz in sub.submission.test.quizzes.all():
-            for tag in quiz.tags.all():
-                if tag.text not in tags:
-                    tags += tag.text
-                    tags += ","
-        
-
-        tags = tags[0:len(tags)-1]
-        id += 1
-        info_list.append({test_id: [test_id, tags, author, id]})
-
-
-    return JsonResponse({"submissions": info_list})
-'''
 
 def return_date(date:str):
 	date_months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
@@ -114,12 +77,11 @@ def return_date(date:str):
 @api_view(['GET'])
 def hall_of_fame_view(request):
 
-	users = User.objects.all().order_by('-user') 
+	users = User.objects.all().order_by('user') 
 	if not users.exists():
 		return HttpResponseNotFound('User not found')
 
-	submissions = SubmissionAnswer.objects.all()
-	if not submissions.exists():
+	if not SubmissionAnswer.objects.all().exists():
 		return HttpResponseNotFound('Submissions not found')
 
 	info_list = []
@@ -132,29 +94,17 @@ def hall_of_fame_view(request):
 
     #TODO Create Serializer for this
 	return JsonResponse({'fame': info_list})
-    
-'''
+
+def handle_serializer_test(obj):
+    obj = handle_serializer(obj)
+    for i in obj:
+        for key in i.keys():
+            i[key].append(0)
+    return obj
+ 
 @api_view(['GET'])
 def submission_of_a_test_view(request, pk):
 
-
-    test = get_object_or_404(Test, id=pk)
-
-    submissions = SubmissionAnswer.objects.filter(submission__test__id=pk)
-
-    if not submissions.exists():
-        #print("This is user hasn't taken any tests yet...")
-        return HttpResponseNotFound('Submissions not found')
-    
-    submission = GetSubmissionsAnsweredByTest(submissions, many=True)
-
-    #TODO Add Time
-    return JsonResponse({"submissions_by_test": submission.data})    
-'''
-@api_view(['GET'])
-def submission_of_a_test_view(request, pk):
-
-    #TODO USE SERIALZIER
     test = get_object_or_404(Test, id=pk)
 
     submissions = SubmissionAnswer.objects.filter(submission__test__id=pk).order_by('submission__submitter__user__id')
@@ -163,18 +113,33 @@ def submission_of_a_test_view(request, pk):
         #print("This is user hasn't taken any tests yet...")
         return HttpResponseNotFound('Submissions not found')
 
-    info_list = []
-    id = 0
-    for sub in submissions:
-        user_id = sub.submission.submitter.user.id
-        username = sub.submission.submitter.user.username
-        id += 1
-        info_list.append({user_id : [username, 0, id]})
-    
-    #submission = GetSubmissionsAnsweredByTest(submissions, many=True)
+    submission = GetSubmissionsAnsweredByTest(submissions, many=True)
+    submission = handle_serializer_test(submission.data)
 
     #TODO Add Time
-    return JsonResponse({"submissions": info_list})   
+    return JsonResponse({"submissions": submission})  
+
+
+def handle_serializer_all_tests(obj):
+    obj_list = []
+    id = 0
+
+    for i in obj:
+        test_id = i["id"]
+        author = i["author"]["user"]["username"]
+        solved_tests = i["solved_tests"]
+        tags = ""
+        for j in i["quizzes"]:
+            for tag in j["tags"]:
+                if tag["text"] not in tags:
+                    tags += tag["text"]
+                    tags += ","
+        
+        tags = tags[0:len(tags)-1]
+        id += 1
+        obj_list.append({test_id : [test_id, solved_tests, tags, author]})
+
+    return obj_list 
 
 @api_view(['GET'])
 def get_all_tests_view(request):
@@ -183,12 +148,8 @@ def get_all_tests_view(request):
     if not tests.exists():
         return HttpResponseNotFound('User not found')
 
-    submissions = SubmissionAnswer.objects.all()
-    if not submissions.exists():
-        return HttpResponseNotFound('Submissions not found')
 
-
-    info_list = []
+    """    info_list = []
     for test in tests:
         solved_tests = SubmissionAnswer.objects.filter(submission__test__id=test.id).count()
         tags = ""
@@ -200,6 +161,10 @@ def get_all_tests_view(request):
 
         tags = tags[0:len(tags)-1]
         info_list.append({test.id: [test.id, solved_tests, tags, test.author.user.username]})
+        """
 
-    #TODO Create Serializer for this
-    return JsonResponse({'submissions_by_test': info_list})
+    sub = HallOfFameGetTestInfo(tests, many=True).data
+    sub = handle_serializer_all_tests(sub)
+    print(sub)
+
+    return JsonResponse({'submissions_by_test': sub})
