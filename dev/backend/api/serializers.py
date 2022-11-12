@@ -65,3 +65,10 @@ class GetQuizzesSerializer( serializers.ModelSerializer):
 
 	def get_number_of_reviews(self, obj):
 		return Review.objects.filter(quiz__id = obj.id).count()
+
+
+class GetReviewSerializer(serializers.ModelSerializer):
+	quiz = GetQuizzesSerializer(read_only=True)
+	class Meta:
+		model = Review
+		fields = ['quiz']

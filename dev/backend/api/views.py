@@ -53,15 +53,16 @@ def get_quiz_view(request, id):
 # @login_required
 def get_not_approved_quizzes(request):
 
-    quiz = Quiz.objects.filter(approved = False)
 
-    if not quiz.exists():
+    #reviews = Review.objects.filter(pending = True).filter(reviewer__user__id = request.user.id)
+    reviews = Review.objects.filter(pending = True).filter(reviewer__user__id = 1)
+
+    if not reviews.exists():
         return HttpResponseNotFound('Quizzes not found')
 
-    quiz = GetQuizzesSerializer(quiz, many = True)
-    print(quiz.data, "----->")
-
-    return JsonResponse({"quizzes": quiz.data})
+    reviews = GetReviewSerializer(reviews, many = True).data
+    print(reviews, "-------->")
+    return JsonResponse({"quizzes": reviews})
 
 
 @api_view(['POST'])
