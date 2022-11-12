@@ -32,9 +32,9 @@ def create_test_view(request):
         #instance = serializer.save()
 
         # print(instance)
-        return Response(serializer.data)
+        return JsonResponse(serializer.data)
 
-    return Response({'invalid': 'not good data'}, status=400)
+    return JsonResponse({'invalid': 'not good data'}, status=400)
 
 
 @api_view(['GET'])
@@ -59,9 +59,9 @@ def create_quiz_review_view(request):
     if serializer.is_valid(raise_exception=True):
         review = Review.objects.create(quiz=Quiz.objects.get(pk=serializer.data['quiz']), reviewer=User.objects.get(
             pk=serializer.data['reviewer']), accepted=serializer.data['accepted'], comment=serializer.data['comment'])
-        return Response(serializer.data)
+        return JsonResponse(serializer.data)
 
-    return Response('Bad data')
+    return JsonResponse({'error':'Bad data'})
 
 
 @api_view(['GET'])
