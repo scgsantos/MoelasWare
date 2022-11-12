@@ -1,8 +1,10 @@
 function IncDecCounter(props) {
-  const numberValidation = new RegExp("^[1-9][0-9]*$");
+  const numberValidation = new RegExp("^([1-9][0-9]{0,2})$");
 
   let incNum = () => {
-    props.setNum(Number(props.num) + 1);
+    if (props.num < 999) {
+      props.setNum(Number(props.num) + 1);
+    }
   };
 
   let decNum = () => {
@@ -14,8 +16,6 @@ function IncDecCounter(props) {
   let handleChange = (e) => {
     if (numberValidation.test(e.target.value)) {
       props.setNum(e.target.value);
-    } else {
-      props.setNum(1);
     }
   };
 

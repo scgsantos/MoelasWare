@@ -106,7 +106,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 2em;
 }
 
 .req-2-1-GoBackbutton {
@@ -117,8 +116,7 @@
   margin: 0.5em;
 }
 
-
-.checkbox{
+.checkbox {
   justify-content: center;
   margin: 2em;
   cursor: pointer;
@@ -131,3 +129,12 @@
   transform: translateY(-0.075em);
 }
 
+.req-2-1-errorInput {
+  color: #c51244;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  margin-top: 0em;
+  margin-bottom: 3em;
+}

@@ -6,8 +6,7 @@ import "../req_2_1.css";
 import { useNavigate } from "react-router-dom";
 
 import { CREATE_RANDOM_TEST_URL, MENU_URL, PREVIEW_URL } from "urls.js";
-import history from 'history.js';
-
+import history from "history.js";
 
 function CreateRandomTest() {
   const [num, setNum] = useState(1);
@@ -25,20 +24,18 @@ function CreateRandomTest() {
   let navigate = useNavigate();
 
   function getFirstQuiz() {
-
-    fetch('http://localhost:8000/api/quizzes/gen/', {
+    fetch("http://localhost:8000/api/quizzes/gen/", {
       method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ num_quizzes: num })
+      body: JSON.stringify({ num_quizzes: num }),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         setQuizzes(data.quizzes);
       });
-
   }
 
   function handleCreateButtonChange() {
@@ -51,16 +48,19 @@ function CreateRandomTest() {
 
   function handleNameChange(e) {
     setText(e.target.value);
-
   }
 
   function handleNextButtonChange() {
     if (text.length != 0) {
       history.push(CREATE_RANDOM_TEST_URL);
 
-      navigate(PREVIEW_URL,
-        { state: { name: text, quizzes: quizzes, previous_path: CREATE_RANDOM_TEST_URL } },
-      );
+      navigate(PREVIEW_URL, {
+        state: {
+          name: text,
+          quizzes: quizzes,
+          previous_path: CREATE_RANDOM_TEST_URL,
+        },
+      });
       window.location.reload();
     }
   }
@@ -72,7 +72,6 @@ function CreateRandomTest() {
   function handleGoBackToMenu() {
     navigate(MENU_URL);
   }
-
 
   if (isPage1) {
     return (
@@ -88,7 +87,7 @@ function CreateRandomTest() {
         />
         <div className="req-2-1-Publish-GoBack-buttons">
           <div className="req-2-1-buttonCreate">
-            <button onClick={handleGoBackToMenu}>Back</button>
+            <button onClick={handleGoBackToMenu}>Go Back</button>
           </div>
           &ensp;&ensp;
           <div className="req-2-1-buttonCreate">
@@ -111,16 +110,19 @@ function CreateRandomTest() {
             className="req-2-1-inputText"
             type="text"
             name="name"
-            value={text}
             onChange={handleNameChange}
           />
+          <h2 className="req-2-1-errorInput">
+            {text.length > 0 ? "" : "Name is mandatory"}
+          </h2>
         </div>
 
         <h3 className="req-2-1-title"> Chosen Quizzes: </h3>
         <ul className="req-2-1-quizList">
-          {quizzes.map((quiz) => <li className="quiz">{quiz.question}</li>)}
+          {quizzes.map((quiz) => (
+            <li className="quiz">{quiz.question}</li>
+          ))}
         </ul>
-
 
         <div className="req-2-1-Publish-GoBack-buttons">
           <button className="req-2-1-GoBackbutton" onClick={handleGoBackChange}>

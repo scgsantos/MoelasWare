@@ -5,8 +5,13 @@ import "../req_2_1.css";
 
 import { useNavigate } from "react-router-dom";
 
-import { CREATE_TEST_URL, MENU_URL, PREVIEW_URL, CREATE_TEST_WITH_TAGS_URL } from "urls.js";
-import history from 'history.js';
+import {
+  CREATE_TEST_URL,
+  MENU_URL,
+  PREVIEW_URL,
+  CREATE_TEST_WITH_TAGS_URL,
+} from "urls.js";
+import history from "history.js";
 
 function CreateRandomTestWithSpecs() {
   const [num, setNum] = useState(1);
@@ -25,24 +30,21 @@ function CreateRandomTestWithSpecs() {
     setPrevTags(history.location.state?.tags);
   }
 
-
   let navigate = useNavigate();
 
   function getFirstQuiz() {
-
-    fetch('http://localhost:8000/api/quizzes/gen/', {
+    fetch("http://localhost:8000/api/quizzes/gen/", {
       method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ num_quizzes: num, tags: tags })
+      body: JSON.stringify({ num_quizzes: num, tags: tags }),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         setQuizzes(data.quizzes);
       });
-
   }
 
   function handleCreateButtonChange() {
@@ -62,13 +64,17 @@ function CreateRandomTestWithSpecs() {
   }
 
   function handleNextButtonChange() {
-    if( text.length != 0){
-
+    if (text.length != 0) {
       history.push(CREATE_TEST_WITH_TAGS_URL);
 
-      navigate(PREVIEW_URL,
-        { state: { tags: tags, name: text, quizzes: quizzes, previous_path: CREATE_TEST_WITH_TAGS_URL } },
-      );
+      navigate(PREVIEW_URL, {
+        state: {
+          tags: tags,
+          name: text,
+          quizzes: quizzes,
+          previous_path: CREATE_TEST_WITH_TAGS_URL,
+        },
+      });
       window.location.reload();
     }
   }
@@ -77,7 +83,7 @@ function CreateRandomTestWithSpecs() {
     setIsPage1(true);
   }
 
-    function handleGoBackToMenu() {
+  function handleGoBackToMenu() {
     navigate(MENU_URL);
   }
 
@@ -95,7 +101,9 @@ function CreateRandomTestWithSpecs() {
         />
 
         <div className="req-2-1-inputDiv">
-          <h1 className="req-2-1-inputTitle">{"Specify the tags you must have in the quizzes"}</h1>
+          <h1 className="req-2-1-inputTitle">
+            {"Specify the tags you must have in the quizzes"}
+          </h1>
           <input
             className="req-2-2-inputText"
             type="text"
@@ -107,14 +115,13 @@ function CreateRandomTestWithSpecs() {
 
         <div className="req-2-1-Publish-GoBack-buttons">
           <div className="req-2-1-buttonCreate">
-            <button onClick={handleGoBackToMenu}>Back</button>
+            <button onClick={handleGoBackToMenu}>Go Back</button>
           </div>
           &ensp;&ensp;
           <div className="req-2-1-buttonCreate">
             <button onClick={handleCreateButtonChange}>Next</button>
           </div>
         </div>
-
       </div>
     );
   } else {
@@ -134,11 +141,16 @@ function CreateRandomTestWithSpecs() {
             value={text}
             onChange={handleNameChange}
           />
+          <h2 className="req-2-1-errorInput">
+            {text.length > 0 ? "" : "Name is mandatory"}
+          </h2>
         </div>
 
         <h3 className="req-2-1-title"> Chosen Quizzes: </h3>
-        <ul >
-          {quizzes.map((quiz) => <li className="quiz">{quiz.question}</li>)}
+        <ul>
+          {quizzes.map((quiz) => (
+            <li className="quiz">{quiz.question}</li>
+          ))}
         </ul>
 
         <div className="req-2-1-Publish-GoBack-buttons">
@@ -154,7 +166,7 @@ function CreateRandomTestWithSpecs() {
             className="req-2-1-CreateButton"
             onClick={handleNextButtonChange}
           >
-            Create
+            Next
           </button>
         </div>
       </div>
