@@ -2,7 +2,7 @@ from http.client import ACCEPTED
 from django.shortcuts import get_object_or_404
 
 from datetime import time
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseNotFound
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponseBadRequest
 
 from moelasware.models import Test, User, Quiz, QuizAnswer, QuizTag, Tag, Submission, SubmissionAnswer, QuizAnswer, Review
-from api.serializers import CreateReviewSerializer, GetQuizReviewSerializer, GetReviewSerializer, GetTestSerializer, CreateTestSerializer, GetQuizAnswerSerializer
+from api.serializers import CreateReviewSerializer, GetQuizReviewSerializer, GetReviewSerializer, GetTestSerializer, CreateTestSerializer, GetQuizAnswerSerializer, GetQuizzesSerializer
 
 
 @api_view(['GET'])  # allowed method(s)
@@ -40,13 +40,28 @@ def create_test_view(request):
 @api_view(['GET'])
 # @login_required
 def get_quiz_view(request, id):
+
     quiz = get_object_or_404(Quiz, id=id)
-
     quiz_serializer = GetQuizReviewSerializer(quiz)
-    answers = QuizAnswer.objects.filter(quiz=quiz.id)
 
+    answers = QuizAnswer.objects.filter(quiz=quiz.id)
     answer_serializer = GetQuizAnswerSerializer(answers, many=True)
+
     return JsonResponse({'quiz': quiz_serializer.data, 'answers': answer_serializer.data})
+
+@api_view(['GET'])
+# @login_required
+def get_not_approved_quizzes(request):
+
+    quiz = Quiz.objects.filter(approved = False)
+
+    if not quiz.exists():
+        return HttpResponseNotFound('Quizzes not found')
+
+    quiz = GetQuizzesSerializer(quiz, many = True)
+    print(quiz.data, "----->")
+
+    return JsonResponse({"quizzes": quiz.data})
 
 
 @api_view(['POST'])

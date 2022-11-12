@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from moelasware.models import Test, Quiz, QuizAnswer, QuizTag, Tag, Submission, SubmissionAnswer, Review
-from moelasware.models import User as AuthUser
+from moelasware.models import Test, Quiz, QuizAnswer, QuizTag, Tag, Submission, SubmissionAnswer, Review, AuthUser, User
 
 class GetTestSerializer( serializers.ModelSerializer ):
 	class Meta:
@@ -12,6 +11,25 @@ class CreateTestSerializer( serializers.ModelSerializer ):
 	class Meta:
 		model = Test
 		fields = ['author', 'quizzes', 'name', 'num_quizzes']
+
+class GetAuthUsername(serializers.ModelSerializer):
+	class Meta:
+		model = AuthUser
+		fields = ['username']
+
+class GetUserUsername(serializers.ModelSerializer):
+	user = GetAuthUsername(read_only=True)
+	class Meta:
+		model = User
+		fields = ['user']
+
+
+class GetTag(serializers.ModelSerializer):
+	class Meta:
+		model = Tag
+		fields = ['text']
+
+
 		
 class GetQuizReviewSerializer ( serializers.ModelSerializer ):
 	class Meta:
@@ -32,3 +50,18 @@ class CreateReviewSerializer( serializers.ModelSerializer ):
 	class Meta:
 		model = Review
 		fields = ['reviewer', 'quiz', 'accepted', 'comment']
+
+
+
+
+
+class GetQuizzesSerializer( serializers.ModelSerializer):
+	number_of_reviews = serializers.SerializerMethodField('get_number_of_reviews')
+	author = GetUserUsername(read_only=True)
+	tags = GetTag(read_only=True, many=True)
+	class Meta:
+		model = Quiz
+		fields = ['author', 'creation_date', 'tags', 'number_of_reviews']
+
+	def get_number_of_reviews(self, obj):
+		return Review.objects.filter(quiz__id = obj.id).count()
