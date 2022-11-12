@@ -29,9 +29,7 @@ DEBUG = True  # nosec
 
 ALLOWED_HOSTS = []
 
-# TODO: Check if we really want to allow all origins
-CORS_ALLOW_ALL_ORIGINS = True 
-
+APPEND_SLASH = False
 
 # Application definition
 
@@ -46,11 +44,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
 
+    'corsheaders',
+
     'moelasware',
     'api',
 ]
 
 MIDDLEWARE = [
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,11 +60,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-
 ]
+
 
 ROOT_URLCONF = 'moelasware.urls'
 
@@ -122,6 +123,13 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
 
 # Static files (CSS, JavaScript, Images)

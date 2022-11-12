@@ -1,14 +1,21 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ReactDOM from 'react-dom/client';
+
 import './index.css';
-import App from './App';
+import Login from './pages/login.js';
+import { LOGIN_URL } from './urls.js';
+
 import reportWebVitals from './reportWebVitals';
+//import Quiz from './pages/create_quizz/createQuiz';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <Router history={history}>
+    <Routes>
+      <Route exact path={LOGIN_URL} element={<Login />} />
+    </Routes>
+  </Router>
 );
 
 // If you want to start measuring performance in your app, pass a function

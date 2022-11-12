@@ -22,7 +22,7 @@ class Quiz(models.Model):
     """
     Question that has several answers and associated tags.
     """
-    author = fk(User)
+    author = fk(AuthUser)
     tags = models.ManyToManyField(Tag)
 
     question = models.TextField()
@@ -125,4 +125,26 @@ class SubmissionAnswer(models.Model):
     """
     submission = fk(Submission)
     answer = fk(QuizAnswer)
+
+class QuizTag(models.Model):
+    """
+    Represents a Quiz Tag. 
+
+    Applies a category to a Quiz.
+    """
+    quiz_id = fk(Quiz)
+    tag_id = fk(Tag)
+    
+class QuizReview(models.Model):
+    """
+    Represents a Quiz Review. 
+
+    It can either be accepted or rejected,
+    being a comment mandatory if it is rejected.
+    """
+    reviewer_id = fk(User)
+    quiz_id = fk(Quiz)
+
+    accepted = models.BooleanField(default=False)
+    comment = models.TextField()
 

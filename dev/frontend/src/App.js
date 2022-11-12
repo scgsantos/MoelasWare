@@ -1,11 +1,14 @@
-import './common.css';
 import React from 'react';
-import Login from './pages/login';
 
-function App() {
-  return (
-    <Login/>
-  );
+import './common.css';
+
+export default class App extends React.Component {
+  
+  render() {
+    return (
+      <div>
+        <h1> Home Page </h1>
+      </div>
+    );
+  }
 }
-
-export default App;

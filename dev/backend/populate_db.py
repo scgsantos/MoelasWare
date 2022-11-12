@@ -26,7 +26,8 @@ except IntegrityError:
     pass
 
 try:
-    john = AuthUser.objects.create_user("john", "reese@themachine.com", "harold")
+    john = AuthUser.objects.create_user(
+        "john", "reese@themachine.com", "harold")
 except IntegrityError:
     print("John already exists")
     pass
@@ -133,9 +134,8 @@ try:
     )
 
     # Reviews
-    reviews = Review.objects.bulk_create([
-           Review(reviewer=User.objects.get(user=manel), quiz=quizzes[0], accepted=False, comment="comment"),
-        ])
+    reviews = Review.objects.bulk_create([Review(reviewer=User.objects.get(
+        user=manel), quiz=quizzes[0], accepted=False, comment="comment"), ])
 
 except DatabaseError:
     traceback.print_exc()
