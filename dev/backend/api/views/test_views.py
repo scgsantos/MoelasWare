@@ -1,4 +1,5 @@
-from api.serializers import CreateTestSerializer, GetTestSerializer
+from api.serializers import (CreateTestSerializer, GetTestSerializer,
+                             GetTestWithSubmissionsSerializer)
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404
 from moelasware.models import Test
@@ -61,7 +62,12 @@ def get_all_tests_view(request):
     # TODO: think about actually returning +1 records, for simplifying "Next"-type buttons on frontend
     tests = Test.objects.filter(pk__range=(offset, offset + limit - 1))
 
-    serializer = GetTestSerializer(tests, many=True)
+    serializer = (
+        GetTestWithSubmissionsSerializer
+        if request.query_params.get("includeMySubmissions") == "true"
+        else GetTestSerializer
+    )
+    serializer = serializer(tests, many=True)
     return JsonResponse({"tests": serializer.data})
 
 

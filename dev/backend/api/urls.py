@@ -4,11 +4,6 @@ from rest_framework_simplejwt.views import (TokenObtainPairView,
 
 from . import views
 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
-
 urlpatterns = [
     path("tests/<int:pk>/", views.get_test_view),
     path("tests/<int:pk>/submissions/", views.submission_of_a_test_view),

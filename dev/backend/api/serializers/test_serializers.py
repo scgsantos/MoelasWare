@@ -17,6 +17,23 @@ class GetTestSerializer(serializers.ModelSerializer):
         ]
 
 
+class GetTestWithSubmissionsSerializer(serializers.ModelSerializer):
+    quizzes = QuizSerializer(read_only=True, many=True)
+    submissions = serializers.PrimaryKeyRelatedField(
+        source="submission_set", many=True, read_only=True
+    )
+
+    class Meta:
+        model = Test
+        fields = [
+            "id",
+            "name",
+            "author",
+            "quizzes",
+            "submissions",
+        ]
+
+
 class CreateTestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Test
