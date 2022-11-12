@@ -87,6 +87,8 @@ pages:
     - npm i
   only:
     - tags
+  variables:
+    CI: "false"  # we don't care about warnings for now
   script:
     - npm run build
     - mv -f build/ ../../public/
