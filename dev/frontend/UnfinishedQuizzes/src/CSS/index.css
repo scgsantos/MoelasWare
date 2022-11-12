@@ -1,11 +1,13 @@
 body{
-    background-color: #BACDD1;
+    background-color: #D2DDDF;
 }
 
+header a { text-decoration: none; }
+header a:hover, header a:active { text-decoration: underline; }
 
 .button{
-    background-color: #BACDD1;
-    border: 2px solid black;
+    background-color: #D2DDDF;
+    border: 1px solid black;
     color: black;
     padding: 10px 20px;
     text-align: center;
@@ -23,7 +25,7 @@ body{
 
 .button:hover {
     background-color: black;
-    color: #BACDD1;
+    color: #D2DDDF;
 }
 
 .toptitle{
@@ -37,7 +39,6 @@ body{
 .unfinishedquiz{
     padding:5px 50px;
     width: 15.166666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666em;
-
 }
 
 @font-face {
@@ -58,7 +59,7 @@ input[type='radio']:after {
     top: 0px;
     left: 0px;
     position: relative;
-    background-color: #BACDD1;
+    background-color: #D2DDDF;
     content: '';
     display: inline-block;
    
@@ -93,7 +94,7 @@ input[type='radio']:after {
     }
 
    .vski{
-    color: #BACDD1;
+    color: #D2DDDF;
     width: 10px;
     transition: all ease-in-out 0.2s;
    }

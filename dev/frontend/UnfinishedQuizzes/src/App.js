@@ -5,8 +5,6 @@ import Grid from './components/grid-quizzes';
 import './fonts/Basic-Regular.ttf';
 import React, { useState } from 'react';
 import { format } from 'react-string-format';
-import Radiobutton from './components/radiobutton';
-
 
 function App() {
   var id = 1;
