@@ -9,6 +9,32 @@ info:
 servers:
   - url: https://moelasware.io
 paths:
+ /login/:
+    description: "Login with email and password"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type:
+                object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+    
+      responses:
+        '200':
+          description: "Successfully logged user in"
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/id'
+              
+        '401':
+          description: "Invalid credentials"
+      
   /quizzes/{quiz_id}:
     description: Question with answers
     parameters:
