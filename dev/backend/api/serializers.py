@@ -3,7 +3,7 @@ from rest_framework import serializers
 from api.models import Login, Registration
 
 from django.contrib.auth.password_validation import validate_password
-from moelasware.models import Test, Quiz, QuizAnswer,Tag, Submission, SubmissionAnswer, User
+from moelasware.models import Test, Quiz, QuizAnswer,Tag, Submission, SubmissionAnswer, User,Review
 from moelasware.models import Test
 
 class GetTestSerializer(ModelSerializer):
@@ -52,7 +52,7 @@ class CreateQuizSerializer( serializers.ModelSerializer ):
 	tags = CreateTagSerializer(read_only=True, many=True)
 	class Meta:
 		model =	Quiz
-		fields = ['author','tags','question','description']
+		fields = ['author','tags','question','description','reviewer1','reviewer2','reviewer3']
     
 class CreateQuizAnswerSerializer(serializers.ModelSerializer):
     	class Meta:

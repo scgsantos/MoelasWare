@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator 
 from django.contrib.auth.models import User as AuthUser
-
+import datetime
 
 def fk(model):
     return models.ForeignKey(model, on_delete=models.CASCADE)
@@ -28,6 +28,9 @@ class Quiz(models.Model):
 
     question = models.TextField()
     description = models.TextField()
+    reviewer1 = models.TextField()
+    reviewer2 = models.TextField()
+    reviewer3 = models.TextField()
 
     # Accepted should be queried instead of stored as a field?
     def is_accepted(self):
@@ -128,3 +131,17 @@ class SubmissionAnswer(models.Model):
     answer = fk(QuizAnswer)
     
 
+class Review(models.Model):
+    """
+    Represents a Quiz Review. 
+
+    It can either be accepted or rejected,
+    being a comment mandatory if it is rejected.
+    """
+    reviewer = fk(User)
+    quiz = fk(Quiz)
+
+    creation_date = models.DateField(default=datetime.date.today)
+    accepted = models.BooleanField(default=False)
+    comment = models.TextField()
+    pending = models.BooleanField(default=True)

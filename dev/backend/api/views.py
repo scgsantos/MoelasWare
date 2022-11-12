@@ -129,7 +129,12 @@ def create_quiz(request):
         return HttpResponseBadRequest('Wrong type of data')
 
     print("OK")
-    deserializer_data = {"author": user, "tags":tag , "question": question, "description": description}
+
+    reviewer = user(pk= random.randint(1, user.count()))
+    reviewer2 = user(pk= random.randint(1, user.count()))
+    reviewer3 = user(pk= random.randint(1, user.count()))
+
+    deserializer_data = {"author": user, "tags":tag , "question": question, "description": description,"reviewer1": reviewer, "reviewer2": reviewer2, "reviwer3": reviewer3}
     print(deserializer_data)
     quiz_deserializer = CreateQuizSerializer(data=deserializer_data)
     print("OK")
@@ -180,11 +185,11 @@ def create_quiz(request):
 @api_view(['GET'])
 def edit_quizz(request):
     
-    quiz = QuizReview.objects.all()
+    quiz = Quiz.objects.all()
     flag = 0;
     for i in quiz:
         if i.accepted == False:
             flag = quiz.id
             return HttpResponseBadRequest(quiz.comment)
-    create_quizz(request)
+    create_quiz(request)
 	
