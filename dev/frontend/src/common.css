@@ -10,7 +10,7 @@
 }
 
 * {
-  background-color: var(--beige);
+  background-color: var(--blue);
   font-family: 'Basic', sans-serif;
   font-size: 1rem;
   -webkit-font-smoothing: antialiased;
@@ -45,25 +45,3 @@ button:hover, input[type=button]:hover {
   cursor: pointer;
 }
 
-input[type=text] {
-  padding: 1em;
-  margin: 1em;
-  text-align: left;
-  background-color: transparent;
-  color: black;
-  border-radius: 10px;
-  border: 1px solid black;
-}
-
-textarea[type=text] {
-  padding: 0.5em;
-  text-align: left;
-  background-color: transparent;
-  color: black;
-  border-radius: 10px;
-  border: 1px solid black;
-  width: 13.5em;
-  height: 4em;
-  resize: none;
-  overflow:hidden;
-}

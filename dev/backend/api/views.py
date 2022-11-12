@@ -6,9 +6,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponseBadRequest
+import random
 
 
-from moelasware.models import Test, User, Quiz, QuizAnswer, QuizTag, Tag, Submission, SubmissionAnswer
+from moelasware.models import Test, User, Quiz, QuizAnswer, QuizTag, Tag, Submission, SubmissionAnswer, Review, QuizReview
 from .serializers import GetTestSerializer, CreateTestSerializer, GetAuthUserSerializer, CreateQuizSerializer, CreateQuizAnswerSerializer, CreateQuizTagSerializer, CreateTagSerializer, GetQuizSerializer, GetTagSerializer, GetQuizTagSerializer,CreateQuizTagSerializer, GetQuizAnswerSerializer     
 
 @api_view(['GET']) # allowed method(s)
@@ -34,10 +35,12 @@ def create_test_view( request ):
 
 	return Response({'invalid': 'not good data'}, status=400)
 
-@api_view(['GET'])
+@api_view(['POST'])
 def create_quizz(request):    
     #Get user by id
     user = request.data.get("user")
+    if type(user) is not  str:
+        return HttpResponseBadRequest('Wrong type of data')
     user = User.objects.get(pk=user)
     if not user:
         return HttpResponseBadRequest('User not found')
@@ -45,6 +48,11 @@ def create_quizz(request):
     #Create a quiz    
     #Request a quizz tag
     text = request.data.get("text")
+    if type(text) is not  str:
+        return HttpResponseBadRequest('Wrong type of data')    
+    #if type(text) is not  list:
+    #    return HttpResponseBadRequest('Wrong type of data')    
+    #for i in text:
     tag = Tag.objects.filter(text=text)
     if not tag:
         HttpResponseBadRequest('Tags not found, please create a tag')
@@ -60,7 +68,17 @@ def create_quizz(request):
     
     question = request.data.get("question")
     description = request.data.get("description")
-    deserializer_data = {"author": user, "tags": [tag], "question": question, "description": description}
+    if type(question) is not  str or type(description) is not  str:
+        return HttpResponseBadRequest('Wrong type of data')
+    
+    reviwer = User.objects.get(pk= random.randint(1, User.objects.count()))
+    reviwer2 = User.objects.get(pk= random.randint(1, User.objects.count()))
+    reviwer3 = User.objects.get(pk= random.randint(1, User.objects.count()))
+    #while reviwer == reviwer2 or reviwer == reviwer3 or reviwer2 == reviwer3:
+    #    reviwer = User.objects.get(pk= random.randint(1, User.objects.count()))
+    #    reviwer2 = User.objects.get(pk= random.randint(1, User.objects.count()))
+    
+    deserializer_data = {"author": user, "tags": [tag], "question": question, "description": description, "reviwer1": reviwer, "reviwer2": reviwer2, "reviwer3": reviwer3}
     quiz_deserializer = CreateQuizSerializer(data=deserializer_data)
 
     if quiz_deserializer.is_valid(raise_exception=True):
@@ -71,20 +89,32 @@ def create_quizz(request):
     quiz_id = response_serializer.data.get("id")
     deserializer_data = {"quiz_id": quiz_id, "tag_id": tag}
     quiz_tag_deserializer = CreateQuizTagSerializer(data=deserializer_data)
-    print(quiz_id, deserializer_data,quiz_tag_deserializer)
     if quiz_tag_deserializer.is_valid(raise_exception=True):
         quiz_tag = quiz_tag_deserializer.save()
         response_serializer = GetQuizTagSerializer(quiz_tag)
         JsonResponse({"quiz_tag": response_serializer.data})
     #Create 6 quiz answers
-
     text = request.data.get("text_answer")
     correct = request.data.get("correct")
     justification = request.data.get("justification")
+    if type(text) is not  str or type(correct) is not  bool or type(justification) is not  str:
+        return HttpResponseBadRequest('Wrong type of data')
     deserializer_data = {"quiz": quiz_id, "text": text, "correct": correct, "justification": justification}
     answer_deserializer = CreateQuizAnswerSerializer(data=deserializer_data)
     if answer_deserializer.is_valid(raise_exception=True):
         answer = answer_deserializer.save() 
         response_serializer = GetQuizAnswerSerializer(answer) 
         JsonResponse({"answer": response_serializer.data})
-    return JsonResponse({'Quiz was submited for review':'here'}, status=200)
+        
+    return JsonResponse({'Quiz was submited for review':''}, status=200)
+
+@api_view(['GET'])
+def edit_quizz(request):
+    
+    quiz = QuizReview.objects.all()
+    flag = 0;
+    for i in quiz:
+        if i.accepted == False:
+            flag = quiz.id
+            return HttpResponseBadRequest(quiz.comment)
+    create_quizz(request)

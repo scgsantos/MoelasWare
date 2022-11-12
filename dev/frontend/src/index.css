@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: "BasicRegular";
+  src: local("BasicRegular"),
+   url("./font/Basic-Regular.ttf") format("truetype");
+  font-weight: bold;
+  }
