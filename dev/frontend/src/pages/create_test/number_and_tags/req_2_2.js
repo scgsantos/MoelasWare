@@ -48,7 +48,9 @@ function CreateRandomTestWithSpecs() {
   }
 
   function handleCreateButtonChange() {
-    setIsPage1(false);
+    if (num <= quizzes_count) {
+      setIsPage1(false);
+    }
 
     if (quizzes.length !== num || tags !== prev_tags) {
       getFirstQuiz();
@@ -99,7 +101,11 @@ function CreateRandomTestWithSpecs() {
           setNum={setNum}
           label={"Choose the number o quizzes you want in your test"}
         />
-
+        <h2 className="req-2-1-errorQuizzesCounter">
+          {num > quizzes_count
+            ? "The number chosen is greater than the number of existing quizzes"
+            : ""}
+        </h2>
         <div className="req-2-1-inputDiv">
           <h1 className="req-2-1-inputTitle">
             {"Specify the tags you must have in the quizzes"}
@@ -112,7 +118,6 @@ function CreateRandomTestWithSpecs() {
             onChange={handleTagsChange}
           />
         </div>
-
         <div className="req-2-1-Publish-GoBack-buttons">
           <div className="req-2-1-buttonCreate">
             <button onClick={handleGoBackToMenu}>Go Back</button>

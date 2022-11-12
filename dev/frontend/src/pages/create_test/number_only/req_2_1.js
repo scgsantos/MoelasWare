@@ -14,12 +14,9 @@ function CreateRandomTest() {
   const [text, setText] = useState("");
 
   const [quizzes, setQuizzes] = useState([]);
-
-  if (history.location.state != null && quizzes.length == 0) {
-    setNum(history.location.state.quizzes?.length);
-    setText(history.location.state.name);
-    setQuizzes(history.location.state?.quizzes);
-  }
+  const [quizzes_count, setQuizzesCount] = useState(
+    history.location.state?.quizzes_count
+  );
 
   let navigate = useNavigate();
 
@@ -39,7 +36,9 @@ function CreateRandomTest() {
   }
 
   function handleCreateButtonChange() {
-    setIsPage1(false);
+    if (num <= quizzes_count) {
+      setIsPage1(false);
+    }
 
     if (quizzes.length != num) {
       getFirstQuiz();
@@ -79,12 +78,16 @@ function CreateRandomTest() {
         <img src={logo} className="req-2-1-logo" alt="logo" />
         <h1 className="req-2-1-title">Create a Test</h1>
         <h2 className="req-2-1-subTitle">Random Test</h2>
-
         <IncDecCounter
           num={num}
           setNum={setNum}
           label={"Choose the number of quizzes you want in your test"}
         />
+        <h2 className="req-2-1-errorQuizzesCounter">
+          {num > quizzes_count
+            ? "The number chosen is greater than the number of existing quizzes"
+            : ""}
+        </h2>
         <div className="req-2-1-Publish-GoBack-buttons">
           <div className="req-2-1-buttonCreate">
             <button onClick={handleGoBackToMenu}>Go Back</button>

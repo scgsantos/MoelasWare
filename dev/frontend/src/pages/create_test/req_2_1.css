@@ -138,3 +138,13 @@
   margin-top: 0em;
   margin-bottom: 3em;
 }
+
+.req-2-1-errorQuizzesCounter {
+  color: #c51244 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-size: 14px !important;
+}
+  margin-bottom: 2em !important;
+}
