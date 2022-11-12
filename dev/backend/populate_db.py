@@ -69,21 +69,25 @@ try:
                 author=User.objects.get(user=manel),
                 question="Question1",
                 description="description1",
+                name="Quiz1"
             ),
             Quiz(
                 author=User.objects.get(user=manel),
                 question="Question2",
                 description="description2",
+                name="Quiz2"
             ),
             Quiz(
                 author=User.objects.get(user=manel),
                 question="Question3",
                 description="description3",
+                name="Quiz3"
             ),
             Quiz(
                 author=User.objects.get(user=manel),
                 question="Question4",
                 description="description3",
+                name="Quiz4"
             ),
         ]
     )
