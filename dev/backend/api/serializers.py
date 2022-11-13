@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from moelasware.models import Test, User, SubmissionAnswer, AuthUser, QuizAnswer, Submission, Quiz, Tag
+from moelasware.models import Test, User, SubmissionAnswer, AuthUser, Submission, Quiz, Tag
 
 class GetTestSerializer( serializers.ModelSerializer ):
 	class Meta:
@@ -58,3 +58,28 @@ class GetSubmissionsAnsweredByTest(serializers.ModelSerializer):
 		model = SubmissionAnswer
 		fields = ['submission']
 
+
+
+class HallOfFameGetTestInfo(serializers.ModelSerializer):
+	author = GetUserUsername(read_only=True)
+	quizzes = QuizSerializer(read_only=True, many=True)
+	solved_tests = serializers.SerializerMethodField('get_solved_tests')
+	class Meta:
+		model = Test
+		fields = ['id','author','quizzes', 'solved_tests']
+
+	def get_solved_tests(self, obj):
+		return SubmissionAnswer.objects.filter(submission__test__id=obj.id).count()
+
+class HallOfFameSubmissionSerializer(serializers.ModelSerializer):
+	test = HallOfFameGetTestInfo(read_only=True)
+	class Meta:
+		model = Submission
+		fields = ['test']
+
+
+class HallOfFame(serializers.ModelSerializer):
+	submission = HallOfFameSubmissionSerializer(read_only=True)
+	class Meta:
+		model = SubmissionAnswer
+		fields = ['submission']
