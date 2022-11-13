@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "logo.png";
 
 import {
   CREATE_RANDOM_TEST_URL,
   CREATE_TEST_URL,
-  MENU_URL,
+  TEST_MENU_URL,
   CREATE_TEST_WITH_TAGS_URL,
 } from "urls.js";
 import "common.css";
@@ -37,7 +36,7 @@ function CreateTestMenu() {
     });
 
   function handleCreateRandomTestButton() {
-    history.push(MENU_URL);
+    history.push(TEST_MENU_URL);
 
     navigate(CREATE_RANDOM_TEST_URL, {
       state: {
@@ -48,7 +47,7 @@ function CreateTestMenu() {
   }
 
   function handleCreateRandomTestWithTagsButton() {
-    history.push(MENU_URL);
+    history.push(TEST_MENU_URL);
 
     navigate(CREATE_TEST_WITH_TAGS_URL, {
       state: {
@@ -59,7 +58,7 @@ function CreateTestMenu() {
   }
 
   function handleCreateTestButton() {
-    history.push(MENU_URL);
+    history.push(TEST_MENU_URL);
 
     navigate(CREATE_TEST_URL);
     window.location.reload();
@@ -67,7 +66,6 @@ function CreateTestMenu() {
 
   return (
     <div>
-      <img src={logo} className="req-2-1-logo" alt="logo" />
       <header className="CreateTestMenu-header">
         <h1>Create a Test</h1>
       </header>

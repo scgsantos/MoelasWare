@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import IncDecCounter from "components/input_number";
-import logo from "logo.png";
 import "../req_2_1.css";
 
 import { useNavigate } from "react-router-dom";
 
 import {
   CREATE_TEST_URL,
-  MENU_URL,
-  PREVIEW_URL,
+  TEST_MENU_URL,
+  TEST_PREVIEW_URL,
   CREATE_TEST_WITH_TAGS_URL,
 } from "urls.js";
 import history from "history.js";
@@ -21,14 +20,17 @@ function CreateRandomTestWithSpecs() {
   const [prev_tags, setPrevTags] = useState([]);
 
   const [quizzes, setQuizzes] = useState([]);
+  const [quizzes_count, setQuizzesCount] = useState([
+    history.location.state?.quizzes_count
+  ]);
 
-  if (history.location.state != null && quizzes.length == 0) {
-    setNum(history.location.state.quizzes?.length);
-    setText(history.location.state.name);
-    setQuizzes(history.location.state?.quizzes);
-    setTags(history.location.state?.tags);
-    setPrevTags(history.location.state?.tags);
-  }
+  // if (history.location.state != null && quizzes.length == 0) {
+  //   setNum(history.location.state.quizzes?.length);
+  //   setText(history.location.state.name);
+  //   setQuizzes(history.location.state?.quizzes);
+  //   setTags(history.location.state?.tags);
+  //   setPrevTags(history.location.state?.tags);
+  // }
 
   let navigate = useNavigate();
 
@@ -69,7 +71,7 @@ function CreateRandomTestWithSpecs() {
     if (text.length != 0) {
       history.push(CREATE_TEST_WITH_TAGS_URL);
 
-      navigate(PREVIEW_URL, {
+      navigate(TEST_PREVIEW_URL, {
         state: {
           tags: tags,
           name: text,
@@ -86,13 +88,12 @@ function CreateRandomTestWithSpecs() {
   }
 
   function handleGoBackToMenu() {
-    navigate(MENU_URL);
+    navigate(TEST_MENU_URL);
   }
 
   if (isPage1) {
     return (
       <div className="req-2-1-firstPage">
-        <img src={logo} className="req-2-1-logo" alt="logo" />
         <h1 className="req-2-1-title">Create a Test</h1>
         <h2 className="req-2-1-subTitle">Random Test with Specifications</h2>
 
@@ -132,8 +133,6 @@ function CreateRandomTestWithSpecs() {
   } else {
     return (
       <div className="req-2-1-secondPage">
-        <img src={logo} className="req-2-1-logo" alt="logo" />
-
         <h1 className="req-2-1-title">Create a Test</h1>
         <h2 className="req-2-1-subTitle">Random Test with Specifications</h2>
 

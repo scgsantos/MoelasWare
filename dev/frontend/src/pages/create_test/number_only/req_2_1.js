@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import IncDecCounter from "components/input_number";
-import logo from "logo.png";
 import "../req_2_1.css";
 
 import { useNavigate } from "react-router-dom";
 
-import { CREATE_RANDOM_TEST_URL, MENU_URL, PREVIEW_URL } from "urls.js";
+import { CREATE_RANDOM_TEST_URL, TEST_MENU_URL, TEST_PREVIEW_URL } from "urls.js";
 import history from "history.js";
 
 function CreateRandomTest() {
@@ -53,7 +52,7 @@ function CreateRandomTest() {
     if (text.length != 0) {
       history.push(CREATE_RANDOM_TEST_URL);
 
-      navigate(PREVIEW_URL, {
+      navigate(TEST_PREVIEW_URL, {
         state: {
           name: text,
           quizzes: quizzes,
@@ -69,13 +68,12 @@ function CreateRandomTest() {
   }
 
   function handleGoBackToMenu() {
-    navigate(MENU_URL);
+    navigate(TEST_MENU_URL);
   }
 
   if (isPage1) {
     return (
       <div className="req-2-1-firstPage">
-        <img src={logo} className="req-2-1-logo" alt="logo" />
         <h1 className="req-2-1-title">Create a Test</h1>
         <h2 className="req-2-1-subTitle">Random Test</h2>
         <IncDecCounter
@@ -102,8 +100,6 @@ function CreateRandomTest() {
   } else {
     return (
       <div className="req-2-1-secondPage">
-        <img src={logo} className="req-2-1-logo" alt="logo" />
-
         <h1 className="req-2-1-title">Create a Test</h1>
         <h2 className="req-2-1-subTitle">Random Test</h2>
 

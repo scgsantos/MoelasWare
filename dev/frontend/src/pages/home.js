@@ -1,6 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import {
+  USERS_URL,
+  TEST_MENU_URL,
+} from "../urls.js"
+
 const Home = () => {
   return (
     <React.Fragment>
@@ -14,10 +19,10 @@ const Home = () => {
         <Link to="/#">
           <h1>SOLVE A TEST</h1>
         </Link>
-        <Link to="/#">
+        <Link to={TEST_MENU_URL}>
           <h1>CREATE A TEST</h1>
         </Link>
-        <Link to="/users">
+        <Link to={USERS_URL}>
           <h1>
             HISTORY <br></br>& <br></br>HALL OF FAME
           </h1>

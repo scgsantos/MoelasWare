@@ -10,7 +10,7 @@ from api.views import get_n_quizzes_view
 DEFAULT_TEST_PAGE_LIMIT = 20
 
 
-@api_view(["GET"])
+# @api_view(["GET"])
 def get_test_view(request, pk):
     # get test by id -> detail view
     instance = get_object_or_404(Test, pk=pk)
@@ -19,7 +19,7 @@ def get_test_view(request, pk):
 
 
 # Create a test
-@api_view(['POST'])
+# @api_view(['POST'])
 # TODO: ADD DECORATOR WHEN LOGIN IS IMPLEMENTED
 # @login_required
 def post_test_view(request):

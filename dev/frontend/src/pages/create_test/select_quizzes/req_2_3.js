@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import logo from "logo.png";
 import "./req_2_3.css";
 
 import { useNavigate } from "react-router-dom";
 import { format } from 'react-string-format';
 
-import { MENU_URL, PREVIEW_URL, CREATE_TEST_URL } from "urls.js";
+import { TEST_MENU_URL, TEST_PREVIEW_URL, CREATE_TEST_URL } from "urls.js";
 import history from 'history.js';
 
 
@@ -147,7 +146,7 @@ function CreateTest() {
 
       history.push(CREATE_TEST_URL);
 
-      navigate(PREVIEW_URL,
+      navigate(TEST_PREVIEW_URL,
         { state: { name: text, quizzes: q, previous_path: CREATE_TEST_URL } },
       );
       window.location.reload();
@@ -156,7 +155,7 @@ function CreateTest() {
 
 
   function handleGoBackToMenu() {
-    navigate(MENU_URL);
+    navigate(TEST_MENU_URL);
   }
 
   function handleQuizSelectionChange(quiz){
@@ -316,7 +315,6 @@ function CreateTest() {
       </head>
       <body onClick={handleClick}>
           <section class="header">
-            <img src={logo} className="req-2-1-logo" alt="logo" />
             <div class="login">
                 <p>Hi, username</p>
             </div>
@@ -363,8 +361,6 @@ function CreateTest() {
   }else{
     return (
       <div className="req-2-1-secondPage">
-        <img src={logo} className="req-2-1-logo" alt="logo" />
-
         <h1 className="req-2-1-title">Create a Test</h1>
         <h2 className="req-2-1-subTitle">Random Test</h2>
 

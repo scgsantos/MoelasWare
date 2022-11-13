@@ -1,15 +1,35 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/header";
 import "./App.css";
 import "./common.css";
+
+import Header from "./components/header";
+
+// Group 2
+import CreateRandomTest from "./pages/create_test/number_only/req_2_1.js";
+import Preview from "./pages/create_test/preview/preview.js";
+import CreateTestMenu from "./pages/create_test/menu/CreateTestMenu.js";
+import CreateRandomTestWithSpecs from "./pages/create_test/number_and_tags/req_2_2.js";
+import CreateTest from "./pages/create_test/select_quizzes/req_2_3.js";
+
+// Group 4
 import Home from "./pages/home";
 import Profile from "./pages/profile";
 import Users from "./pages/users";
 import Tests from "./pages/tests";
 import History from "./components/history";
 
-import QuizList from "./QuizList.js";
+import {
+  PROFILE_URL,
+  USERS_URL,
+  TESTS_URL,
+  CREATE_RANDOM_TEST_URL,
+  CREATE_TEST_URL,
+  TEST_MENU_URL,
+  TEST_PREVIEW_URL,
+  CREATE_TEST_WITH_TAGS_URL,
+} from "urls.js";
+import history from './history.js';
 
 function App() {
   return (
@@ -17,19 +37,24 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
 
-        <Route path="/users" element={<Users />}>
-          <Route path=":id/" element={<History selected="users" />} />
+        <Route exact path={TEST_MENU_URL} element={<CreateTestMenu />} />
+        <Route exact path={CREATE_RANDOM_TEST_URL} element={<CreateRandomTest />} />
+        <Route exact path={CREATE_TEST_URL} element={<CreateTest />} />
+        <Route exact path={TEST_PREVIEW_URL} element={<Preview />} />
+        <Route exact path={CREATE_TEST_WITH_TAGS_URL} element={<CreateRandomTestWithSpecs />} />
+
+        <Route exact path={PROFILE_URL} element={<Profile />} />
+
+        <Route exact path={USERS_URL} element={<Users />}>
+          <Route exact path=":id" element={<History selected="users" />} />
         </Route>
-        <Route path="/tests" element={<Tests />}>
+        <Route exact path={TESTS_URL} element={<Tests />}>
           <Route path=":id" element={<History selected="tests" />} />
         </Route>
-        <Routes>
-            <Route path="/create/test/random" element={<CreateRandomTest />} />
-        </Routes>
       </Routes>
     </Router>
   );
 }
 
+export default App;
