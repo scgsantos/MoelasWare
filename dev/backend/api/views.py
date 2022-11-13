@@ -85,7 +85,7 @@ def hall_of_fame_view(request):
 	info_list = []
 	for user in users:
 		username = user.user.username
-		solved_tests = SubmissionAnswer.objects.filter(submission__submitter__user__username=user.user.username).count()
+		solved_tests = Submission.objects.filter(submission__submitter__user__username=user.user.username).count()
 		date_joined = return_date(str(user.user.date_joined))
 		correct_answers = SubmissionAnswer.objects.filter(submission__submitter=user).filter(answer__correct=True).count()
 		info_list.append({user.user.id: [username, date_joined, solved_tests, correct_answers, user.user.id, user.user.email]})
@@ -96,24 +96,13 @@ def hall_of_fame_view(request):
 def handle_serializer_test(obj):
     obj_list = []
     id = 0
-
     for i in obj:
-        test_id = i["submission"]["test"]["id"]
-        author = i["submission"]["test"]["author"]["user"]["username"]
+        author = i["submitter"]["user"]["username"]
         correct_answers = i["correct_answers"]
         total_answers = i["total_answers"]
-
-        tags = ""
-        for j in i["submission"]["test"]["quizzes"]:
-            for tag in j["tags"]:
-                if tag["text"] not in tags:
-                    tags += tag["text"]
-                    tags += ","
         
-        tags = tags[0:len(tags)-1]
+        obj_list.append({id : [id, author, correct_answers, total_answers]})
         id += 1
-        obj_list.append({test_id : [test_id, tags, author, id, correct_answers, total_answers]})
-
     return obj_list
  
 @api_view(['GET'])
@@ -121,7 +110,7 @@ def submission_of_a_test_view(request, pk):
 
     test = get_object_or_404(Test, id=pk)
 
-    submissions = SubmissionAnswer.objects.filter(submission__test__id=pk)
+    submissions = Submission.objects.filter(test__id=pk)
 
     if not submissions.exists():
         return HttpResponseNotFound('Submissions not found')
