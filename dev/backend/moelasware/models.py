@@ -22,7 +22,7 @@ class Quiz(models.Model):
     """
     Question that has several answers and associated tags.
     """
-    author = fk(AuthUser)
+    author = fk(User)
     tags = models.ManyToManyField(Tag)
 
     question = models.TextField()
