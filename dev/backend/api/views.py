@@ -4,10 +4,8 @@ from django.http.response import HttpResponseNotFound
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 
-from moelasware.models import Test, Submission, SubmissionAnswer, User, AuthUser
-from .serializers import GetSubmissionsAnsweredByTest, GetTestSerializer, CreateTestSerializer, HallOfFame, HallOfFameGetTestInfo
-
-
+from moelasware.models import *
+from .serializers import *
 @api_view(['GET']) # allowed method(s)
 def get_test_view( request, pk, *args, **kwargs ):
 	# get test by id -> detail view
@@ -96,29 +94,43 @@ def hall_of_fame_view(request):
 	return JsonResponse({'fame': info_list})
 
 def handle_serializer_test(obj):
-    obj = handle_serializer(obj)
+    obj_list = []
+    id = 0
+
     for i in obj:
-        for key in i.keys():
-            i[key].append(0)
-    return obj
+        test_id = i["submission"]["test"]["id"]
+        author = i["submission"]["test"]["author"]["user"]["username"]
+        correct_answers = i["correct_answers"]
+        total_answers = i["total_answers"]
+
+        tags = ""
+        for j in i["submission"]["test"]["quizzes"]:
+            for tag in j["tags"]:
+                if tag["text"] not in tags:
+                    tags += tag["text"]
+                    tags += ","
+        
+        tags = tags[0:len(tags)-1]
+        id += 1
+        obj_list.append({test_id : [test_id, tags, author, id, correct_answers, total_answers]})
+
+    return obj_list
  
 @api_view(['GET'])
 def submission_of_a_test_view(request, pk):
 
     test = get_object_or_404(Test, id=pk)
 
-    submissions = SubmissionAnswer.objects.filter(submission__test__id=pk).order_by('submission__submitter__user__id')
+    submissions = SubmissionAnswer.objects.filter(submission__test__id=pk)
 
     if not submissions.exists():
-        #print("This is user hasn't taken any tests yet...")
         return HttpResponseNotFound('Submissions not found')
 
-    submission = GetSubmissionsAnsweredByTest(submissions, many=True)
-    submission = handle_serializer_test(submission.data)
+    sub = AnsweredSubmissionsSerializer(submissions, many = True).data
+    sub = handle_serializer_test(sub)
 
     #TODO Add Time
-    return JsonResponse({"submissions": submission})  
-
+    return JsonResponse({"submissions": sub})  
 
 def handle_serializer_all_tests(obj):
     obj_list = []
@@ -165,6 +177,5 @@ def get_all_tests_view(request):
 
     sub = HallOfFameGetTestInfo(tests, many=True).data
     sub = handle_serializer_all_tests(sub)
-    print(sub)
 
     return JsonResponse({'submissions_by_test': sub})

@@ -98,10 +98,9 @@ function History(props) {
             </thead>
             <tbody>
               {tests.map((t) => (
-                
-                <tr key={Object.values(t)[0][2]}>
-                  <td>{Object.values(t)[0][0]}</td>
-                  <td>{Object.values(t)[0][4]}/100</td>
+                <tr key={Object.values(t)[0][0]}>
+                  <td>{Object.values(t)[0][2]}</td>
+                  <td>{(Object.values(t)[0][4]/Object.values(t)[0][5])*100}/100</td>
                 </tr>
               ))}
             </tbody>
