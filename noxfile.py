@@ -36,6 +36,7 @@ COVERAGE = "coverage"
 PYTEST = "pytest"
 
 REQUIREMENTS_TXT = "dev/backend/requirements.txt"
+PYTEST_PATH = "dev/backend/api/tests.py"
 
 U = "-U"
 R = "-r"
@@ -97,7 +98,7 @@ def coverage(s: S):
 @nox.session(tags=[TEST_STAGE], python=PYTHON_VERSION)
 def test(s: S):
     s.install(U, PYTEST, R, REQUIREMENTS_TXT)
-    s.run(PYTEST, success_codes=[0, 5])
+    s.run(PYTEST, PYTEST_PATH, success_codes=[0, 5], env={"DJANGO_SETTINGS_MODULE": "moelasware.settings"})
 
 
 @nox.session(tags=[DEPLOY_STAGE], python=PYTHON_VERSION)
