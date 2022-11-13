@@ -51,16 +51,6 @@ class SubmissionSerializer(serializers.ModelSerializer):
 		model = Submission
 		fields = ['test']
 
-
-class GetSubmissionsAnsweredByTest(serializers.ModelSerializer):
-	submission = SubmissionSerializer(read_only=True)
-	class Meta:
-		model = SubmissionAnswer
-		fields = ['submission']
-
-
-
-
 class SubmissionMarkSerializer(serializers.ModelSerializer):
 	test = GetTestInfo(read_only=True)
 	class Meta:
@@ -121,3 +111,18 @@ class HallOfFame(serializers.ModelSerializer):
 	class Meta:
 		model = SubmissionAnswer
 		fields = ['submission']
+
+
+class HallOfFameGetUserInfo(serializers.ModelSerializer):
+	user = GetAuthUserAll(read_only=True)
+	correct_answers = serializers.SerializerMethodField('get_correct_answers')
+	solved_tests = serializers.SerializerMethodField('get_all_solved_tests')
+	class Meta:
+		model = User
+		fields = ['id', 'user', 'correct_answers', 'solved_tests']
+
+	def get_correct_answers(self, obj):
+		return SubmissionAnswer.objects.filter(submission__submitter=obj).filter(answer__correct=True).count()	
+
+	def get_all_solved_tests(self, obj):
+		return Submission.objects.filter(submitter__user__username=obj.user.username).count()	

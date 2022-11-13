@@ -33,11 +33,11 @@ def handle_serializer(obj):
     id = 0
 
     for i in obj:
-        test_id = i["submission"]["test"]["id"]
-        author = i["submission"]["test"]["author"]["user"]["username"]
+        test_id = i["test"]["id"]
+        author = i["test"]["author"]["user"]["username"]
 
         tags = ""
-        for j in i["submission"]["test"]["quizzes"]:
+        for j in i["test"]["quizzes"]:
             for tag in j["tags"]:
                 if tag["text"] not in tags:
                     tags += tag["text"]
@@ -56,42 +56,52 @@ def submissions_by_user_view(request, pk):
 
     user = user.user.username 
 
-    submissions = SubmissionAnswer.objects.filter(submission__submitter__user__username=user)
+    submissions = Submission.objects.filter(submitter__user__username=user)
 
     if not submissions.exists():
         return HttpResponseNotFound('Submissions not found')
 
-    submission = GetSubmissionsAnsweredByTest(submissions, many=True)
-    submission = handle_serializer(submission.data)
+    submission = SubmissionSerializer(submissions, many=True).data
+    submission = handle_serializer(submission)
 
     return JsonResponse({'submissions' : submission})
 
 def return_date(date:str):
-	date_months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
-	x = date.replace(" ", "-").split("-")
-	date_string = date_months[int(x[1]) - 1] + " " + x[2] + " " + x[0]
-	return date_string
+    date_months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+    x = date.replace("T", "-").split("-")
+    date_string = date_months[int(x[1]) - 1] + " " + x[2] + " " + x[0]
+    return date_string
+
+def handle_serializer_hall_of_fame_view(obj):
+    info_list = []
+    
+    for i in obj:
+        print(i)
+        author = i["user"]["username"]
+        correct_answers = i["correct_answers"]
+        date_joined = return_date(str(i["user"]["date_joined"]))
+        solved_tests = i["solved_tests"]
+        info_list.append({i["id"]: [author, correct_answers, solved_tests, date_joined, i["id"], i["user"]["email"]]})
+    
+    return info_list 
 
 @api_view(['GET'])
-def hall_of_fame_view(request):
+def hall_of_fame_view(request): # falta serializer
 
-	users = User.objects.all().order_by('user') 
-	if not users.exists():
-		return HttpResponseNotFound('User not found')
+    users = User.objects.all().order_by('user')
+    if not users.exists():
+        return HttpResponseNotFound('User not found')  
 
-	if not SubmissionAnswer.objects.all().exists():
-		return HttpResponseNotFound('Submissions not found')
+    if not SubmissionAnswer.objects.all().exists():
+        return HttpResponseNotFound('Submissions not found')
+    
+    sub = HallOfFameGetUserInfo(users, many=True).data
 
-	info_list = []
-	for user in users:
-		username = user.user.username
-		solved_tests = Submission.objects.filter(submission__submitter__user__username=user.user.username).count()
-		date_joined = return_date(str(user.user.date_joined))
-		correct_answers = SubmissionAnswer.objects.filter(submission__submitter=user).filter(answer__correct=True).count()
-		info_list.append({user.user.id: [username, date_joined, solved_tests, correct_answers, user.user.id, user.user.email]})
+    sub = handle_serializer_hall_of_fame_view(sub)
+    print(sub)
 
-    #TODO Create Serializer for this
-	return JsonResponse({'fame': info_list})
+    return JsonResponse({'fame': sub})
+
 
 def handle_serializer_test(obj):
     obj_list = []
@@ -148,21 +158,6 @@ def get_all_tests_view(request):
     tests = Test.objects.all().order_by('id') 
     if not tests.exists():
         return HttpResponseNotFound('User not found')
-
-
-    """    info_list = []
-    for test in tests:
-        solved_tests = SubmissionAnswer.objects.filter(submission__test__id=test.id).count()
-        tags = ""
-        for quiz in test.quizzes.all():
-            for tag in quiz.tags.all():
-                if tag.text not in tags:
-                    tags += tag.text
-                    tags += ","
-
-        tags = tags[0:len(tags)-1]
-        info_list.append({test.id: [test.id, solved_tests, tags, test.author.user.username]})
-        """
 
     sub = HallOfFameGetTestInfo(tests, many=True).data
     sub = handle_serializer_all_tests(sub)
