@@ -87,15 +87,11 @@ function MainSelectionPage() {
                     <Radiobutton text={"tag"} selected={"tag" === selectedTags} onClick={() => {
                         let newtests = tests.sort(() => Math.random() - 0.5);
                         setSelectedTags("tag")
-                        // a test has a list of tags, we need to sort by the first tag
-                        newtests = tests.sort((a, b) => {
-                            if (a.tags[0] < b.tags[0]) {
-                                return -1;
-                            }
-                            if (a.tags[0] > b.tags[0]) {
-                                return 1;
-                            }
-                            return 0;
+                        // a test has a list of tags, we need to sort by alphabetical order
+                        newtests = newtests.sort((a, b) => {
+                            if (a.tags.length === 0) return 1;
+                            if (b.tags.length === 0) return -1;
+                            return a.tags[0].name.localeCompare(b.tags[0].name);
                         });
                         setTests(newtests);
                     }} />

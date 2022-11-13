@@ -1,17 +1,9 @@
 import { useEffect, useState } from 'react';
-import Popup from 'reactjs-popup';
-
 import './TestSelection.css';
 
 import { useParams, useNavigate } from 'react-router';
-import { PopupInside } from '../components/Errors/PopupStopTest';
 import HeaderComp from '../components/Header';
 import utils from '../utils';
-
-const contentStylePopup = {
-    maxWidth: "650px",
-    width: "80%",
-}
 
 function CheckAnswers() {
     const [quizzRes, setQuizzRes] = useState();
