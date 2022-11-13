@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('login/', views.login),
     path('register/', views.register),
-    path('create_quiz/', views.create_quiz)
+    path('create_quiz/', views.create_quiz),
+    path('unfinished_quizzes/',views.unfinished_quizzes),
 ]
 

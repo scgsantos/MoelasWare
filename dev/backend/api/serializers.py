@@ -52,7 +52,7 @@ class CreateQuizSerializer( serializers.ModelSerializer ):
 	tags = CreateTagSerializer(read_only=True, many=True)
 	class Meta:
 		model =	Quiz
-		fields = ['author','tags','question','description','reviewer1','reviewer2','reviewer3']
+		fields = ['author','tags','question','description','finished']
     
 class CreateQuizAnswerSerializer(serializers.ModelSerializer):
     	class Meta:

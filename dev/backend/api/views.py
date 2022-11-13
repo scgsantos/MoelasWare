@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.http.response import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from moelasware.models import (Quiz, QuizAnswer, Review,
-                               Submission, SubmissionAnswer, Tag, Test, ListUnfinished)
+                               Submission, SubmissionAnswer, Tag, Test, ListUnfinished,User)
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -134,7 +134,7 @@ def create_quiz(request):
     reviewer2 = user(pk= random.randint(1, user.count()))
     reviewer3 = user(pk= random.randint(1, user.count()))
 
-    deserializer_data = {"author": user, "tags":tag , "question": question, "description": description,"reviewer1": reviewer, "reviewer2": reviewer2, "reviwer3": reviewer3}
+    deserializer_data = {"author": user, "tags":tag , "question": question, "description": description,"finished":0}
     print(deserializer_data)
     quiz_deserializer = CreateQuizSerializer(data=deserializer_data)
     print("OK")
@@ -196,9 +196,16 @@ def edit_quizz(request):
 
 @api_view(['POST'])
 def unfinished_quizzes(request):
-    userid = request.data.get("id")
-    quizzes = Quiz.objects.get(author_id=userid,finished=0)
-    return JsonResponse(quizzes,status=200)
+    userid = request.data.get("id")  
+
+    cn = Quiz.objects.filter(author_id=userid)
+    arr=[]
+
+    for i in cn:
+        arr.append(i.id)
+    print(arr)    
+    
+    return JsonResponse(arr,status=200,safe=False)
 
 
 
