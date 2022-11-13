@@ -14,11 +14,11 @@ const Home = () => {
         <Link to="/#">
           <h1>CREATE A QUIZ</h1>
         </Link>
-        <Link to="/#">
-          <h1>REVIEW A QUIZ</h1>
+        <Link to="/selecttest">
+          <h1>SOLVE A TEST</h1>
         </Link>
         <Link to="/#">
-          <h1>SOLVE A TEST</h1>
+          <h1>REVIEW A QUIZ</h1>
         </Link>
         <Link to={TEST_MENU_URL}>
           <h1>CREATE A TEST</h1>

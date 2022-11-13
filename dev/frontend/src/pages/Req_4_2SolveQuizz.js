@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import HeaderComp from '../components/Header';
 import { useParams, useNavigate } from 'react-router';
 import utils from '../utils';
 import Popup from 'reactjs-popup';
@@ -21,9 +20,10 @@ function SolveQuizz() {
     const [quizzInfo, setQuizzQuestions] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [submissionAnswers, setSub] = useState(JSON.parse(localStorage.getItem('subs#' + test)) !== null ? JSON.parse(localStorage.getItem('subs#' + test)).answers : []);
+    const [submissionAnswers, setSub] = useState(localStorage.getItem('subs#' + test) !== null || localStorage.getItem('subs#' + test) !== undefined ? JSON.parse(localStorage.getItem('subs#' + test)) : []);
     const [rerender, setRerender] = useState(false); // used to trigger a rerender
-    const [open, setOpen] = useState(false);
+    const [openNoAnswers, setopenNoAnswers] = useState(false);
+    const [openMoreThanOne, setopenMoreThanOne] = useState(false);
 
     function isbtnSelected(quizz_id, answerid) {
         /* "submissionAnswers": [
@@ -36,12 +36,19 @@ function SolveQuizz() {
                 "quiz_answers": [2] # id's of the answers choosen
             }
         ] */
-        return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_id === quizz_id && sub.quiz_answers.includes(answerid)) ? true : false;
+        console.log("isbtnSelected");
+        console.log(submissionAnswers);
+        return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_id === quizz_id && sub.quiz_answers.includes(answerid));
     }
 
     function checkEmptyAnswers() {
         // if quiz_answers len is 0, then it's empty
-        return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_answers.length === 0) ? true : false;
+        return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_answers.length === 0);
+    }
+
+    function checkMoreThanTwoAnswers() {
+        // if quiz_answers len is 0, then it's empty
+        return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_answers.length > 1);
     }
 
     function addAnswer(answeridgiven, quiz_id) {
@@ -83,12 +90,30 @@ function SolveQuizz() {
     }
 
     function submitAnswers() {
-        setLoading(true);
-        const body = {
-            "answers": submissionAnswers
-        }
-        localStorage.setItem('subs#' + test, JSON.stringify(body));
+        localStorage.setItem('subs#' + test, JSON.stringify(submissionAnswers));
 
+        // user can't submit if there are empty answers
+        if (checkEmptyAnswers()) {
+            setopenNoAnswers(true);
+            return;
+        }
+        // check if there are more than 1 answer for a question
+        if (checkMoreThanTwoAnswers()) {
+            setopenMoreThanOne(true);
+            return;
+        }
+        setLoading(true);
+
+        // transform the submissionAnswers to the correct format, by making quiz_answers an integer
+        let subCorrectFormat = submissionAnswers;
+        subCorrectFormat.forEach((answer) => {
+            answer.quiz_answers = answer.quiz_answers[0];
+        });
+
+        const body = {
+            "answers": subCorrectFormat
+        }
+        console.log(JSON.stringify(body));
         fetch(utils.svurl + `/api/tests/${test}/submissions`, {
             method: 'POST',
             headers: {
@@ -107,6 +132,7 @@ function SolveQuizz() {
                 });
             }).catch(error => {
                 console.log(error);
+                setError("Error: " + error);
             }).finally(() => {
                 setLoading(false);
             });
@@ -128,7 +154,7 @@ function SolveQuizz() {
                 setQuizzQuestions(data);
 
                 // if not, they are already in the localstorage
-                if (submissionAnswers === null || submissionAnswers.length === 0 || submissionAnswers === undefined) {
+                if (submissionAnswers === null || submissionAnswers === undefined) {
                     setSub(answer);
                 }
             }).catch(error => {
@@ -145,13 +171,15 @@ function SolveQuizz() {
         if (!quizzInfo) {
             getQuizzQuestions();
         }
+        console.log("fdlsçajkflçds");
+        console.log(localStorage.getItem('subs#' + test));
+
         setRerender(false);
     }, []);
 
-    if (error || !quizzInfo) {
+    if (error) {
         return (
             <div>
-                <HeaderComp />
                 <div className="centerTitles">
                     <span className='main-title'>SOLVE A TEST</span>
                     <span className="sub-title">Something Wrong Happened</span>
@@ -168,8 +196,6 @@ function SolveQuizz() {
     }
     return (
         <div>
-            <HeaderComp />
-
             {loading === true ? (
                 <div className="centerLoad">
                     <span>Loading...</span>
@@ -177,7 +203,7 @@ function SolveQuizz() {
             ) : (
                 <>
                     <div className="centerTitles">
-                        <span className='main-title'>{quizzInfo.name ? quizzInfo.name : `Quizz #${test} Name`}</span>
+                        <span className='main-title'>{quizzInfo.quizzes[0].name ? quizzInfo.quizzes[0].name : `Quizz #${test}`}</span>
                         <span className='sub-title'>Solve the quiz bellow to finish the test</span>
                     </div>
 
@@ -199,7 +225,6 @@ function SolveQuizz() {
                                             <button key={i} className={`btnlist buttoncorners ${isbtnSelected(quizz.id, answer.id) ? 'selected' : ''}`} onClick={() => {
                                                 addAnswer(answer.id, quizz.id)
                                                 setRerender(!rerender);
-
                                             }}>
                                                 {answer.text}
                                             </button>
@@ -215,7 +240,6 @@ function SolveQuizz() {
                                             <button key={i} className={`btnlist button_end ${isbtnSelected(quizz.id, answer.id) ? 'selected' : ''}`} onClick={() => {
                                                 addAnswer(answer.id, quizz.id)
                                                 setRerender(!rerender);
-
                                             }}>
                                                 {answer.text}
                                             </button>
@@ -230,18 +254,31 @@ function SolveQuizz() {
 
                     <div className="bottomcenterntns">
                         <button className='button' onClick={() => {
-                            checkEmptyAnswers() ? setOpen(o => !o) : submitAnswers();
+                            submitAnswers();
                         }}>Submit answers</button>
                         <Popup
                             position="center center"
                             modal
                             contentStyle={contentStylePopup}
-                            open={open}
+                            open={openNoAnswers}
                         >
                             {close => (
                                 <PopupInside onClick={() => {
-                                    setOpen(o => !o)
+                                    setopenNoAnswers(o => !o)
                                 }} close={close} title={"You still have unanswered questions."} singleButton={true} />
+                            )}
+                        </Popup>
+
+                        <Popup
+                            position="center center"
+                            modal
+                            contentStyle={contentStylePopup}
+                            open={openMoreThanOne}
+                        >
+                            {close => (
+                                <PopupInside onClick={() => {
+                                    setopenMoreThanOne(o => !o)
+                                }} close={close} title={"You can't select more than two answers."} singleButton={true} />
                             )}
                         </Popup>
 
@@ -254,10 +291,7 @@ function SolveQuizz() {
                             {close => (
                                 <PopupInside onClick={() => {
                                     navigate('/selecttest');
-                                    const save = {
-                                        answers: submissionAnswers,
-                                    }
-                                    localStorage.setItem('subs#' + test, JSON.stringify(save));
+                                    localStorage.setItem('subs#' + test, JSON.stringify(submissionAnswers));
                                 }} close={close} title={"Do you wish to return to test selection?"} subtitle={"Your progress will be saved"} singleButton={false} />
                             )}
                         </Popup>

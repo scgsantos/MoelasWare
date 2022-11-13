@@ -3,8 +3,10 @@
 * {
     --buttonwidth: 17vw;
     --buttoncorners: 12px;
+    --disabled: #6F6F6F;
     font-family: 'Corinthia', cursive;
     font-family: 'Montserrat', sans-serif;
+
 }
 
 /* 3 by 3 grid  */
@@ -29,7 +31,6 @@
     width: 18vw;
 }
 
-
 .box-button {
     width: var(--buttonwidth);
     height: 3.5rem;
@@ -42,8 +43,19 @@
     text-overflow: ellipsis;
     font-size: 1.1rem;
     margin-top: 0.6rem;
-
 }
+
+.disabled {
+    background-color: transparent;
+    color: var(--disabled);
+    border-radius: 10px;
+    border: 1px solid var(--disabled);
+}
+
+.disabled-text {
+    color: var(--disabled);
+}
+
 .centerTitles {
     display: flex;
     flex-direction: column;

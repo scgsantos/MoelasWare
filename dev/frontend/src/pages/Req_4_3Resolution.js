@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import './TestSelection.css';
 
 import { useParams, useNavigate } from 'react-router';
-import HeaderComp from '../components/Header';
 import utils from '../utils';
 
 function CheckAnswers() {
@@ -69,7 +68,6 @@ function CheckAnswers() {
     if (error || !quizzRes) {
         return (
             <div>
-                <HeaderComp />
                 <div className="centerTitles">
                     <span className='main-title'>SOLVE A TEST</span>
                     <span className="sub-title">Something Wrong Happened</span>
@@ -87,8 +85,6 @@ function CheckAnswers() {
     }
     return (
         <div>
-            <HeaderComp />
-
             {loading === true ? (
                 <div className="centerLoad">
                     <span>Loading...</span>
