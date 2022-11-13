@@ -25,12 +25,9 @@ class Quiz(models.Model):
     """
     author = fk(User)
     tags = models.ManyToManyField(Tag)
-
     question = models.TextField()
     description = models.TextField()
-    reviewer1 = models.TextField()
-    reviewer2 = models.TextField()
-    reviewer3 = models.TextField()
+    finished  = models.BooleanField(default=False)
 
     # Accepted should be queried instead of stored as a field?
     def is_accepted(self):
@@ -145,3 +142,9 @@ class Review(models.Model):
     accepted = models.BooleanField(default=False)
     comment = models.TextField()
     pending = models.BooleanField(default=True)
+
+class ListUnfinished(models.Model):
+    id = models.CharField(max_length=255,primary_key=True)
+
+    def __str__(self):
+        return self.id

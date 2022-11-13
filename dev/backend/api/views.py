@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.http.response import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from moelasware.models import (Quiz, QuizAnswer, Review,
-                               Submission, SubmissionAnswer, Tag, Test)
+                               Submission, SubmissionAnswer, Tag, Test, ListUnfinished)
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -16,7 +16,7 @@ from .serializers import (CreateQuizAnswerSerializer, CreateQuizSerializer,
                           GetQuizAnswerSerializer, GetQuizSerializer,
                           GetTagSerializer,
                           GetTestSerializer, LoginSerializer,
-                          RegistrationSerializer)
+                          RegistrationSerializer,ListUnfinishedSerializer)
 
 
 @api_view(['GET']) # allowed method(s)
@@ -186,10 +186,20 @@ def create_quiz(request):
 def edit_quizz(request):
     
     quiz = Quiz.objects.all()
-    flag = 0;
+    flag = 0
     for i in quiz:
         if i.accepted == False:
             flag = quiz.id
             return HttpResponseBadRequest(quiz.comment)
     create_quiz(request)
-	
+
+
+@api_view(['POST'])
+def unfinished_quizzes(request):
+    userid = request.data.get("id")
+    quizzes = Quiz.objects.get(author_id=userid,finished=0)
+    return JsonResponse(quizzes,status=200)
+
+
+
+

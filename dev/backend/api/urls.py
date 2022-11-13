@@ -7,4 +7,5 @@ urlpatterns = [
 	path('login/', views.login),
     path('register/', views.register),
 	path('create_quiz/', views.create_quiz),
+	path('unfinished_quizzes/',views.unfinished_quizzes),
 ]

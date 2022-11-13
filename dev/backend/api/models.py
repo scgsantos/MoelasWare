@@ -18,3 +18,10 @@ class Registration(models.Model):
 
     def __str__(self):
         return self.email
+
+class ListUnfinished(models.Model):
+    id = models.CharField(max_length=255,primary_key=True)
+
+    def __str__(self):
+        return self.id        
+

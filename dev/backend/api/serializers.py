@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
-from api.models import Login, Registration
+from api.models import Login, Registration, ListUnfinished
 
 from django.contrib.auth.password_validation import validate_password
 from moelasware.models import Test, Quiz, QuizAnswer,Tag, Submission, SubmissionAnswer, User,Review
@@ -70,5 +70,13 @@ class GetTagSerializer(serializers.ModelSerializer):
     	class Meta:
          model = Tag
          fields = ['id','text']
+
+
+##Unfinished quizzes
+
+class ListUnfinishedSerializer(serializers.ModelSerializer):
+		class Meta:
+			model = ListUnfinished
+			fields = ['id']
 
 
