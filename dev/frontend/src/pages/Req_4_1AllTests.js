@@ -3,7 +3,6 @@ import Radiobutton from '../components/Radiobutton';
 import { useParams, useNavigate } from "react-router-dom";
 import SingleTestPage from './Req_4_1SingleTest';
 import './TestSelection.css';
-import HeaderComp from '../components/Header';
 import Button from '../components/Button';
 import utils from '../utils';
 
@@ -17,7 +16,11 @@ function MainSelectionPage() {
     const { test } = useParams();
     const navigate = useNavigate();
     function getTests() {
-        fetch(utils.svurl + '/api/tests', {
+        setLoading(true); // important!
+
+        fetch(utils.svurl + '/api/tests?' + new URLSearchParams({
+            'includeMySubmissions': true,
+        }), {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -26,6 +29,7 @@ function MainSelectionPage() {
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 setTests(data.tests);
             }).catch(error => {
                 console.log(error);
@@ -46,7 +50,6 @@ function MainSelectionPage() {
     if (error) {
         return (
             <div>
-                <HeaderComp />
                 <div className="centerTitles">
                     <span className='main-title'>SOLVE A TEST</span>
                     <span className="sub-title">Something Wrong Happened</span>
@@ -54,7 +57,7 @@ function MainSelectionPage() {
 
                 <div className="centerLoad just-column">
                     <span>{error}</span>
-                    <button className='solve-quizbtn' onClick={() => {
+                    <button className='solve-quizbtn mt-2' onClick={() => {
                         setError(null);
                         getTests();
                     }}>Ok</button>
@@ -71,8 +74,6 @@ function MainSelectionPage() {
 
     return (
         <div>
-            <HeaderComp />
-
             <div className="centerTitles">
                 <span className='main-title'>SOLVE A TEST</span>
                 <span className='sub-title'>Please choose the test you would like to take</span>
@@ -115,13 +116,17 @@ function MainSelectionPage() {
                     </div>) : (
                     <div className='line'>
                         {tests.map((test, i) => (
-                            <div key={i} className="box-test">
-                                <span className='testTitle'>Test #{test.id} - {test.quizzes[0].tags[0].text
+                            < div key={i} className='box-text'>
+                                <span className={`testTitle ${test.submissions.length > 0 ? 'disabled-text' : ''}`}>Test #{test.id} - {test.quizzes[0].tags[0].text
                                 }</span>
                                 <Button onClick={() => {
+                                    if (test.submissions.length > 0) {
+                                        navigate('/grade/' + test.id + '/result');
+                                        return;
+                                    }
                                     navigate(`/selecttest/${test.id}`);
                                     setSelectedTest(test.id);
-                                }} name={test.name} />
+                                }} name={test.name} disabled={test.submissions.length > 0} />
                             </div>
                         ))}
                     </div>
