@@ -318,7 +318,7 @@ function CreateTest() {
   console.log(quizzes);
   if (isPage1) {
     return (
-       <div className="req-2-1-firstPage">
+       <div className="req-2-1-firstPage" onClick={() => handleClick()} >
         <h1 className="req-2-1-title">Create a Test</h1>
         <h2 className="req-2-1-subTitle">Choose Quizzes for the Test</h2>
 
@@ -330,7 +330,6 @@ function CreateTest() {
 
           <ul>
             {getPaginationArray().map((quiz) => renderQuiz(quiz))}
-
           </ul>
         </section>
 
