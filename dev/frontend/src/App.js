@@ -11,6 +11,7 @@ import Preview from "./pages/create_test/preview/preview.js";
 import CreateTestMenu from "./pages/create_test/menu/CreateTestMenu.js";
 import CreateRandomTestWithSpecs from "./pages/create_test/number_and_tags/req_2_2.js";
 import CreateTest from "./pages/create_test/select_quizzes/req_2_3.js";
+import CreateTestLastPage from "pages/create_test/preview/last_page";
 
 // Group 4
 import Home from "./pages/home";
@@ -44,10 +45,9 @@ import {
   REVIEW_URL,
   REVIEW_QUIZ_URL,
 } from "urls.js";
-import history from './history.js';
+import history from "./history.js";
 
 function App() {
-
   return (
     <Router>
       <Header />
@@ -55,10 +55,19 @@ function App() {
         <Route path="/" element={<Home />} />
 
         <Route exact path={TEST_MENU_URL} element={<CreateTestMenu />} />
-        <Route exact path={CREATE_RANDOM_TEST_URL} element={<CreateRandomTest />} />
+        <Route
+          exact
+          path={CREATE_RANDOM_TEST_URL}
+          element={<CreateRandomTest />}
+        />
         <Route exact path={CREATE_TEST_URL} element={<CreateTest />} />
         <Route exact path={TEST_PREVIEW_URL} element={<Preview />} />
-        <Route exact path={CREATE_TEST_WITH_TAGS_URL} element={<CreateRandomTestWithSpecs />} />
+        <Route
+          exact
+          path={CREATE_TEST_WITH_TAGS_URL}
+          element={<CreateRandomTestWithSpecs />}
+        />
+        <Route exact path={PUBLISHED_URL} element={<CreateTestLastPage />} />
 
         <Route exact path={PROFILE_URL} element={<Profile />} />
 

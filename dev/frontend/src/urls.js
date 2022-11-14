@@ -1,12 +1,13 @@
-const PROFILE_URL = "/profile"
-const USERS_URL = "/users"
-const TESTS_URL = "/tests"
+const PROFILE_URL = "/profile";
+const USERS_URL = "/users";
+const TESTS_URL = "/tests";
 
-const TEST_MENU_URL = "/test/menu"
-const TEST_PREVIEW_URL = "/test/preview"
-const CREATE_TEST_URL = "/test/create/choose"
-const CREATE_RANDOM_TEST_URL = "/test/create/random"
-const CREATE_TEST_WITH_TAGS_URL = "/test/create/tags"
+const TEST_MENU_URL = "/test/menu";
+const TEST_PREVIEW_URL = "/test/preview";
+const CREATE_TEST_URL = "/test/create/choose";
+const CREATE_RANDOM_TEST_URL = "/test/create/random";
+const CREATE_TEST_WITH_TAGS_URL = "/test/create/tags";
+const PUBLISHED_URL = "/test/create/published";
 
 const SELECT_TEST_URL = "/test/select"
 const SOLVE_TEST_URL = "/test/solve"

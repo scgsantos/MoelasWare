@@ -31,7 +31,7 @@ function IncDecCounter(props) {
         <div class="addDiv">
           <button className="addButton" type="button" onClick={decNum}>
             -
-          </button>
+          </button>&nbsp;
         </div>
         <input
           type="text"

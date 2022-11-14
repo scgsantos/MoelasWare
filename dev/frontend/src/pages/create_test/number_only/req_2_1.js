@@ -14,9 +14,19 @@ function CreateRandomTest() {
   const [text, setText] = useState("");
 
   const [quizzes, setQuizzes] = useState([]);
-  const [quizzes_count, setQuizzesCount] = useState(
-    history.location.state?.quizzes_count
-  );
+  const [quizzes_count, setQuizzesCount] = useState(-1);
+
+  if( quizzes_count == -1){
+    getQuizzesCount();
+  }
+
+  console.log(history.location);
+
+  if (history.location.state != null && quizzes.length == 0) {
+      setNum(history.location.state.quizzes?.length);
+      setText(history.location.state.name);
+      setQuizzes(history.location.state?.quizzes);
+  }
 
   let navigate = useNavigate();
 
@@ -33,6 +43,14 @@ function CreateRandomTest() {
       .then((data) => {
         setQuizzes(data.quizzes);
       });
+  }
+
+  function getQuizzesCount(){
+    fetch("http://localhost:8000/api/quizzes/count/")
+    .then((response) => response.json())
+    .then((data) => {
+      setQuizzesCount(data.quizzes_count);
+    });
   }
 
   function handleCreateButtonChange() {
@@ -110,6 +128,7 @@ function CreateRandomTest() {
             className="req-2-1-inputText"
             type="text"
             name="name"
+            value={text}
             onChange={handleNameChange}
           />
           <h2 className="req-2-1-errorInput">

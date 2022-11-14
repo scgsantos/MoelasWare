@@ -34,7 +34,7 @@ req-2-1-firstPage * {
 }
 
 .formControl {
-  height: 1.5em;
+  height: 2.25em;
   width: 1.5em;
   text-align: center !important;
 }
@@ -73,7 +73,7 @@ req-2-1-firstPage * {
   justify-content: center;
   align-items: center !important;
   height: 1.5em;
-  width: 8em;
+  width: 15em;
 }
 
 .req-2-2-inputText {
@@ -150,4 +150,16 @@ req-2-1-firstPage * {
   align-items: center !important;
   font-size: 14px !important;
   margin-bottom: 2em !important;
+}
+
+/* Last Page Elements */
+
+.req2-lastPage-correctImage {
+  margin-top: 4.5em;
+  width: 18em;
+  height: 18em;
+  display: flex;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
 }

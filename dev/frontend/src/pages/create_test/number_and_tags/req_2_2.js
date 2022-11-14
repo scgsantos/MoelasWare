@@ -18,20 +18,26 @@ function CreateRandomTestWithSpecs() {
   const [isPage1, setIsPage1] = useState(true);
   const [text, setText] = useState("");
   const [tags, setTags] = useState([]);
+
+  const [is_reload, setReload] = useState(false);
   const [prev_tags, setPrevTags] = useState([]);
 
   const [quizzes, setQuizzes] = useState([]);
-  const [quizzes_count, setQuizzesCount] = useState(
-    history.location.state?.quizzes_count
-  );
+  const [quizzes_count, setQuizzesCount] = useState(-1);
 
-  // if (history.location.state != null && quizzes?.length == 0) {
-  //   setNum(history.location.state?.quizzes?.length);
-  //   setText(history.location.state?.name);
-  //   setQuizzes(history.location.state?.quizzes);
-  //   setTags(history.location.state?.tags);
-  //   setPrevTags(history.location.state?.tags);
-  // }
+  if( quizzes_count == -1){
+    getQuizzesCount();
+  }
+
+  if (history.location.state != null && quizzes?.length == 0) {
+    setNum(history.location.state?.quizzes?.length);
+    setText(history.location.state?.name);
+    setQuizzes(history.location.state?.quizzes);
+    setTags(history.location.state?.tags);
+    setPrevTags(history.location.state?.tags);
+
+    setReload(true);
+  }
 
   let navigate = useNavigate();
 
@@ -50,12 +56,20 @@ function CreateRandomTestWithSpecs() {
       });
   }
 
+  function getQuizzesCount(){
+    fetch("http://localhost:8000/api/quizzes/count/")
+    .then((response) => response.json())
+    .then((data) => {
+      setQuizzesCount(data.quizzes_count);
+    });
+  }
+
   function handleCreateButtonChange() {
     if (num <= quizzes_count) {
       setIsPage1(false);
     }
 
-    if (quizzes.length !== num || tags !== prev_tags) {
+    if (quizzes.length !== num || (is_reload && tags !== prev_tags)) {
       genQuizzes();
     }
   }
