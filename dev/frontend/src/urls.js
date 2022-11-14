@@ -7,7 +7,7 @@ const TEST_PREVIEW_URL = "/test/preview";
 const CREATE_TEST_URL = "/test/create/choose";
 const CREATE_RANDOM_TEST_URL = "/test/create/random";
 const CREATE_TEST_WITH_TAGS_URL = "/test/create/tags";
-const PUBLISHED_URL = "/test/create/published";
+const TEST_PUBLISHED_URL = "/test/create/published";
 
 const SELECT_TEST_URL = "/test/select"
 const SOLVE_TEST_URL = "/test/solve"
@@ -21,6 +21,7 @@ export {
   PROFILE_URL,
   USERS_URL,
   TESTS_URL,
+  TEST_PUBLISHED_URL,
 
   CREATE_RANDOM_TEST_URL,
   CREATE_TEST_URL,

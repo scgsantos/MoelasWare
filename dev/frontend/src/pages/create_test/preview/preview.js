@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import "common.css";
 import "./TestPreview.css";
-import { CREATE_TEST_URL, PUBLISHED_URL } from "urls.js";
+import { CREATE_TEST_URL, TEST_PUBLISHED_URL } from "urls.js";
 import history from "history.js";
 
 function Preview() {
@@ -100,7 +100,7 @@ function Preview() {
       body: JSON.stringify({ quizzes: quizzes_ids, name: name, author: 1 }),
     }).then((response) => response.json());
 
-    navigate(PUBLISHED_URL);
+    navigate(TEST_PUBLISHED_URL);
     window.location.reload();
   }
 

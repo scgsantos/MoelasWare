@@ -37,6 +37,7 @@ import {
   CREATE_TEST_URL,
   TEST_MENU_URL,
   TEST_PREVIEW_URL,
+  TEST_PUBLISHED_URL,
   CREATE_TEST_WITH_TAGS_URL,
   SELECT_TEST_URL,
   SOLVE_TEST_URL,
@@ -67,7 +68,7 @@ function App() {
           path={CREATE_TEST_WITH_TAGS_URL}
           element={<CreateRandomTestWithSpecs />}
         />
-        <Route exact path={PUBLISHED_URL} element={<CreateTestLastPage />} />
+        <Route exact path={TEST_PUBLISHED_URL} element={<CreateTestLastPage />} />
 
         <Route exact path={PROFILE_URL} element={<Profile />} />
 

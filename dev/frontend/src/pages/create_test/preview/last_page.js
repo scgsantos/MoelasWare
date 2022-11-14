@@ -6,7 +6,7 @@ import {
   MENU_URL,
   PREVIEW_URL,
   CREATE_TEST_WITH_TAGS_URL,
-  PUBLISHED_URL,
+  TEST_PUBLISHED_URL,
 } from "urls.js";
 
 function CreateTestLastPage() {
