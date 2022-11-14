@@ -25,6 +25,9 @@ import SolveTest from './pages/Req_4_2SolveQuizz';
 import GradeTestSolved from './pages/Req_4_2SolvedAllQuizzes';
 import TestGradePreviews from './pages/Req_4_3Resolution';
 
+import ReviewQuizPage from "./pages/ReviewQuizPage";
+import ReviewAQuizPage from "./pages/ReviewAQuizPage";
+
 import {
   PROFILE_URL,
   USERS_URL,
@@ -38,6 +41,8 @@ import {
   SOLVE_TEST_URL,
   TEST_SOLVED_URL,
   TEST_GRADE_URL,
+  REVIEW_URL,
+  REVIEW_QUIZ_URL,
 } from "urls.js";
 import history from './history.js';
 
@@ -76,6 +81,9 @@ function App() {
         <Route path={TEST_SOLVED_URL} element={<TestGradePreviews />} >
           <Route path=":test" element={<TestGradePreviews />} />
         </Route>
+
+        <Route exact path={REVIEW_URL} element={<ReviewQuizPage />} />
+        <Route exact path={REVIEW_QUIZ_URL} element={<ReviewAQuizPage />} />
       </Routes>
     </Router>
   );

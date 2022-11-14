@@ -13,6 +13,9 @@ const SOLVE_TEST_URL = "/test/solve"
 const TEST_SOLVED_URL = "/test/solved"
 const TEST_GRADE_URL = "/test/grade"
 
+const REVIEW_URL = "/review"
+const REVIEW_QUIZ_URL = "/review/quiz/"
+
 export {
   PROFILE_URL,
   USERS_URL,
@@ -28,4 +31,7 @@ export {
   SOLVE_TEST_URL,
   TEST_SOLVED_URL,
   TEST_GRADE_URL,
+
+  REVIEW_URL,
+  REVIEW_QUIZ_URL,
 }
