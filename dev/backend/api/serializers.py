@@ -81,7 +81,7 @@ class AnsweredSubmissionsSerializer(serializers.ModelSerializer):
 		return correct_answers
 	'''
 	def get_correct_answers(self, obj):
-		return SubmissionAnswer.objects.filter(submission__submitter=obj.submitter).filter(answer__correct=True).count()
+		return SubmissionAnswer.objects.filter(submission__submitter=obj.submitter).filter(submission__test__id=obj.test.id).filter(answer__correct=True).count()
 
 
 	def get_total_answers(self, obj):
