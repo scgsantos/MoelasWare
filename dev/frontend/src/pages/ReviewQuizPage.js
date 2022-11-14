@@ -14,18 +14,18 @@ function ReviewQuizPage() {
                 ["Quiz #7 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 7],
                 ["Quiz #8 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 8]];
     return (
-      <div className="cor">
+      <div>
         <div className="start">
           <div className="click">
             <img src={logo} alt="Logo Moelas Ware" />
           </div>
           <div className="click">
-            <h1>Hi, username</h1>
+            <text>Hi, username</text>
           </div>
         </div>
         <div className='center'>
           <h2>LIST OF QUIZZES FOR REVIEW</h2>
-          <h2>Please click on the quiz that you would like review</h2>
+          <p>Please click on the quiz that you would like review</p>
         </div>
         <div className='center_tab'>
             <ul>
@@ -34,46 +34,46 @@ function ReviewQuizPage() {
                 for (let i = 0; i < data.length; i++) {
                   if (i === 0 && data.length === 1) {
                     d.push(
-                      <tr>
-                      <button className='button_uniq' onClick={()=>{navigate("/review/" + data[i][5])}}>
-                        {data[i][0]}-
-                        {data[i][1]}-
-                        {data[i][2]}-
-                        {data[i][3]}-
-                        {data[i][4]}
+                      <tr className='select'>
+                      <button className='button_tab button_uniq button_tab_hover' onClick={()=>{navigate("/review/" + data[i][5])}}>
+                        <td width={200}>{data[i][0]}</td>
+                        <td width={200}>{data[i][1]}</td>
+                        <td width={200}>{data[i][2]}</td>
+                        <td width={200}>{data[i][3]}</td>
+                        <td width={200}>{data[i][4]}</td>
                       </button>
                     </tr>)
                   } else if (i === 0 && data.length > 0) {
                     d.push(
-                      <tr>
-                      <button className='button1' onClick={()=>{navigate("/review/" + data[i][5])}}>
-                      {data[i][0]}-
-                      {data[i][1]}-
-                      {data[i][2]}-
-                      {data[i][3]}-
-                      {data[i][4]}
+                      <tr className='select'>
+                      <button className='button_tab button1 button_tab_hover' onClick={()=>{navigate("/review/" + data[i][5])}}>
+                        <td width={200}>{data[i][0]}</td>
+                        <td width={200}>{data[i][1]}</td>
+                        <td width={200}>{data[i][2]}</td>
+                        <td width={200}>{data[i][3]}</td>
+                        <td width={200}>{data[i][4]}</td>
                       </button>
                     </tr>)
                   } else if (i > 0 && i !== data.length-1) {
                     d.push(
-                      <tr>
-                      <button className='other_buttons' onClick={()=>{navigate("/review/" + data[i][5])}}>
-                        {data[i][0]}-
-                        {data[i][1]}-
-                        {data[i][2]}-
-                        {data[i][3]}-
-                        {data[i][4]}
+                      <tr className='select'>
+                      <button className='button_tab other_buttons button_tab_hover' onClick={()=>{navigate("/review/" + data[i][5])}}>
+                      <td width={200}>{data[i][0]}</td>
+                        <td width={200}>{data[i][1]}</td>
+                        <td width={200}>{data[i][2]}</td>
+                        <td width={200}>{data[i][3]}</td>
+                        <td width={200}>{data[i][4]}</td>
                       </button>
                     </tr>)
                   } else if (i === data.length-1) {
                     d.push(
-                      <tr>
-                      <button className='button_end' onClick={ ()=>{navigate("/review/" + data[i][5])}}>
-                        {data[i][0]}-
-                        {data[i][1]}-
-                        {data[i][2]}-
-                        {data[i][3]}-
-                        {data[i][4]}
+                      <tr className='select'>
+                      <button className='button_tab button_end button_tab_hover' onClick={ ()=>{navigate("/review/" + data[i][5])}}>
+                      <td width={200}>{data[i][0]}</td>
+                        <td width={200}>{data[i][1]}</td>
+                        <td width={200}>{data[i][2]}</td>
+                        <td width={200}>{data[i][3]}</td>
+                        <td width={200}>{data[i][4]}</td>
                       </button>
                     </tr>)
                   }
