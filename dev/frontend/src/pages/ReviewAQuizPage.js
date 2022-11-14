@@ -1,58 +1,176 @@
 import './ReviewAQuizPage.css';
 import React from 'react';
 import logo from '../logo.svg';
+import { useState, useEffect, setState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useParams } from 'react-router';
+import utils from '../utils';
+
 function ReviewAQuizPage() {
-  return (
-    
-    <div class="Container">
-      <div class="topbar">
-        <div style={{ flex: 1 }}></div>
-        <div class="logo" style={{ flex: 2 }}>
+
+  const [data, setQuiz] = useState({});
+  //error
+  const [error, setError] = useState(false);
+  //loading
+  const [isLoaded, setLoading] = useState(false);
+
+  const { id } = useParams();
+
+  const [justification, setJustification] = useState('');
+
+  let navigate = useNavigate();
+
+  const handleJustificationChange = event => {
+    // 👇️ access textarea value
+    setJustification(event.target.value);
+  };
+
+  //fetch quiz from the backend and log it to the console
+  useEffect(() => {
+    fetch(utils.svurl + "api/quizzes/" + id)  
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("Something went wrong", {cause: res});
+        }})
+      .then(
+        (result) => {
+          setLoading(true);
+          setQuiz(result);
+        }
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+      ).catch((error) => {
+        setLoading(true);
+        setError(true);
+      })
+  }, [])
+
+  if (error) {
+    return <div>Could not get quiz</div>;
+  } else if (!isLoaded) {
+    return <div>Loading...</div>;
+  } else {
+    return (
+      <div className="Container">
+      <div className="topbar">
+        <div className="click">
           <img src={logo} alt="Logo Moelas Ware" />
         </div>
-
-        <div class="username" style={{ flex: 4 }}>
-          <text style={styles.geral}>Hi, username</text>
+        <div className="click">
+        <div style={styles.geral}>Hi, username</div>
         </div>
-        <div>
-          <text style={styles.middletitle}>REVIEW A QUIZ</text>
-        </div>
+      </div>
+      <div className="centered">
+          <div style={styles.middletitle}>REVIEW A QUIZ</div>
       </div>
       <div style={{ height: "20px" }}></div>
-      <p style={styles.center}><text>"QUESTION"</text></p>
-      <div class="row">
-        <div class="column">
-          <div class="answer">Answer #1</div>
-          <div class="answer">Answer #2 </div>
-          <div class="answer correct">Answer #3</div>
-          <div class="answer">Answer #4</div>
-          <div class="answer">Answer #5</div>
-        </div>
-        <div class="column">
-          <div class="start">
-            <h3 class="explanation">EXPLANAITON</h3>
-            <p class="explanation">lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget aliquam tincidunt, nunc nisl</p>
-          </div>
-        </div>
+
+      <p style={styles.center}>{data["quiz"]["question"]}</p>
+    
+      <div className="cent">
+            <ul>
+              {(() => {
+                var d = [];
+                let j = 0;
+                for (let i = 0; i < data["answers"].length ; i++) {
+                  if (j === 0) {
+                    j = 1;
+                    d.push(
+                      <tr className="side sep">
+                        <td></td>
+                        <td>
+                          <h2 className="explanation">EXPLANATIONS</h2>
+                        </td>
+                      </tr>)
+                  }
+                  if (data["answers"][i]["correct"]) {
+                    d.push(
+                      <tr className="side sep">
+                        <td>
+                          <div className="answer correct"> {data["answers"][i]["text"]} </div>
+                        </td>
+                        <td>
+                          <div className="explanation"> {data["answers"][i]["justification"]}</div>
+                        </td>
+                      </tr>)
+                  } else {
+                    d.push(
+                      <tr className="side sep">
+                        <td>
+                          <div className="answer"> {data["answers"][i]["text"]} </div>
+                        </td>
+                        <td>
+                          <div className="explanation"> {data["answers"][i]["justification"]} </div>
+                        </td>
+                      </tr>)
+                  }
+                }
+              return d;
+              })()}
+            </ul>
       </div>
-      <h2 class="centered">
+
+
+      <h2 className="centered">
         EVALUATION
       </h2>
-      <div class="row">
+      <div className="row">
         <h4>Justification</h4>
-        <textarea class="justification" type="text" name="Justification" placeholder="Justification"></textarea>
+        <textarea className="justification" type="text" name="Justification" placeholder="Justification"
+        value={justification}
+        onChange={handleJustificationChange}></textarea>
         <div style={{ height: "40px" }}></div>
-        <div class="column">
-          <button class="btn success" style={{marginLeft:"50%"}}>ACCEPT</button>
+        <div className="column">
+          <button className="btn success" style={{marginLeft:"50%"}} onClick={()=>{
+            const args =  JSON.stringify({
+              "quiz": ""+id,
+              "reviewer": "1", 
+              "accepted": true,
+              "comment": justification
+          });
+          console.log(args);
+            //post to backend
+            fetch(utils.svurl + "api/quizzes/review", {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: args
+          }).then(
+            alert("Quiz Accepted")
+          ).then(
+            navigate("/review")
+          )
+        }}>ACCEPT</button>
         </div>
-        <div class="start">
-          <div class="column">
-            <button class="btn success" style={{marginLeft: "30%"}}>REJECT</button>
+        <div className="start">
+          <div className="column">
+            <button className="btn success" style={{marginLeft: "30%"}} onClick={()=>{
+            const args =  JSON.stringify({
+              "quiz": ""+id,
+              "reviewer": "1", 
+              "accepted": false,
+              "comment": justification
+          });
+          console.log(args);
+            //post to backend
+            fetch(utils.svurl + "api/quizzes/review", {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: args
+          }).then(
+            alert("Quiz Rejected")
+          ).then(
+            navigate("/review")
+          )
+        }}>REJECT</button>
           </div>
         </div>
       </div>
     </div>
-  );
+    );
+  }
 }
 
 const styles = {
