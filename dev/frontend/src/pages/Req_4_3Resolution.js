@@ -6,6 +6,8 @@ import { useParams, useNavigate } from 'react-router';
 import utils from '../utils';
 
 function CheckAnswers() {
+    document.body.style = "background: var(--yellow)";
+
     const [quizzRes, setQuizzRes] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

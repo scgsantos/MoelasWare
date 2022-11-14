@@ -6,6 +6,8 @@ import utils from '../utils';
 import { SELECT_TEST_URL } from "../urls.js";
 
 function QuestionSolving(props) {
+    document.body.style = "background: var(--yellow)";
+
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [grade, setGrade] = useState(0);
