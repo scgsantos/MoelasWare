@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from moelasware.models import Quiz, QuizAnswer
-from api.serializers.tag_serializers import GetTag
+from api.serializers.tag_serializers import GetTagSerializer
 
 class QuizSerializer(serializers.ModelSerializer):
     tags = GetTagSerializer(read_only=True, many=True)

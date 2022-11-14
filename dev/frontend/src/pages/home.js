@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {
   USERS_URL,
   TEST_MENU_URL,
+  SELECT_TEST_URL,
 } from "../urls.js"
 
 const Home = () => {
@@ -14,7 +15,7 @@ const Home = () => {
         <Link to="/#">
           <h1>CREATE A QUIZ</h1>
         </Link>
-        <Link to="/selecttest">
+        <Link to={SELECT_TEST_URL}>
           <h1>SOLVE A TEST</h1>
         </Link>
         <Link to="/#">

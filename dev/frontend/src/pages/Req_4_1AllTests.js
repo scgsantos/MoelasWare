@@ -5,6 +5,7 @@ import SingleTestPage from './Req_4_1SingleTest';
 import './TestSelection.css';
 import Button from '../components/Button';
 import utils from '../utils';
+import { SELECT_TEST_URL, TEST_GRADE_URL } from "../urls.js";
 
 function MainSelectionPage() {
     const [loading, setLoading] = useState(true);
@@ -121,10 +122,10 @@ function MainSelectionPage() {
                                 }</span>
                                 <Button onClick={() => {
                                     if (test.submissions.length > 0) {
-                                        navigate('/grade/' + test.id + '/result');
+                                        navigate(`${TEST_GRADE_URL}/${test.id}/result`);
                                         return;
                                     }
-                                    navigate(`/selecttest/${test.id}`);
+                                    navigate(`${SELECT_TEST_URL}/${test.id}`);
                                     setSelectedTest(test.id);
                                 }} name={test.name} disabled={test.submissions.length > 0} />
                             </div>

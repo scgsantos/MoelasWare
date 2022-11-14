@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './TestSelection.css';
 
+import { SELECT_TEST_URL } from "../urls.js";
 import { useParams, useNavigate } from 'react-router';
 import utils from '../utils';
 
@@ -129,7 +130,7 @@ function CheckAnswers() {
 
                     <div className="bottomcenterntns">
                         <button onClick={() => {
-                            navigate('/selecttest');
+                            navigate(SELECT_TEST_URL);
                         }}>Back to test selection</button>
                     </div>
                 </>

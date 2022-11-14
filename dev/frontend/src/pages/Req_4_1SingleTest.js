@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import './TestSelection.css';
 import utils from '../utils';
+import { SELECT_TEST_URL, SOLVE_TEST_URL } from "../urls.js";
 
 function SingleTestPage(props) {
     const [testinfo, setTestinfo] = useState(undefined);
@@ -103,12 +104,11 @@ function SingleTestPage(props) {
 
                     <div className="quizbottom">
                         <button className='solve-quizbtn' onClick={() => {
-                            console.log('/solvequizz/' + testinfo.id);
-                            navigate('/solvequizz/' + testinfo.id);
+                            navigate(`${SOLVE_TEST_URL}/${testinfo.id}`);
                         }}>Solve quiz</button>
 
                         <button className='back-btn' onClick={() => {
-                            navigate('/selecttest');
+                            navigate(SELECT_TEST_URL);
                             window.location.reload();
                         }}>Back to test selection</button>
                     </div>
