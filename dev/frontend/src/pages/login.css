@@ -9,7 +9,7 @@ input[type=email], [type=password] {
 }
 
 * {
-  background-color: var(--beige) !important;
+  background-color: var(--beige);
 }
 
 .btn {
