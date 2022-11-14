@@ -11,8 +11,8 @@ function History(props) {
 
   const { id } = useParams();
 
-  const users_link = "http://127.0.0.1:8000/api/users/" + id + "/submissions";
-  const tests_link = "http://127.0.0.1:8000/api/tests/" + id + "/submissions";
+  const users_link = "http://127.0.0.1:8000/api/users/" + id + "/submissions/";
+  const tests_link = "http://127.0.0.1:8000/api/tests/" + id + "/submissions/";
 
   useEffect(() => {
     fetch(

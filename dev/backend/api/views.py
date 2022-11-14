@@ -76,7 +76,6 @@ def handle_serializer_hall_of_fame_view(obj):
     info_list = []
     
     for i in obj:
-        print(i)
         author = i["user"]["username"]
         correct_answers = i["correct_answers"]
         date_joined = return_date(str(i["user"]["date_joined"]))
@@ -98,7 +97,6 @@ def hall_of_fame_view(request): # falta serializer
     sub = HallOfFameGetUserInfo(users, many=True).data
 
     sub = handle_serializer_hall_of_fame_view(sub)
-    print(sub)
 
     return JsonResponse({'fame': sub})
 

@@ -17,7 +17,7 @@ function UsersList() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/fame", {
+    fetch("http://localhost:8000/api/fame/", {
       method: "get",
       headers: { "Content-Type": "application/json" },
     })

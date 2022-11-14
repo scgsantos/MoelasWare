@@ -13,7 +13,7 @@ function TestsList() {
   ];
 
 useEffect(() => {
-  fetch("http://localhost:8000/api/tests", {
+  fetch("http://localhost:8000/api/tests/", {
     method: "get",
     headers: { "Content-Type": "application/json" },
   })
