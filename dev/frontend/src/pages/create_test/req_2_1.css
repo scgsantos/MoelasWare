@@ -151,3 +151,15 @@ req-2-1-firstPage * {
   font-size: 14px !important;
   margin-bottom: 2em !important;
 }
+
+/* Last Page Elements */
+
+.req2-lastPage-correctImage {
+  margin-top: 4.5em;
+  width: 18em;
+  height: 18em;
+  display: flex;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}
