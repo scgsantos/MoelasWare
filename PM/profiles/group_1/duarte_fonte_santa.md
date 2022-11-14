@@ -23,5 +23,5 @@ Roles: `D`
 * Pending: 
 
 ### 5
-* Finished: #412, #413, #414, #417
-* Pending: 
+* Finished: #412, #413, #414
+* Pending: #417
