@@ -15,6 +15,7 @@ import CreateTestPanel from "./CreateTestPanel";
 import history from "history.js";
 
 function CreateTestMenu() {
+  document.body.style = "background: var(--pink)";
   var [hasCreationPermisison, setCreationPermision] = useState(false);
   var [isHovering, setHovering] = useState(false);
   const [quizzesCount, setQuizzesCount] = useState(1);
@@ -65,7 +66,7 @@ function CreateTestMenu() {
   }
 
   return (
-    <div>
+    <div className="CreateTestMenu">
       <header className="CreateTestMenu-header">
         <h1>Create a Test</h1>
       </header>

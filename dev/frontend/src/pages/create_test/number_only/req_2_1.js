@@ -8,6 +8,7 @@ import { CREATE_RANDOM_TEST_URL, TEST_MENU_URL, TEST_PREVIEW_URL } from "urls.js
 import history from "history.js";
 
 function CreateRandomTest() {
+  document.body.style = "background: var(--pink)";
   const [num, setNum] = useState(1);
   const [isPage1, setIsPage1] = useState(true);
   const [text, setText] = useState("");

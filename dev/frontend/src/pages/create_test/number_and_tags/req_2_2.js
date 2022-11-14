@@ -13,6 +13,7 @@ import {
 import history from "history.js";
 
 function CreateRandomTestWithSpecs() {
+  document.body.style = "background: var(--pink)";
   const [num, setNum] = useState(1);
   const [isPage1, setIsPage1] = useState(true);
   const [text, setText] = useState("");
@@ -20,13 +21,13 @@ function CreateRandomTestWithSpecs() {
   const [prev_tags, setPrevTags] = useState([]);
 
   const [quizzes, setQuizzes] = useState([]);
-  const [quizzes_count, setQuizzesCount] = useState([
+  const [quizzes_count, setQuizzesCount] = useState(
     history.location.state?.quizzes_count
-  ]);
+  );
 
-  // if (history.location.state != null && quizzes.length == 0) {
-  //   setNum(history.location.state.quizzes?.length);
-  //   setText(history.location.state.name);
+  // if (history.location.state != null && quizzes?.length == 0) {
+  //   setNum(history.location.state?.quizzes?.length);
+  //   setText(history.location.state?.name);
   //   setQuizzes(history.location.state?.quizzes);
   //   setTags(history.location.state?.tags);
   //   setPrevTags(history.location.state?.tags);
@@ -34,7 +35,7 @@ function CreateRandomTestWithSpecs() {
 
   let navigate = useNavigate();
 
-  function getFirstQuiz() {
+  function genQuizzes() {
     fetch("http://localhost:8000/api/quizzes/gen/", {
       method: "POST",
       headers: {
@@ -55,7 +56,7 @@ function CreateRandomTestWithSpecs() {
     }
 
     if (quizzes.length !== num || tags !== prev_tags) {
-      getFirstQuiz();
+      genQuizzes();
     }
   }
 
@@ -115,7 +116,7 @@ function CreateRandomTestWithSpecs() {
             className="req-2-2-inputText"
             type="text"
             name="name"
-            value={tags.join(" ")}
+            value={tags?.join(" ")}
             onChange={handleTagsChange}
           />
         </div>
@@ -146,7 +147,7 @@ function CreateRandomTestWithSpecs() {
             onChange={handleNameChange}
           />
           <h2 className="req-2-1-errorInput">
-            {text.length > 0 ? "" : "Name is mandatory"}
+            {text?.length > 0 ? "" : "Name is mandatory"}
           </h2>
         </div>
 
@@ -162,7 +163,7 @@ function CreateRandomTestWithSpecs() {
             Go Back
           </button>
 
-          <button className="req-2-1-GoBackbutton" onClick={getFirstQuiz}>
+          <button className="req-2-1-GoBackbutton" onClick={genQuizzes}>
             Reroll Quizzes
           </button>
 

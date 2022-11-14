@@ -1,4 +1,4 @@
-*{
+.req_2_3 *{
     margin:0;
     padding:0;
     background-color: #CC7695;
@@ -127,11 +127,6 @@
     width: 65px;
   }
 
-
-
-
-
-// Pop up window
 .window__wrapper{
   position:relative;
   padding:0 80px;

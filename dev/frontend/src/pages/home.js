@@ -7,6 +7,7 @@ import {
 } from "../urls.js"
 
 const Home = () => {
+  document.body.style = "background: var(--beige)";
   return (
     <React.Fragment>
       <div className="startmenu">

@@ -11,6 +11,7 @@ import history from 'history.js';
 
 
 function Preview() {
+  document.body.style = "background: var(--pink)";
   const [quizzes, setQuizzes] = useState(history.location.state?.quizzes);
   var [answers, setAnswers] = useState([]);
   var [quiz_id, setId] = useState(0);
@@ -105,7 +106,7 @@ function Preview() {
 
 
   return (
-    <div>
+    <div className="test-preview">
       <h2 className="preview-title">Create a Test</h2>
       <h1 className="preview-title">Name: {name}</h1>
 
@@ -130,6 +131,7 @@ function Preview() {
           }
         </ul>
 
+        {/* Justification is not vertically aligned with answer */}
 
         {answers.map((answer => renderJustification(answer)))}
 

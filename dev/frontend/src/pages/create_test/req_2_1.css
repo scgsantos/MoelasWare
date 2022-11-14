@@ -1,4 +1,8 @@
-* {
+req-2-1-secondPage * {
+  background-color: var(--pink) !important;
+}
+
+req-2-1-firstPage * {
   background-color: var(--pink) !important;
 }
 
@@ -30,7 +34,7 @@
 }
 
 .formControl {
-  height: 1em;
+  height: 1.5em;
   width: 1.5em;
   text-align: center !important;
 }
@@ -67,8 +71,8 @@
 .req-2-1-inputText {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 0.5em;
+  align-items: center !important;
+  height: 1.5em;
   width: 8em;
 }
 
@@ -76,7 +80,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 0.5em;
+  height: 1.5em;
 }
 
 .req-2-1-quizList {

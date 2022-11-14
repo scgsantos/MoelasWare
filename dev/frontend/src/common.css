@@ -9,7 +9,7 @@
   font-size: 16px; /* 1rem is now 18px */
 }
 
-* {
+body {
   background-color: var(--beige);
   font-family: "Basic", sans-serif;
   font-size: 1rem;

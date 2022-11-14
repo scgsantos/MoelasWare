@@ -9,6 +9,7 @@ import history from 'history.js';
 
 
 function CreateTest() {
+  document.body.style = "background: var(--pink)"
 
   // TODO?: find way to make quiz selection/visualization work without needing the array of ids (quizzes) rather than the array of objects
 
@@ -33,7 +34,7 @@ function CreateTest() {
   const [pop_up, setPopUp] = useState(null);
 
 
-  if(all_quizzes.length === 0){
+  if (all_quizzes.length === 0) {
     getAllQuizes();
   }
 
@@ -43,7 +44,7 @@ function CreateTest() {
     // Convert quizzes from objects to array of ids
     var q = [];
 
-    for(let i = 0; i < history.location.state?.quizzes.length; i++){
+    for (let i = 0; i < history.location.state?.quizzes.length; i++) {
       q.push(history.location.state?.quizzes[i].id);
     }
 
@@ -67,7 +68,7 @@ function CreateTest() {
       .then(data => {
         setAllQuizzes(data.quizzes.sort((a, b) => (a.id > b.id) ? 1 : -1));
         setSearchedQuizzes(data.quizzes.sort((a, b) => (a.id > b.id) ? 1 : -1));
-        setPageTotal(Math.ceil(data.quizzes.length/quizzes_per_page))
+        setPageTotal(Math.ceil(data.quizzes.length / quizzes_per_page))
       });
 
   }
@@ -81,21 +82,21 @@ function CreateTest() {
 
 
   function handleCreateButtonChange() {
-    if( quizzes.length > 0){
-         setIsPage1(false);
+    if (quizzes.length > 0) {
+      setIsPage1(false);
     }
   }
 
-    function handleGoBackChange() {
+  function handleGoBackChange() {
     setIsPage1(true);
   }
 
   // --- SEARCH BAR ---
 
-    // Check if a quizz has a tag matching current searched tag (lower/upper case differences dont matter)
-  function quizHasMatchingTag(quiz, tag){
-    for(let i=0; i < quiz.tags.length; i++){
-      if(quiz.tags[i].text.toUpperCase().indexOf(tag.toUpperCase()) === 0){
+  // Check if a quizz has a tag matching current searched tag (lower/upper case differences dont matter)
+  function quizHasMatchingTag(quiz, tag) {
+    for (let i = 0; i < quiz.tags.length; i++) {
+      if (quiz.tags[i].text.toUpperCase().indexOf(tag.toUpperCase()) === 0) {
         return true;
       }
     }
@@ -107,21 +108,21 @@ function CreateTest() {
     setTag(e.target.value);
 
 
-    if( e.target.value !== ""){
+    if (e.target.value !== "") {
       var quizzes_matching_search = [];
 
-      for(let i=0; i<all_quizzes.length; i++){
-        if( quizHasMatchingTag(all_quizzes[i], e.target.value)){
+      for (let i = 0; i < all_quizzes.length; i++) {
+        if (quizHasMatchingTag(all_quizzes[i], e.target.value)) {
           quizzes_matching_search.push(all_quizzes[i]);
         }
       }
 
       setSearchedQuizzes(quizzes_matching_search);
-      setPageTotal(Math.ceil(quizzes_matching_search.length/quizzes_per_page))
+      setPageTotal(Math.ceil(quizzes_matching_search.length / quizzes_per_page))
 
-    }else{
+    } else {
       setSearchedQuizzes(all_quizzes);
-      setPageTotal(Math.ceil(all_quizzes.length/quizzes_per_page))
+      setPageTotal(Math.ceil(all_quizzes.length / quizzes_per_page))
     }
 
   }
@@ -129,15 +130,15 @@ function CreateTest() {
   // -- NAVIGATION --
 
   function handleNextButtonChange() {
-    if( text.length !== 0){
+    if (text.length !== 0) {
 
 
       // Convert quizzes from ids to objects to send to preview page
       var q = [];
 
-      for( let i = 0; i < quizzes.length; i++){
-        for( let j=0; j< all_quizzes.length; j++){
-          if(quizzes[i] == all_quizzes[j].id){
+      for (let i = 0; i < quizzes.length; i++) {
+        for (let j = 0; j < all_quizzes.length; j++) {
+          if (quizzes[i] == all_quizzes[j].id) {
             q.push(all_quizzes[j]);
             break;
           }
@@ -158,61 +159,61 @@ function CreateTest() {
     navigate(TEST_MENU_URL);
   }
 
-  function handleQuizSelectionChange(quiz){
+  function handleQuizSelectionChange(quiz) {
 
-    if(quizHasBeenSelected(quiz)){
-      var q = quizzes.filter(function(q)  { return q !== quiz.id})
+    if (quizHasBeenSelected(quiz)) {
+      var q = quizzes.filter(function(q) { return q !== quiz.id })
       setQuizzes(q);  // if quiz already in list, remove it
-    }else{
+    } else {
       setQuizzes(quizzes.concat(quiz.id));    // if not, add
     }
   }
 
   // ----PAGINATION-----
 
-  function togglePagination(){
+  function togglePagination() {
     setPagination(!pagination);
   }
 
-  function nextPage(){
-    if( page_num + 1 > page_total){
-       setPage(1);
-    }else{
+  function nextPage() {
+    if (page_num + 1 > page_total) {
+      setPage(1);
+    } else {
       setPage(page_num + 1);
     }
   }
 
-  function prevPage(){
-    if( page_num - 1 <= 0){
-       setPage(page_total);
-    }else{
+  function prevPage() {
+    if (page_num - 1 <= 0) {
+      setPage(page_total);
+    } else {
       setPage(page_num - 1);
     }
   }
 
 
-  function getPaginationSection(){
-    if( pagination ){
+  function getPaginationSection() {
+    if (pagination) {
       return (<section>
-                <button className="preview-arrowButtons" style={{ float: 'left' }} onClick={() => prevPage()}>
-                &lt;
-                </button>
+        <button className="preview-arrowButtons" style={{ float: 'left' }} onClick={() => prevPage()}>
+          &lt;
+        </button>
 
-                <button className="preview-arrowButtons" style={{ float: 'right' }} onClick={() => nextPage()}>
-                &gt;
-              </button>
+        <button className="preview-arrowButtons" style={{ float: 'right' }} onClick={() => nextPage()}>
+          &gt;
+        </button>
 
-                <br/>
-                <h2 class="centerText"> Page {page_num} </h2>
-            </section>)
-    }else{
+        <br />
+        <h2 class="centerText"> Page {page_num} </h2>
+      </section>)
+    } else {
       return null;
     }
   }
-  function getPaginationArray(){
-    if( pagination ){
-      return searched_quizzes.slice((page_num-1)*quizzes_per_page, page_num*quizzes_per_page);
-    }else{
+  function getPaginationArray() {
+    if (pagination) {
+      return searched_quizzes.slice((page_num - 1) * quizzes_per_page, page_num * quizzes_per_page);
+    } else {
       return searched_quizzes;
     }
   }
@@ -234,131 +235,120 @@ function CreateTest() {
     }
   }
 
-  function handleQuizPreview(quiz){
+  function handleQuizPreview(quiz) {
 
     var url = format('http://localhost:8000/api/quizzes/{0}/answers/', quiz.id);
     fetch(url)
       .then(response => response.json())
       .then(data => {
-         setPopUp( <div className="window__list">
-                <h1 className="window__wrapper">{quiz.question}</h1>
-                <ul className="preview-quizList">
-                  {data.answers.map((answer) => renderAnswer(answer))}
-                </ul>
-                {data.answers.map((answer => renderJustification(answer)))}
+        setPopUp(<div className="window__list">
+          <h1 className="window__wrapper">{quiz.question}</h1>
+          <ul className="preview-quizList">
+            {data.answers.map((answer) => renderAnswer(answer))}
+          </ul>
+          {data.answers.map((answer => renderJustification(answer)))}
 
-              </div>);
+        </div>);
 
       });
 
   }
 
-  function handleClick( ){
+  function handleClick() {
     setPopUp(null);
   }
 
   // --- RENDERING ---
 
-  function quizHasBeenSelected(quiz){
+  function quizHasBeenSelected(quiz) {
 
-    for(let i = 0; i < quizzes.length; i++){
-      if(quizzes[i] == quiz.id){
-          return true;
+    for (let i = 0; i < quizzes.length; i++) {
+      if (quizzes[i] == quiz.id) {
+        return true;
       }
     }
     return false;
   }
 
-  function renderQuiz(quiz){
-      if( quizHasBeenSelected(quiz) ){
-        return( <li style={{ cursor: 'pointer'}}  onClick={() => handleQuizSelectionChange(quiz)}>
+  function renderQuiz(quiz) {
+    if (quizHasBeenSelected(quiz)) {
+      return (<li style={{ cursor: 'pointer' }} onClick={() => handleQuizSelectionChange(quiz)}>
         <p style={{ color: 'green' }} onClick={() => handleQuizPreview(quiz)}>{quiz.question}</p>
-        {quiz.tags.map((tag) => <text style={{  fontSize: '0.8rem'}}>{tag.text},&nbsp;</text>)}
-        <br/>
+        {quiz.tags.map((tag) => <text style={{ fontSize: '0.8rem' }}>{tag.text},&nbsp;</text>)}
+        <br />
       </li>
 
-        );
+      );
 
-      }else{
-        return( <li type="checkbox" style={{ cursor: 'pointer', backgroundColor: 'blue !important'}}  onClick={() => handleQuizSelectionChange(quiz)}>
-        <p style={{  color: 'black'}} onClick={() => handleQuizPreview(quiz)}>{quiz.question}</p>
-        {quiz.tags.map((tag) => <text style={{  fontSize: '0.8rem'}}>{tag.text},&nbsp;</text>)}
-        <br/>
+    } else {
+      return (<li type="checkbox" style={{ cursor: 'pointer', backgroundColor: 'blue !important' }} onClick={() => handleQuizSelectionChange(quiz)}>
+        <p style={{ color: 'black' }} onClick={() => handleQuizPreview(quiz)}>{quiz.question}</p>
+        {quiz.tags.map((tag) => <text style={{ fontSize: '0.8rem' }}>{tag.text},&nbsp;</text>)}
+        <br />
       </li>
 
-        );
-      }
+      );
+    }
   }
 
-  function renderQuizList( id ){
+  function renderQuizList(id) {
     var quiz;
 
-    for( let i = 0; i < all_quizzes.length; i++){
-      if( all_quizzes[i].id == id)
-        return      <li className="quiz">{all_quizzes[i].question}</li>
+    for (let i = 0; i < all_quizzes.length; i++) {
+      if (all_quizzes[i].id == id)
+        return <li className="quiz">{all_quizzes[i].question}</li>
     }
 
   }
 
 
   console.log(quizzes);
-  if( isPage1 ){
+  if (isPage1) {
     return (
-      <html>
-      <head>
-          <meta name="viewport" content="with=device-width" initial-scale={1.0} />
-          <title>REQ1_3</title>
-          <link rel="stylesheet" href="css/Style_req_13.2.css"/>
-          <link rel="preconnect" href="https://fonts.googleapis.com"/>
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-          <link href="https://fonts.googleapis.com/css2?family=Basic&display=swap" rel="stylesheet"/>
-      </head>
-      <body onClick={handleClick}>
-          <section class="header">
-            <div class="login">
-                <p>Hi, username</p>
-            </div>
-          </section>
+      <div className="req_2_3" onClick={handleClick}>
+        <section class="header">
+          <div class="login">
+            <p>Hi, username</p>
+          </div>
+        </section>
 
-          <section class="centerText">
-              <h2>Create a Test</h2>
-              <h1>Choose Quizzes for the Test</h1>
-
-          </section>
+        <section class="centerText">
+          <h2>Create a Test</h2>
+          <h1>Choose Quizzes for the Test</h1>
+        </section>
 
 
-          {getPaginationSection()}
+        {getPaginationSection()}
 
-          <section class="listTest">
-              <input placeholder="search the #tag you want here" type="text" value={tag} onChange={handleSearchChange}/>
+        <section class="listTest">
+          <input placeholder="search the #tag you want here" type="text" value={tag} onChange={handleSearchChange} />
 
-              <ul>
-              {getPaginationArray().map((quiz) => renderQuiz(quiz))}
+          <ul>
+            {getPaginationArray().map((quiz) => renderQuiz(quiz))}
 
-              </ul>
-            </section>
+          </ul>
+        </section>
 
-            {pop_up}
+        {pop_up}
 
-            <section id="createTest">
+        <section id="createTest">
 
-                <button className="createTestButton" onClick={handleGoBackToMenu}>
-                  Go Back
-                </button>
-                &nbsp;&nbsp;
+          <button className="createTestButton" onClick={handleGoBackToMenu}>
+            Go Back
+          </button>
+          &nbsp;&nbsp;
 
-                &nbsp;&nbsp;
-                <button className="createTestButtonn" onClick={handleCreateButtonChange}>
-                    Next
-                  </button>
-            </section>
+          &nbsp;&nbsp;
+          <button className="createTestButtonn" onClick={handleCreateButtonChange}>
+            Next
+          </button>
+        </section>
 
 
-        </body>
-  </html>
+      </div>
 
-  );
-  }else{
+    );
+  } else {
     return (
       <div className="req-2-1-secondPage">
         <h1 className="req-2-1-title">Create a Test</h1>

@@ -1,5 +1,5 @@
-* {
-  background-color: var(--pink);
+body .CreateTestMenu  {
+  background-color: var(--pink) !important;
 }
 
 .CreateTestMenu-header {
