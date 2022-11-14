@@ -107,8 +107,8 @@ function Preview() {
 
   return (
     <div className="test-preview">
-      <h2 className="preview-title">Create a Test</h2>
-      <h1 className="preview-title">Name: {name}</h1>
+      <h2 className="preview-subTitle">Create a Test</h2>
+      <h1 className="preview-title">Test Name: {name}</h1>
 
       <div className="preview-container">
         <button className="preview-arrowButtons" style={{ float: 'left' }} onClick={() => prevQuiz()}>

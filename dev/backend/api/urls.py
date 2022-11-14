@@ -12,7 +12,7 @@ urlpatterns = [
     path("tags/", views.get_tag_view),
     path("quizzes/gen/", views.get_n_quizzes_view),
     path("quizzes/<int:quiz_id>/answers/", views.get_answers_for_quiz_view),
-    path("quizzes/count", views.get_total_number_of_quizzes_view),
+    path("quizzes/count/", views.get_total_number_of_quizzes_view),
     path("users/<int:pk>/submissions/", views.submissions_by_user_view),
     path("fame/", views.hall_of_fame_view),
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),

@@ -34,7 +34,7 @@ req-2-1-firstPage * {
 }
 
 .formControl {
-  height: 1.5em;
+  height: 2.25em;
   width: 1.5em;
   text-align: center !important;
 }
@@ -73,7 +73,7 @@ req-2-1-firstPage * {
   justify-content: center;
   align-items: center !important;
   height: 1.5em;
-  width: 8em;
+  width: 15em;
 }
 
 .req-2-2-inputText {
