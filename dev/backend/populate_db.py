@@ -37,15 +37,51 @@ except IntegrityError:
     pass
 
 try:
+    joao = AuthUser.objects.create_user(username="Joao",
+		                                email="joao@hotmail.com",
+		                                password="joao12345")
+except IntegrityError:
+    print("João already exists")
+    pass
+
+try:
+    andre = AuthUser.objects.create_user(username="Andre",
+		                                email="andre123@gmail.com",
+		                                password="andre123andre")
+except IntegrityError:
+    print("André already exists")
+    pass
+
+try:
+    luis = AuthUser.objects.create_user(username="Luis",
+		                                email="luis_pedro@sapo.pt",
+		                                password="luis_123")
+		                                
+		                                
+except IntegrityError:
+    print(" already exists")
+    pass
+
+
+
+try:
     manel = AuthUser.objects.get(username="manel")
     john = AuthUser.objects.get(username="john")
     sergio = AuthUser.objects.get(username="sergio42")
+
+    joao= AuthUser.objects.get(username="Joao")
+    andre = AuthUser.objects.get(username="Andre")
+    luis = AuthUser.objects.get(username="Luis")
 
     User.objects.bulk_create(
         [
             User(user=manel),
             User(user=john),
             User(user=sergio),
+
+            User(user=joao),
+            User(user=andre),
+            User(user=luis),
         ]
     )
 
@@ -161,7 +197,12 @@ try:
                 description="They're all the same",
                 name="Quiz15",
             ),
-
+            Quiz( 
+                author=User.objects.get(user=joao),
+		        question="Qual das seguintes áreas é que está diretamente ligada ao peopleware?",
+		        description="Peopleware são um grupo de pessoas que trabalham diretamente, ou indiretamente, com uma determinada área.",
+		        name="Área de Peopleware",
+            ),
         ]
     )
 
@@ -181,6 +222,8 @@ try:
     quizzes[12].tags.set([tags[1], tags[5]])
     quizzes[13].tags.set([tags[2], tags[3]])
     quizzes[14].tags.set([tags[0], tags[8]])
+
+    quizzes[15].tags.set(tags[11])
     
 
     print("Creating answers")
