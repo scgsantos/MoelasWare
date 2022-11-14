@@ -218,7 +218,7 @@ paths:
               schema:
                 type: array
                 items: 
-                  $ref: "#/components/schemas/return_test"
+                  $ref: "#/components/schemas/return_test_with_optional_submission"
   /tests/{test_id}:
     description: Tests made of reviewed quizzes
     parameters:
@@ -455,15 +455,21 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/id'
-        name: 
+        name:
           type: string
         author:
           $ref: '#/components/schemas/id'
-          
         quizzes:
           type: array
           items:
             $ref: '#/components/schemas/quiz'
+    return_test_with_optional_submission:
+      allOf:
+        - $ref: '#/components/schemas/return_test'
+        - type: object
+          properties:
+            submission:
+              $ref: '#/components/schemas/id'
     test:
       type: object
       properties:

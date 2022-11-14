@@ -1,38 +1,107 @@
-.App {
-  text-align: center;
+.container {
+    margin: 14px auto 80px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1 {
+    font-size: 1.8rem;
+    text-align: center;
+    /* font-weight: 100; */
+    /* margin: 1rem 0; */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* clears the ‘X’ from Internet Explorer */
+input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
+input[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
+/* clears the ‘X’ from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url(downarrow.svg) no-repeat right;
+    background-position-x: 90%;
+    background-position-y: 50%;
+    width: 7rem;
+    display: block;
+    margin: 0 auto 2rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#users, #tests {
+    display: block;
+    width: 913px;
+    margin: 3rem auto;
 }
 
-.App-link {
-  color: #61dafb;
+input.searchbar {
+    margin: 0;
+    padding: 10px auto;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+table {
+    padding: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 2rem;
+    table-layout: auto;
+    text-align: center;
+}
+
+td {
+    padding: 0.3rem 0;
+}
+
+th {
+    padding: 1rem 0;
+}
+
+.btn {
+    font-size: 0.8rem;
+    padding: 0.1rem 0.6rem;
+    text-align: center;
+    line-height: 1rem;
+    margin-left: 0.7rem;
+}
+
+.history-wrapper {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
+    background-color: transparent;
+    fill: none;
+}
+
+.history {
+    position: fixed;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 22%;
+    width: 50%;
+    height: 50%;
+    overflow: scroll;
+    font-size: 50px;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 0.5em 0.5rem;
+}
+
+h2 {
+    margin: 0;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 100;
+    text-transform: uppercase;
+}
+
+#hist {
+    margin-top: 1.5rem;
 }

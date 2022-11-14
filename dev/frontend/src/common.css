@@ -1,17 +1,17 @@
 :root {
   /* layout colors */
-  --beige: #EFE7E4;
-  --pink: #DCA9BB;
-  --green: #CAD0B1;
-  --blue: #D2DDDF;
-  --yellow: #F3D59E;
+  --beige: #efe7e4;
+  --pink: #dca9bb;
+  --green: #cad0b1;
+  --blue: #d2dddf;
+  --yellow: #f3d59e;
 
-  font-size: 18px; /* 1rem is now 18px */
+  font-size: 16px; /* 1rem is now 18px */
 }
 
-* {
+body {
   background-color: var(--beige);
-  font-family: 'Basic', sans-serif;
+  font-family: "Basic", sans-serif;
   font-size: 1rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -19,7 +19,7 @@
 }
 
 html {
-  margin: 2em 2.7em;
+  margin: 1em 1.7em;
 }
 
 header {
@@ -28,10 +28,17 @@ header {
   align-items: center;
 }
 
-header a { text-decoration: none; }
-header a:hover, header a:active { text-decoration: underline; }
+header a {
+  text-decoration: none;
+}
+header a:hover,
+header a:active {
+  text-decoration: underline;
+}
 
-button, select, input[type=button] {
+button,
+select,
+input[type="button"] {
   background-color: transparent;
   color: black;
   border-radius: 10px;
@@ -45,9 +52,9 @@ button:hover, input[type=button]:hover {
   cursor: pointer;
 }
 
-input[type=text] {
-  padding: 1em;
-  margin: 1em;
+input[type="text"], input[type="search"] {
+  padding: 0.3em 0.8em;
+  margin: 1em 1em 1em 0.5em;
   text-align: left;
   background-color: transparent;
   color: black;
@@ -55,15 +62,56 @@ input[type=text] {
   border: 1px solid black;
 }
 
-textarea[type=text] {
-  padding: 0.5em;
-  text-align: left;
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: black;
+  font-size: 0.9rem;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: black;
+  font-size: 0.9rem;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: black;
+  font-size: 0.9rem;
+}
+
+.startmenu {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: stretch;
+  height: 80vh;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.startmenu a {
   background-color: transparent;
   color: black;
   border-radius: 10px;
   border: 1px solid black;
-  width: 13.5em;
-  height: 4em;
-  resize: none;
-  overflow:hidden;
+  line-height: 35vh;
+  flex-basis: 49%;
+  margin: 0;
+}
+
+.startmenu a:first-child { background-color: var(--blue); }
+.startmenu a:nth-child(2) { background-color: var(--yellow); }
+.startmenu a:nth-child(3) { background-color: var(--green); }
+.startmenu a:nth-child(4) { background-color: var(--pink); }
+.startmenu a:nth-child(5) {
+  background-color: var(--beige);
+  position: absolute;
+  top: 40vh;
+  display: block;
+  padding: 2rem 0;
+  width: 15rem;
+  line-height: 3rem;
+}
+
+.startmenu h1 {
+  background-color: transparent;
 }
