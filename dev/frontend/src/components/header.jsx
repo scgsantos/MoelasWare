@@ -8,6 +8,7 @@ class Header extends Component {
   render() {
     return (
       <header>
+        <title>Moelasware Quizzes</title>
         <NavLink
           className={(navData) => (navData.isActive ? "active" : "none")}
           to="/"

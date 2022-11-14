@@ -93,7 +93,7 @@ function App() {
         </Route>
 
         <Route exact path={REVIEW_URL} element={<ReviewQuizPage />} />
-        <Route exact path={REVIEW_QUIZ_URL} element={<ReviewAQuizPage />} />
+        <Route exact path={REVIEW_QUIZ_URL + ":id"} element={<ReviewAQuizPage />} />
       </Routes>
     </Router>
   );
