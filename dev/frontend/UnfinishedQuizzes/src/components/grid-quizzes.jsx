@@ -3,16 +3,16 @@ import "../CSS/index.css";
 import Button from '../components/buttons';
 
 class gridQuizzes extends Component {
-    state = {
-        unfinishedQuizzes: this.props.number
-    }
-    
+    constructor(props){
+        super(props);
+  
+      }
     render() { 
         
         return (
             //make a button with a connection link
             <div class = 'grid'>
-                {Array.from(Array(this.state.unfinishedQuizzes).keys()).map((i) => {return <Button buttonNumber = {i+1}/>})}
+                {Array.from(Array(this.props.numberOfunfinishedquizzes).keys()).map((i) => {return <Button buttonNumber = {i+1}/>})}
             </div>
             
         );

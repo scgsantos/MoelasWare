@@ -4,17 +4,22 @@ import '../App.css';
 import Grid from './grid-quizzes';
 import '../fonts/Basic-Regular.ttf';
 import React, { Component } from 'react';
+import Button from '../components/buttons';
+import { useEffect } from 'react';
 
 class unfinishedq extends Component {
       
     state = {
-        
         username: "",
         setUsername : "",
         quizzes: [],
-        numberOfunfinishedquizzes :14
+        numberOfunfinishedquizzes :0
     }
-    getQuizIds = () => {
+    constructor(props){
+      super(props);
+      this.getQuizIds();
+    }
+    getQuizIds()  {
         fetch('http://localhost:8000/unfinished_quizzes/',{
         method: "POST",
         headers: {
@@ -29,17 +34,18 @@ class unfinishedq extends Component {
         
         .then(response => response.json())
         .then((data) => {
-          console.log(data);
-          this.setState(state => ({quizzes:data,numberofunfinishedquizzes:data.length})); 
-
+          console.log(data.length);
+          this.setState( {quizzes:data,numberOfunfinishedquizzes:data.length}); 
+          console.log(this.state.numberofunfinishedquizzes);
         })
       };
       
-
     render() { 
+      
         return (
             <div class="App"> 
             <div class = "topbar">
+                
               <div style={{flex: 1}}></div>
               <div class = "logo" style={{ flex: 2}}>
                 <img src={logo} alt="logo" />
@@ -56,8 +62,15 @@ class unfinishedq extends Component {
             {/* <div class = "choose-page">
               {Array.from(Array(Math.ceil(numberOfunfinishedquizzes/24)).keys()).map((i) => {return <Radiobutton page = {i + 1} unquiz = {numberOfunfinishedquizzes}/>})}
             </div> */}
-      
-            <Grid number = {this.state.numberOfunfinishedquizzes}/> 
+            <div class = 'grid'>
+                {console.log(Array.from(Array(this.state.numberOfunfinishedquizzes).keys()))}
+                {Array.from(Array(this.state.numberOfunfinishedquizzes).keys())
+                .map(
+                  (i) => {return <Button buttonNumber = {i+1}/>}
+                    )
+                }
+            </div>
+            
           </div>
         );
     }

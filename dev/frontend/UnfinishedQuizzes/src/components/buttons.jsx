@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import "../CSS/index.css";
 
 class buttons extends Component {
+    constructor(props){
+        super(props);
+  
+      }
     state = {
         link : this.props.linkzao
     }
