@@ -1,11 +1,19 @@
-import React from "react";
-import MainCreateQuiz from "./components/mainCreateQuiz";
+import "./CSS/index.css";
+import './App.css';
+import './fonts/Basic-Regular.ttf';
+import React from 'react';
+import UnfinishedQ from './components/unfinishedq';
 
-const App = () => {
+function App() {
+  
+  
+    
   return (
-      <MainCreateQuiz/>
+    <UnfinishedQ/>
   );
-};
+
+}
+
 
 
 
