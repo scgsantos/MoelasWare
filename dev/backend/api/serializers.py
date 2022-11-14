@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from moelasware.models import Test, User, SubmissionAnswer, AuthUser, Submission, Quiz, Tag
+from moelasware.models import Test, User, SubmissionAnswer, AuthUser, Submission, Quiz, Tag, QuizAnswer
 
 class GetTestSerializer( serializers.ModelSerializer ):
 	class Meta:
@@ -51,14 +51,43 @@ class SubmissionSerializer(serializers.ModelSerializer):
 		model = Submission
 		fields = ['test']
 
-
-class GetSubmissionsAnsweredByTest(serializers.ModelSerializer):
-	submission = SubmissionSerializer(read_only=True)
+class SubmissionMarkSerializer(serializers.ModelSerializer):
+	test = GetTestInfo(read_only=True)
 	class Meta:
-		model = SubmissionAnswer
-		fields = ['submission']
+		model = Submission
+		fields = ['test']
 
 
+
+class AnsweredSubmissionsSerializer(serializers.ModelSerializer):
+	submitter = GetUserUsername(read_only = True)
+	correct_answers = serializers.SerializerMethodField('get_correct_answers')
+	total_answers = serializers.SerializerMethodField('get_total_answers')
+
+	class Meta:
+		model = Submission
+		fields = ['submitter','correct_answers', 'total_answers']
+
+	'''
+	def get_correct_answers(self, obj):
+		test = Test.objects.get(id=obj.submission.test.id)
+		quizzes = test.quizzes.all()
+		correct_answers = 0
+		for i in quizzes:
+			answers = QuizAnswer.objects.filter(quiz = i)
+			for j in answers:
+				if j.correct:
+					correct_answers += 1
+		return correct_answers
+	'''
+	def get_correct_answers(self, obj):
+		return SubmissionAnswer.objects.filter(submission__submitter=obj.submitter).filter(submission__test__id=obj.test.id).filter(answer__correct=True).count()
+
+
+	def get_total_answers(self, obj):
+		test = Test.objects.get(id=obj.test.id)
+		quizzes = test.quizzes.all().count()
+		return quizzes
 
 class HallOfFameGetTestInfo(serializers.ModelSerializer):
 	author = GetUserUsername(read_only=True)
@@ -66,23 +95,23 @@ class HallOfFameGetTestInfo(serializers.ModelSerializer):
 	solved_tests = serializers.SerializerMethodField('get_solved_tests')
 	class Meta:
 		model = Test
-		fields = ['id','author','quizzes','solved_tests']
+		fields = ['id','author','quizzes', 'solved_tests']
 
 	def get_solved_tests(self, obj):
 		return Submission.objects.filter(test__id=obj.id).count()
 
-class HallOfFameSubmissionSerializer(serializers.ModelSerializer): 
+class HallOfFameSubmissionSerializer(serializers.ModelSerializer):
 	test = HallOfFameGetTestInfo(read_only=True)
 	class Meta:
 		model = Submission
 		fields = ['test']
-
 
 class HallOfFame(serializers.ModelSerializer):
 	submission = HallOfFameSubmissionSerializer(read_only=True)
 	class Meta:
 		model = SubmissionAnswer
 		fields = ['submission']
+
 
 class HallOfFameGetUserInfo(serializers.ModelSerializer):
 	user = GetAuthUserAll(read_only=True)
@@ -97,4 +126,3 @@ class HallOfFameGetUserInfo(serializers.ModelSerializer):
 
 	def get_all_solved_tests(self, obj):
 		return Submission.objects.filter(submitter__user__username=obj.user.username).count()	
-	

@@ -9,7 +9,7 @@ function TestsList() {
     "TIMES TAKEN",
     "TAG",
     "AUTHOR",
-    "DATE MODIFIED",
+    //"DATE MODIFIED",
   ];
 
 useEffect(() => {
@@ -27,7 +27,7 @@ useEffect(() => {
 
   const handleBtnClick = (selectedBtn) => {
     setSelectedBtn(selectedBtn);
-    console.log(selectedBtn.target.id);
+    //console.log(selectedBtn.target.id);
     navigate(`./${selectedBtn.target.id}`);
   };
 
@@ -59,7 +59,6 @@ useEffect(() => {
               </td>
               <td>{Object.values(t)[0][2]}</td>
               <td>{Object.values(t)[0][3]}</td>
-              <td>NaN</td>
             </tr>
           ))}
         </tbody>

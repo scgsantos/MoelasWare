@@ -4,7 +4,6 @@ import { useParams, useNavigate } from "react-router-dom";
 function History(props) {
   const userHistHeader = ["TEST ID", "TAG", "AUTHOR"];
   const testHistHeader = ["USERNAME", "GRADE"];
-  //const numAscending = [...tests].sort((a, b) => a.id - b.id);
   const [tests, setTests] = useState([]);
   const [users, setUsers] = useState([]);
 
@@ -99,10 +98,9 @@ function History(props) {
             </thead>
             <tbody>
               {tests.map((t) => (
-                
-                <tr key={Object.values(t)[0][2]}>
-                  <td>{Object.values(t)[0][0]}</td>
-                  <td>{Object.values(t)[0][1]}/100</td>
+                <tr key={Object.values(t)[0][0]}>
+                  <td>{Object.values(t)[0][1]}</td>
+                  <td>{(Object.values(t)[0][2]/Object.values(t)[0][3])*100}/100</td>
                 </tr>
               ))}
             </tbody>
