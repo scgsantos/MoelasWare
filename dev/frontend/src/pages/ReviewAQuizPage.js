@@ -5,8 +5,12 @@ import { useState, useEffect, setState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router';
 import utils from '../utils';
+import { REVIEW_URL } from "../urls.js";
+
+
 
 function ReviewAQuizPage() {
+  document.body.style = "background: var(--green)"
 
   const [data, setQuiz] = useState({});
   //error
@@ -55,14 +59,6 @@ function ReviewAQuizPage() {
   } else {
     return (
       <div className="Container">
-      <div className="topbar">
-        <div className="click">
-          <img src={logo} alt="Logo Moelas Ware" />
-        </div>
-        <div className="click">
-        <div style={styles.geral}>Hi, username</div>
-        </div>
-      </div>
       <div className="centered">
           <div style={styles.middletitle}>REVIEW A QUIZ</div>
       </div>
@@ -140,7 +136,7 @@ function ReviewAQuizPage() {
           }).then(
             alert("Quiz Accepted")
           ).then(
-            navigate("/review")
+            navigate(REVIEW_URL)
           )
         }}>ACCEPT</button>
         </div>
@@ -162,7 +158,7 @@ function ReviewAQuizPage() {
           }).then(
             alert("Quiz Rejected")
           ).then(
-            navigate("/review")
+            navigate(REVIEW_URL)
           )
         }}>REJECT</button>
           </div>

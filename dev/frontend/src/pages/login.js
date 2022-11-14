@@ -1,17 +1,8 @@
 import './login.css';
-import logo from '../logo.svg';
 
 function Login() {
   return (
     <div>
-      <div className="start">
-        <div className="click">
-          <img src={logo} alt="Logo Moelas Ware" />
-        </div>
-        <div className="click">
-          <h1>Login/Register</h1>
-        </div>
-      </div>
       <div className="loc">
         <div className="login">
           <h2>
