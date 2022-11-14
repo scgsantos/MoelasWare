@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Corinthia&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap%27');
+
 :root {
   /* layout colors */
   --beige: #efe7e4;
@@ -11,7 +13,8 @@
 
 body {
   background-color: var(--beige);
-  font-family: "Basic", sans-serif;
+  font-family: 'Corinthia', cursive;
+  font-family: 'Montserrat', sans-serif;
   font-size: 1rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -46,7 +49,8 @@ input[type="button"] {
   padding: 0.3em 0.8em;
 }
 
-button:hover, input[type=button]:hover {
+button:hover,
+input[type="button"]:hover {
   background-color: black;
   color: var(--beige);
   cursor: pointer;
@@ -54,7 +58,7 @@ button:hover, input[type=button]:hover {
 
 input[type="text"], input[type="search"] {
   padding: 0.3em 0.8em;
-  margin: 1em 1em 1em 0.5em;
+  margin: 1em;
   text-align: left;
   background-color: transparent;
   color: black;

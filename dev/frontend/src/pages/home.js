@@ -5,6 +5,7 @@ import {
   USERS_URL,
   TEST_MENU_URL,
   SELECT_TEST_URL,
+  REVIEW_URL,
 } from "../urls.js"
 
 const Home = () => {
@@ -18,7 +19,7 @@ const Home = () => {
         <Link to={SELECT_TEST_URL}>
           <h1>SOLVE A TEST</h1>
         </Link>
-        <Link to="/#">
+        <Link to={REVIEW_URL}>
           <h1>REVIEW A QUIZ</h1>
         </Link>
         <Link to={TEST_MENU_URL}>
