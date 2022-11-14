@@ -39,12 +39,6 @@ header a:active {
   text-decoration: underline;
 }
 
-ul {
-  margin-block-start: 0em;
-  margin-block-end: 0em;
-  padding-inline-start: 0px;
-}
-
 button,
 select,
 input[type="button"] {

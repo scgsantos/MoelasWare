@@ -2,21 +2,23 @@
     background-color: var(--green) !important;
 }
 
-button, select, input[type=button] {
+.button_tab {
+    padding: 10px 10px;
     border-spacing: 0px;
+    width: 100%;
 }
 
-button:hover, input[type=button]:hover{
+.button_tab_hover:hover {
     width: 100%;
     position: relative;
     background-color: black !important;
     color: var(--green)  !important;
 }
 
-button, input[type=button] {
-    width: 100%;
+.select:hover td {
+    background-color: black !important;
+    color: var(--green)  !important;
 }
-
 
 .start {
     display: flex;
@@ -37,7 +39,6 @@ button, input[type=button] {
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    padding: 3rem;
 }
 
 .button1 {

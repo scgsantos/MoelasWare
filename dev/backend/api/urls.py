@@ -14,6 +14,8 @@ urlpatterns = [
     path("quizzes/<int:quiz_id>/answers/", views.get_answers_for_quiz_view),
     path("quizzes/count", views.get_total_number_of_quizzes_view),
     path("quizzes/<int:pk>/", views.get_quiz_view),
+    path("quizzes/<int:id>/reviewers", views.get_quiz_reviewers_view),
+    path("quizzes/review", views.create_quiz_review_view)
     path("users/<int:pk>/submissions/", views.submissions_by_user_view),
     path("fame/", views.hall_of_fame_view),
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
