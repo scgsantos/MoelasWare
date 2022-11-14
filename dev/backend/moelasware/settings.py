@@ -30,7 +30,7 @@ DEBUG = True  # nosec
 ALLOWED_HOSTS = []
 
 # TODO: Check if we really want to allow all origins
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True 
 
 
 # Application definition
