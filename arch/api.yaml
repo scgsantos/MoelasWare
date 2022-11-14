@@ -452,11 +452,10 @@ components:
               type: integer
     return_test:
       type: object
-      required: ['id', 'name', 'quizzes', 'author']
       properties:
         id:
           $ref: '#/components/schemas/id'
-        name: 
+        name:
           type: string
         author:
           $ref: '#/components/schemas/id'
@@ -471,8 +470,6 @@ components:
           properties:
             submission:
               $ref: '#/components/schemas/id'
-          
-
     test:
       type: object
       properties:

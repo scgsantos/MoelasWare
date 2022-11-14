@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../logo.svg";
 
+import { PROFILE_URL } from "../urls.js"
+
 class Header extends Component {
   render() {
     return (
@@ -15,7 +17,7 @@ class Header extends Component {
         </NavLink>
         <NavLink
           className={(navData) => (navData.isActive ? "active" : "none")}
-          to="/profile"
+          to={PROFILE_URL}
         >
           USER'S PROFILE
         </NavLink>

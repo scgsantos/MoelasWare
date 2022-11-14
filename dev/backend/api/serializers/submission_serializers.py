@@ -15,3 +15,9 @@ class GetSubmissionsAnsweredByTest(serializers.ModelSerializer):
 	class Meta:
 		model = SubmissionAnswer
 		fields = ['submission']
+
+
+class SubmissionAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubmissionAnswer
+        fields = ["answer"]

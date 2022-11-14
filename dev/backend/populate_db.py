@@ -73,27 +73,51 @@ try:
             ),
             Quiz(
                 author=User.objects.get(user=manel),
-                question="Question2",
-                description="description2",
-                name="Quiz2"
+                question="Baby is ____?",
+                description="How would you describe baby?",
+                name="Quiz2",
             ),
             Quiz(
                 author=User.objects.get(user=manel),
-                question="Question3",
-                description="description3",
-                name="Quiz3"
+                question="What is the best fruit?",
+                description="objectively, what fruit is the best ever",
+                name="Quiz3",
             ),
             Quiz(
                 author=User.objects.get(user=manel),
-                question="Question4",
-                description="description3",
-                name="Quiz4"
+                question="A B C _ ?",
+                description="do you know lettets?",
+                name="Quiz4",
+            ),
+            Quiz(
+                author=User.objects.get(user=manel),
+                question="What is 9 + 10?",
+                description="math is easy",
+                name="Quiz5",
+            ),
+            Quiz(
+                author=User.objects.get(user=manel),
+                question="How many Fast and Furious Movies are there?",
+                description="too many?",
+                name="Quiz6",
+            ),
+            Quiz(
+                author=User.objects.get(user=manel),
+                question="When was Minecraft 1.0 released?",
+                description="too many?",
+                name="Quiz7",
             ),
         ]
     )
 
-    for quiz in quizzes:
-        quiz.tags.set(tags)
+    quizzes[0].tags.set([tags[2]])
+    quizzes[1].tags.set([tags[2], tags[5]])
+    quizzes[2].tags.set([tags[2], tags[6]])
+    quizzes[3].tags.set([tags[2], tags[4]])
+    quizzes[4].tags.set([tags[0]])
+    quizzes[5].tags.set([tags[2], tags[3]])
+    quizzes[6].tags.set([tags[2], tags[7]])
+    
 
     answers = QuizAnswer.objects.bulk_create(
         [
@@ -120,6 +144,155 @@ try:
                 text="answer4",
                 correct=False,
                 justification="justification",
+            ),
+            QuizAnswer(
+                quiz=quizzes[1],
+                text="ugly",
+                correct=False,
+                justification="justification",
+            ),
+            QuizAnswer(
+                quiz=quizzes[1],
+                text="old cat",
+                correct=False,
+                justification="justification",
+            ),
+            QuizAnswer(
+                quiz=quizzes[1],
+                text="bad",
+                correct=False,
+                justification="justification",
+            ),
+            QuizAnswer(
+                quiz=quizzes[1],
+                text="BABY",
+                correct=True,
+                justification="justification",
+            ),
+
+            QuizAnswer(
+                quiz=quizzes[2],
+                text="apple",
+                correct=True,
+                justification="is best",
+            ),
+            QuizAnswer(
+                quiz=quizzes[2],
+                text="grapes",
+                correct=False,
+                justification="just ok",
+            ),
+            QuizAnswer(
+                quiz=quizzes[2],
+                text="tomato",
+                correct=False,
+                justification="u weirdo",
+            ),
+            QuizAnswer(
+                quiz=quizzes[2],
+                text="banana",
+                correct=False,
+                justification="disgusting",
+            ),
+
+            QuizAnswer(
+                quiz=quizzes[3],
+                text="69",
+                correct=False,
+                justification="justification",
+            ),
+            QuizAnswer(
+                quiz=quizzes[3],
+                text="D",
+                correct=False,
+                justification="justification",
+            ),
+            QuizAnswer(
+                quiz=quizzes[3],
+                text="deeeeezzzz nuutsss",
+                correct=True,
+                justification="justification",
+            ),
+            QuizAnswer(
+                quiz=quizzes[3],
+                text="green",
+                correct=False,
+                justification="justification",
+            ),
+
+            QuizAnswer(
+                quiz=quizzes[4],
+                text="69",
+                correct=False,
+                justification="funny",
+            ),
+            QuizAnswer(
+                quiz=quizzes[4],
+                text="19",
+                correct=False,
+                justification="u smort",
+            ),
+            QuizAnswer(
+                quiz=quizzes[4],
+                text="21?",
+                correct=True,
+                justification="memes",
+            ),
+            QuizAnswer(
+                quiz=quizzes[4],
+                text="2",
+                correct=False,
+                justification="looks right",
+            ),
+
+            QuizAnswer(
+                quiz=quizzes[5],
+                text="69",
+                correct=False,
+                justification="maybe someday",
+            ),
+            QuizAnswer(
+                quiz=quizzes[5],
+                text="10",
+                correct=True,
+                justification="u smort",
+            ),
+            QuizAnswer(
+                quiz=quizzes[5],
+                text="2",
+                correct=False,
+                justification="memes",
+            ),
+            QuizAnswer(
+                quiz=quizzes[5],
+                text="7",
+                correct=False,
+                justification="no",
+            ),
+
+            QuizAnswer(
+                quiz=quizzes[6],
+                text="2014",
+                correct=False,
+                justification="Herobrine",
+            ),
+            QuizAnswer(
+                quiz=quizzes[6],
+                text="10 A.C.",
+                correct=False,
+                justification="who's to say??",
+            ),
+            QuizAnswer(
+                quiz=quizzes[5],
+                text="69",
+                correct=False,
+                justification="why??",
+            ),
+            QuizAnswer(
+                quiz=quizzes[5],
+                text="2011",
+                correct=True,
+                justification="great year",
             ),
         ]
     )

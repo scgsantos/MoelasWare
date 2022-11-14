@@ -20,3 +20,4 @@ env/
 *.sqlite3
 
 .coverage
+dev/frontend/package-lock.json

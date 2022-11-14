@@ -1,17 +1,17 @@
 :root {
   /* layout colors */
-  --beige: #EFE7E4;
-  --pink: #DCA9BB;
-  --green: #CAD0B1;
-  --blue: #D2DDDF;
-  --yellow: #F3D59E;
+  --beige: #efe7e4;
+  --pink: #dca9bb;
+  --green: #cad0b1;
+  --blue: #d2dddf;
+  --yellow: #f3d59e;
 
   font-size: 16px; /* 1rem is now 18px */
 }
 
-* {
+body {
   background-color: var(--beige);
-  font-family: 'Basic', sans-serif;
+  font-family: "Basic", sans-serif;
   font-size: 1rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -28,18 +28,17 @@ header {
   align-items: center;
 }
 
-a {
-  text-decoration: none; 
-  font-size: 1rem;
+header a {
+  text-decoration: none;
+}
+header a:hover,
+header a:active {
+  text-decoration: underline;
 }
 
-a:hover, a.active { text-decoration: underline; }
-
-h1 {
-  text-align: center;
-}
-
-button, select, input[type=button] {
+button,
+select,
+input[type="button"] {
   background-color: transparent;
   color: black;
   border-radius: 10px;
@@ -53,7 +52,7 @@ button:hover, input[type=button]:hover {
   cursor: pointer;
 }
 
-input[type=text], input[type=search] {
+input[type="text"], input[type="search"] {
   padding: 0.3em 0.8em;
   margin: 1em 1em 1em 0.5em;
   text-align: left;
