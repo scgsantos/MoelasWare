@@ -10,7 +10,7 @@ from . import views
 urlpatterns = [
     #TESTS
     path("tests/<int:pk>/", views.get_test_view),
-    path("tests/<int:pk>/submissions/", views.submissions_view),
+    path("tests/<int:pk>/submissions/", views.submission_view),
     path("tests/", views.tests_view),
     path("tags/<int:pk>/", views.get_tag_view),
     path("tags/", views.get_tag_view),

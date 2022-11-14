@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router';
 import utils from '../utils';
 import Popup from 'reactjs-popup';
 
+import { SELECT_TEST_URL, TEST_GRADE_URL } from "../urls.js";
 
 import './TestSelection.css';
 import { PopupInside } from '../components/Errors/PopupStopTest';
@@ -124,7 +125,7 @@ function SolveQuizz() {
         })
             .then(response => response.json())
             .then(data => {
-                navigate(`/grade/${test}/result`, {
+                navigate(`${TEST_GRADE_URL}/${test}/result`, {
                     state: {
                         grade: data.grade,
                         id: test
@@ -290,7 +291,7 @@ function SolveQuizz() {
                         >
                             {close => (
                                 <PopupInside onClick={() => {
-                                    navigate('/selecttest');
+                                    navigate(SELECT_TEST_URL);
                                     localStorage.setItem('subs#' + test, JSON.stringify(submissionAnswers));
                                 }} close={close} title={"Do you wish to return to test selection?"} subtitle={"Your progress will be saved"} singleButton={false} />
                             )}

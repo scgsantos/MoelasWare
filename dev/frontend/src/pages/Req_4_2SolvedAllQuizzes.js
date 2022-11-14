@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './TestSelection.css';
 import utils from '../utils';
+import { SELECT_TEST_URL } from "../urls.js";
 
 function QuestionSolving(props) {
     const [error, setError] = useState("");
@@ -84,7 +85,7 @@ function QuestionSolving(props) {
 
                     }}>Check the answers</button>
                     <button onClick={() => {
-                        navigate('/selecttest');
+                        navigate(SELECT_TEST_URL);
                     }}>Back to test selection</button>
                 </div>
 
