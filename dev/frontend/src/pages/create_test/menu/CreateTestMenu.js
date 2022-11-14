@@ -18,7 +18,6 @@ function CreateTestMenu() {
   document.body.style = "background: var(--pink)";
   var [hasCreationPermisison, setCreationPermision] = useState(false);
   var [isHovering, setHovering] = useState(false);
-  const [quizzesCount, setQuizzesCount] = useState(1);
 
   let navigate = useNavigate();
 
@@ -30,31 +29,18 @@ function CreateTestMenu() {
     setHovering(false);
   }
 
-  fetch("http://localhost:8000/api/quizzes/count")
-    .then((response) => response.json())
-    .then((data) => {
-      setQuizzesCount(data.quizzes_count);
-    });
-
   function handleCreateRandomTestButton() {
     history.push(TEST_MENU_URL);
 
-    navigate(CREATE_RANDOM_TEST_URL, {
-      state: {
-        quizzes_count: quizzesCount,
-      },
-    });
+    navigate(CREATE_RANDOM_TEST_URL);
     window.location.reload();
   }
+
 
   function handleCreateRandomTestWithTagsButton() {
     history.push(TEST_MENU_URL);
 
-    navigate(CREATE_TEST_WITH_TAGS_URL, {
-      state: {
-        quizzes_count: quizzesCount,
-      },
-    });
+    navigate(CREATE_TEST_WITH_TAGS_URL);
     window.location.reload();
   }
 

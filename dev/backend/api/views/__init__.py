@@ -1,6 +1,7 @@
 from api.views.hall_of_fame_views import *
 from api.views.submission_views import *
 from api.views.quiz_views import *
+from api.views.review_quizz_views import *
 from api.views.tags_views import *
 from api.views.test_views import *
 

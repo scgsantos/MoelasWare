@@ -1,6 +1,7 @@
+import datetime
+
 from django.contrib.auth.models import User as AuthUser
 from django.db import models
-
 
 
 def fk(model):
@@ -43,9 +44,9 @@ class Quiz(models.Model):
     question = models.TextField()
     description = models.TextField()
 
-    # Accepted should be queried instead of stored as a field?
-    def is_accepted(self):
-        pass
+    creation_date = models.DateField(default=datetime.date.today)
+
+    approved = models.BooleanField(default=False)
 
     def can_be_added_to_a_test(self):
         return self.test_set.count() < 2
@@ -152,6 +153,7 @@ class Review(models.Model):
     reviewer = fk(User)
     quiz = fk(Quiz)
 
+    creation_date = models.DateField(default=datetime.date.today)
     accepted = models.BooleanField(default=False)
     comment = models.TextField()
 
@@ -204,3 +206,12 @@ class SubmissionAnswer(models.Model):
 
     submission = fk(Submission)
     answer = fk(QuizAnswer)
+
+class QuizTag(models.Model):
+    """
+    Represents a Quiz Tag.
+
+    Applies a category to a Quiz.
+    """
+    quiz = fk(Quiz)
+    tag = fk(Tag)

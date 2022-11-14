@@ -11,7 +11,6 @@ from moelasware.models import *
 
 SAVE = False
 
-
 def save(*obj):
     if SAVE:
         for o in obj:
@@ -172,9 +171,6 @@ try:
 
             QuizAnswer(
                 quiz=quizzes[2],
-                text="apple",
-                correct=True,
-                justification="is best",
             ),
             QuizAnswer(
                 quiz=quizzes[2],

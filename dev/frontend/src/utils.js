@@ -1,3 +1,3 @@
 module.exports = {
-    svurl: 'http://localhost:8000'
+    svurl: "http://localhost:8000"
 }

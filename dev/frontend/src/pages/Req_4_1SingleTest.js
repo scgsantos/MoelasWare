@@ -5,6 +5,8 @@ import utils from '../utils';
 import { SELECT_TEST_URL, SOLVE_TEST_URL } from "../urls.js";
 
 function SingleTestPage(props) {
+    document.body.style = "background: var(--yellow)";
+
     const [testinfo, setTestinfo] = useState(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

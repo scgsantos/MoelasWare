@@ -1,8 +1,4 @@
-req-2-1-secondPage * {
-  background-color: var(--pink) !important;
-}
-
-req-2-1-firstPage * {
+* {
   background-color: var(--pink) !important;
 }
 
@@ -34,7 +30,7 @@ req-2-1-firstPage * {
 }
 
 .formControl {
-  height: 2.25em;
+  height: 1em;
   width: 1.5em;
   text-align: center !important;
 }
@@ -71,16 +67,9 @@ req-2-1-firstPage * {
 .req-2-1-inputText {
   display: flex;
   justify-content: center;
-  align-items: center !important;
-  height: 1.5em;
-  width: 15em;
-}
-
-.req-2-2-inputText {
-  display: flex;
-  justify-content: center;
   align-items: center;
-  height: 1.5em;
+  height: 0.5em;
+  width: 8em;
 }
 
 .req-2-1-quizList {
@@ -110,6 +99,7 @@ req-2-1-firstPage * {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 2em;
 }
 
 .req-2-1-GoBackbutton {
@@ -118,48 +108,4 @@ req-2-1-firstPage * {
 
 .req-2-1-NextButton {
   margin: 0.5em;
-}
-
-.checkbox {
-  justify-content: center;
-  margin: 2em;
-  cursor: pointer;
-
-  color: var(--pink);
-  width: 1.15em;
-  height: 1.15em;
-  border: 0.15em solid currentColor;
-  border-radius: 0.15em;
-  transform: translateY(-0.075em);
-}
-
-.req-2-1-errorInput {
-  color: #c51244;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  margin-top: 0em;
-  margin-bottom: 3em;
-}
-
-.req-2-1-errorQuizzesCounter {
-  color: #c51244 !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  font-size: 14px !important;
-  margin-bottom: 2em !important;
-}
-
-/* Last Page Elements */
-
-.req2-lastPage-correctImage {
-  margin-top: 4.5em;
-  width: 18em;
-  height: 18em;
-  display: flex;
-  margin-right: auto;
-  margin-left: auto;
-  display: block;
 }

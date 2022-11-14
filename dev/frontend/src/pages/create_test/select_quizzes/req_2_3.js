@@ -33,6 +33,12 @@ function CreateTest() {
 
   const [pop_up, setPopUp] = useState(null);
 
+  const [quizzes_count, setQuizzesCount] = useState(-1);
+
+  if( quizzes_count == -1){
+    getQuizzesCount();
+  }
+
 
   if (all_quizzes.length === 0) {
     getAllQuizes();
@@ -54,7 +60,7 @@ function CreateTest() {
 
   let navigate = useNavigate();
 
-  async function getAllQuizes() { // TODO: change endpoint to a getAllQuizes endpoint (not in group2_dev)
+  async function getAllQuizes() {
 
     fetch('http://localhost:8000/api/quizzes/gen/', {
       method: "POST",
@@ -62,7 +68,7 @@ function CreateTest() {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ num_quizzes: 7 })
+      body: JSON.stringify({ num_quizzes: quizzes_count })
     })
       .then(response => response.json())
       .then(data => {
@@ -73,6 +79,13 @@ function CreateTest() {
 
   }
 
+  function getQuizzesCount(){
+    fetch("http://localhost:8000/api/quizzes/count/")
+    .then((response) => response.json())
+    .then((data) => {
+      setQuizzesCount(data.quizzes_count);
+    });
+  }
 
   // --- Handle misc. input ---
 
@@ -305,17 +318,9 @@ function CreateTest() {
   console.log(quizzes);
   if (isPage1) {
     return (
-      <div className="req_2_3" onClick={handleClick}>
-        <section class="header">
-          <div class="login">
-            <p>Hi, username</p>
-          </div>
-        </section>
-
-        <section class="centerText">
-          <h2>Create a Test</h2>
-          <h1>Choose Quizzes for the Test</h1>
-        </section>
+       <div className="req-2-1-firstPage" onClick={() => handleClick()} >
+        <h1 className="req-2-1-title">Create a Test</h1>
+        <h2 className="req-2-1-subTitle">Choose Quizzes for the Test</h2>
 
 
         {getPaginationSection()}
@@ -325,7 +330,6 @@ function CreateTest() {
 
           <ul>
             {getPaginationArray().map((quiz) => renderQuiz(quiz))}
-
           </ul>
         </section>
 

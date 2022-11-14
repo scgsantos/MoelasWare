@@ -11,6 +11,7 @@ import Preview from "./pages/create_test/preview/preview.js";
 import CreateTestMenu from "./pages/create_test/menu/CreateTestMenu.js";
 import CreateRandomTestWithSpecs from "./pages/create_test/number_and_tags/req_2_2.js";
 import CreateTest from "./pages/create_test/select_quizzes/req_2_3.js";
+import CreateTestLastPage from "pages/create_test/preview/last_page";
 
 // Group 4
 import Home from "./pages/home";
@@ -25,6 +26,9 @@ import SolveTest from './pages/Req_4_2SolveQuizz';
 import GradeTestSolved from './pages/Req_4_2SolvedAllQuizzes';
 import TestGradePreviews from './pages/Req_4_3Resolution';
 
+import ReviewQuizPage from "./pages/ReviewQuizPage";
+import ReviewAQuizPage from "./pages/ReviewAQuizPage";
+
 import {
   PROFILE_URL,
   USERS_URL,
@@ -33,16 +37,18 @@ import {
   CREATE_TEST_URL,
   TEST_MENU_URL,
   TEST_PREVIEW_URL,
+  TEST_PUBLISHED_URL,
   CREATE_TEST_WITH_TAGS_URL,
   SELECT_TEST_URL,
   SOLVE_TEST_URL,
   TEST_SOLVED_URL,
   TEST_GRADE_URL,
+  REVIEW_URL,
+  REVIEW_QUIZ_URL,
 } from "urls.js";
-import history from './history.js';
+import history from "./history.js";
 
 function App() {
-
   return (
     <Router>
       <Header />
@@ -50,10 +56,19 @@ function App() {
         <Route path="/" element={<Home />} />
 
         <Route exact path={TEST_MENU_URL} element={<CreateTestMenu />} />
-        <Route exact path={CREATE_RANDOM_TEST_URL} element={<CreateRandomTest />} />
+        <Route
+          exact
+          path={CREATE_RANDOM_TEST_URL}
+          element={<CreateRandomTest />}
+        />
         <Route exact path={CREATE_TEST_URL} element={<CreateTest />} />
         <Route exact path={TEST_PREVIEW_URL} element={<Preview />} />
-        <Route exact path={CREATE_TEST_WITH_TAGS_URL} element={<CreateRandomTestWithSpecs />} />
+        <Route
+          exact
+          path={CREATE_TEST_WITH_TAGS_URL}
+          element={<CreateRandomTestWithSpecs />}
+        />
+        <Route exact path={TEST_PUBLISHED_URL} element={<CreateTestLastPage />} />
 
         <Route exact path={PROFILE_URL} element={<Profile />} />
 
@@ -76,6 +91,9 @@ function App() {
         <Route path={TEST_SOLVED_URL} element={<TestGradePreviews />} >
           <Route path=":test" element={<TestGradePreviews />} />
         </Route>
+
+        <Route exact path={REVIEW_URL} element={<ReviewQuizPage />} />
+        <Route exact path={REVIEW_QUIZ_URL + ":id"} element={<ReviewAQuizPage />} />
       </Routes>
     </Router>
   );
