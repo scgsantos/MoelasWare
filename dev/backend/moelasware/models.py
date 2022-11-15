@@ -35,9 +35,9 @@ class Quiz(models.Model):
     question = models.TextField()
     description = models.TextField()
     
-    reviwer1 = models.TextField()
-    reviwer2 = models.TextField()
-    reviwer3 = models.TextField()
+    reviewer1 = models.TextField(default="")
+    reviewer2 = models.TextField(default="")
+    reviewer3 = models.TextField(default="")
 
     # Accepted should be queried instead of stored as a field?
     def is_accepted(self):

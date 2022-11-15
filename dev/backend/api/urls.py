@@ -10,6 +10,7 @@ urlpatterns = [
     path("tests/", views.tests_view),
     path("tags/<int:pk>/", views.get_tag_view),
     path("tags/", views.get_tag_view),
+    path("quizzes/create/",views.create_quiz),
     path("quizzes/gen/", views.get_n_quizzes_view),
     path("quizzes/<int:quiz_id>/answers/", views.get_answers_for_quiz_view),
     path("quizzes/count", views.get_total_number_of_quizzes_view),
