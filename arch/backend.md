@@ -2,7 +2,7 @@
 
 - The entire API is specified in the [OpenAPI](https://en.wikipedia.org/wiki/OpenAPI_Specification)
   format file, [`api.yaml`](./api.yaml).
-    * You can explore the specification through [Swagger Editor](https://swagger.editor.io).
+    * You can explore the specification through [Swagger Editor](https://editor.swagger.io).
 
 - Split serializers:
     * Each Model will have it's own serializer file.
