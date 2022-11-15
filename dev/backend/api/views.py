@@ -227,7 +227,6 @@ def create_quiz(request):
         response_serializer = GetQuizSerializer(quiz) 
         JsonResponse({"quiz": response_serializer.data})
     '''
-    print("ZEEEEEEEEEEEEEEEEEEEEEEE")
     quiz = Quiz(author=user,
                 name=name,
                 question=question, 
@@ -238,9 +237,16 @@ def create_quiz(request):
                 )
     quiz.save()
     #BUSCAR TAG
+    tags_object_list = []
     for i in tags_list:
-        quiz.tags.add(i)
+        tag_object = Tag.objects.filter(text = i)
+        if not tag_object.exists():
+            return HttpResponseNotFound('Tag not found')
+        else:
+            tag_object = tag_object[0]
+            quiz.tags.add(tag_object)
 
+        
     '''
     #Associate the quiz with the tag
     quiz_id = response_serializer.data.get("id")
@@ -254,18 +260,19 @@ def create_quiz(request):
     #Create 6 quiz answers
     for i in range(6):
         if correct == i:
-            QuizAnswer(
-                quiz=quiz,
-                text = answers[0],
-                justification = answers[1],
-            ) 
+            quizAnswer = QuizAnswer(
+                            quiz=quiz,
+                            text = answers[0][0],
+                            justification = answers[0][1],
+                        ) 
         else:
-            QuizAnswer(
-                quiz=quiz,
-                text = answers[0],
-                correct=True,
-                justification = answers[1],
-            )  
+            quizAnswer = QuizAnswer(
+                            quiz=quiz,
+                            text = answers[0][0],
+                            correct = True,
+                            justification = answers[0][1],
+                        ) 
+        quizAnswer.save()
 
     '''
     deserializer_data = {"quiz": quiz_id, "text": text, "correct": correct, "justification": justification}
@@ -275,5 +282,14 @@ def create_quiz(request):
         response_serializer = GetQuizAnswerSerializer(answer) 
         JsonResponse({"answer": response_serializer.data})
         '''
+
+    for i in Quiz.objects.all():
+        if (i == quiz):
+            print(i, "------------------->")
+
+    for i in QuizAnswer.objects.filter(quiz = quiz):
+        print(i.text, "---------->")
+        print(i.justification, "---------->")
+        
         
     return JsonResponse({'Quiz was submited for review':''}, status=200)
