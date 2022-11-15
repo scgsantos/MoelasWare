@@ -173,7 +173,7 @@ def create_quiz(request):
     correct = request.data.get("correct")
 
 
-    if type(user) is not str or type(name) is not str or type(text) is not str or type(question) is not str or type(correct) is not int:
+    if type(user) is not int or type(name) is not str or type(text) is not str or type(question) is not str or type(correct) is not int:
         return HttpResponseNotFound('Wrong type of data')
 
     if len(answers) != 6:
@@ -183,11 +183,12 @@ def create_quiz(request):
         if len(i) != 2:
             return HttpResponseNotFound('Not enough fields completed')
 
-    user = User.objects.filter(user=user)
+    user = User.objects.filter(user__id=user)
     if not user.exists():
         return HttpResponseNotFound('User not found')
 
-    user = User.objects.get(user=user)
+    user = user[0]
+
     '''
     tag = Tag.objects.filter(text=text)
     if not tag.exists():
@@ -214,6 +215,8 @@ def create_quiz(request):
         r = User.objects.get(user__id= random.randint(1, User.objects.count()))
         if r not in review_list:
             number_of_reviewers += 1
+            review_list.append(r)
+   
 
     '''
     deserializer_data = {"author": user, "tags": [tag], "question": question, "description": description, "reviewer1": reviewer, "reviewer2": reviewer2, "reviewer3": reviewer3}
@@ -229,8 +232,8 @@ def create_quiz(request):
                 question=question, 
                 description="", 
                 reviewer1=review_list[0], 
-                reviewer2=review_list[0], 
-                reviewer3=review_list[0] 
+                reviewer2=review_list[1], 
+                reviewer3=review_list[2] 
                 )
     quiz.save()
     for i in tags_list:
