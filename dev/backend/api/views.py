@@ -172,9 +172,10 @@ def create_quiz(request):
     answers = request.data.get("answers")
     name = request.data.get("name")
     correct = request.data.get("correct")
+    tags = request.data.get("tags")
 
 
-    if type(user) is not int or type(name) is not str or type(description) is not str or type(text) is not str or type(question) is not str or type(correct) is not int:
+    if type(answers) is not list or type(tags) is not list or type(user) is not int or type(name) is not str or type(description) is not str or type(text) is not str or type(question) is not str or type(correct) is not int:
         return HttpResponseNotFound('Wrong type of data')
 
     if len(answers) != 6:
@@ -184,14 +185,29 @@ def create_quiz(request):
         if len(i) != 2:
             return HttpResponseNotFound('Not enough fields completed')
 
+    if Quiz.objects.filter(name = name).exists():
+        return HttpResponseNotFound('This quiz already exists')
+     
+
     user = User.objects.filter(user__id=user)
     if not user.exists():
         return HttpResponseNotFound('User not found')
 
     user = user[0]
     tags_list = []
-    for i in request.data.get("tags"):
-        tags_list.append(i)
+    tag_found = False
+
+    for i in tags:
+        tag_object = Tag.objects.filter(text = i)
+        if not tag_object.exists():
+            return HttpResponseNotFound('Tag not found')
+        else:
+            tag_found = True
+            tag_object = tag_object[0]
+            tags_list.append(tag_object)
+
+    if not tag_found:
+        return HttpResponseNotFound('No Tag chosen - You must choose at least one tag')    
 
     if User.objects.all().count() < 3:
         return HttpResponseNotFound("Not enough users to review")
@@ -210,16 +226,11 @@ def create_quiz(request):
                 description=description, 
                 )
     quiz.save()
-    for i in tags_list:
-        tag_object = Tag.objects.filter(text = i)
-        if not tag_object.exists():
-            return HttpResponseNotFound('Tag not found')
-        else:
-            tag_object = tag_object[0]
-            quiz.tags.add(tag_object)
 
-  
-        
+
+    for i in tags_list:
+        quiz.tags.add(i)
+                
     #Create 6 quiz answers
     for i in range(6):
         if correct == i:
