@@ -52,16 +52,14 @@ except IntegrityError:
     print("André already exists")
     pass
 
-try:
-    luis = AuthUser.objects.create_user(username="Luis",
-		                                email="luis_pedro@sapo.pt",
-		                                password="luis_123")
-		                                
-		                                
-except IntegrityError:
-    print(" already exists")
-    pass
 
+try:
+    andre = AuthUser.objects.create_user(username="Luis",
+		                                email="lui_pedro@sapo.pt",
+		                                password="luis_123")
+except IntegrityError:
+    print("Luis already exists")
+    pass
 
 
 try:
@@ -75,133 +73,191 @@ try:
 
     User.objects.bulk_create(
         [
-            User(user=manel),
-            User(user=john),
-            User(user=sergio),
-
-            User(user=joao),
-            User(user=andre),
-            User(user=luis),
+            User(user=manel), #0
+            User(user=john), #1
+            User(user=sergio), #2
+ 
+            User(user=joao), #3
+            User(user=andre), #4
+            User(user=luis), #5
         ]
     )
 
     tags = Tag.objects.bulk_create(
         [
-            Tag(text="Math"),
-            Tag(text="Travel"),
-            Tag(text="Culture"),
-            Tag(text="REQ"),
-            Tag(text="PM"),
-            Tag(text="A&D"),
-            Tag(text="IMP"),
-            Tag(text="TST"),
-            Tag(text="V&V"),
-            Tag(text="DEP"),
-            Tag(text="CI"),
-            Tag(text="PRC"),
-            Tag(text="PPL"),
-            Tag(text="CCM"),
-            Tag(text="RSK"),
+            Tag(text="Math"), #0 
+            Tag(text="Travel"), #1
+            Tag(text="Culture"), #2
+            Tag(text="REQ"), #3
+            Tag(text="PM"), #4
+            Tag(text="A&D"), #5
+            Tag(text="IMP"), #6
+            Tag(text="TST"), #7
+            Tag(text="V&V"), #8
+            Tag(text="DEP"), #9
+            Tag(text="CI"), #10
+            Tag(text="PRC"), #11
+            Tag(text="PPL"), #12
+            Tag(text="CCM"), #13
+            Tag(text="RSK"), #14
         ]
     )
 
     quizzes = Quiz.objects.bulk_create(
         [
+            #0
             Quiz(
                 author=User.objects.get(user=manel),
                 question="Question1",
                 description="description1",
                 name="Quiz1"
             ),
+            #1
             Quiz(
                 author=User.objects.get(user=manel),
                 question="Baby is ____?",
                 description="How would you describe baby?",
                 name="Quiz2",
             ),
+            #2
             Quiz(
                 author=User.objects.get(user=manel),
                 question="What is the best fruit?",
                 description="objectively, what fruit is the best ever",
                 name="Quiz3",
             ),
+            #3
             Quiz(
                 author=User.objects.get(user=manel),
                 question="A B C _ ?",
                 description="do you know letters?",
                 name="Quiz4",
             ),
+            #4
             Quiz(
                 author=User.objects.get(user=manel),
                 question="What is 9 + 10?",
                 description="math is easy",
                 name="Quiz5",
             ),
+            #5
             Quiz(
                 author=User.objects.get(user=manel),
                 question="How many Fast and Furious Movies are there?",
                 description="too many?",
                 name="Quiz6",
             ),
+            #6
             Quiz(
                 author=User.objects.get(user=manel),
                 question="When was Minecraft 1.0 released?",
                 description="too many?",
                 name="Quiz7",
             ),
+            #7
             Quiz(
                 author=User.objects.get(user=sergio),
                 question="How many books has Operah Winfrey written?",
                 description="how many?",
                 name="Quiz8",
             ),
+            #8
             Quiz(
                 author=User.objects.get(user=sergio),
                 question="Which of these animals does NOT make milk?",
                 description="nature be wild",
                 name="Quiz9",
             ),
+            #9
             Quiz(
                 author=User.objects.get(user=sergio),
                 question="What makes plants green?",
                 description="nature be wild",
                 name="Quiz10",
             ),
+            #10
             Quiz(
                 author=User.objects.get(user=sergio),
                 question="Who voiced batman?",
                 description="RIP :(",
                 name="Quiz11",
             ),
+            #11
             Quiz(
                 author=User.objects.get(user=sergio),
                 question="What are the LOST numbers?",
                 description="Great 4 seasons.",
                 name="Quiz12",
             ),
+            #12
             Quiz(
                 author=User.objects.get(user=sergio),
                 question="How many cats exist in the world?",
                 description="Never enough",
                 name="Quiz13",
             ),
+            #13
             Quiz(
                 author=User.objects.get(user=sergio),
                 question="O que é húmus?",
                 description="Fun",
                 name="Quiz14",
             ),
+            #14
             Quiz(
                 author=User.objects.get(user=sergio),
                 question="Quantos modelos de iPhone existem?",
                 description="They're all the same",
                 name="Quiz15",
             ),
+            #15
             Quiz( 
                 author=User.objects.get(user=joao),
 		        question="Qual das seguintes áreas é que está diretamente ligada ao peopleware?",
 		        description="Peopleware são um grupo de pessoas que trabalham diretamente, ou indiretamente, com uma determinada área.",
 		        name="Área de Peopleware",
+            ),
+            #16
+            Quiz( 
+                author=User.objects.get(user=joao),
+		        question="Os requisitos não funcionais podem ser divididos em:",
+                description="Requisitos não funcionais são os requisitos relacionados com o uso da aplicação em termos de desempenho, usabilidade, confiabilidade, segurança, disponibilidade, manutenção e tecnologias envolvidas. Estes requisitos dizem respeito a como as funcionalidades serão entregues ao usuário do software.",
+                name="Requisitos não funcionais",
+            ),
+            #17
+            Quiz( 
+                author=User.objects.get(user=john),
+		        question="Qual das seguintes, não pertence às fases do ciclo de vida do software?",
+                description="O ciclo de vida do software, refere-se a uma metodologia com processos definidos para a criação de software de alta qualidade.",
+                name="Ciclo de vida do software",
+            ),
+            #18
+            Quiz( 
+                author=User.objects.get(user=john),
+		        question="Qual das seguintes, não é uma atividade do processo de manutenção de um produto?",
+                description="A manutenção de software é um processo que faz parte do ciclo de qualquer projeto de desenvolvimento de produtos. Este processo pode ser feito com vários propósitos (otimização, ajustes, requisições do cliente, etc) e ocorre após a entrega do produto ou, às vezes, durante a sua concepção.",
+                name="Processo de manutenção",
+            ),
+            #19
+            Quiz( 
+                author=User.objects.get(user=sergio),
+		        question="Qual das seguintes, não caracteriza o modelo em cascata?",
+                description="O modelo cascata, também conhecido como processo Waterfall, é uma metodologia de desenvolvimento de software surgida na década de 1970. A sua principal característica é a divisão das tarefas em etapas predeterminadas.",
+                name="Modelo em cascata",
+            ),
+            #20
+            Quiz( 
+                author=User.objects.get(user=sergio),
+		        question="A validação dos requesitos:",
+                description="Normalmente, a validação dos requesitos é usada para identificar quaisquer erros nas fases iniciais do ciclo de desenvolvimento. Se esses erros não forem detectados a tempo, eles podem aumentar excessivamente o trabalho.",
+                name="Validação dos requesitos",
+            ),
+            #21
+            Quiz( 
+                author=User.objects.get(user=sergio),
+		        question="Qual das seguintes, não é uma atividade do processo de planeamento do projeto?",
+                description="O planeamento dos projetos é a parte que visa definir o escopo do mesmo, suas atividades posteriores e comunicar estas definições ao resto das partes interessadas. Considerada a etapa primordial, este planeamento é decisivo na qualidade de todo o ciclo de vida do projeto.",
+                name="Processo de planeamento do projeto",
             ),
         ]
     )
@@ -223,7 +279,14 @@ try:
     quizzes[13].tags.set([tags[2], tags[3]])
     quizzes[14].tags.set([tags[0], tags[8]])
 
-    quizzes[15].tags.set(tags[11])
+    quizzes[15].tags.set([tags[11]])
+    quizzes[16].tags.set([tags[3]])
+    quizzes[17].tags.set([tags[7], tags[4]])
+    quizzes[18].tags.set([tags[13], tags[7], tags[11]])
+    quizzes[19].tags.set([tags[4], tags[11]])
+    quizzes[20].tags.set([tags[3]])
+    quizzes[21].tags.set([tags[4]])
+
     
 
     print("Creating answers")
@@ -696,6 +759,181 @@ try:
                 text="17",
                 correct=False,
                 justification="No",
+            ),
+
+            QuizAnswer(
+                quiz=quizzes[15],
+                text="Saúde",
+                correct=False,
+                justification="O peopleware está relacionado diretamente com a área da tecnologia.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[15],
+                text="Tecnologia da informação",
+                correct=True,
+                justification="O peopleware é a parte humana que se utiliza das diversas funcionalidades dos sistemas computacionais, seja este usuário um analista de sistema ou, até mesmo, um simples cliente que faz uma consulta em um caixa eletrônico da Rede Bancária.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[15],
+                text="Música",
+                correct=False,
+                justification="O peopleware está relacionado diretamente com a área da tecnologia.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[15],
+                text="Psicologia",
+                correct=False,
+                justification="O peopleware está relacionado diretamente com a área da tecnologia.",
+            ),
+
+            QuizAnswer(
+                quiz=quizzes[16],
+                text="Requisitos do produto, requisitos legislativos e requisitos de eficiência",
+                correct=False,
+                justification="Os requisitos de segurança e legislativos não são requisitos não funcionais.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[16],
+                text="Requisitos de segurança, requisitos do produto e requisitos externos",
+                correct=False,
+                justification="Os requisitos de segurança não são requisitos não funcionais.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[16],
+                text="Requisitos de segurança, requisitos do produto e requisitos externos",
+                correct=False,
+                justification="Os requisitos de segurança não são requisitos não funcionais.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[16],
+                text="Requisitos do produto, requisitos organizacionais e requisitos externos",
+                correct=True,
+                justification="Os requisitos do produto especificam o comportamento deste, os requisitos organizacionais são decorrentes de políticas e procedimentos corporativos e os requisitos externos são decorrentes de fatores externos ao sistema e ao processo de desenvolvimento.",
+            ),
+
+            QuizAnswer(
+                quiz=quizzes[17],
+                text="Gestão de projetos",
+                correct=True,
+                justification="A gestão de projetos não pertence ao ciclo de vida do software. Este tem o seu ciclo de vida tendo as 4 seguintes etapas: iniciação, planeamento, execução e encerramento.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[17],
+                text="Design",
+                correct=False,
+                justification="Esta fase permite transformar os requisitos do usuário numa alguma forma mais adequada, o que ajuda o programador na codificação e implementação do software.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[17],
+                text="Testar",
+                correct=False,
+                justification="A fase de testar é o que permite aos devolopers verificar se o que fizeram está a funcionar como devia, de acordo com os requisitos.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[17],
+                text="Manutenção",
+                correct=False,
+                justification="A fase de manutençao é o que permite melhorar o sistema sempre que uma falha for encontrada.",
+            ),
+
+            QuizAnswer(
+                quiz=quizzes[18],
+                text="Análise do impacto",
+                correct=False,
+                justification="Quando o produto é lançado, também é necessário saber o impacto que teve na sociedade, para futuras alterações no mesmo.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[18],
+                text="Mudanças na implementação",
+                correct=False,
+                justification="Sejam mudanças para corrigir erros ou novas funcionalidades, esta atividade é o centro do processo de manutenção do produto.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[18],
+                text="Planeamento de uma nova versao do sistema",
+                correct=False,
+                justification="Planear uma nova versão é uma atividade pois sempre que ocorra uma alteração no produto final, seja esta pequena ou grande, irá existir uma nova versão do mesmo.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[18],
+                text="Gestão de qualidade",
+                correct=True,
+                justification="A gestão de qualidade não pertence ao processo de manutenção do produto. Esta atividade apenas permite disputar a concorrência com as empresas do ramo.",
+            ),
+
+            QuizAnswer(
+                quiz=quizzes[19],
+                text="É adequado para projetos com requesitos estáveis",
+                correct=False,
+                justification="Caso os requisitos não sejam estáveis, ou seja, são alterados ou modificados com frequência, todas as etapas teriam de ser executadas de novo e sequencialmente, algo que não é ideal, visto que, iria ocupar demasiado tempo.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[19],
+                text="É caracterizado por um conjuto de metas e prazos de entregas claramente definidos",
+                correct=False,
+                justification="Neste modelo, existem prazos de entregas e metas definidas para saber como o progresso do projeto, visto que, todas as tarefas devem ser cumpridas num certo prazo. Isto permite também saber quando o projeto deve estar finalizado.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[19],
+                text="Feedback contínuo do cliente",
+                correct=False,
+                justification="Este modelo não tem um feedback contínuo do cliente, visto que, a interação dele com a equipa de desenvolvimento geralmente acontece no início e no fim do projeto. Quando o projeto está concluído, a primeira versão executável do software é entregue ao cliente para que ele opine sobre esta. Caso haja algum problema, a equipa terá que reiniciar o modelo em cascata para realizar as mudanças necessárias.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[19],
+                text="É um modelo sequencial para desenvolvimento de software",
+                correct=True,
+                justification="As etapas são executadas de forma sequencial, ou seja, é preciso finalizar todas as tarefas de uma etapa para que seja possível passar para a seguinte. Ao cumprir todas as etapas, o resultado será um produto de software funcional, pronto para ser entregue ao cliente.",
+            ),
+
+            QuizAnswer(
+                quiz=quizzes[20],
+                text="é o processo que verifica a exatidão e a integridade dos requesitos",
+                correct=True,
+                justification="A validação garante precisão e clareza nos dados, mitigando quaisquer defeitos nos requisitos coletados. Sem validação, há um alto risco de dados imprecisos que resultariam em resultados imprecisos. Assim, é preciso verificar a exatidão e a integridade dos mesmos.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[20],
+                text="faz parte do estudo de viabilidade",
+                correct=False,
+                justification="O estudo de viabilidade é a análise de viabilidade ou uma medida do produto de software em termos de quanto o desenvolvimento do produto será benéfico para a organização do ponto de vista prático, não fazendo parte da validação dos requesitos.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[20],
+                text="é realizada por meio de testes unitários e de integração",
+                correct=False,
+                justification="Os testes unitários e de integração só são executadas na fase de testes do ciclo de vida do software.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[20],
+                text="garante que o cliente aceite o software",
+                correct=False,
+                justification="Nao se trata disto, trata-se de verificar se estamos a construir o sistema como o cliente deseja.",
+            ),
+
+            QuizAnswer(
+                quiz=quizzes[21],
+                text="Revisão do produto",
+                correct=True,
+                justification="Esta atividade não pertence ao processo de planeamento do projeto.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[21],
+                text="Revisao do progresso do projeto",
+                correct=False,
+                justification="Esta atividade é essencial, visto que, é o que permite verificar o estado do projeto.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[21],
+                text="Definir metas e prazos entregas do projeto",
+                correct=False,
+                justification="Definir metas e prazos entregas permite saber como o projeto vai numa certa data, visto que, todas as tarefas devem ser cumpridas num certo prazo. Isto permite também saber quando o projeto deve estar finalizado.",
+            ),
+            QuizAnswer(
+                quiz=quizzes[21],
+                text="Elaborar o cronograma do projeto",
+                correct=False,
+                justification="Ter um cronograma do projeto ajuda a organizar todo o projeto, e também, ajuda a saber quando pudemos mostrar o produto a funcionar ao cliente, para recebermos feedback.",
             ),
         ]
     )
