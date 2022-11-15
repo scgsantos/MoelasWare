@@ -15,8 +15,8 @@ from api.serializers import CreateReviewSerializer, GetQuizReviewSerializer, Get
 
 @api_view(['GET'])
 # @login_required
-def get_quiz_view(request, id):
-    quiz = get_object_or_404(Quiz, id=id)
+def get_quiz_view(request, pk):
+    quiz = get_object_or_404(Quiz, id=pk)
 
     quiz_serializer = GetQuizReviewSerializer(quiz)
     answers = QuizAnswer.objects.filter(quiz=quiz.id)
