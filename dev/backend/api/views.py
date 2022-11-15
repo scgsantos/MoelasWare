@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http.response import HttpResponseNotFound
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
+import random
 
 from moelasware.models import *
 from .serializers import *
@@ -161,3 +162,113 @@ def get_all_tests_view(request):
     sub = handle_serializer_all_tests(sub)
 
     return JsonResponse({'submissions_by_test': sub})
+
+@api_view(['POST'])
+def create_quiz(request):    
+    user = request.data.get("author")
+    text = request.data.get("text")
+    question = request.data.get("question")
+    answers = request.data.get("answers")
+    name = request.data.get("name")
+    correct = request.data.get("correct")
+
+
+    if type(user) is not str or type(name) is not str or type(text) is not str or type(question) is not str or type(correct) is not int:
+        return HttpResponseNotFound('Wrong type of data')
+
+    if len(answers) != 6:
+        return HttpResponseNotFound('Not enough answers')
+
+    for i in answers:
+        if len(i) != 2:
+            return HttpResponseNotFound('Not enough fields completed')
+
+    user = User.objects.filter(user=user)
+    if not user.exists():
+        return HttpResponseNotFound('User not found')
+
+    user = User.objects.get(user=user)
+    '''
+    tag = Tag.objects.filter(text=text)
+    if not tag.exists():
+        #Create a tag
+        deserializer_data = {"text": text}
+        tag_deserializer = CreateTagSerializer(data=deserializer_data)
+        if tag_deserializer.is_valid(raise_exception=True):
+            tag = tag_deserializer.save()
+            response_serializer = GetTagSerializer(tag)
+            JsonResponse({"tag": response_serializer.data})
+    tag = Tag.objects.get(text=text)
+    tag = tag.id
+'''    
+    tags_list = []
+    for i in request.data.get("tags"):
+        tags_list.append(i)
+
+    if User.objects.all().count() < 3:
+        return HttpResponseNotFound("Not enough users to review")
+
+    review_list = []
+    number_of_reviewers = 0
+    while number_of_reviewers != 3:
+        r = User.objects.get(user__id= random.randint(1, User.objects.count()))
+        if r not in review_list:
+            number_of_reviewers += 1
+
+    '''
+    deserializer_data = {"author": user, "tags": [tag], "question": question, "description": description, "reviewer1": reviewer, "reviewer2": reviewer2, "reviewer3": reviewer3}
+    quiz_deserializer = CreateQuizSerializer(data=deserializer_data)
+
+    if quiz_deserializer.is_valid(raise_exception=True):
+        quiz = quiz_deserializer.save()
+        response_serializer = GetQuizSerializer(quiz) 
+        JsonResponse({"quiz": response_serializer.data})
+    '''
+    quiz = Quiz(author=user,
+                name=name,
+                question=question, 
+                description="", 
+                reviewer1=review_list[0], 
+                reviewer2=review_list[0], 
+                reviewer3=review_list[0] 
+                )
+    quiz.save()
+    for i in tags_list:
+        quiz.tags.add(i)
+
+    '''
+    #Associate the quiz with the tag
+    quiz_id = response_serializer.data.get("id")
+    deserializer_data = {"quiz_id": quiz_id, "tag_id": tag}
+    quiz_tag_deserializer = CreateQuizTagSerializer(data=deserializer_data)
+    if quiz_tag_deserializer.is_valid(raise_exception=True):
+        quiz_tag = quiz_tag_deserializer.save()
+        response_serializer = GetQuizTagSerializer(quiz_tag)
+        JsonResponse({"quiz_tag": response_serializer.data})
+'''
+    #Create 6 quiz answers
+    for i in range(6):
+        if correct == i:
+            QuizAnswer(
+                quiz=quiz,
+                text = answers[0],
+                justification = answers[1],
+            ) 
+        else:
+            QuizAnswer(
+                quiz=quiz,
+                text = answers[0],
+                correct=True,
+                justification = answers[1],
+            )  
+
+    '''
+    deserializer_data = {"quiz": quiz_id, "text": text, "correct": correct, "justification": justification}
+    answer_deserializer = CreateQuizAnswerSerializer(data=deserializer_data)
+    if answer_deserializer.is_valid(raise_exception=True):
+        answer = answer_deserializer.save() 
+        response_serializer = GetQuizAnswerSerializer(answer) 
+        JsonResponse({"answer": response_serializer.data})
+        '''
+        
+    return JsonResponse({'Quiz was submited for review':''}, status=200)
