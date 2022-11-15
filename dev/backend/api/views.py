@@ -237,6 +237,7 @@ def create_quiz(request):
                 reviewer3=review_list[2] 
                 )
     quiz.save()
+    #BUSCAR TAG
     for i in tags_list:
         quiz.tags.add(i)
 
