@@ -31,7 +31,7 @@ class Quiz(models.Model):
     author = fk(User)
     tags = models.ManyToManyField(Tag)
 
-    name = models.TextField()
+    name = models.TextField(default="")
     question = models.TextField()
     description = models.TextField()
     

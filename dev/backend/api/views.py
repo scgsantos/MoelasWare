@@ -227,6 +227,7 @@ def create_quiz(request):
         response_serializer = GetQuizSerializer(quiz) 
         JsonResponse({"quiz": response_serializer.data})
     '''
+    print("ZEEEEEEEEEEEEEEEEEEEEEEE")
     quiz = Quiz(author=user,
                 name=name,
                 question=question, 
