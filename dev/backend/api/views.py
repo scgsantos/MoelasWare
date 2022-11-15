@@ -164,16 +164,17 @@ def get_all_tests_view(request):
     return JsonResponse({'submissions_by_test': sub})
 
 @api_view(['POST'])
-def create_quiz(request):    
+def create_quiz(request):
     user = request.data.get("author")
     text = request.data.get("text")
+    description = request.data.get("description")
     question = request.data.get("question")
     answers = request.data.get("answers")
     name = request.data.get("name")
     correct = request.data.get("correct")
 
 
-    if type(user) is not int or type(name) is not str or type(text) is not str or type(question) is not str or type(correct) is not int:
+    if type(user) is not int or type(name) is not str or type(description) is not str or type(text) is not str or type(question) is not str or type(correct) is not int:
         return HttpResponseNotFound('Wrong type of data')
 
     if len(answers) != 6:
@@ -188,20 +189,6 @@ def create_quiz(request):
         return HttpResponseNotFound('User not found')
 
     user = user[0]
-
-    '''
-    tag = Tag.objects.filter(text=text)
-    if not tag.exists():
-        #Create a tag
-        deserializer_data = {"text": text}
-        tag_deserializer = CreateTagSerializer(data=deserializer_data)
-        if tag_deserializer.is_valid(raise_exception=True):
-            tag = tag_deserializer.save()
-            response_serializer = GetTagSerializer(tag)
-            JsonResponse({"tag": response_serializer.data})
-    tag = Tag.objects.get(text=text)
-    tag = tag.id
-'''    
     tags_list = []
     for i in request.data.get("tags"):
         tags_list.append(i)
@@ -217,27 +204,12 @@ def create_quiz(request):
             number_of_reviewers += 1
             review_list.append(r)
    
-
-    '''
-    deserializer_data = {"author": user, "tags": [tag], "question": question, "description": description, "reviewer1": reviewer, "reviewer2": reviewer2, "reviewer3": reviewer3}
-    quiz_deserializer = CreateQuizSerializer(data=deserializer_data)
-
-    if quiz_deserializer.is_valid(raise_exception=True):
-        quiz = quiz_deserializer.save()
-        response_serializer = GetQuizSerializer(quiz) 
-        JsonResponse({"quiz": response_serializer.data})
-    '''
     quiz = Quiz(author=user,
                 name=name,
                 question=question, 
-                description="", 
-                reviewer1=review_list[0], 
-                reviewer2=review_list[1], 
-                reviewer3=review_list[2] 
+                description=description, 
                 )
     quiz.save()
-    #BUSCAR TAG
-    tags_object_list = []
     for i in tags_list:
         tag_object = Tag.objects.filter(text = i)
         if not tag_object.exists():
@@ -246,17 +218,8 @@ def create_quiz(request):
             tag_object = tag_object[0]
             quiz.tags.add(tag_object)
 
+  
         
-    '''
-    #Associate the quiz with the tag
-    quiz_id = response_serializer.data.get("id")
-    deserializer_data = {"quiz_id": quiz_id, "tag_id": tag}
-    quiz_tag_deserializer = CreateQuizTagSerializer(data=deserializer_data)
-    if quiz_tag_deserializer.is_valid(raise_exception=True):
-        quiz_tag = quiz_tag_deserializer.save()
-        response_serializer = GetQuizTagSerializer(quiz_tag)
-        JsonResponse({"quiz_tag": response_serializer.data})
-'''
     #Create 6 quiz answers
     for i in range(6):
         if correct == i:
@@ -272,24 +235,39 @@ def create_quiz(request):
                             correct = True,
                             justification = answers[0][1],
                         ) 
-        quizAnswer.save()
+        quizAnswer.save()  
 
-    '''
-    deserializer_data = {"quiz": quiz_id, "text": text, "correct": correct, "justification": justification}
-    answer_deserializer = CreateQuizAnswerSerializer(data=deserializer_data)
-    if answer_deserializer.is_valid(raise_exception=True):
-        answer = answer_deserializer.save() 
-        response_serializer = GetQuizAnswerSerializer(answer) 
-        JsonResponse({"answer": response_serializer.data})
-        '''
+        if i < 3:
+            review = Review(
+                        reviewer = review_list[i],
+                        quiz = quiz
+                        )
+            review.save()
 
-    for i in Quiz.objects.all():
-        if (i == quiz):
-            print(i, "------------------->")
-
-    for i in QuizAnswer.objects.filter(quiz = quiz):
-        print(i.text, "---------->")
-        print(i.justification, "---------->")
-        
-        
+      
     return JsonResponse({'Quiz was submited for review':''}, status=200)
+
+
+def get_tag_handler(data):
+    tag_list = []
+    for i in data:
+        tag_list.append(i["text"])
+    return tag_list
+
+
+
+@api_view(['GET'])
+def get_all_tags_view(request):
+
+    tags = Tag.objects.all()
+    if not tags.exists:
+        return HttpResponseNotFound('Tags not found')
+
+    tags = GetTag(tags, many = True).data
+    tags = get_tag_handler(tags)
+
+    return JsonResponse({"tags": tags})
+
+
+
+
