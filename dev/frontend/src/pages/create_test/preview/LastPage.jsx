@@ -18,7 +18,11 @@ function CreateTestLastPage() {
         Congratulations, your test has been published!
       </h2>
 
-      <img src={correct} className="req2-lastPage-correctImage" alt="logo" />
+      <img
+        src={checkmark}
+        className="req2-lastPage-checkmarkImage"
+        alt="checkmark"
+      />
     </div>
   );
 }
