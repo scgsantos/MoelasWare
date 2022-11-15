@@ -164,7 +164,7 @@ def get_all_tests_view(request):
     return JsonResponse({'submissions_by_test': sub})
 
 @api_view(['POST'])
-def create_quiz(request):
+def create_quiz_view(request):
     user = request.data.get("author")
     text = request.data.get("text")
     description = request.data.get("description")
