@@ -54,7 +54,7 @@ except IntegrityError:
 
 
 try:
-    andre = AuthUser.objects.create_user(username="Luis",
+    luis = AuthUser.objects.create_user(username="Luis",
 		                                email="lui_pedro@sapo.pt",
 		                                password="luis_123")
 except IntegrityError:
