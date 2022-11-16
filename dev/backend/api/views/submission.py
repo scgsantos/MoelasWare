@@ -1,12 +1,16 @@
 from django.http import JsonResponse
-from django.http.response import HttpResponseNotFound, HttpResponseBadRequest
+from django.http.response import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
-from moelasware.models import SubmissionAnswer, Submission, User, Test, Quiz, QuizAnswer
-
-from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework.decorators import api_view
 
-from api.serializers import SubmissionSerializer, QuizAnswerSerializerWithRes, SubmissionAnswerSerializer, QuizSerializer
+from api.serializers import (
+    QuizAnswerSerializerWithRes,
+    QuizSerializer,
+    SubmissionAnswerSerializer,
+    SubmissionSerializer,
+)
+from moelasware.models import Quiz, QuizAnswer, Submission, SubmissionAnswer, Test, User
 
 
 @api_view(["GET", "POST"])
@@ -75,7 +79,7 @@ def submissions_by_user_view(request, pk):
                     tags += tag.text
                     tags += ","
 
-        tags = tags[0: len(tags) - 1]
+        tags = tags[0 : len(tags) - 1]
         id += 1
         info_list.append({test_id: [test_id, tags, author, id]})
 
@@ -83,14 +87,14 @@ def submissions_by_user_view(request, pk):
 
 
 def get_self_submission_view(request, pk, user):
-    '''
+    """
     Function that gets a submission from a test. Should we allow the user to get someone else's submission?
-    '''
+    """
 
     # check if the uer is able to solve the test
     if not user.can_solve_tests():
         # You should just return a simple plain-text response, no need for JSON. Use HttpResponseForbidden.
-        return HttpResponseForbidden('You are not allowed to solve tests')
+        return HttpResponseForbidden("You are not allowed to solve tests")
 
     # get all quizzes that are in the test
     quizzes = Quiz.objects.filter(test__id=pk)
@@ -107,16 +111,15 @@ def get_self_submission_view(request, pk, user):
     submission = Submission.objects.filter(test__id=pk, submitter=user).last()
 
     # get all the SubmissionAnswer for the submissions with the user and the submission
-    submission_answers = SubmissionAnswer.objects.filter(
-        submission__id=submission.id)
+    submission_answers = SubmissionAnswer.objects.filter(submission__id=submission.id)
     submission_answers_serializer = SubmissionAnswerSerializer(
-        submission_answers, many=True)
+        submission_answers, many=True
+    )
 
     # append the quizz id to the submission answer
     for submission_answer in submission_answers_serializer.data:
         # from the quizz answer get the quiz id
-        quiz_answer = QuizAnswer.objects.filter(
-            id=submission_answer["answer"]).first()
+        quiz_answer = QuizAnswer.objects.filter(id=submission_answer["answer"]).first()
         submission_answer["quiz_id"] = quiz_answer.quiz.id
 
     """
@@ -126,9 +129,17 @@ def get_self_submission_view(request, pk, user):
     }
     """
     grouped_answers = {
-        quiz_id: [answer["answer"] for answer in submission_answers_serializer.data if answer["quiz_id"] == quiz_id] for quiz_id in [quiz["id"] for quiz in quizzes_serializer.data]
+        quiz_id: [
+            answer["answer"]
+            for answer in submission_answers_serializer.data
+            if answer["quiz_id"] == quiz_id
+        ]
+        for quiz_id in [quiz["id"] for quiz in quizzes_serializer.data]
     }
-    return JsonResponse({'answers': grouped_answers, 'quizzes': quizzes_serializer.data}, status=status.HTTP_200_OK)
+    return JsonResponse(
+        {"answers": grouped_answers, "quizzes": quizzes_serializer.data},
+        status=status.HTTP_200_OK,
+    )
 
 
 # @login_required
@@ -150,20 +161,20 @@ def create_submission(request, pk, user):
     # check if the uer is able to solve the test
     if not user.can_solve_tests():
         # You should just return a simple plain-text response, no need for JSON. Use HttpResponseForbidden.
-        return HttpResponseForbidden('You are not allowed to solve tests')
+        return HttpResponseForbidden("You are not allowed to solve tests")
 
     # get test by id -> detail view
     instance = get_object_or_404(Test, pk=pk)
 
     # get the answers from the request body
-    answers = request.data.get('answers', None)
+    answers = request.data.get("answers", None)
 
     # check if the answers are valid
     if not answers:
-        return HttpResponseBadRequest('No answers provided')
+        return HttpResponseBadRequest("No answers provided")
 
     if not isinstance(answers, list):
-        return HttpResponseBadRequest('Answers must be a list')
+        return HttpResponseBadRequest("Answers must be a list")
 
     # TODO: not sure if this is intended or not, can a user Repeat Quizzes? If so this should be changed
     # check if user alreadysubmitted the quizz in this test
@@ -173,28 +184,28 @@ def create_submission(request, pk, user):
     # check if the answers are valid
     for answer in answers:
         if not isinstance(answer, dict):
-            return HttpResponseBadRequest('Answers must be a list of dicts')
+            return HttpResponseBadRequest("Answers must be a list of dicts")
 
-        if not answer.get('quiz_id', None):
-            return HttpResponseBadRequest('Answers must have a quiz_id')
+        if not answer.get("quiz_id", None):
+            return HttpResponseBadRequest("Answers must have a quiz_id")
 
-        if not answer.get('quiz_answers', None):
-            return HttpResponseBadRequest('Answers must have a quiz_answers')
+        if not answer.get("quiz_answers", None):
+            return HttpResponseBadRequest("Answers must have a quiz_answers")
 
-        if not isinstance(answer.get('quiz_answers', None), int):
-            return HttpResponseBadRequest('quiz_answers must be a int')
+        if not isinstance(answer.get("quiz_answers", None), int):
+            return HttpResponseBadRequest("quiz_answers must be a int")
 
     # check if the answers are valid
     for answer in answers:
-        quiz_id = answer.get('quiz_id', None)
-        quiz_answer = answer.get('quiz_answers', None)
+        quiz_id = answer.get("quiz_id", None)
+        quiz_answer = answer.get("quiz_answers", None)
 
         # get the quiz
         quiz = get_object_or_404(Quiz, pk=quiz_id)
 
         # check if the quiz is in the test
         if quiz not in instance.quizzes.all():
-            return HttpResponseBadRequest('Quiz is not in the test')
+            return HttpResponseBadRequest("Quiz is not in the test")
 
     # create the submission
     try:
@@ -205,10 +216,13 @@ def create_submission(request, pk, user):
     submission_serializer = SubmissionSerializer(new_sub, many=False)
 
     # return the submission
-    return JsonResponse({'submission': submission_serializer.data, 'grade': grade}, status=status.HTTP_200_OK)
+    return JsonResponse(
+        {"submission": submission_serializer.data, "grade": grade},
+        status=status.HTTP_200_OK,
+    )
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 # @login_required
 def get_submission_grade(request, pk):
     # TODO: remove this in produciton
@@ -225,13 +239,12 @@ def get_submission_grade(request, pk):
 
     # check if the user is the owner of the submission
     if submission.submitter != user:
-        return HttpResponseForbidden('You are not allowed to see this submission')
+        return HttpResponseForbidden("You are not allowed to see this submission")
 
     grade = 0
 
     # get all the Quizz Answers from the submission
-    submission_answers = SubmissionAnswer.objects.filter(
-        submission__id=submission.id)
+    submission_answers = SubmissionAnswer.objects.filter(submission__id=submission.id)
     print(submission_answers)
 
     # get all the quizz answers from the submission_answers
@@ -243,4 +256,4 @@ def get_submission_grade(request, pk):
 
     grade = (grade / num_quizzes) * 100
 
-    return JsonResponse({'grade': grade}, status=status.HTTP_200_OK)
+    return JsonResponse({"grade": grade}, status=status.HTTP_200_OK)

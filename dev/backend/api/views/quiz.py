@@ -1,10 +1,8 @@
-from django.http import JsonResponse
-from django.http.response import HttpResponseNotFound
-from django.shortcuts import get_object_or_404
-from moelasware.models import Test, Quiz, QuizAnswer
+from django.http import HttpResponseBadRequest, JsonResponse
 from rest_framework.decorators import api_view
 
-from api.serializers import GetTestSerializer, CreateTestSerializer, QuizAnswerSerializer, QuizSerializer
+from api.serializers import QuizAnswerSerializer, QuizSerializer
+from moelasware.models import Quiz, QuizAnswer
 
 
 @api_view(["GET"])
@@ -24,18 +22,19 @@ def get_quiz_view(request, pk):
             answers_serializer = QuizAnswerSerializer(answers, many=True)
             quiz["answers"] = answers_serializer.data
 
-        return JsonResponse({"test": serializer.data, "quizzes": quizzes_serializer.data})
+        return JsonResponse(
+            {"test": serializer.data, "quizzes": quizzes_serializer.data}
+        )
 
-    return JsonResponse({"invalid": "not good data"}, status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse(
+        {"invalid": "not good data"}, status=status.HTTP_400_BAD_REQUEST
+    )
 
 
-@api_view(['GET'])
-def get_answers_for_quiz(request, quiz_id):
-    answers_set = QuizAnswer.objects.filter(quiz__id=quiz_id)
-
-    answers_serializer = QuizAnswerSerializer(answers_set, many=True)
-
-    return JsonResponse({"answers": answers_serializer.data})
+@api_view(["GET"])
+def get_total_number_of_quizzes_view(request):
+    count = Quiz.objects.count()
+    return JsonResponse({"quizzes_count": count})
 
 
 @api_view(["POST"])
@@ -73,3 +72,12 @@ def get_n_quizzes_view(request):
     quizzes_serializer = QuizSerializer(quizzes_set, many=True)
 
     return JsonResponse({"quizzes": quizzes_serializer.data})
+
+
+@api_view(["GET"])
+def get_answers_for_quiz_view(request, quiz_id):
+    answers_set = QuizAnswer.objects.filter(quiz__id=quiz_id)
+
+    answers_serializer = QuizAnswerSerializer(answers_set, many=True)
+
+    return JsonResponse({"answers": answers_serializer.data})

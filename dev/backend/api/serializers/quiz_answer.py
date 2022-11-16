@@ -1,5 +1,6 @@
-from moelasware.models import QuizAnswer
 from rest_framework import serializers
+
+from moelasware.models import QuizAnswer
 
 
 class QuizAnswerSerializer(serializers.ModelSerializer):

@@ -1,7 +1,8 @@
 from django.http import JsonResponse
 from django.http.response import HttpResponseNotFound
-from moelasware.models import SubmissionAnswer, User
 from rest_framework.decorators import api_view
+
+from moelasware.models import SubmissionAnswer, User
 
 
 # TODO: this is pretty bad; make use of builtin functions

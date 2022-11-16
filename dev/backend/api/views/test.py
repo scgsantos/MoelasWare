@@ -1,11 +1,14 @@
-from api.serializers import (CreateTestSerializer, GetTestSerializer,
-                             GetTestWithSubmissionsSerializer)
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404
-from moelasware.models import Test
 from rest_framework.decorators import api_view
 
+from api.serializers import (
+    CreateTestSerializer,
+    GetTestSerializer,
+    GetTestWithSubmissionsSerializer,
+)
 from api.views import get_n_quizzes_view
+from moelasware.models import Test
 
 DEFAULT_TEST_PAGE_LIMIT = 20
 
@@ -19,7 +22,7 @@ def get_test_view(request, pk):
 
 
 # Create a test
-@api_view(['POST'])
+@api_view(["POST"])
 # TODO: ADD DECORATOR WHEN LOGIN IS IMPLEMENTED
 # @login_required
 def post_test_view(request):
@@ -51,7 +54,7 @@ def post_test_view(request):
         return JsonResponse({"test": response_serializer.data})
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_all_tests_view(request):
     try:
         offset = int(request.query_params.get("offset", default=0))
