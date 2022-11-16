@@ -58,19 +58,24 @@ def get_n_quizzes_view(request):
 
     quizzes_set = (
         quizzes_set.all()
-        if not tags
+        if not tags 
         else quizzes_set.filter(tags__text__in=tags).distinct()
     )
 
-    quizzes_set = quizzes_set[:num_quizzes]
+    quizzes_list = []
+    for quiz in quizzes_set:
+        if quiz.can_be_added_to_a_test():
+            quizzes_list.append(quiz)
+
+    quizzes_list = quizzes_list[:num_quizzes]
 
     # Not enough quizzes that meet the specs
-    if len(quizzes_set) < num_quizzes:
+    if len(quizzes_list) < num_quizzes:
         return HttpResponseBadRequest(
             "The number of requested quizzes is bigger than the number of existing quizzes meeting the given specifications"
         )
 
-    quizzes_serializer = QuizSerializer(quizzes_set, many=True)
+    quizzes_serializer = QuizSerializer(quizzes_list, many=True)
 
     return JsonResponse({"quizzes": quizzes_serializer.data})
 
