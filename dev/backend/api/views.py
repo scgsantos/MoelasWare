@@ -165,6 +165,11 @@ def get_all_tests_view(request):
 
 @api_view(['POST'])
 def create_quiz_view(request):
+
+    d = request.data
+    if "author" not in d or "text" not in d or "description" not in d or "question" not in d or "answers" not in d or "correct" not in d or "name" not in d or "tags" not in d:
+        return HttpResponseNotFound('Not enough data')
+
     user = request.data.get("author")
     text = request.data.get("text")
     description = request.data.get("description")
@@ -173,7 +178,6 @@ def create_quiz_view(request):
     name = request.data.get("name")
     correct = request.data.get("correct")
     tags = request.data.get("tags")
-
 
     if type(answers) is not list or type(tags) is not list or type(user) is not int or type(name) is not str or type(description) is not str or type(text) is not str or type(question) is not str or type(correct) is not int:
         return HttpResponseNotFound('Wrong type of data')
@@ -184,6 +188,10 @@ def create_quiz_view(request):
     for i in answers:
         if len(i) != 2:
             return HttpResponseNotFound('Not enough fields completed')
+
+    if correct < 1 or correct > 6:
+        return HttpResponseNotFound('Invalid number for correct answer')
+ 
 
     if Quiz.objects.filter(name = name).exists():
         return HttpResponseNotFound('This quiz already exists')
@@ -232,18 +240,18 @@ def create_quiz_view(request):
         quiz.tags.add(i)
                 
     #Create 6 quiz answers
-    for i in range(6):
+    for i in range(1,7):
         if correct == i:
             quizAnswer = QuizAnswer(
                             quiz=quiz,
                             text = answers[0][0],
+                            correct = True,
                             justification = answers[0][1],
                         ) 
         else:
             quizAnswer = QuizAnswer(
                             quiz=quiz,
                             text = answers[0][0],
-                            correct = True,
                             justification = answers[0][1],
                         ) 
         quizAnswer.save()  
@@ -255,8 +263,14 @@ def create_quiz_view(request):
                         )
             review.save()
 
+    for i in QuizAnswer.objects.all().filter(quiz = quiz):
+        print(i.correct, "---->")
+
+    for i in Review.objects.all().filter(quiz = quiz):
+        print(i.reviewer.user.username, "-------------->")
+
       
-    return JsonResponse({'Quiz was submited for review':''}, status=200)
+    return JsonResponse({'Quiz was submited for review':name}, status=200)
 
 
 def get_tag_handler(data):
