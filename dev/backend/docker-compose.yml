@@ -4,6 +4,9 @@ services:
   database:
     image: postgres:15-alpine
     restart: always
+    # Might need to be IDs on some systems, but there's no good way to do that in this file
+    # and it would have to be manually changed
+    user: $USER:$USER
     environment:
       POSTGRES_PASSWORD_FILE: /run/secrets/pgpass
     secrets:
@@ -11,12 +14,14 @@ services:
     volumes:
       - ./database:/var/lib/postgresql/data
       - ./createdb.sh:/docker-entrypoint-initdb.d/createdb.sh:ro
+      # Can be needed for proper directory ownership
+      - /etc/passwd:/etc/passwd:ro
 
   backend:
     image: registry.gitlab.com/moelasware/app
     restart: always
     ports:
-      - 1337:8000
+      - 4242:8000
     environment:
       DATABASE_URL: postgresql://moelasware@database:5432/moelasware?passfile=/run/secrets/pgpass
     secrets:
