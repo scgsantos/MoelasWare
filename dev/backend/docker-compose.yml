@@ -8,11 +8,12 @@ services:
     # and it would have to be manually changed
     user: $USER:$USER
     environment:
-      POSTGRES_PASSWORD_FILE: /run/secrets/pgpass
+      POSTGRES_PASSWORD_FILE: /run/secrets/pgserverpass
+      PGDATA: /var/database
     secrets:
       - pgpass
     volumes:
-      - ./database:/var/lib/postgresql/data
+      - ./database:/var/database:Z
       - ./createdb.sh:/docker-entrypoint-initdb.d/createdb.sh:ro
       # Can be needed for proper directory ownership
       - /etc/passwd:/etc/passwd:ro
@@ -20,15 +21,23 @@ services:
   backend:
     image: registry.gitlab.com/moelasware/app
     restart: always
+    # wait for postgres to be listening on that por
+    command: sh -c "/run/wait-for database:5432  -- ./run.sh"
     ports:
       - 4242:8000
     environment:
       DATABASE_URL: postgresql://moelasware@database:5432/moelasware?passfile=/run/secrets/pgpass
     secrets:
-      - pgpass
+      - source: pgpass
+        mode: 0600  # otherwise it will be ignored: https://www.postgresql.org/docs/current/libpq-pgpass.html
+    # TODO: change this so it's not a volume thing; this was a somewhat lazy solution
+    volumes:
+      - ./wait-for:/run/wait-for:ro
     depends_on:
       - database
 
 secrets:
   pgpass:
     file: ./.pgpass
+  pgserverpass:
+    file: ./.pgserverpass
