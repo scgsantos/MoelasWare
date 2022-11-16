@@ -60,7 +60,7 @@ def get_n_quizzes_view(request):
 
     quizzes_set = (
         quizzes_set.all()
-        if not tags
+        if not tags 
         else quizzes_set.filter(tags__text__in=tags).distinct()
     )
 
