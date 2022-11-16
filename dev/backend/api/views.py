@@ -294,5 +294,32 @@ def get_all_tags_view(request):
     return JsonResponse({"tags": tags})
 
 
+@api_view(['GET'])
+def profile_view(request):
 
+    user = User.objects.filter(user__id = 2)
+
+    if not user.exists():
+        return HttpResponseNotFound('User not found')
+
+    user = user[0]
+
+    tests_done = Submission.objects.filter(submitter = user)
+
+    if not tests_done.exists():
+        return HttpResponseNotFound('Submissions not found')
+
+    correct_answers = SubmissionAnswer.objects.filter(answer__correct = True).filter(submission__submitter = user)
+    number_of_correct_answers = correct_answers.count()    
+
+    tags = {}
+    for i in Tag.objects.all():
+        tags[i.text]=0
+
+
+    for i in correct_answers:
+        for j in i.answer.quiz.tags.all():
+            tags[j.text]+=1
+
+    return JsonResponse({"quiz": tags, "number_of_correct_answers": number_of_correct_answers})
 

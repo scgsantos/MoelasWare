@@ -31,6 +31,17 @@ class GetTag(serializers.ModelSerializer):
 	class Meta:
 		model = Tag
 		fields = ['text']
+'''
+class MostCorrectTags(serializers.ModelSerializer):
+	correct = serializers.SerializerMethodField('get_most_correct_tags')
+	class Meta:
+		model = Tag
+		fields = ['text', 'get_most_correct_tags']
+
+	def get_most_correct_tags(self, obj):
+		return SubmissionAnswer.objects.filter(answer__quiz__ =).count()
+'''
+	
 
 class QuizSerializer(serializers.ModelSerializer):
 	tags = GetTag(read_only=True, many=True)
@@ -68,18 +79,6 @@ class AnsweredSubmissionsSerializer(serializers.ModelSerializer):
 		model = Submission
 		fields = ['submitter','correct_answers', 'total_answers']
 
-	'''
-	def get_correct_answers(self, obj):
-		test = Test.objects.get(id=obj.submission.test.id)
-		quizzes = test.quizzes.all()
-		correct_answers = 0
-		for i in quizzes:
-			answers = QuizAnswer.objects.filter(quiz = i)
-			for j in answers:
-				if j.correct:
-					correct_answers += 1
-		return correct_answers
-	'''
 	def get_correct_answers(self, obj):
 		return SubmissionAnswer.objects.filter(submission__submitter=obj.submitter).filter(submission__test__id=obj.test.id).filter(answer__correct=True).count()
 
@@ -126,3 +125,5 @@ class HallOfFameGetUserInfo(serializers.ModelSerializer):
 
 	def get_all_solved_tests(self, obj):
 		return Submission.objects.filter(submitter__user__username=obj.user.username).count()	
+
+
