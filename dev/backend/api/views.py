@@ -1,3 +1,4 @@
+'''
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.http.response import HttpResponseNotFound
@@ -86,7 +87,7 @@ def handle_serializer_hall_of_fame_view(obj):
     return info_list 
 
 @api_view(['GET'])
-def hall_of_fame_view(request): # falta serializer
+def hall_of_fame_view(request):
 
     users = User.objects.all().order_by('user')
     if not users.exists():
@@ -162,3 +163,4 @@ def get_all_tests_view(request):
     sub = handle_serializer_all_tests(sub)
 
     return JsonResponse({'submissions_by_test': sub})
+'''
