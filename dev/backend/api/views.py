@@ -162,115 +162,85 @@ def get_all_tests_view(request):
     sub = handle_serializer_all_tests(sub)
 
     return JsonResponse({'submissions_by_test': sub})
-
+       
 @api_view(['POST'])
 def create_quiz_view(request):
 
-    d = request.data
-    if "author" not in d or "text" not in d or "description" not in d or "question" not in d or "answers" not in d or "correct" not in d or "name" not in d or "tags" not in d:
-        return HttpResponseNotFound('Not enough data')
+    data = request.data
+    if "name" not in data:
+        return HttpResponseNotFound('Name not found')
 
-    user = request.data.get("author")
-    text = request.data.get("text")
-    description = request.data.get("description")
-    question = request.data.get("question")
-    answers = request.data.get("answers")
-    name = request.data.get("name")
-    correct = request.data.get("correct")
-    tags = request.data.get("tags")
+    quiz = Quiz.objects.filter(name = data['name'])
 
-    if type(answers) is not list or type(tags) is not list or type(user) is not int or type(name) is not str or type(description) is not str or type(text) is not str or type(question) is not str or type(correct) is not int:
-        return HttpResponseNotFound('Wrong type of data')
+    if quiz.exists():
+        return HttpResponseNotFound(f"Quiz {data['name']} already exists")
 
-    if len(answers) != 6:
-        return HttpResponseNotFound('Not enough answers')
+    if "author" not in data:
+        return HttpResponseNotFound('Author not found')
 
-    for i in answers:
-        if len(i) != 2:
-            return HttpResponseNotFound('Not enough fields completed')
+    author = User.objects.filter(user__id = data['author'])
 
-    if correct < 1 or correct > 6:
-        return HttpResponseNotFound('Invalid number for correct answer')
- 
+    if not author.exists():
+        return HttpResponseNotFound('Author not found')
 
-    if Quiz.objects.filter(name = name).exists():
-        return HttpResponseNotFound('This quiz already exists')
-     
+    author = author[0]
+    quiz = Quiz(name = data['name'], author = author)
+    quiz.save()
 
-    user = User.objects.filter(user__id=user)
-    if not user.exists():
-        return HttpResponseNotFound('User not found')
+    for i in data:
+        match i:
+            case 'description':
+                print(data)
+                if type(data['description']) is str:
+                    quiz.description = data['description']
 
-    user = user[0]
-    tags_list = []
-    tag_found = False
+            case 'question':
+                if type(data['question']) is str:
+                    quiz.question = data['question']
+                    
 
-    for i in tags:
-        tag_object = Tag.objects.filter(text = i)
-        if not tag_object.exists():
-            return HttpResponseNotFound('Tag not found')
-        else:
-            tag_found = True
-            tag_object = tag_object[0]
-            tags_list.append(tag_object)
+            case 'tags':
+                if type(data['tags']) is list:
+                    for j in data['tags']:
+                        tag = Tag.objects.filter(text = j)
+                        if tag.exists():
+                            tag = tag[0]
+                            quiz.tags.add(tag)
 
-    if not tag_found:
-        return HttpResponseNotFound('No Tag chosen - You must choose at least one tag')    
+            case 'answers':
+                if type(data['answers']) is list and len(data['answers']) > 0 and len(data['answers']) <= 6:
+                    answers_completed = len(data['answers'])
+                    for j in data['answers']:
+                        if type(j) is list and len(j) == 2:
+                            quiz_answer = QuizAnswer(
+                                            quiz = quiz,
+                                            text = j[0],
+                                            justification = j[1],
+                                            )  
+                            quiz_answer.save()
+                    for j in range(answers_completed,6):
+                        quiz_answer = QuizAnswer(
+                                        quiz = quiz,
+                                        )  
+                        quiz_answer.save()  
 
-    if User.objects.all().count() < 3:
-        return HttpResponseNotFound("Not enough users to review")
-
-    review_list = []
-    number_of_reviewers = 0
-    while number_of_reviewers != 3:
-        r = User.objects.get(user__id= random.randint(1, User.objects.count()))
-        if r not in review_list:
-            number_of_reviewers += 1
-            review_list.append(r)
-   
-    quiz = Quiz(author=user,
-                name=name,
-                question=question, 
-                description=description, 
-                )
+            case 'correct':
+                if type(data['correct']) is int and data['correct'] > 0 and data['correct'] <= 6:
+                    answers = QuizAnswer.objects.filter(quiz = quiz).order_by('id')
+                    for i in range(1,len(answers)+1):
+                        if i == data['correct']:
+                            answers[i-1].correct = True
+                            answers[i-1].save()
     quiz.save()
 
 
-    for i in tags_list:
-        quiz.tags.add(i)
-                
-    #Create 6 quiz answers
-    for i in range(1,7):
-        if correct == i:
-            quizAnswer = QuizAnswer(
-                            quiz=quiz,
-                            text = answers[0][0],
-                            correct = True,
-                            justification = answers[0][1],
-                        ) 
-        else:
-            quizAnswer = QuizAnswer(
-                            quiz=quiz,
-                            text = answers[0][0],
-                            justification = answers[0][1],
-                        ) 
-        quizAnswer.save()  
+    for i in Quiz.objects.filter(id = quiz.id):
+        print(i.name, i.question, i.description, i.finished)
 
-        if i < 3:
-            review = Review(
-                        reviewer = review_list[i],
-                        quiz = quiz
-                        )
-            review.save()
-
-    for i in QuizAnswer.objects.all().filter(quiz = quiz):
-        print(i.correct, "---->")
-
-    for i in Review.objects.all().filter(quiz = quiz):
-        print(i.reviewer.user.username, "-------------->")
-
-      
-    return JsonResponse({'Quiz was submited for review':name}, status=200)
+    for i in QuizAnswer.objects.filter(quiz = quiz):
+        print(i.text, i.correct, i.justification)
+                     
+    return JsonResponse({'Quiz was submited for review':[data['name'],quiz.id]}, status=200)
 
 
 def get_tag_handler(data):
@@ -278,8 +248,6 @@ def get_tag_handler(data):
     for i in data:
         tag_list.append(i["text"])
     return tag_list
-
-
 
 @api_view(['GET'])
 def get_all_tags_view(request):
@@ -323,3 +291,116 @@ def profile_view(request):
 
     return JsonResponse({"quiz": tags, "number_of_correct_answers": number_of_correct_answers})
 
+@api_view(['GET'])
+def get_quiz_view(request, pk):
+
+    quiz = Quiz.objects.filter(id = pk)
+
+    if not quiz.exists():
+        return HttpResponseNotFound('Quiz not found')
+
+    quiz = quiz[0]
+    if quiz.finished:
+        return HttpResponseNotFound('Quiz already finished')
+
+
+    quiz = GetQuizInfo(quiz).data
+
+   
+    return JsonResponse({'quiz': quiz})
+
+@api_view(['POST'])
+def edit_quiz_view(request):
+
+    data = request.data
+    id = data.get("id")
+
+
+    if "id" not in data:
+        return HttpResponseNotFound('Quiz not found')
+
+    quiz = Quiz.objects.filter(id = id).filter(finished = False)
+
+    if not quiz.exists():
+        return HttpResponseNotFound('Quiz not found or already finished')
+
+    quiz = quiz[0]
+
+    new_name = Quiz.objects.filter(name = data['name']).filter(author = quiz.author)
+    
+    if new_name.exists() and quiz.name != new_name[0].name:
+        return HttpResponseNotFound(f"Quiz {data['name']} already exists")
+
+    if "author" not in data:
+        return HttpResponseNotFound('Author not found')
+
+    author = User.objects.filter(user__id = data['author'])
+
+
+    if author.exists() and author[0] != quiz.author:
+        return HttpResponseNotFound('Author not allowed to edit this quiz')
+    elif not author.exists():
+        return HttpResponseNotFound('Author not found') 
+
+    author = author[0]
+
+    for i in data:
+        match i:
+            case 'description':
+                if type(data['description']) is str and data['description'] is not None:
+                    quiz.description = data['description']
+
+            case 'question':
+                if type(data['question']) is str and data['question'] is not None:
+                    quiz.question = data['question']
+                    
+            case 'tags':
+                if type(data['tags']) is list and data['tags'] is not None:
+                    for j in quiz.tags.all():
+                        quiz.tags.remove(j)
+
+                    for j in data['tags']:
+                        tag = Tag.objects.filter(text = j)
+                        if tag.exists():
+                            tag = tag[0]
+                            quiz.tags.add(tag)
+
+            case 'answers':
+                if type(data['answers']) is list and len(data['answers']) > 0 and len(data['answers']) <= 6:     
+                    quiz_answers = QuizAnswer.objects.filter(quiz = quiz)                   
+                    for j in range(len(data['answers'])):
+                        if type(data['answers'][j]) is list and len(data['answers'][j]) == 2:
+                            quiz_answers[j].text = data['answers'][j][0]
+                            quiz_answers[j].justification = data['answers'][j][1]
+                            quiz_answers[j].save()              
+            case 'correct':
+                if type(data['correct']) is int and data['correct'] > 0 and data['correct'] <= 6:
+                    answers = QuizAnswer.objects.filter(quiz = quiz).order_by('id')
+                    flag = False
+                    for i in range(len(answers)):
+                        if answers[i].correct == True and i + 1 == data['correct']:
+                            flag = True
+
+                    if not flag:
+                        for i in answers:
+                            i.correct = False
+                            i.save()
+
+                    answers[data['correct'] - 1].correct = True
+                    answers[data['correct'] - 1].save()
+
+    quiz.save()
+
+
+    for i in Quiz.objects.filter(id = quiz.id):
+        print(i.name, i.question, i.description, i.finished)
+
+    for i in QuizAnswer.objects.filter(quiz = quiz):
+        print(i.text, i.correct, i.justification)
+                     
+    return JsonResponse({'Quiz was submited for review':data['name']}, status=200)
+
+def finish_quiz(quiz : Quiz, quiz_answers : list):
+
+    if quiz.name != None and quiz. 
+    return

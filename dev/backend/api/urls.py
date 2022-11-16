@@ -9,7 +9,10 @@ urlpatterns = [
 	path('tests/<int:pk>/submissions/', views.submission_of_a_test_view),
 	path('tests/', views.get_all_tests_view),
     path('quiz/create/', views.create_quiz_view),
+	path('quiz/edit/', views.edit_quiz_view),
+	path('quiz/<int:pk>/', views.get_quiz_view),
 	path('tags/', views.get_all_tags_view),
 	path('profile/', views.profile_view),
+
 ]
 

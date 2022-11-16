@@ -34,6 +34,7 @@ class Quiz(models.Model):
     name = models.TextField(unique=True)
     question = models.TextField()
     description = models.TextField()
+    finished = models.BooleanField(default=False)
     
     # Accepted should be queried instead of stored as a field?
     def is_accepted(self):
