@@ -240,7 +240,9 @@ def create_quiz_view(request):
     for i in QuizAnswer.objects.filter(quiz = quiz):
         print(i.text, i.correct, i.justification)
                      
-    return JsonResponse({'Quiz was submited for review':[data['name'],quiz.id]}, status=200)
+    quizzes = QuizAnswer.objects.filter(quiz = quiz)
+                     
+    return JsonResponse(finish_quiz(quiz, quizzes))
 
 
 def get_tag_handler(data):
@@ -397,10 +399,52 @@ def edit_quiz_view(request):
 
     for i in QuizAnswer.objects.filter(quiz = quiz):
         print(i.text, i.correct, i.justification)
+
+    quizzes = QuizAnswer.objects.filter(quiz = quiz)
                      
-    return JsonResponse({'Quiz was submited for review':data['name']}, status=200)
+    return JsonResponse(finish_quiz(quiz, quizzes))
 
 def finish_quiz(quiz : Quiz, quiz_answers : list):
 
-    if quiz.name != None and quiz. 
-    return
+    quiz_ready = False
+    quiz_answers_ready = True
+    correct_answer = False
+    if quiz.name is not None and quiz.tags.all().count() > 0 and quiz.question is not None and quiz.description is not None and not quiz.finished and quiz.author is not None:
+        quiz_ready = True
+
+
+    for i in quiz_answers:
+        if i.text is None or i.justification is None:
+            quiz_answers_ready = False 
+        if i.correct:
+            correct_answer = True
+
+
+    if correct_answer and quiz_ready and quiz_answers_ready:
+        response = {'Your quiz has been saved (unfinished)': quiz.name}
+    else:
+        response = {'Your quiz has been finished successfully': quiz.name}
+
+        users = User.objects.all()
+        reviewers_list = []
+
+        while len(reviewers_list) != 3:
+            random_number = random.randint(0,len(users)-1)
+            if not reviewers_list:
+                reviewers_list.append(users[random_number])
+            else:
+                for i in reviewers_list:
+                    if i != users[random_number]:
+                        reviewers_list.append(users[random_number])
+                
+                for i in reviewers_list:
+                    review = Review(
+                                review = i,
+                                quiz = quiz,
+                                )
+                    review.save()
+        quiz.finished = True
+        quiz.save()
+
+    return response
+
