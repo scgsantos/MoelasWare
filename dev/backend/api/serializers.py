@@ -128,21 +128,21 @@ class HallOfFameGetUserInfo(serializers.ModelSerializer):
 
 class GetQuizAnswer(serializers.ModelSerializer):
 	class Meta:
-		model = Quiz
+		model = QuizAnswer
 		fields = ['text', 'correct', 'justification']
 
 class GetQuizInfo(serializers.ModelSerializer):
-	tags = GetTag(read_only = True)
+	tags = GetTag(read_only = True, many = True)
 	quiz_answers = serializers.SerializerMethodField('get_quiz_answers')
 	class Meta:
 		model = Quiz
 		fields = ['name', 'question', 'description', 'tags', 'quiz_answers']
 
-	def quiz_answers(self, obj):
+	def get_quiz_answers(self, obj):
 		answers = QuizAnswer.objects.filter(quiz = obj)
 
-		for i in answers:
-			i = GetQuizAnswer(i)
+		answers = GetQuizAnswer(answers, many = True).data
+		print(answers)
 
 		return answers
 

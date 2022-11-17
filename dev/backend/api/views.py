@@ -28,7 +28,6 @@ def create_test_view( request ):
 
 	return Response({'invalid': 'not good data'}, status=400)
 
-
 def handle_serializer(obj):
     obj_list = []
     id = 0
@@ -100,7 +99,6 @@ def hall_of_fame_view(request): # falta serializer
     sub = handle_serializer_hall_of_fame_view(sub)
 
     return JsonResponse({'fame': sub})
-
 
 def handle_serializer_test(obj):
     obj_list = []
@@ -203,16 +201,19 @@ def create_quiz_view(request):
             case 'question':
                 if type(data['question']) is str:
                     quiz.question = data['question']
-                    
 
             case 'tags':
-                if type(data['tags']) is list:
-                    for j in data['tags']:
-                        tag = Tag.objects.filter(text = j)
+                if type(data['tags']) is str:
+                    if len(data['tags']) > 0:
+                        tag = Tag.objects.filter(text = data['tags'])
                         if tag.exists():
                             tag = tag[0]
                             quiz.tags.add(tag)
+                    else:
+                        for j in quiz.tags.all():
+                            quiz.tags.remove(i)
 
+                        
             case 'answers':
                 if type(data['answers']) is list and len(data['answers']) > 0 and len(data['answers']) <= 6:     
                     for j in range(len(data['answers'])):
@@ -255,7 +256,6 @@ def create_quiz_view(request):
     quizzes = QuizAnswer.objects.filter(quiz = quiz)
                      
     return JsonResponse(finish_quiz(quiz, quizzes))
-
 
 def get_tag_handler(data):
     tag_list = []
@@ -304,6 +304,15 @@ def profile_view(request):
 
     return JsonResponse({"quiz": tags, "number_of_correct_answers": number_of_correct_answers})
 
+def get_quiz_handler(obj):
+    quiz = {'name':obj['name'], 'question':obj['question'], 'description':obj['description'], 'tags':obj['tags'][0]['text']}
+    answers_list = []
+    for i in obj['quiz_answers']:
+        answers_list.append([i['text'], i['justification'], i['correct']])    
+    quiz['quiz_answers'] = answers_list
+    return quiz
+
+
 @api_view(['GET'])
 def get_quiz_view(request, pk):
 
@@ -313,24 +322,11 @@ def get_quiz_view(request, pk):
         return HttpResponseNotFound('Quiz not found')
 
     quiz = quiz[0]
-    if quiz.finished:
-        return HttpResponseNotFound('Quiz already finished')
 
+    quiz = GetQuizInfo(quiz).data
+    quiz = get_quiz_handler(quiz)
 
-    #quiz = GetQuizInfo(quiz).data
-
-    print(quiz.id, "---", quiz.name, "---", quiz.author.user.username, "---", quiz.question, "---", quiz.description, "---")
-    for i in quiz.tags.all():
-        print(i.text)
-
-    answers = QuizAnswer.objects.filter(quiz = quiz)
-
-    for i in answers:
-        print(i.text, "---", i.justification, "---", i.correct)
-
-    finish_quiz(quiz, answers)
-
-    return JsonResponse({'quiz': quiz.name})
+    return JsonResponse({'quiz': quiz})
 
 @api_view(['POST'])
 def edit_quiz_view(request):
@@ -390,15 +386,15 @@ def edit_quiz_view(request):
                     return HttpResponseNotFound("Wrong Data for Question Field")
                     
             case 'tags':
-                if type(data['tags']) is list and data['tags'] is not None:
-                    for j in quiz.tags.all():
-                        quiz.tags.remove(j)
-
-                    for j in data['tags']:
-                        tag = Tag.objects.filter(text = j)
+                if type(data['tags']) is str:
+                    if len(data['tags']) > 0:
+                        tag = Tag.objects.filter(text = data['tags'])
                         if tag.exists():
                             tag = tag[0]
                             quiz.tags.add(tag)
+                    else:
+                        for j in quiz.tags.all():
+                            quiz.tags.remove(i)
                 else:
                     return HttpResponseNotFound("Wrong Data for Tags Field")
 
@@ -435,7 +431,6 @@ def edit_quiz_view(request):
                 if type(data['correct']) is int and data['correct'] > 0 and data['correct'] <= 6:
                     answers = QuizAnswer.objects.filter(quiz = quiz).order_by('id')
                     flag = False
-                    print(answers)
                     for i in range(len(answers)):
                         if answers[i].correct == True and i + 1 == data['correct']:
                             flag = True
