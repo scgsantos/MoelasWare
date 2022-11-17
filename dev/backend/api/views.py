@@ -186,11 +186,15 @@ def create_quiz_view(request):
     author = author[0]
     quiz = Quiz(name = data['name'], author = author)
     quiz.save()
+    for i in range(0,6):
+        quiz_answer = QuizAnswer(
+                                quiz = quiz,
+                                )  
+        quiz_answer.save()
 
     for i in data:
         match i:
             case 'description':
-                print(data)
                 if type(data['description']) is str:
                     quiz.description = data['description']
 
@@ -209,20 +213,12 @@ def create_quiz_view(request):
 
             case 'answers':
                 if type(data['answers']) is list and len(data['answers']) > 0 and len(data['answers']) <= 6:
-                    answers_completed = len(data['answers'])
-                    for j in data['answers']:
-                        if type(j) is list and len(j) == 2:
-                            quiz_answer = QuizAnswer(
-                                            quiz = quiz,
-                                            text = j[0],
-                                            justification = j[1],
-                                            )  
-                            quiz_answer.save()
-                    for j in range(answers_completed,6):
-                        quiz_answer = QuizAnswer(
-                                        quiz = quiz,
-                                        )  
-                        quiz_answer.save()  
+                    answers = QuizAnswer.objects.filter(quiz = quiz).order_by('id')
+                    for j in range(len(data['answers'])):
+                        if type(data['answers'][j]) is list and len(data['answers'][j]) == 2:
+                            answers[j].text = data['answers'][j][0]
+                            answers[j].justification = data['answers'][j][1]  
+                            answers[j].save()
 
             case 'correct':
                 if type(data['correct']) is int and data['correct'] > 0 and data['correct'] <= 6:
@@ -232,13 +228,6 @@ def create_quiz_view(request):
                             answers[i-1].correct = True
                             answers[i-1].save()
     quiz.save()
-
-
-    for i in Quiz.objects.filter(id = quiz.id):
-        print(i.name, i.question, i.description, i.finished)
-
-    for i in QuizAnswer.objects.filter(quiz = quiz):
-        print(i.text, i.correct, i.justification)
                      
     quizzes = QuizAnswer.objects.filter(quiz = quiz)
                      
@@ -306,10 +295,20 @@ def get_quiz_view(request, pk):
         return HttpResponseNotFound('Quiz already finished')
 
 
-    quiz = GetQuizInfo(quiz).data
+    #quiz = GetQuizInfo(quiz).data
 
-   
-    return JsonResponse({'quiz': quiz})
+    print(quiz.id, "---", quiz.name, "---", quiz.author.user.username, "---", quiz.question, "---", quiz.description, "---")
+    for i in quiz.tags.all():
+        print(i.text)
+
+    answers = QuizAnswer.objects.filter(quiz = quiz)
+
+    for i in answers:
+        print(i.text, "---", i.justification, "---", i.correct)
+
+    finish_quiz(quiz, answers)
+
+    return JsonResponse({'quiz': quiz.name})
 
 @api_view(['POST'])
 def edit_quiz_view(request):
@@ -348,13 +347,21 @@ def edit_quiz_view(request):
 
     for i in data:
         match i:
+            case 'name':
+                if type(data['name']) is str and data['name'] is not None:
+                    quiz.name = data['name']
+
             case 'description':
                 if type(data['description']) is str and data['description'] is not None:
                     quiz.description = data['description']
+                else:
+                    return HttpResponseNotFound("Wrong Data for Description Field")
 
             case 'question':
                 if type(data['question']) is str and data['question'] is not None:
                     quiz.question = data['question']
+                else:
+                    return HttpResponseNotFound("Wrong Data for Question Field")
                     
             case 'tags':
                 if type(data['tags']) is list and data['tags'] is not None:
@@ -366,19 +373,27 @@ def edit_quiz_view(request):
                         if tag.exists():
                             tag = tag[0]
                             quiz.tags.add(tag)
+                else:
+                    return HttpResponseNotFound("Wrong Data for Tags Field")
 
             case 'answers':
                 if type(data['answers']) is list and len(data['answers']) > 0 and len(data['answers']) <= 6:     
                     quiz_answers = QuizAnswer.objects.filter(quiz = quiz)                   
                     for j in range(len(data['answers'])):
                         if type(data['answers'][j]) is list and len(data['answers'][j]) == 2:
-                            quiz_answers[j].text = data['answers'][j][0]
-                            quiz_answers[j].justification = data['answers'][j][1]
-                            quiz_answers[j].save()              
+                            answer = quiz_answers[j]
+                            answer.text = data['answers'][j][0]
+                            answer.save()   
+                            answer.justification = data['answers'][j][1]
+                            answer.save()
+                else:
+                    return HttpResponseNotFound("Wrong Data for Answers Field")
+   
             case 'correct':
                 if type(data['correct']) is int and data['correct'] > 0 and data['correct'] <= 6:
                     answers = QuizAnswer.objects.filter(quiz = quiz).order_by('id')
                     flag = False
+                    print(answers)
                     for i in range(len(answers)):
                         if answers[i].correct == True and i + 1 == data['correct']:
                             flag = True
@@ -390,15 +405,10 @@ def edit_quiz_view(request):
 
                     answers[data['correct'] - 1].correct = True
                     answers[data['correct'] - 1].save()
+                else:  
+                    return HttpResponseNotFound("Wrong Data for Correct Field")
 
     quiz.save()
-
-
-    for i in Quiz.objects.filter(id = quiz.id):
-        print(i.name, i.question, i.description, i.finished)
-
-    for i in QuizAnswer.objects.filter(quiz = quiz):
-        print(i.text, i.correct, i.justification)
 
     quizzes = QuizAnswer.objects.filter(quiz = quiz)
                      
@@ -409,40 +419,44 @@ def finish_quiz(quiz : Quiz, quiz_answers : list):
     quiz_ready = False
     quiz_answers_ready = True
     correct_answer = False
-    if quiz.name is not None and quiz.tags.all().count() > 0 and quiz.question is not None and quiz.description is not None and not quiz.finished and quiz.author is not None:
+    if quiz.name != "" and quiz.tags.all().count() > 0 and quiz.question != "" and quiz.description != "" and not quiz.finished and quiz.author is not None:
         quiz_ready = True
 
 
     for i in quiz_answers:
-        if i.text is None or i.justification is None:
+        if i.text == "" or i.justification == "":
             quiz_answers_ready = False 
         if i.correct:
             correct_answer = True
 
-
-    if correct_answer and quiz_ready and quiz_answers_ready:
-        response = {'Your quiz has been saved (unfinished)': quiz.name}
+    print(correct_answer, quiz_ready, quiz_answers_ready)
+    if not correct_answer or not quiz_ready or not quiz_answers_ready:
+        response = {'Your quiz has been saved (unfinished)': [quiz.name, quiz.id]}
     else:
-        response = {'Your quiz has been finished successfully': quiz.name}
+        response = {'Your quiz has been finished successfully': [quiz.name, quiz.id]}
 
         users = User.objects.all()
+        users = list(users)
         reviewers_list = []
 
-        while len(reviewers_list) != 3:
+        number_of_reviewers = 0
+
+        while True:
+            if number_of_reviewers == 3:
+                break
+
             random_number = random.randint(0,len(users)-1)
-            if not reviewers_list:
-                reviewers_list.append(users[random_number])
-            else:
-                for i in reviewers_list:
-                    if i != users[random_number]:
-                        reviewers_list.append(users[random_number])
-                
-                for i in reviewers_list:
-                    review = Review(
-                                review = i,
-                                quiz = quiz,
-                                )
-                    review.save()
+            user = users.pop(random_number)
+            reviewers_list.append(user)
+            number_of_reviewers += 1
+                      
+        for i in reviewers_list:
+            review = Review(
+                        reviewer = i,
+                        quiz = quiz,
+                        )
+            review.save()
+
         quiz.finished = True
         quiz.save()
 
