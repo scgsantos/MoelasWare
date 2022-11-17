@@ -15,14 +15,6 @@ def fk(model):
 class User(models.Model):
     user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
 
-    # needs to be haved created at least one quizz
-    def can_solve_tests(self) -> bool:
-        # the user needs to have created at least one quizz
-        # query all the quizzes that has author as the current user
-        instance = Quiz.objects.filter(author=self)
-        return instance.exists()
-
-
 class Tag(models.Model):
     """
     Is associated with a Quiz to display what the Quiz is about
@@ -39,10 +31,11 @@ class Quiz(models.Model):
     author = fk(User)
     tags = models.ManyToManyField(Tag)
 
-    name = models.TextField()
+    name = models.TextField(unique=True)
     question = models.TextField()
     description = models.TextField()
-
+    finished = models.BooleanField(default=False)
+    
     # Accepted should be queried instead of stored as a field?
     def is_accepted(self):
         pass
@@ -151,7 +144,7 @@ class Review(models.Model):
 
     reviewer = fk(User)
     quiz = fk(Quiz)
-
+    pending = models.BooleanField(default=True)
     accepted = models.BooleanField(default=False)
     comment = models.TextField()
 
@@ -185,6 +178,7 @@ class QuizAnswer(models.Model):
     justification = models.TextField()
 
 
+
 class SubmissionAnswer(models.Model):
     """
     Represents an Answer made by a User while
@@ -204,3 +198,24 @@ class SubmissionAnswer(models.Model):
 
     submission = fk(Submission)
     answer = fk(QuizAnswer)
+class QuizTag(models.Model):
+    """
+    Represents a Quiz Tag. 
+
+    Applies a category to a Quiz.
+    """
+    quiz_id = fk(Quiz)
+    tag_id = fk(Tag)
+    
+class QuizReview(models.Model):
+    """
+    Represents a Quiz Review. 
+
+    It can either be accepted or rejected,
+    being a comment mandatory if it is rejected.
+    """
+    reviewer_id = fk(User)
+    quiz_id = fk(Quiz)
+
+    accepted = models.BooleanField(default=False)
+    comment = models.TextField()

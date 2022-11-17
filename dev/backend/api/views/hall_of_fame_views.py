@@ -2,64 +2,40 @@ from django.http import JsonResponse
 from django.http.response import HttpResponseNotFound
 from moelasware.models import SubmissionAnswer, User
 from rest_framework.decorators import api_view
+from api.serializers import HallOfFameGetUserInfo
 
 
 # TODO: this is pretty bad; make use of builtin functions
-def return_date(date: str):
-    date_months = [
-        "jan",
-        "feb",
-        "mar",
-        "apr",
-        "may",
-        "jun",
-        "jul",
-        "aug",
-        "sep",
-        "oct",
-        "nov",
-        "dec",
-    ]
-    x = date.replace(" ", "-").split("-")
+def return_date(date:str):
+    date_months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+    x = date.replace("T", "-").split("-")
     date_string = date_months[int(x[1]) - 1] + " " + x[2] + " " + x[0]
     return date_string
 
+def handle_serializer_hall_of_fame_view(obj):
+    info_list = []
+    
+    for i in obj:
+        author = i["user"]["username"]
+        correct_answers = i["correct_answers"]
+        date_joined = return_date(str(i["user"]["date_joined"]))
+        solved_tests = i["solved_tests"]
+        info_list.append({i["id"]: [author, correct_answers, solved_tests, date_joined, i["id"], i["user"]["email"]]})
+    
+    return info_list 
 
-@api_view(["GET"])
+@api_view(['GET'])
 def hall_of_fame_view(request):
 
-    users = User.objects.all().order_by("-user")
+    users = User.objects.all().order_by('user')
     if not users.exists():
-        return HttpResponseNotFound("User not found")
+        return HttpResponseNotFound('User not found')  
 
-    submissions = SubmissionAnswer.objects.all()
-    if not submissions.exists():
-        return HttpResponseNotFound("Submissions not found")
+    if not SubmissionAnswer.objects.all().exists():
+        return HttpResponseNotFound('Submissions not found')
+    
+    sub = HallOfFameGetUserInfo(users, many=True).data
 
-    info_list = []
-    for user in users:
-        username = user.user.username
-        solved_tests = SubmissionAnswer.objects.filter(
-            submission__submitter__user__username=user.user.username
-        ).count()
-        date_joined = return_date(str(user.user.date_joined))
-        correct_answers = (
-            SubmissionAnswer.objects.filter(submission__submitter=user)
-            .filter(answer__correct=True)
-            .count()
-        )
-        info_list.append(
-            {
-                user.user.id: [
-                    username,
-                    date_joined,
-                    solved_tests,
-                    correct_answers,
-                    user.user.id,
-                    user.user.email,
-                ]
-            }
-        )
+    sub = handle_serializer_hall_of_fame_view(sub)
 
-        # TODO Create Serializer for this
-    return JsonResponse({"fame": info_list})
+    return JsonResponse({'fame': sub})
