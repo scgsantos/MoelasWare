@@ -18,6 +18,7 @@ class Quiz(models.Model):
     name = models.TextField()
     question = models.TextField()
     description = models.TextField()
+    finished = models.BooleanField(default=False)
 
     creation_date = models.DateField(default=datetime.date.today)
 

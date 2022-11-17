@@ -9,11 +9,11 @@ function TestsList() {
     "TIMES TAKEN",
     "TAG",
     "AUTHOR",
-    "DATE MODIFIED",
+    //"DATE MODIFIED",
   ];
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/tests", {
+    fetch("http://localhost:8000/api/fame/tests/", {
       method: "get",
       headers: { "Content-Type": "application/json" },
     })
@@ -21,13 +21,12 @@ function TestsList() {
       .then((data) => setTests(data.submissions_by_test));
   }, []);
 
-
   const [selectedBtn, setSelectedBtn] = useState("");
   const navigate = useNavigate();
 
   const handleBtnClick = (selectedBtn) => {
     setSelectedBtn(selectedBtn);
-    console.log(selectedBtn.target.id);
+    //console.log(selectedBtn.target.id);
     navigate(`./${selectedBtn.target.id}`);
   };
 
@@ -59,7 +58,6 @@ function TestsList() {
               </td>
               <td>{Object.values(t)[0][2]}</td>
               <td>{Object.values(t)[0][3]}</td>
-              <td>NaN</td>
             </tr>
           ))}
         </tbody>

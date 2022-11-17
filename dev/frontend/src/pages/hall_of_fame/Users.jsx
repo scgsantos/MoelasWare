@@ -4,6 +4,7 @@ import UsersList from "components/UsersList.jsx";
 import 'pages/hall_of_fame/HallOfFame.css'
 
 const Users = () => {
+  document.documentElement.style.setProperty("--base", "var(--beige)");
   return (
     <React.Fragment>
       <main className="HallOfFame-container">

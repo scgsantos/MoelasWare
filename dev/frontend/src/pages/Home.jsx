@@ -9,11 +9,11 @@ import {
 } from "urls.js"
 
 const Home = () => {
-  document.body.style = "background: var(--beige)";
+  document.documentElement.style.setProperty("--base", "var(--beige)");
   return (
     <React.Fragment>
       <div className="startmenu">
-        <Link to="/#">
+        <Link to="/createquiz">
           <h1>CREATE A QUIZ</h1>
         </Link>
         <Link to={SELECT_TEST_URL}>

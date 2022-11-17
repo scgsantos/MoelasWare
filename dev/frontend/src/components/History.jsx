@@ -4,16 +4,16 @@ import { useParams, useNavigate } from "react-router-dom";
 function History(props) {
   const userHistHeader = ["TEST ID", "TAG", "AUTHOR"];
   const testHistHeader = ["USERNAME", "GRADE"];
-  //const numAscending = [...tests].sort((a, b) => a.id - b.id);
   const [tests, setTests] = useState([]);
   const [users, setUsers] = useState([]);
+  const [username, setUser] = useState("");
 
   const navigate = useNavigate();
 
   const { id } = useParams();
 
-  const users_link = "http://127.0.0.1:8000/api/users/" + id + "/submissions";
-  const tests_link = "http://127.0.0.1:8000/api/tests/" + id + "/submissions";
+  const users_link = "http://127.0.0.1:8000/api/fame/users/" + id + "/submissions";
+  const tests_link = "http://127.0.0.1:8000/api/fame/tests/" + id + "/submissions";
 
   useEffect(() => {
     fetch(
@@ -24,7 +24,9 @@ function History(props) {
       }
     )
       .then((response) => response.json())
-      .then((data) => setUsers(data.submissions));
+      .then((data) => {
+        setUsers(data.submissions);
+        setUser(data.user);});
   }, []);
 
   useEffect(() => {
@@ -52,7 +54,7 @@ function History(props) {
           onClick={(e) => e.stopPropagation()}
         >
 
-          <h2>USER HISTORY</h2>
+          <h2>{username.toLocaleUpperCase()}'s HISTORY</h2>
 
           <table id="hist">
             <thead>
@@ -100,9 +102,9 @@ function History(props) {
             <tbody>
               {tests.map((t) => (
 
-                <tr key={Object.values(t)[0][2]}>
-                  <td>{Object.values(t)[0][0]}</td>
-                  <td>{Object.values(t)[0][1]}/100</td>
+                <tr key={Object.values(t)[0][0]}>
+                  <td>{Object.values(t)[0][1]}</td>
+                  <td>{Math.round(Object.values(t)[0][2]/Object.values(t)[0][3]*100)}/100</td>
                 </tr>
               ))}
             </tbody>

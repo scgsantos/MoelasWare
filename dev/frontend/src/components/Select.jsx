@@ -14,11 +14,15 @@ function Dropdown(props) {
 
   const handleChange = (selectedOption) => {
     setSelectedOption(selectedOption);
-    navigate(`../${selectedOption.target.value}`);
+    navigate(`/${selectedOption.target.value}`);
   };
 
   return (
-    <select onChange={handleChange} value={selectedOption.value}>
+    <select
+      className="halloffamenav"
+      onChange={handleChange}
+      value={selectedOption.value}
+    >
       {options.map((o) => (
         <option key={o.value} value={o.value}>
           {o.label}

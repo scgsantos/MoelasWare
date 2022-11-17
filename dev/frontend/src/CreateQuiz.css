@@ -1,0 +1,126 @@
+#createquiz {
+    text-align: center;
+    display: block;
+    width: 70%;
+    margin: 3rem auto;
+}
+
+#createquiz table {
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+#createquiz tbody {
+}
+
+#createquiz td {
+    border: solid 1px #000;
+    border-style: solid none solid none;
+}
+
+tr:first-child td:first-child { border-top-left-radius: 10px; }
+tr:first-child td:last-child { border-top-right-radius: 10px; }
+
+tr:last-child td:first-child { border-bottom-left-radius: 10px; }
+tr:last-child td:last-child { border-bottom-right-radius: 10px; }
+/*
+td:last-child { 
+    border: solid 1px #000;
+    border-style: solid; }
+*/
+#createquiz td{
+    padding: 0.7rem 0;
+}
+
+.createquiznav {
+    margin: 0 0.5rem;
+}
+
+#createquiz h2 {
+    margin-top: 3rem;
+}
+
+#newquiz {
+    display: block;
+}
+
+.newquiz {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.quizname-container, .tag-container {
+    display: inline-block;
+    margin: 0 1rem;
+    text-align: left;
+
+}
+
+.newquiz input {
+    margin: 0;
+}
+
+.newquiz select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url(downarrow.svg) no-repeat right;
+    background-position-x: 90%;
+    background-position-y: 50%;
+    width: 5rem;
+    margin: 0 auto;
+}
+
+.newquiz input[type=submit] {
+    margin: 4rem 0.5rem 0;
+    text-align: center;
+}
+
+.newquiz label {
+    margin: 2rem 0 0;
+}
+
+.break {
+    flex-basis: 100%;
+    height: 0;
+}
+
+.description-container {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.question-container {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.option {
+    display: flex;
+}
+
+.option label {
+    margin-left: 1rem;
+}
+
+.newquiz input[type=radio] {
+    /* hiding browser el */
+    appearance: none;
+    /* Safari support */
+    -webkit-appearance: none;
+
+    background: transparent;
+    border: 1px solid black;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 0.8rem;
+    width: 0.8rem;
+    align-self: center;
+}
+
+.newquiz input[type=radio]:checked {
+    background-color: black;
+}

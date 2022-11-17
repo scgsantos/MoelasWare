@@ -9,6 +9,7 @@ from api.serializers import (
     QuizSerializer,
     SubmissionAnswerSerializer,
     SubmissionSerializer,
+    AnsweredSubmissionsSerializer
 )
 from moelasware.models import Quiz, QuizAnswer, Submission, SubmissionAnswer, Test, User
 
@@ -24,66 +25,72 @@ def submission_view(request, pk):
     return proxy[request.method](request, pk, user)
 
 
-@api_view(["GET"])
+def handle_serializer_test(obj):
+    obj_list = []
+    id = 0
+    for i in obj:
+        author = i["submitter"]["user"]["username"]
+        correct_answers = i["correct_answers"]
+        total_answers = i["total_answers"]
+        
+        obj_list.append({id : [id, author, correct_answers, total_answers]})
+        id += 1
+    return obj_list
+ 
+@api_view(['GET'])
 def submission_of_a_test_view(request, pk):
 
-    # TODO USE SERIALZIER
     test = get_object_or_404(Test, id=pk)
 
-    submissions = SubmissionAnswer.objects.filter(submission__test__id=pk).order_by(
-        "submission__submitter__user__id"
-    )
+    submissions = Submission.objects.filter(test__id=pk)
 
     if not submissions.exists():
-        # print("This is user hasn't taken any tests yet...")
-        return HttpResponseNotFound("Submissions not found")
+        return HttpResponseNotFound('Submissions not found')
 
-    info_list = []
+    sub = AnsweredSubmissionsSerializer(submissions, many = True).data
+    sub = handle_serializer_test(sub)
+
+    return JsonResponse({"submissions": sub})  
+
+
+
+def handle_serializer(obj):
+    obj_list = []
     id = 0
-    for sub in submissions:
-        user_id = sub.submission.submitter.user.id
-        username = sub.submission.submitter.user.username
+
+    for i in obj:
+        test_id = i["test"]["id"]
+        author = i["test"]["author"]["user"]["username"]
+
+        tags = ""
+        for j in i["test"]["quizzes"]:
+            for tag in j["tags"]:
+                if tag["text"] not in tags:
+                    tags += tag["text"]
+                    tags += ","
+        
+        tags = tags[0:len(tags)-1]
         id += 1
-        info_list.append({user_id: [username, 0, id]})
+        obj_list.append({test_id : [test_id, tags, author, id]})
 
-    # submission = GetSubmissionsAnsweredByTest(submissions, many=True)
+    return obj_list
 
-    # TODO Add Time
-    return JsonResponse({"submissions": info_list})
-
-
-@api_view(["GET"])
+@api_view(['GET'])
 def submissions_by_user_view(request, pk):
 
-    # TO DO CHANGE SERIALIZER
     user = get_object_or_404(User, id=pk)
 
-    user = user.user.username
+    user = user.user.username 
 
-    submissions = SubmissionAnswer.objects.filter(
-        submission__submitter__user__username=user
-    )
+    submissions = Submission.objects.filter(submitter__user__username=user)
 
     if not submissions.exists():
-        return HttpResponseNotFound("Submissions not found")
+        return HttpResponseNotFound('Submissions not found')
 
-    info_list = []
-    id = 0
-    for sub in submissions:
-        test_id = sub.submission.test.id
-        author = sub.submission.test.author.user.username
-        tags = ""
-        for quiz in sub.submission.test.quizzes.all():
-            for tag in quiz.tags.all():
-                if tag.text not in tags:
-                    tags += tag.text
-                    tags += ","
+    submission = SubmissionSerializer(submissions, many=True).data
+    submission = handle_serializer(submission)
 
-        tags = tags[0 : len(tags) - 1]
-        id += 1
-        info_list.append({test_id: [test_id, tags, author, id]})
-
-    return JsonResponse({"submissions": info_list})
+    return JsonResponse({'submissions' : submission, 'user':user})
 
 
 def get_self_submission_view(request, pk, user):

@@ -23,6 +23,9 @@ import Home from "pages/Home.jsx";
 import Profile from "pages/profile/Profile.jsx";
 import Users from "pages/hall_of_fame/Users.jsx";
 import Tests from "pages/hall_of_fame/Tests.jsx";
+import CreateQuiz from "pages/create_a_quiz/index";
+import NewQuiz from "pages/create_a_quiz/NewQuiz";
+import Drafts from "pages/create_a_quiz/Drafts";
 import History from "components/History.jsx";
 
 // Group 5
@@ -81,6 +84,10 @@ function App() {
         <Route exact path={TESTS_URL} element={<Tests />}>
           <Route path=":id" element={<History selected="tests" />} />
         </Route>
+
+        <Route path="/createquiz" element={<CreateQuiz />} />
+        <Route path="/createquiz/new" element={<NewQuiz />} />
+        <Route path="/createquiz/drafts" element={<Drafts />} />
 
         <Route path={SELECT_TEST_URL} element={<MainSelectionPage />} >
           <Route path=":test" element={<SingleTestPage />} />
