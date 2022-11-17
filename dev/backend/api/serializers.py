@@ -126,3 +126,19 @@ class HallOfFameGetUserInfo(serializers.ModelSerializer):
 
 	def get_all_solved_tests(self, obj):
 		return Submission.objects.filter(submitter__user__username=obj.user.username).count()	
+
+
+class GetQuizAnswer(serializers.ModelSerializer):
+	class Meta:
+		model = QuizAnswer
+		fields = ['text', 'correct', 'justification']
+
+class GetQuizInfo(serializers.ModelSerializer):
+	tags = GetTag(read_only = True, many = True)
+	quiz_answers = serializers.SerializerMethodField('get_quiz_answers')
+	class Meta:
+		model = Quiz
+		fields = ['name', 'question', 'description', 'tags', 'quiz_answers']
+
+	def get_quiz_answers(self, obj):
+		return GetQuizAnswer(QuizAnswer.objects.filter(quiz = obj), many = True).data
