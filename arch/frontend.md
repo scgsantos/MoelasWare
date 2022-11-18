@@ -11,6 +11,10 @@
 - All imports must be absolute, with `src` as the root.
   * This means that instead of writing `import ../components/RadioButton` you should write `import components/RadioButton`.
 
+- `className`'s should all be prefixed with a file identifier, to avoid CSS being applied outside their desired scope.
+  * Instead of `className="roundButton"` you should write `className="ReviewQuiz-roundButton"`.
+  * It is also acceptable that you wrap any non-prefixed `className`'s inside a `div` that is prefixed
+
  
 - All `fetch`'s to the API will be made through the class provided by `api.js`.
    * Path parameters (like `/api/quizzes/2`) should be passed as function arguments (like `API.get_quizzes(2)`)
