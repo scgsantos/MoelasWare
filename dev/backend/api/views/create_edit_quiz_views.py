@@ -6,6 +6,31 @@ import random
 from moelasware.models import *
 from api.serializers import *
 
+
+def quiz_finished_serializer_handler(data):
+    quiz_list = []
+    for i in data:
+        quiz_list.append([i['name'], i['tags'],i['number_of_reviews_done'], i['review_result']])
+    return quiz_list
+    
+@api_view(['GET'])
+def get_user_quizzes(request):
+
+    user = User.objects.filter(user__id = 1)
+
+    if not user.exists():
+        return HttpResponseNotFound('User not found')
+
+    user = user[0]
+
+    quizzes = Quiz.objects.filter(author = user).filter(finished = True)
+
+    quizzes = QuizFinishedSerializer(quizzes, many = True).data
+
+    quizzes = quiz_finished_serializer_handler(quizzes)
+
+    return JsonResponse({"list_of_quizzes": quizzes})
+
 @api_view(['POST'])
 def create_quiz_view(request):
 
@@ -143,7 +168,7 @@ def edit_quiz_view(request):
     for i in data:
         match i:
             case 'name':
-                if type(data['name']) is str and data['name'] is not "":
+                if type(data['name']) is str and data['name'] != "":
                     quiz.name = data['name']
                 elif data['name'] == "":
                     return HttpResponseNotFound("Invalid name for quiz")

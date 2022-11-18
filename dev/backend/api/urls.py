@@ -18,6 +18,7 @@ urlpatterns = [
     path("quizzes/<int:quiz_id>/answers/", views.get_answers_for_quiz_view),
     path("quizzes/count", views.get_total_number_of_quizzes_view),
     path("quizzes/<int:pk>/", views.get_quiz_view),
+    path("quizzes/finished/", views.get_user_quizzes),
 
     path("users/<int:pk>/submissions/", views.submissions_by_user_view),
     path("fame/", views.hall_of_fame_view),
