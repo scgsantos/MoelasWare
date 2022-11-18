@@ -1,4 +1,4 @@
-.container {
+.HallOfFame-container {
     margin: 14px auto 80px;
 }
 
@@ -30,6 +30,11 @@ select {
     margin: 0 auto 2rem;
 }
 
+#users, #tests {
+    display: block;
+    width: 913px;
+    margin: 3rem auto;
+}
 
 input.searchbar {
     margin: 0;

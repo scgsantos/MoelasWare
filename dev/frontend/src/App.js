@@ -1,33 +1,36 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
-import "./common.css";
+import "common.css";
+import "App.css";
 
-import Header from "./components/header";
+import Header from "components/Header";
 
 // Group 2
-import CreateRandomTest from "./pages/create_test/number_only/req_2_1.js";
-import Preview from "./pages/create_test/preview/preview.js";
-import CreateTestMenu from "./pages/create_test/menu/CreateTestMenu.js";
-import CreateRandomTestWithSpecs from "./pages/create_test/number_and_tags/req_2_2.js";
-import CreateTest from "./pages/create_test/select_quizzes/req_2_3.js";
-import CreateTestLastPage from "pages/create_test/preview/last_page";
+import CreateRandomTest from "pages/create_test/number_only/NumberOnly.jsx";
+import Preview from "pages/create_test/preview/Preview.jsx";
+import CreateTestMenu from "pages/create_test/menu/CreateTestMenu.jsx";
+import CreateRandomTestWithSpecs from "pages/create_test/number_and_tags/NumberAndTags.jsx";
+import CreateTest from "pages/create_test/select_quizzes/SelectQuizzes.jsx";
+import CreateTestLastPage from "pages/create_test/preview/LastPage.jsx";
+
+
+// Group 3
+import ReviewQuizPage from "pages/review_quiz/ReviewQuizPage.jsx";
+import ReviewAQuizPage from "pages/review_quiz/ReviewAQuizPage.jsx";
 
 // Group 4
-import Home from "./pages/home";
-import Profile from "./pages/profile";
-import Users from "./pages/users";
-import Tests from "./pages/tests";
-import History from "./components/history";
+import Home from "pages/Home.jsx";
+import Profile from "pages/profile/Profile.jsx";
+import Users from "pages/hall_of_fame/Users.jsx";
+import Tests from "pages/hall_of_fame/Tests.jsx";
+import History from "components/History.jsx";
 
-import MainSelectionPage from './pages/Req_4_1AllTests';
-import SingleTestPage from './pages/Req_4_1SingleTest';
-import SolveTest from './pages/Req_4_2SolveQuizz';
-import GradeTestSolved from './pages/Req_4_2SolvedAllQuizzes';
-import TestGradePreviews from './pages/Req_4_3Resolution';
-
-import ReviewQuizPage from "./pages/ReviewQuizPage";
-import ReviewAQuizPage from "./pages/ReviewAQuizPage";
+// Group 5
+import MainSelectionPage from 'pages/solve_test/AllTests.jsx';
+import SingleTestPage from 'pages/solve_test/SingleTest.jsx';
+import SolveTest from 'pages/solve_test/SolveQuizz.jsx';
+import GradeTestSolved from 'pages/solve_test/SolvedAllQuizzes.jsx';
+import TestGradePreviews from 'pages/solve_test/Resolution.jsx';
 
 import {
   PROFILE_URL,
@@ -46,7 +49,7 @@ import {
   REVIEW_URL,
   REVIEW_QUIZ_URL,
 } from "urls.js";
-import history from "./history.js";
+import history from "history.js";
 
 function App() {
   return (
