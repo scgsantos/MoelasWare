@@ -64,10 +64,7 @@ def get_n_quizzes_view(request):
         else quizzes_set.filter(tags__text__in=tags).distinct()
     )
 
-    quizzes_list = []
-    for quiz in quizzes_set:
-        if quiz.can_be_added_to_a_test():
-            quizzes_list.append(quiz)
+    quizzes_list = [quiz for quiz in quizzes_set if quiz.can_be_added_to_a_test()]
 
     quizzes_list = quizzes_list[:num_quizzes]
 
