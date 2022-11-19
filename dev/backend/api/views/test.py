@@ -16,6 +16,8 @@ DEFAULT_TEST_PAGE_LIMIT = 20
 @api_view(["GET"])
 def get_test_view(request, pk):
     # get test by id -> detail view
+    print(request.user)
+    print(request.headers)
     instance = get_object_or_404(Test, pk=pk)
     serializer = GetTestSerializer(instance, many=False)
     return JsonResponse({"test": serializer.data})
