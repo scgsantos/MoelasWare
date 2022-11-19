@@ -31,4 +31,4 @@ def profile_view(request):
         for j in i.answer.quiz.tags.all():
             tags[j.text]+=1
 
-    return JsonResponse({"quiz": tags, "number_of_correct_answers": number_of_correct_answers})
+    return JsonResponse({"profile" : tags, "correct_answers" : number_of_correct_answers, "user":user.user.username})

@@ -85,7 +85,7 @@ def submissions_by_user_view(request, pk):
     submission = SubmissionSerializer(submissions, many=True).data
     submission = handle_serializer(submission)
 
-    return JsonResponse({'submissions' : submission})
+    return JsonResponse({'submissions' : submission, 'user':user})
 
 
 def get_self_submission_view(request, pk, user):
