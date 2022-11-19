@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 
 export default function Profile() {
   const [profile, setProfile] = useState([]);
-  const [quiz, setQuiz] = useState([]);
   const [user, setUser] = useState("Nothing");
   const [number_of_correct_answers, setNumberCorrectAnswers] = useState(0);
   const quizHeader = [
@@ -42,7 +40,7 @@ useEffect(() => {
           {Object.keys(profile).map((entrada) => (
           <tr>
             <td>{entrada}</td>
-            <td>{profile[entrada]}</td>
+            <td>{profile[entrada]}/{number_of_correct_answers}</td>
           </tr>
           ))}
           
