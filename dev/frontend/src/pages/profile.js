@@ -24,13 +24,10 @@ useEffect(() => {
       setNumberCorrectAnswers(data.correct_answers)});
 }, []);
 
-  console.log(profile);
-  console.log(user);
-  console.log(number_of_correct_answers);
   return (
 
     <section id="profile">
-      <h1>USER'S PROFILE</h1>
+      <h1>{user.toLocaleUpperCase()}'S PROFILE</h1>
       <table>
         <thead>
           <tr>

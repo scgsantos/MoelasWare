@@ -4,7 +4,6 @@ import { useParams, useNavigate } from "react-router-dom";
 function History(props) {
   const userHistHeader = ["TEST ID", "TAG", "AUTHOR"];
   const testHistHeader = ["USERNAME", "GRADE"];
-  //const numAscending = [...tests].sort((a, b) => a.id - b.id);
   const [tests, setTests] = useState([]);
   const [users, setUsers] = useState([]);
   const [username, setUser] = useState("");
@@ -55,7 +54,7 @@ function History(props) {
           onClick={(e) => e.stopPropagation()}
         >
            
-          <h2>{username}'s HISTORY</h2>
+          <h2>{username.toLocaleUpperCase()}'s HISTORY</h2>
 
           <table id="hist">
             <thead>
