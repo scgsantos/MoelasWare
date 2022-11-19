@@ -1,8 +1,8 @@
 from django.http import JsonResponse
 from django.http.response import HttpResponseNotFound
-from moelasware.models import SubmissionAnswer, User
+from moelasware.models import SubmissionAnswer, User, Test
 from rest_framework.decorators import api_view
-from api.serializers import HallOfFameGetUserInfo
+from api.serializers import HallOfFameGetUserInfo, HallOfFameGetTestInfo
 
 
 # TODO: this is pretty bad; make use of builtin functions
@@ -39,3 +39,37 @@ def hall_of_fame_view(request):
     sub = handle_serializer_hall_of_fame_view(sub)
 
     return JsonResponse({'fame': sub})
+
+def handle_fame_serializer_all_tests(obj):
+    obj_list = []
+    id = 0
+
+    for i in obj:
+        test_id = i["id"]
+        author = i["author"]["user"]["username"]
+        solved_tests = i["solved_tests"]
+        tags = ""
+        for j in i["quizzes"]:
+            for tag in j["tags"]:
+                if tag["text"] not in tags:
+                    tags += tag["text"]
+                    tags += ","
+        
+        tags = tags[0:len(tags)-1]
+        id += 1
+        obj_list.append({test_id : [test_id, solved_tests, tags, author]})
+
+    return obj_list 
+
+@api_view(['GET'])
+def get_fame_all_tests_view(request):
+    
+    tests = Test.objects.all().order_by('id') 
+    if not tests.exists():
+        return HttpResponseNotFound('User not found')
+
+    sub = HallOfFameGetTestInfo(tests, many=True).data
+    sub = handle_fame_serializer_all_tests(sub)
+
+    return JsonResponse({'submissions_by_test': sub})
+

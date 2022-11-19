@@ -6,7 +6,6 @@ from . import views
 
 urlpatterns = [
     path("tests/<int:pk>/", views.get_test_view),
-    path("tests/<int:pk>/submissions/", views.submission_of_a_test_view),
     path("tests/", views.tests_view),
 
     path("tags/<int:pk>/", views.get_tag_view),
@@ -20,8 +19,10 @@ urlpatterns = [
     path("quizzes/<int:pk>/", views.get_quiz_view),
     path("quizzes/finished/", views.get_user_quizzes),
 
-    path("users/<int:pk>/submissions/", views.submissions_by_user_view),
+    path("fame/users/<int:pk>/submissions/", views.submissions_by_user_view),
+    path("fame/tests/<int:pk>/submissions/", views.submission_of_a_test_view),
     path("fame/", views.hall_of_fame_view),
+    path("fame/tests/", views.get_fame_all_tests_view),
 
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
