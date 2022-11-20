@@ -49,7 +49,7 @@ def get_quiz_info ( request ):
         reviews = None    
   
     serializer = CreateEditQuizSerializer(data={'id':id, 'author':author, 'text':text, 'description':description, 'question':question, 'answer':answer, 'name':name, 'correct':correct, 'tags':tags, 'reviews':reviews})
-
+    #yeah
     JsonResponse(serializer.data)
 
 
