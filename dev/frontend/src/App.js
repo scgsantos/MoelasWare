@@ -12,6 +12,7 @@ import History from "./components/history";
 import CreateQuiz from "./pages/Create a Quiz/index";
 import NewQuiz from "./pages/Create a Quiz/NewQuiz";
 import Drafts from "./pages/Create a Quiz/Drafts";
+import MyQuiz from "./components/quiz_details";
 
 function App() {
   return (
@@ -28,7 +29,9 @@ function App() {
           <Route path=":id" element={<History selected="tests" />} />
         </Route>
 
-        <Route path="/createquiz" element={<CreateQuiz />} />
+        <Route path="/createquiz" element={<CreateQuiz />}>
+          <Route path="/createquiz/myquiz/:id/" element={<MyQuiz />} />
+        </Route>
         <Route path="/createquiz/new" element={<NewQuiz />} />
         <Route path="/createquiz/drafts" element={<Drafts />} />
       </Routes>

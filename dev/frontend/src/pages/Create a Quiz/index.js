@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import Button from "../../components/button";
 
 const CreateQuiz = () => {
@@ -17,13 +17,12 @@ const CreateQuiz = () => {
       .then((data) => setQuizzes(data.submissions_by_test));
   }, []);
 
-  const [selected, setSelected] = useState("");
+  //const [selected, setSelected] = useState("");
   const navigate = useNavigate();
 
-  const handleClick = (selected) => {
-    setSelected(selected);
-    console.log(selected.target.key);
-    navigate(`./${selected.target.key}`);
+  const handleClick = (e) => {
+    console.log(e);
+    navigate(`./myquiz/${e}`);
   };
 
   return (
@@ -46,7 +45,7 @@ const CreateQuiz = () => {
               {quizzes.map((t) => (
                 <tr
                   key={Object.values(t)[0][0]}
-                  onClick={(e) => handleClick(e)}
+                  onClick={(e) => handleClick(Object.values(t)[0][0])}
                 >
                   <td>{Object.values(t)[0][0]}</td>
                   <td>{Object.values(t)[0][1]}</td>
@@ -57,6 +56,7 @@ const CreateQuiz = () => {
             </tbody>
           </table>
         </section>
+        <Outlet />
       </main>
     </React.Fragment>
   );
