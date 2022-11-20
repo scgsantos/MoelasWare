@@ -34,7 +34,7 @@ def get_quiz_view(request, pk):
 
 @api_view(["GET"])
 def get_total_number_of_quizzes_view(request):
-    count = Quiz.objects.count()
+    count = Quiz.objects.can_be_added_to_a_test().count()
     return JsonResponse({"quizzes_count": count})
 
 
@@ -54,17 +54,15 @@ def get_n_quizzes_view(request):
         )
 
     tags = request.data.get("allowed_tags")
-    quizzes_set = Quiz.objects.order_by("?")
+    quizzes_set = Quiz.objects.can_be_added_to_a_test().order_by("?")
 
     quizzes_set = (
         quizzes_set.all()
-        if not tags 
+        if not tags
         else quizzes_set.filter(tags__text__in=tags).distinct()
     )
 
-    quizzes_list = [quiz for quiz in quizzes_set if quiz.can_be_added_to_a_test()]
-
-    quizzes_list = quizzes_list[:num_quizzes]
+    quizzes_list = quizzes_set[:num_quizzes]
 
     # Not enough quizzes that meet the specs
     if len(quizzes_list) < num_quizzes:
