@@ -4,11 +4,11 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from api import views
 
 urlpatterns = [
-    path("tests/<int:pk>/", views.get_test_view),
+    path("tests/<int:pk>/", views.get_test_view, name="get_test_view"),
     path("tests/<int:pk>/submissions/", views.submission_view),
-    path("tests/", views.tests_view),
-    path("tags/<int:pk>/", views.get_tag_view),
-    path("tags/", views.get_tag_view),
+    path("tests/", views.tests_view, name="tests_view"),
+    path("tags/<int:pk>/", views.get_tag_view, name="get_tag_view"),
+    path("tags/", views.get_all_tags_view, name="get_all_tags_view"),
     path("quizzes/gen/", views.get_n_quizzes_view),
     path("quizzes/<int:quiz_id>/answers/", views.get_answers_for_quiz_view),
     path("quizzes/count/", views.get_total_number_of_quizzes_view),
