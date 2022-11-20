@@ -1,8 +1,7 @@
 from django.http import JsonResponse
 from django.http.response import HttpResponseNotFound
+from moelasware.models import SubmissionAnswer, User, Tag
 from rest_framework.decorators import api_view
-
-from moelasware.models import SubmissionAnswer, User
 
 
 # TODO: this is pretty bad; make use of builtin functions
@@ -37,6 +36,10 @@ def hall_of_fame_view(request):
     if not submissions.exists():
         return HttpResponseNotFound("Submissions not found")
 
+    # tags = Tag.objects.all()
+    # if not tags.exists():
+    # return HttpResponseNotFound("Tags not found")
+
     info_list = []
     for user in users:
         username = user.user.username
@@ -49,6 +52,9 @@ def hall_of_fame_view(request):
             .filter(answer__correct=True)
             .count()
         )
+
+        # info_tags = get_correct_answers_tags(tags, user)
+
         info_list.append(
             {
                 user.user.id: [
@@ -56,6 +62,7 @@ def hall_of_fame_view(request):
                     date_joined,
                     solved_tests,
                     correct_answers,
+                    # info_tags,
                     user.user.id,
                     user.user.email,
                 ]
@@ -64,3 +71,39 @@ def hall_of_fame_view(request):
 
         # TODO Create Serializer for this
     return JsonResponse({"fame": info_list})
+
+
+# FIXME: Needs to be changed when a Quiz can have only one tag
+# This is probably not the best file / url for this
+def get_correct_answers_tags(tags, user):
+    """
+    Returns a list with the number of correct answers for each tag
+    Takes as input a list of tags and a user
+    """
+
+    info_tags = {}  # List with number correct answers for each tag
+
+    for tag in tags:
+        submissions = SubmissionAnswer.objects.filter(
+            submission__submitter__user__username=user.user.username
+        ).filter(answer__correct=True)
+
+        # Get QuizAnswer for each SubmissionAnswer
+        answers = []
+        for submission in submissions:
+            answers.append(submission.answer)
+
+        # For each QuizAnswer get the corresponding Quiz
+        quizzes = []
+        for answer in answers:
+            quizzes.append(answer.quiz)
+
+        # Get count of correct answers for each tag
+        correct_answers = 0
+        for quiz in quizzes:
+            if tag in quiz.tags.all():
+                correct_answers += 1
+
+        info_tags[tag.text] = correct_answers
+
+    return info_tags
