@@ -1,12 +1,5 @@
 .container {
-    margin: 14px auto 80px;
-}
-
-h1 {
-    font-size: 1.8rem;
-    text-align: center;
-    font-weight: 100;
-    margin: 1rem 0;
+    margin: 14px auto 50px;
 }
 
 /* clears the ‘X’ from Internet Explorer */
@@ -18,7 +11,7 @@ input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration { display: none; }
 
-select {
+.halloffamenav {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -92,14 +85,6 @@ th {
     border-radius: 10px;
     border: 1px solid black;
     padding: 0.5em 0.5rem;
-}
-
-h2 {
-    margin: 0;
-    text-align: center;
-    font-size: 1.3rem;
-    font-weight: 100;
-    text-transform: uppercase;
 }
 
 #hist {

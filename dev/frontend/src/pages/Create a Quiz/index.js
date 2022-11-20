@@ -1,0 +1,66 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Button from "../../components/button";
+
+const CreateQuiz = () => {
+  document.documentElement.style.setProperty("--base", "var(--blue)");
+
+  const quizzesHeader = ["QUIZ NAME", "TAG", "REVIEWS", "STATE"];
+  const [quizzes, setQuizzes] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/tests/", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(inputs),
+    })
+      .then((response) => response.json())
+      .then((data) => setTests(data.submissions_by_test));
+  }, []);
+
+  const [selected, setSelected] = useState("");
+  const navigate = useNavigate();
+
+  const handleClick = (selectedBtn) => {
+    setSelected(selected);
+    console.log(selected.target.key);
+    navigate(`./${selected.target.key}`);
+  };
+
+  return (
+    <React.Fragment>
+      <main className="container" id="createquiz">
+        <h1 className="title">CREATE A QUIZ</h1>
+        <Button to="./new" className="createquiznav" text="NEW QUIZ" />
+        <Button to="./drafts" className="createquiznav" text="DRAFTS (6)" />
+        <h2>MY QUIZZES</h2>
+        <section id="myquizzes">
+          <table>
+            <thead>
+              <tr>
+                {quizzesHeader.map((h) => (
+                  <th key={h}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {quizzes.map((t) => (
+                <tr
+                  key={Object.values(t)[0][0]}
+                  onClick={(e) => handleClick(e)}
+                >
+                  <td>{Object.values(t)[0][0]}</td>
+                  <td>{Object.values(t)[0][1]}</td>
+                  <td>{Object.values(t)[0][2]}</td>
+                  <td>{Object.values(t)[0][3]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </React.Fragment>
+  );
+};
+
+export default CreateQuiz;

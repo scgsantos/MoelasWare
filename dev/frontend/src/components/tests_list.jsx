@@ -12,15 +12,14 @@ function TestsList() {
     //"DATE MODIFIED",
   ];
 
-useEffect(() => {
-  fetch("http://localhost:8000/api/tests/", {
-    method: "get",
-    headers: { "Content-Type": "application/json" },
-  })
-    .then((response) => response.json())
-    .then((data) => setTests(data.submissions_by_test));
-}, []);
-
+  useEffect(() => {
+    fetch("http://localhost:8000/api/tests/", {
+      method: "get",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((data) => setTests(data.submissions_by_test));
+  }, []);
 
   const [selectedBtn, setSelectedBtn] = useState("");
   const navigate = useNavigate();

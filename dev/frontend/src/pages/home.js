@@ -2,10 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  document.documentElement.style.setProperty("--base", "var(--beige)");
   return (
     <React.Fragment>
       <div className="startmenu">
-        <Link to="/#">
+        <Link to="/createquiz">
           <h1>CREATE A QUIZ</h1>
         </Link>
         <Link to="/#">

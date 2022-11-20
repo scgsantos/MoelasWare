@@ -3,6 +3,7 @@ import Dropdown from "../components/select";
 import UsersList from "../components/users_list";
 
 const Users = () => {
+  document.documentElement.style.setProperty("--base", "var(--beige)");
   return (
     <React.Fragment>
       <main className="container">

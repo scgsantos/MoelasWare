@@ -19,6 +19,12 @@ class Header extends Component {
         >
           USER'S PROFILE
         </NavLink>
+        <NavLink
+          className={(navData) => (navData.isActive ? "active" : "none")}
+          to="/logout"
+        >
+          LOGOUT
+        </NavLink>
       </header>
     );
   }
