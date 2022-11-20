@@ -78,20 +78,6 @@ def get_quizzes_for_reviewer(request, id):
     return JsonResponse({"quiz": quiz.data["name"], "tags": quiz.data["tags"], "author": quiz.data["author"], "review_count": quiz.data["review_count"]})
 
 
-"""
-def get_quiz_view(request, pk):
-    quiz = get_object_or_404(Quiz, id=pk)
-
-    quiz_serializer = GetQuizReviewSerializer(quiz)
-    answers = QuizAnswer.objects.filter(quiz=quiz.id)
-
-    answer_serializer = GetQuizAnswerSerializer(answers, many=True)
-    return JsonResponse(
-        {"quiz": quiz_serializer.data, "answers": answer_serializer.data}
-    )"""
-
-
-
 @api_view(["GET"])
 # @login_required
 def get_quiz_reviewers_view(request, id):
