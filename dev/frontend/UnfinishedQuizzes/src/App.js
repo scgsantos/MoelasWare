@@ -1,19 +1,11 @@
-import "./CSS/index.css";
-import './App.css';
-import './fonts/Basic-Regular.ttf';
-import React from 'react';
-import UnfinishedQ from './components/unfinishedq';
+import React from "react";
+import MainUnfinishedQuizzes from "./components/mainUnfinishedQuizzes";
 
-function App() {
-  
-  
-    
+const App = () => {
   return (
-    <UnfinishedQ/>
+      <MainUnfinishedQuizzes/>
   );
-
-}
-
+};
 
 
 
