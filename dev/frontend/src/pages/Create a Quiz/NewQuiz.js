@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function NewQuiz() {
   document.documentElement.style.setProperty("--base", "var(--blue)");
@@ -42,14 +42,12 @@ function NewQuiz() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/tests/", {
+    fetch("http://localhost:8000/api/quiz/create", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(inputs),
-    })
-      .then((response) => response.json())
-      .then((data) => setTests(data.submissions_by_test));
-  }, []);
+    });
+  });
 
   let options = [];
   for (let i = 1; i < 7; i++) {

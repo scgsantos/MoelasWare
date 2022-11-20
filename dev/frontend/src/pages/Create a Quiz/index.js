@@ -10,18 +10,17 @@ const CreateQuiz = () => {
 
   useEffect(() => {
     fetch("http://localhost:8000/api/tests/", {
-      method: "post",
+      method: "get",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(inputs),
     })
       .then((response) => response.json())
-      .then((data) => setTests(data.submissions_by_test));
+      .then((data) => setQuizzes(data.submissions_by_test));
   }, []);
 
   const [selected, setSelected] = useState("");
   const navigate = useNavigate();
 
-  const handleClick = (selectedBtn) => {
+  const handleClick = (selected) => {
     setSelected(selected);
     console.log(selected.target.key);
     navigate(`./${selected.target.key}`);
