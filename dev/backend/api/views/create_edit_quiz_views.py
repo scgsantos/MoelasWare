@@ -295,13 +295,4 @@ def finish_quiz(quiz : Quiz, quiz_answers : list):
 
         quiz.finished = True
         quiz.save()
-    '''
-    print(quiz.id, "---", quiz.name, "---", quiz.question, "---", quiz.description)
-
-    for i in quiz.tags.all():
-        print("TAG -->", i.text)
-
-    for i in QuizAnswer.objects.filter(quiz = quiz):
-        print(i.text, "--", i.justification, "---", i.correct)
-'''
     return response
