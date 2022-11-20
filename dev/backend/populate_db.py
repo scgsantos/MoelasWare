@@ -44,9 +44,6 @@ try:
 
     tags = Tag.objects.bulk_create(
         [
-            Tag(text="Math"),
-            Tag(text="Travel"),
-            Tag(text="Culture"),
             Tag(text="REQ"),
             Tag(text="PM"),
             Tag(text="A&D"),
@@ -109,13 +106,13 @@ try:
         ]
     )
 
-    quizzes[0].tags.set([tags[2]])
-    quizzes[1].tags.set([tags[2], tags[5]])
-    quizzes[2].tags.set([tags[2], tags[6]])
-    quizzes[3].tags.set([tags[2], tags[4]])
-    quizzes[4].tags.set([tags[0]])
-    quizzes[5].tags.set([tags[2], tags[3]])
-    quizzes[6].tags.set([tags[2], tags[7]])
+    quizzes[0].tags.set([tags[3]])
+    quizzes[1].tags.set([tags[3], tags[5]])
+    quizzes[2].tags.set([tags[3], tags[6]])
+    quizzes[3].tags.set([tags[3], tags[4]])
+    quizzes[4].tags.set([tags[9]])
+    quizzes[5].tags.set([tags[3], tags[3]])
+    quizzes[6].tags.set([tags[3], tags[7]])
     
 
     answers = QuizAnswer.objects.bulk_create(

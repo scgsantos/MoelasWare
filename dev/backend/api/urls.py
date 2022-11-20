@@ -1,8 +1,7 @@
 from django.urls import path
-from rest_framework_simplejwt.views import (TokenObtainPairView,
-                                            TokenRefreshView)
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from . import views
+from api import views
 
 urlpatterns = [
     path("tests/<int:pk>/", views.get_test_view),
