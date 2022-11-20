@@ -10,7 +10,7 @@ class QuizSerializer(serializers.ModelSerializer):
     author = GetUserUsername(read_only = True)
     class Meta:
         model = Quiz
-        fields = ["id", "name", "author", "tags", "question", "description"]
+        fields = ["id", "name", "author", "tags", "question", "description", "review_count"]
 
 class QuizAnswerSerializer(serializers.ModelSerializer):
     class Meta:
