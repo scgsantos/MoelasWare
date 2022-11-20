@@ -8,14 +8,14 @@ function ReviewQuizPage() {
   document.body.style = "background: var(--green)"
 
   let navigate = useNavigate();
-  const data = [["Quiz #1 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 1],
-  ["Quiz #2 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 2],
-  ["Quiz #3 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 3],
-  ["Quiz #4 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 4],
-  ["Quiz #5 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 5],
-  ["Quiz #6 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 6],
-  ["Quiz #7 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 7],
-  ["Quiz #8 Name", "Tag", "Name of creater", "Creation date", "X/3 reviews", 8]];
+  const data = [["Quiz #1", "Tag", "Name of creater", "Creation date", "X/3", 1],
+  ["Quiz #2", "Tag", "Name of creater", "Creation date", "X/3", 2],
+  ["Quiz #3", "Tag", "Name of creater", "Creation date", "X/3", 3],
+  ["Quiz #4", "Tag", "Name of creater", "Creation date", "X/3", 4],
+  ["Quiz #5", "Tag", "Name of creater", "Creation date", "X/3", 5],
+  ["Quiz #6", "Tag", "Name of creater", "Creation date", "X/3", 6],
+  ["Quiz #7", "Tag", "Name of creater", "Creation date", "X/3", 7],
+  ["Quiz #8", "Tag", "Name of creater", "Creation date", "X/3", 8]];
   return (
     <div className='ReviewQuizPage-Container'>
       <div className='center'>
@@ -23,7 +23,14 @@ function ReviewQuizPage() {
         <p>Please click on the quiz that you would like review</p>
       </div>
       <div className='center_tab'>
-        <ul>
+      <tr className='center'>
+        <td width={200}>QUIZ NAME</td>
+        <td width={200}>TAGS</td>
+        <td width={200}>NAME OF CREATER</td>
+        <td width={200}>CREATION DATE</td>
+        <td width={200}>REVIEWS</td>
+      </tr>
+        <ul className='pad'>
           {(() => {
             var d = [];
             for (let i = 0; i < data.length; i++) {

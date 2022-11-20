@@ -54,10 +54,10 @@ function ReviewAQuizPage() {
   }, [])
 
   if (error) {
-    return <div>Could not get quiz</div>;
-  } else if (!isLoaded) {
-    return <div>Loading...</div>;
-  } else {
+     return <div>Could not get quiz</div>;
+   } else if (!isLoaded) {
+     return <div>Loading...</div>;
+   } else {
     return (
       <div className="ReviewAQuizPage-Container">
         <div className="centered">
@@ -79,7 +79,7 @@ function ReviewAQuizPage() {
                     <tr className="side sep">
                       <td></td>
                       <td>
-                        <h2 className="explanation">EXPLANATIONS</h2>
+                        <h2 className="explanation" style={styles.left}>JUSTIFICATIONS</h2>
                       </td>
                     </tr>)
                 }
@@ -87,7 +87,7 @@ function ReviewAQuizPage() {
                   d.push(
                     <tr className="side sep">
                       <td>
-                        <div className="answer correct"> {data["answers"][i]["text"]} </div>
+                        <div className="answer correct_op"> {data["answers"][i]["text"]} </div>
                       </td>
                       <td>
                         <div className="explanation"> {data["answers"][i]["justification"]}</div>
@@ -120,8 +120,9 @@ function ReviewAQuizPage() {
             value={justification}
             onChange={handleJustificationChange}></textarea>
           <div style={{ height: "40px" }}></div>
-          <div className="column">
-            <button className="btn success" style={{ marginLeft: "50%" }} onClick={() => {
+
+          <div className="btn_line">
+            <button className="btn success" onClick={() => {
               const args = JSON.stringify({
                 "quiz": "" + id,
                 "reviewer": "1",
@@ -140,10 +141,8 @@ function ReviewAQuizPage() {
                 navigate(REVIEW_URL)
               )
             }}>ACCEPT</button>
-          </div>
-          <div className="start">
-            <div className="column">
-              <button className="btn success" style={{ marginLeft: "30%" }} onClick={() => {
+
+              <button className="btn success" onClick={() => {
                 const args = JSON.stringify({
                   "quiz": "" + id,
                   "reviewer": "1",
@@ -162,9 +161,10 @@ function ReviewAQuizPage() {
                   navigate(REVIEW_URL)
                 )
               }}>REJECT</button>
-            </div>
+
+            <button className="btn success" onClick={() => {navigate(REVIEW_URL)}}>CANCEL</button>
           </div>
-        </div>
+         </div>
       </div>
     );
   }
@@ -181,6 +181,9 @@ const styles = {
   middletitle: {
     fontSize: 20,
     fontWeight: "bold"
+  },
+  left: {
+    textAlign: "left"
   },
 
 };
