@@ -10,7 +10,7 @@ Example:
     python time_tracking.py 1 3
     (make graph for group 1's workload during sprint 3)
 """
-import time
+import datetime
 import argparse
 
 import matplotlib.pyplot as plt
@@ -88,6 +88,13 @@ def read_gitlab_token():
         exit(1)
 
 
+def format_timedelta(delta):
+    hours, rem = divmod(delta.seconds, 3600)
+    minutes, seconds = divmod(rem, 60)
+    hours += delta.days * 24
+    return f"{hours:02}:{minutes:02}:{seconds:02}"
+
+
 def time_tracking(token, user, milestone):
     print(f"Requesting info for {user[1]} ({user[0]})")
     total_time = 0
@@ -103,10 +110,7 @@ def time_tracking(token, user, milestone):
     for v in time_values:
         total_time += v.get("total_time_spent")
 
-    # Convert to hours
-    time_aux = time.gmtime(total_time)
-    time_num = time_aux.tm_hour + time_aux.tm_min / 60
-    return time.strftime("%H:%M:%S", time_aux), time_num
+    return datetime.timedelta(seconds=total_time)
 
 
 def run():
@@ -119,9 +123,9 @@ def run():
     results = []
 
     for user in group.items():
-        time_str, time_num = time_tracking(token, user, milestone)
-        total_time_list.append(time_num)
-        results.append(time_str)
+        delta = time_tracking(token, user, milestone)
+        total_time_list.append(delta.total_seconds() / 3600)
+        results.append(format_timedelta(delta))
 
     print("Building graph")
     fig = plt.figure(figsize=(10, 5))
