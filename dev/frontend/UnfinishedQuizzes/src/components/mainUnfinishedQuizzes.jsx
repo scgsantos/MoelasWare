@@ -90,29 +90,10 @@ class MainUnfinishedQuizzes extends Component {
         
         <div className="scroll-div">
         {this.state.quizzes.map((quiz) => (
-            <InfoUnfinished name={quiz[0]} time={quiz[1]}/>
+            <InfoUnfinished name={quiz[0]} time={quiz[1]} link = 'https://www.google.com/webhp?authuser=1'/>
           ))}
-          <InfoUnfinished name="a" time="1"/>
-          <InfoUnfinished name="a" time="2"/>
-          <InfoUnfinished name="a" time="3"/>
-          <InfoUnfinished name="a" time="4"/>
-          <InfoUnfinished name="a" time="5"/>
-          <InfoUnfinished name="a" time="6"/>
-          <InfoUnfinished name="a" time="7"/>
-          <InfoUnfinished name="a" time="8"/>
-          <InfoUnfinished name="a" time="9"/>
-          <InfoUnfinished name="a" time="10"/>
-          <InfoUnfinished name="a" time="11"/>
-          <InfoUnfinished name="a" time="12"/>
-          <InfoUnfinished name="a" time="13"/>
-          <InfoUnfinished name="a" time="14"/>
-          <InfoUnfinished name="a" time="15"/>
-
         </div>
         </center>
-
-
-
     </div>
             );
     }

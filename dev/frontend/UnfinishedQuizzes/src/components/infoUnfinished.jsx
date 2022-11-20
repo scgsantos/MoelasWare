@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import "../unfinishedquiz.css";
 
 class InfoUnfinished extends Component {
+
+
     constructor(props){
       super(props);
 
@@ -13,7 +15,7 @@ class InfoUnfinished extends Component {
           <div style={{ flex: 1}}>
             <div className="column">
               <text className='esq'>
-                {this.props.name}
+                <a href= {this.props.link}>{this.props.name}</a>
               </text>
             </div>
           </div>
