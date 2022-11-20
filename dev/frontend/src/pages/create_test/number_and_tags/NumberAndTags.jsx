@@ -135,6 +135,9 @@ function CreateRandomTestWithSpecs() {
             value={tags?.join(" ")}
             onChange={handleTagsChange}
           />
+          <h2 className="NumberOnly-errorInput">
+            {tags?.length > 0 ? "" : "Tags is mandatory"}
+          </h2>
         </div>
         <div className="NumberOnly-Publish-GoBack-buttons">
           <div className="NumberOnly-buttonCreate">
