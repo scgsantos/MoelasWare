@@ -1,9 +1,9 @@
 from django.http import HttpResponseBadRequest, JsonResponse
+from rest_framework import status
 from rest_framework.decorators import api_view
 
 from api.serializers import QuizAnswerSerializer, QuizSerializer
 from moelasware.models import Quiz, QuizAnswer
-from rest_framework import status
 
 
 @api_view(["GET"])
