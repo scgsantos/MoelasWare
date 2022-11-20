@@ -15,7 +15,7 @@ const contentStylePopup = {
 }
 
 function SolveQuizz() {
-  document.body.style = "background: var(--yellow)";
+  document.documentElement.style.setProperty("--base", "var(--yellow)");
 
   const navigate = useNavigate();
   const { test } = useParams();

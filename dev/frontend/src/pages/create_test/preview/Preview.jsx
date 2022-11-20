@@ -8,7 +8,8 @@ import { CREATE_TEST_URL, TEST_PUBLISHED_URL } from "urls.js";
 import history from "history.js";
 
 function Preview() {
-  document.body.style = "background: var(--pink)";
+  document.documentElement.style.setProperty("--base", "var(--pink)");
+
   const [quizzes, setQuizzes] = useState(history.location.state?.quizzes);
   var [answers, setAnswers] = useState([]);
   var [quiz_id, setId] = useState(0);

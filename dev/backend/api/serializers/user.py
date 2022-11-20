@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from api.serializers.auth_user import GetAuthUsername
-from moelasware.models import User
+from api.serializers.auth_user import GetAuthUsername, GetAuthUserAll
+from moelasware.models import User, Submission, SubmissionAnswer
 
 
 class GetUserUsername(serializers.ModelSerializer):

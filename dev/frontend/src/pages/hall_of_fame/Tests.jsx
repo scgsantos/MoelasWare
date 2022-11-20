@@ -5,6 +5,7 @@ import 'pages/hall_of_fame/HallOfFame.css'
 
 const Tests = () => {
   document.documentElement.style.setProperty("--base", "var(--beige)");
+
   return (
     <React.Fragment>
       <main className="HallOfFame-container">

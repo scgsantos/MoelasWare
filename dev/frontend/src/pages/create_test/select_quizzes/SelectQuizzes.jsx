@@ -10,7 +10,7 @@ import history from 'history.js';
 
 
 function CreateTest() {
-  document.body.style = "background: var(--pink)"
+  document.documentElement.style.setProperty("--base", "var(--pink)");
 
   // TODO?: find way to make quiz selection/visualization work without needing the array of ids (quizzes) rather than the array of objects
 

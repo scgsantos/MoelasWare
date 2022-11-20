@@ -13,7 +13,8 @@ import {
 import history from "history.js";
 
 function CreateRandomTestWithSpecs() {
-  document.body.style = "background: var(--pink)";
+  document.documentElement.style.setProperty("--base", "var(--pink)");
+
   const [num, setNum] = useState(1);
   const [isPage1, setIsPage1] = useState(true);
   const [text, setText] = useState("");

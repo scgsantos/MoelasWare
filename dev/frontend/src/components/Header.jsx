@@ -13,8 +13,11 @@ class Header extends Component {
           className={(navData) => (navData.isActive ? "active" : "none")}
           to="/"
           end
+          id="logo"
         >
-          <img src={logo} alt="logo" />
+
+        <img src={logo} alt="logo" />
+
         </NavLink>
         <NavLink
           className={(navData) => (navData.isActive ? "active" : "none")}

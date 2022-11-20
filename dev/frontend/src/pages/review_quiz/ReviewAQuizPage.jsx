@@ -10,7 +10,7 @@ import { REVIEW_URL } from "urls.js";
 
 
 function ReviewAQuizPage() {
-  document.body.style = "background: var(--green)"
+  document.documentElement.style.setProperty("--base", "var(--green)");
 
   const [data, setQuiz] = useState({});
   //error

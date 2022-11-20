@@ -4,8 +4,6 @@ from moelasware.models import SubmissionAnswer, User, Test
 from rest_framework.decorators import api_view
 from api.serializers import HallOfFameGetUserInfo, HallOfFameGetTestInfo
 
-from moelasware.models import SubmissionAnswer, User
-
 
 # TODO: this is pretty bad; make use of builtin functions
 def return_date(date:str):

@@ -1,3 +1,4 @@
+const LOGOUT_URL = "/logout";
 const PROFILE_URL = "/profile";
 const USERS_URL = "/users";
 const TESTS_URL = "/tests";
@@ -18,6 +19,7 @@ const REVIEW_URL = "/review"
 const REVIEW_QUIZ_URL = "/review/quiz/"
 
 export {
+  LOGOUT_URL,
   PROFILE_URL,
   USERS_URL,
   TESTS_URL,

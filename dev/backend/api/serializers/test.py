@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from api.serializers.quiz import QuizSerializer
 from api.serializers.user import GetUserUsername
-from moelasware.models import Test
+from moelasware.models import Test, Submission
 
 
 class GetTestSerializer(serializers.ModelSerializer):

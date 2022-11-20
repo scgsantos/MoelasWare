@@ -5,7 +5,7 @@ import React from 'react';
 import { REVIEW_QUIZ_URL } from "urls.js";
 
 function ReviewQuizPage() {
-  document.body.style = "background: var(--green)"
+  document.documentElement.style.setProperty("--base", "var(--green)");
 
   let navigate = useNavigate();
   const data = [["Quiz #1", "Tag", "Name of creater", "Creation date", "X/3", 1],

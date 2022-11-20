@@ -10,7 +10,8 @@ import {
 } from "urls.js";
 
 function CreateTestLastPage() {
-  document.body.style = "background: var(--pink)";
+  document.documentElement.style.setProperty("--base", "var(--pink)");
+
   return (
     <div className="lastPageOfCreatePage">
       <h1 className="NumberOnly-title">Create a Test</h1>

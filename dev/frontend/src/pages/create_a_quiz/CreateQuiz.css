@@ -67,7 +67,7 @@ td:last-child {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background: url(downarrow.svg) no-repeat right;
+    background: url(assets/SVG/downarrow.svg) no-repeat right;
     background-position-x: 90%;
     background-position-y: 50%;
     width: 5rem;

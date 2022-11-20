@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from api.serializers.test import GetTestInfo
-from moelasware.models import Submission, SubmissionAnswer
+from api.serializers.user import GetUserUsername
+from moelasware.models import Submission, SubmissionAnswer, Test
 
 
 class SubmissionSerializer(serializers.ModelSerializer):
