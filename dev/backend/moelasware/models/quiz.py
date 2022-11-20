@@ -23,6 +23,8 @@ class Quiz(models.Model):
 
     approved = models.BooleanField(default=False)
 
+    review_count = models.IntegerField(default=0)
+
     def can_be_added_to_a_test(self):
         return self.test_set.count() < 2
 
