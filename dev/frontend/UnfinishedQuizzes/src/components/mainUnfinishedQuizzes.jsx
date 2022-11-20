@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from '../images/logo.png';
 import '../fonts/Basic-Regular.ttf';
 import "../App.css";
-import "../common.css";
+import "../unfinishedquiz.css";
 import InfoUnfinished from './infoUnfinished';
 
 class MainUnfinishedQuizzes extends Component {

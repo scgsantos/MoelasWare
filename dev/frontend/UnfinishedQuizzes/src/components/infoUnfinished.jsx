@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "../common.css";
+import "../unfinishedquiz.css";
 
 class InfoUnfinished extends Component {
     constructor(props){
