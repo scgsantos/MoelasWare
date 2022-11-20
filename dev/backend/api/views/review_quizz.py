@@ -51,7 +51,7 @@ def create_quiz_review_view(request):
 
         review = Review.objects.filter(quiz=request.quiz)
         review.accepted = serializer.data["accepted"]
-        if review.accepted == True:
+        if review.accepted:
             review.quiz.review_count += 1
         if review.quiz.review_count == 3:
             review.quiz.approved = True
