@@ -32,7 +32,7 @@ class GetQuizReviewNewSerializer(serializers.ModelSerializer):
         fields = ["id", "reviewer", "creation_date","comment", "review_result"]
 
     def get_review_result(self,obj):
-        
+
         if Review.objects.filter(id = obj.id).filter(accepted = False):
             return "rejected"
 

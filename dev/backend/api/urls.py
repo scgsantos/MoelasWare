@@ -28,7 +28,7 @@ urlpatterns = [
     path("quiz/<int:pk>/", views.get_info_quiz_view),
     path("quizzes/finished/", views.get_user_quizzes_view),
 
-    
+
     path("review/create/", views.create_quiz_review_view),
     # ADDED IN ORDER TO GET THE NECCESSARY INFO OF THE PAGE
     path("review/quizzes/", views.get_quizzes_of_a_reviewer_view),
@@ -40,6 +40,7 @@ urlpatterns = [
     path("fame/tests/", views.get_fame_all_tests_view),
 
 	path("profile/", views.profile_view),
+    path("users/<int:pk>/submissions/", views.submissions_by_user_view),
 
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
@@ -53,6 +54,4 @@ urlpatterns = [
 
     path("quiz/import/", views.import_xml),
     path("quiz/export/", views.export_xml),
-
-
 ]

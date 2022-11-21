@@ -23,7 +23,7 @@ function MyQuiz() {
             setError(data.error);
             if (!data.error){
                 setReviews(data.reviews);
-            }            
+            }
         });
     }, []);
 

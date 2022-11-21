@@ -39,7 +39,7 @@ function ReviewQuizPage() {
         <h2>LIST OF QUIZZES FOR REVIEW</h2>
         <p>Please click on the quiz that you would like review</p>
       </div>
-      <div className='center_tab'> 
+      <div className='center_tab'>
       {(() => {
         var array = [];
             if (!error) {

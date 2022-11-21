@@ -28,7 +28,7 @@ const CreateQuiz = () => {
     return (
         <React.Fragment>
 
-            <input className='candidatura-curriculo' type='file'></input>
+            <input type='file'></input>
 
             <main className="container" id="createquiz">
                 <h1 className="title">CREATE A QUIZ</h1>

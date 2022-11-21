@@ -5,18 +5,6 @@ from django.http import HttpResponseBadRequest, JsonResponse, HttpRequest, HttpR
 from rest_framework import status
 from rest_framework.decorators import api_view
 
-from api.serializers import (
-    QuizAnswerSerializer,
-    QuizSerializer,
-    QuizFinishedSerializer,
-    GetQuizReviewNewSerializer,
-)
-from moelasware.models import Quiz, QuizAnswer, User, Tag, Review
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User as AuthUser
-
-import xml.etree.ElementTree as ET
-from xml.etree.ElementTree import fromstring, ElementTree
 
 
 @api_view(["GET"])
