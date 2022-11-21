@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 function NewQuiz() {
   document.documentElement.style.setProperty("--base", "var(--blue)");
+  const [resposta, setResposta] = useState([]);
 
   const tags = [
     { label: "-", value: "null" },
@@ -22,7 +23,7 @@ function NewQuiz() {
   //const answers = ["", "", "", "", "", ""];
 
   const [inputs, setInputs] = useState({
-    quizname: "",
+    name: "",
     tag: "",
     question: "",
     description: "",
@@ -39,15 +40,15 @@ function NewQuiz() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(inputs);
-  };
-
-  useEffect(() => {
     fetch("http://localhost:8000/api/quiz/create/", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(inputs),
-    });
-  });
+      method: "POST",
+      headers: {'Accept': 'application/json', "Content-Type": "application/json"},
+      body: JSON.stringify({inputs}),
+    }) .then((response) => response.json())
+    .then((data) => setResposta(data.resposta));
+    console.log(resposta);
+}
+  
 
   let options = [];
   for (let i = 1; i < 7; i++) {
@@ -96,16 +97,16 @@ function NewQuiz() {
       <main className="container" id="newquiz">
         <h1 className="title">CREATE A QUIZ</h1>
         <h2>NEW QUIZ</h2>
-
         <form onSubmit={handleSubmit}>
           <div className="newquiz">
-            <div className="quizname-container">
+            <div className="name-container">
               <label>
                 <p>QUIZ NAME</p>
+
                 <input
-                  name="quizname"
+                  name="name"
                   type="text"
-                  value={inputs.quizname}
+                  value={inputs.name}
                   placeholder="Insert a name for the quiz"
                   size="40"
                   onChange={handleChange}
@@ -124,9 +125,9 @@ function NewQuiz() {
                 </select>
               </label>
             </div>
-
             <div className="break"></div>
-
+            <h5> {resposta} </h5>
+            <div className="break"></div>
             <div className="question-container">
               <h3>QUESTION #1</h3>
 
@@ -160,7 +161,6 @@ function NewQuiz() {
 
             <div className="options-container">{options}</div>
             <div className="break"></div>
-
             <input type="submit" value="SAVE AS DRAFT" />
             <input type="submit" value="SUBMIT" />
           </div>

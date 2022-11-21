@@ -230,7 +230,6 @@ def create_quiz_view(request):
     quiz.save()
                      
     quizzes = QuizAnswer.objects.filter(quiz = quiz)
-    
     response = finish_quiz(quiz, quizzes)
     return JsonResponse(response)
 
