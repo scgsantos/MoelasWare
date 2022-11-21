@@ -19,6 +19,6 @@ class Review(models.Model):
     quiz = fk(Quiz)
 
     creation_date = models.DateField(default=datetime.date.today)
-    pending = models.BooleanField(default=True)
     accepted = models.BooleanField(default=False)
     comment = models.TextField()
+    pending = models.BooleanField(default=True)

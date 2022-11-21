@@ -13,18 +13,6 @@ from moelasware.models import Test, User, Quiz, QuizAnswer, QuizTag, Tag, Submis
 from api.serializers import CreateReviewSerializer, GetQuizReviewSerializer, GetReviewSerializer, GetTestSerializer, CreateTestSerializer, GetQuizAnswerSerializer
 
 
-@api_view(['GET'])
-# @login_required
-def get_quiz_view(request, id):
-    quiz = get_object_or_404(Quiz, id=id)
-
-    quiz_serializer = GetQuizReviewSerializer(quiz)
-    answers = QuizAnswer.objects.filter(quiz=quiz.id)
-
-    answer_serializer = GetQuizAnswerSerializer(answers, many=True)
-    return JsonResponse({'quiz': quiz_serializer.data, 'answers': answer_serializer.data})
-
-
 @api_view(['POST'])
 # @login_required
 def create_quiz_review_view(request):

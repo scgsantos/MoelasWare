@@ -5,8 +5,8 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 
-from api.serializers import QuizAnswerSerializer, QuizFinishedSerializer, QuizSerializer
-from moelasware.models import Quiz, QuizAnswer, Review, Tag, User
+from api.serializers import QuizAnswerSerializer, QuizSerializer, QuizFinishedSerializer
+from moelasware.models import Quiz, QuizAnswer, User, Tag, Review
 
 
 @api_view(["GET"])
@@ -133,9 +133,8 @@ def quiz_finished_serializer_handler(data):
             ]
         )
     return quiz_list
-
-
-@api_view(["GET"])
+    
+@api_view(['GET'])
 def get_user_quizzes(request):
 
     user = User.objects.filter(user__id=1)
