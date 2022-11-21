@@ -1,20 +1,28 @@
 import 'pages/review_quiz/ReviewQuizPage.css';
 import logo from 'assets/SVG/LOGO.svg';
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect, setState } from "react";
 import React from 'react';
 import { REVIEW_QUIZ_URL } from "urls.js";
+import { useState, useEffect, setState } from "react";
+import { useNavigate } from "react-router-dom";
+import config from 'config.js';
 
 function ReviewQuizPage() {
   document.documentElement.style.setProperty("--base", "var(--green)");
 
+  const [data, setData] = useState([]);
+  //error
+  const [error, setError] = useState(false);
+  //loading
+  const [isLoaded, setLoading] = useState(false);
+
+  //id should be the user id
+  const id = 1;
+
   let navigate = useNavigate();
-  const quizzesHeader = ["QUIZ NAME", "TAG", "AUTHOR", "REVIEWS"];
 
-  const [review, setReview] = useState({});
-
+  //fetch quiz from the backend and log it to the console
   useEffect(() => {
-    fetch("http://localhost:8000/api/quizzes/review/1")
+    fetch(config.svurl + "/api/quizzes/review/" + id)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -24,16 +32,19 @@ function ReviewQuizPage() {
       })
       .then(
         (result) => {
-          setReview(result.info);
+          setLoading(true);
+          setData(result.info);
         }
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
         // exceptions from actual bugs in components.
       ).catch((error) => {
+        setLoading(true);
+        setError(true);
       })
   }, [])
 
-  console.log(review);
+  console.log(data)
 
   return (
     <div className='ReviewQuizPage-Container'>
@@ -41,64 +52,77 @@ function ReviewQuizPage() {
         <h2>LIST OF QUIZZES FOR REVIEW</h2>
         <p>Please click on the quiz that you would like review</p>
       </div>
-      <table className='center_tab'>
-        <thead>
-        <tr>
-          {quizzesHeader.map((h) => (
-            <th key={h}>{h}</th>
-          ))}
-        </tr>
-        </thead>
-        <tbody>
+      <div className='center_tab'>
+      <tr className='center'>
+        <td width={200}>QUIZ NAME</td>
+        <td width={200}>TAGS</td>
+        <td width={200}>NAME OF CREATER</td>
+        <td width={200}>CREATION DATE</td>
+        <td width={200}>REVIEWS</td>
+      </tr>
+        {
+         (() => {
+          if (error) {
+            return <ul className="pad" style={{"marginTop":"100px"}}>Could not get quizzes</ul>;
+          } else if (!isLoaded) {
+            return <ul className="pad" style={{"marginTop":"100px"}}>Loading...</ul>;
+          }
+         })()
+          }
+        <ul className='pad'>
           {(() => {
             var d = [];
-            for (let i = 0; i < review.length; i++) {
-              if (i === 0 && review.length === 1) {
+            for (let i = 0; i < data.length; i++) {
+              if (i === 0 && data.length === 1) {
                 d.push(
                   <tr className='select'>
-                    <button className='button_tab button_uniq button_tab_hover' onClick={() => { navigate(REVIEW_QUIZ_URL + review[i][0]) }}>
-                      <td width={200}>{review[i][1]}</td>
-                      <td width={200}>{review[i][2]}</td>
-                      <td width={200}>{review[i][3]}</td>
-                      <td width={200}>{3 - review[i][4]}/3</td>
+                    <button className='button_tab button_uniq button_tab_hover' onClick={() => { navigate(REVIEW_QUIZ_URL + data[i][0]) }}>
+                      <td width={200}>{data[i][1]}</td>
+                      <td width={200}>{data[i][2]}</td>
+                      <td width={200}>{data[i][3]}</td>
+                      <td width={200}>{data[i][5]}</td>
+                      <td width={200}>{data[i][4]}/3</td>
                     </button>
                   </tr>)
-              } else if (i === 0 && review.length > 0) {
+              } else if (i === 0 && data.length > 0) {
                 d.push(
                   <tr className='select'>
-                    <button className='button_tab button1 button_tab_hover' onClick={() => { navigate(REVIEW_QUIZ_URL + review[i][0]) }}>
-                      <td width={200}>{review[i][1]}</td>
-                      <td width={200}>{review[i][2]}</td>
-                      <td width={200}>{review[i][3]}</td>
-                      <td width={200}>{3 - review[i][4]}/3</td>
+                    <button className='button_tab button1 button_tab_hover' onClick={() => { navigate(REVIEW_QUIZ_URL + data[i][0]) }}>
+                    <td width={200}>{data[i][1]}</td>
+                      <td width={200}>{data[i][2]}</td>
+                      <td width={200}>{data[i][3]}</td>
+                      <td width={200}>{data[i][5]}</td>
+                      <td width={200}>{data[i][4]}/3</td>
                     </button>
                   </tr>)
-              } else if (i > 0 && i !== review.length - 1) {
+              } else if (i > 0 && i !== data.length - 1) {
                 d.push(
                   <tr className='select'>
-                    <button className='button_tab other_buttons button_tab_hover' onClick={() => { navigate(REVIEW_QUIZ_URL + review[i][0]) }}>
-                      <td width={200}>{review[i][1]}</td>
-                      <td width={200}>{review[i][2]}</td>
-                      <td width={200}>{review[i][3]}</td>
-                      <td width={200}>{3 - review[i][4]}/3</td>
-                    </button>
+                    <button className='button_tab other_buttons button_tab_hover' onClick={() => { navigate(REVIEW_QUIZ_URL + data[i][0]) }}>
+                    <td width={200}>{data[i][1]}</td>
+                      <td width={200}>{data[i][2]}</td>
+                      <td width={200}>{data[i][3]}</td>
+                      <td width={200}>{data[i][5]}</td>
+                      <td width={200}>{data[i][4]}/3</td>
+                      </button>
                   </tr>)
-              } else if (i === review.length - 1) {
+              } else if (i === data.length - 1) {
                 d.push(
                   <tr className='select'>
-                    <button className='button_tab button_end button_tab_hover' onClick={() => { navigate(REVIEW_QUIZ_URL + review[i][0]) }}>
-                      <td width={200}>{review[i][1]}</td>
-                      <td width={200}>{review[i][2]}</td>
-                      <td width={200}>{review[i][3]}</td>
-                      <td width={200}>{3 - review[i][4]}/3</td>
+                    <button className='button_tab button_end button_tab_hover' onClick={() => { navigate(REVIEW_QUIZ_URL + data[i][0]) }}>
+                    <td width={200}>{data[i][1]}</td>
+                      <td width={200}>{data[i][2]}</td>
+                      <td width={200}>{data[i][3]}</td>
+                      <td width={200}>{data[i][5]}</td>
+                      <td width={200}>{data[i][4]}/3</td>
                     </button>
                   </tr>)
               }
             }
             return d;
           })()}
-          </tbody>
-      </table>
+        </ul>
+      </div>
     </div>
   )
 };

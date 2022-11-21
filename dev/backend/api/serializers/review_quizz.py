@@ -44,7 +44,7 @@ class QuizReviewSerializer(serializers.ModelSerializer):
     review_count = serializers.SerializerMethodField("get_review_count")
     class Meta:
         model = Quiz
-        fields = ['id','name','tags','author', "review_count"] 
+        fields = ['id','name','tags','author', "review_count", "creation_date"] 
 
     def get_review_count(self, obj):
         return Review.objects.filter(quiz = obj, pending = True).count()

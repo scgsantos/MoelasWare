@@ -36,9 +36,7 @@ def get_quiz_view(request, pk):
     answers = QuizAnswer.objects.filter(quiz=quiz.id)
 
     answer_serializer = GetQuizAnswerSerializer(answers, many=True)
-    return JsonResponse(
-        {"quiz": quiz_serializer.data, "answers": answer_serializer.data}
-    )
+    return JsonResponse({"quiz": quiz_serializer.data, "answers": answer_serializer.data})
 
 
 @api_view(["POST"])
@@ -67,7 +65,7 @@ def create_quiz_review_view(request):
 def quiz_review_serializer_handler(data):
     data_list = []
     for i in data:
-        data_list.append([i['id'],i['name'],i['tags'][0]['text'],i['author']['user']['username'], i['review_count']])
+        data_list.append([i['id'],i['name'],i['tags'][0]['text'],i['author']['user']['username'], i['review_count'], i['creation_date']])
     return data_list
 
 @api_view(["GET"])
