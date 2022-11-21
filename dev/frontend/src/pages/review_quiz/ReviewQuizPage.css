@@ -11,10 +11,24 @@
     color: var(--green)  !important;
 }
 
+.ReviewQuizPage-Container table {
+    padding: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 2rem;
+    table-layout: auto;
+    text-align: center;  
+}
+
+
 .ReviewQuizPage-Container thead tr {
     display : flex;
-    justify-content: center;
-    width: 100%;
+    justify-content: space-evenly;
+}
+
+thead {
+    width: 68%;
 }
 
 .ReviewQuizPage-Container .select:hover td {
@@ -25,7 +39,7 @@
 .ReviewQuizPage-Container .start {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
   
 .ReviewQuizPage-Container .click {
