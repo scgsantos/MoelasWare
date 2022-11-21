@@ -52,7 +52,7 @@ def get_info_quiz_view(request, pk):
 
     answer_list = []
     for i in answer_serializer:
-        answer_list.append([i['text'], i['justification']])
+        answer_list.append([i['text'], i['justification'], i['correct']])
 
 
 
