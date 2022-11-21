@@ -1,21 +1,28 @@
 from rest_framework import serializers
 
 from api.serializers.tag import GetTagSerializer
+from api.serializers.user import GetUserUsername
 from moelasware.models import Quiz, QuizAnswer, Review
 
 
 class QuizSerializer(serializers.ModelSerializer):
     tags = GetTagSerializer(read_only=True, many=True)
-
+    author = GetUserUsername(read_only = True)
     class Meta:
         model = Quiz
-        fields = ["id", "name", "author", "tags", "question", "description", "review_count"]
-
+        fields = ["id", "name", "author", "tags", "question", "description"]
 
 class QuizAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizAnswer
         fields = ["id", "text", "justification"]
+
+class QuizInfoSerializer(serializers.ModelSerializer):
+    tags = GetTagSerializer(read_only=True, many=True)
+    author = GetUserUsername(read_only = True)
+    class Meta:
+        model = Quiz
+        fields = ['id','name','tags','author']
 
 
 class QuizAnswerSerializerWithRes(serializers.ModelSerializer):

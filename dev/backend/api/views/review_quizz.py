@@ -13,6 +13,7 @@ from api.serializers import (
     GetReviewSerializer,
     GetTestSerializer,
     QuizSerializer,
+    QuizReviewSerializer,
 )
 from moelasware.models import (
     Quiz,
@@ -63,19 +64,30 @@ def create_quiz_review_view(request):
     return JsonResponse({"error": "Bad data"})
 
 
+def quiz_review_serializer_handler(data):
+    data_list = []
+    for i in data:
+        data_list.append([i['id'],i['name'],i['tags'][0]['text'],i['author']['user']['username'], i['review_count']])
+    return data_list
+
 @api_view(["GET"])
 # @login_required
 def get_quizzes_for_reviewer(request, id):
 
     user = get_object_or_404(User, id=id)
 
-    reviewer = Review.objects.filter(reviewer=user, accepted=False)
+    reviewer = Review.objects.filter(reviewer=user, pending=True)
 
-    serializer = GetReviewSerializer(reviewer, many=True)  
+    if not reviewer.exists():
+        return HttpResponseBadRequest("Reviews not found")
 
-    quiz = QuizSerializer(serializer.quiz)
+    reviewer_list = []
+    for i in reviewer:
+        reviewer_list.append(QuizReviewSerializer(i.quiz).data)
 
-    return JsonResponse({"quiz": quiz.data["name"], "tags": quiz.data["tags"], "author": quiz.data["author"], "review_count": quiz.data["review_count"]})
+    reviewer_list = quiz_review_serializer_handler(reviewer_list)
+
+    return JsonResponse({"info": reviewer_list})
 
 
 @api_view(["GET"])
