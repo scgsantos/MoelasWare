@@ -32,8 +32,6 @@ import SolveTest from 'pages/solve_test/SolveQuizz.jsx';
 import GradeTestSolved from 'pages/solve_test/SolvedAllQuizzes.jsx';
 import TestGradePreviews from 'pages/solve_test/Resolution.jsx';
 
-import ReviewQuizPage from "./pages/ReviewQuizPage";
-import ReviewAQuizPage from "./pages/ReviewAQuizPage";
 
 import {
   PROFILE_URL,
