@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Outlet  } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 
-import Button from "components/button.jsx";
+import Button from "components/CreateQuizButton.jsx";
 import "pages/create_a_quiz/CreateQuiz.css";
 
 const CreateQuiz = () => {
@@ -47,9 +47,9 @@ const CreateQuiz = () => {
             <tbody>
               {quizzes.map((t) => (
                 <tr
-                key={Object.values(t)[0]}
-                onClick={(e) => handleClick(Object.values(t)[0])}
-              >
+                  key={Object.values(t)[0]}
+                  onClick={(e) => handleClick(Object.values(t)[0])}
+                >
                   <td>{Object.values(t)[1]}</td>
                   <td>{Object.values(t)[2][0].text}</td>
                   <td>{Object.values(t)[3]}/3</td>
@@ -59,7 +59,7 @@ const CreateQuiz = () => {
             </tbody>
           </table>
         </section>
-        <Outlet/>
+        <Outlet />
       </main>
     </React.Fragment>
   );
