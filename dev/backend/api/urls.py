@@ -15,7 +15,8 @@ urlpatterns = [
     path("quizzes/gen/", views.get_n_quizzes_view),
     path("quizzes/<int:quiz_id>/answers/", views.get_answers_for_quiz_view),
     path("quizzes/count/", views.get_total_number_of_quizzes_view),
-    path("quizzes/<int:pk>/", views.get_quiz_view),
+    path("quizzes/<int:pk>/", views.get_info_quiz_view),
+
     path("quizzes/finished/", views.get_user_quizzes),
     path("quizzes/<int:id>/reviewers/", views.get_quiz_reviewers_view),
     path("quizzes/review/", views.create_quiz_review_view),

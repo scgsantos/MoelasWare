@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "common.css";
 import "App.css";
+import "./CreateQuiz.css";
 
 import Header from "components/Header";
 
@@ -27,6 +28,7 @@ import CreateQuiz from "pages/create_a_quiz/index";
 import NewQuiz from "pages/create_a_quiz/NewQuiz";
 import Drafts from "pages/create_a_quiz/Drafts";
 import History from "components/History.jsx";
+import MyQuiz from "./components/quiz_details";
 
 // Group 5
 import MainSelectionPage from 'pages/solve_test/AllTests.jsx';
@@ -85,7 +87,10 @@ function App() {
           <Route path=":id" element={<History selected="tests" />} />
         </Route>
 
-        <Route path="/createquiz" element={<CreateQuiz />} />
+        <Route path="/createquiz" element={<CreateQuiz />}>
+          <Route path="/createquiz/myquiz/:id/" element={<MyQuiz />} />
+        </Route>
+
         <Route path="/createquiz/new" element={<NewQuiz />} />
         <Route path="/createquiz/drafts" element={<Drafts />} />
 

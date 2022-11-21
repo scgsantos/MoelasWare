@@ -3,7 +3,7 @@ import Radiobutton from 'components/Radiobutton.jsx';
 import { useParams, useNavigate } from "react-router-dom";
 import SingleTestPage from 'pages/solve_test/SingleTest.jsx';
 import 'pages/solve_test/TestSelection.css';
-import Button from 'components/Button.jsx';
+import Button from 'components/button.jsx';
 import config from 'config.js';
 import { SELECT_TEST_URL, TEST_GRADE_URL } from "urls.js";
 

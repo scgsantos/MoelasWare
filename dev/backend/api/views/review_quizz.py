@@ -34,9 +34,29 @@ def get_quiz_view(request, pk):
     answers = QuizAnswer.objects.filter(quiz=quiz.id)
 
     answer_serializer = GetQuizAnswerSerializer(answers, many=True)
-    return JsonResponse(
-        {"quiz": quiz_serializer.data, "answers": answer_serializer.data}
-    )
+    return JsonResponse({"quiz": quiz_serializer.data, "answers": answer_serializer.data})
+
+
+@api_view(["GET"])
+# @login_required
+def get_info_quiz_view(request, pk):
+    quiz = get_object_or_404(Quiz, id=pk)
+    answers = QuizAnswer.objects.filter(quiz=quiz.id)
+
+    quiz = GetQuizReviewSerializer(quiz).data
+
+    obj_list = [quiz["id"], quiz["name"],quiz["author"]["user"]["username"], quiz["tags"][0]["text"], quiz["question"], quiz["description"], quiz["creation_date"]]
+    
+
+    answer_serializer = GetQuizAnswerSerializer(answers, many=True).data
+
+    answer_list = []
+    for i in answer_serializer:
+        answer_list.append([i['text'], i['justification']])
+
+
+
+    return JsonResponse({"quiz": obj_list, "answers": answer_list})
 
 
 @api_view(["POST"])
