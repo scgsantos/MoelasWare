@@ -20,9 +20,8 @@ class Quiz(models.Model):
     description = models.TextField()
     finished = models.BooleanField(default=False)
 
-    #creation_date = models.DateField(default=datetime.date.today)
-
-    #approved = models.BooleanField(default=False)
+    creation_date = models.DateField(default=datetime.date.today)
+    approved = models.BooleanField(default=False)
 
     def can_be_added_to_a_test(self):
         return self.test_set.count() < 2
