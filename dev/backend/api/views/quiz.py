@@ -100,37 +100,6 @@ def quiz_finished_serializer_handler(data):
         )
     return quiz_list
     
-def handle_get_unapproved_quizzes_view(obj):
-    info_review = []
-
-    for i in obj:
-        reviewer = i["reviewer"]["user"]["username"]
-        id = i["id"]
-        creation_date = i["creation_date"]
-        comment = i["comment"]
-        info_review.append([id, reviewer, comment, creation_date])
-    
-    return info_review
-
-
-@api_view(['GET'])
-def get_unapproved_quizzes_view(request, id):
-    unapproved_quiz = Quiz.objects.filter(approved = False).filter(id = id)
-
-    if not unapproved_quiz.exists():
-        return HttpResponseBadRequest('quiz not found')
-
-    unapproved_quiz = unapproved_quiz[0]
-
-    reviews = Review.objects.filter(quiz = unapproved_quiz).filter(accepted = False).filter(pending = False)
-
-    serializer = GetQuizReviewNewSerializer(reviews, many = True).data
-
-
-    serializer = handle_get_unapproved_quizzes_view(serializer)
-
-    return JsonResponse({"Reviews": serializer})
-
 @api_view(['GET'])
 def get_user_quizzes(request):
 

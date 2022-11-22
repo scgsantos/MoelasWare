@@ -39,5 +39,4 @@ urlpatterns = [
     path("token/blacklist/", TokenBlacklistView.as_view(), name="token_blacklist"),
     path("register/", views.register_view),
 
-    path("rejected/quiz/<int:id>", views.get_unapproved_quizzes_view),
 ]
