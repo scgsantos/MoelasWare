@@ -4,7 +4,7 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 
-from api.serializers import QuizAnswerSerializer, QuizSerializer, QuizFinishedSerializer, GetQuizReviewNewSerializer
+from api.serializers import QuizAnswerSerializer, QuizSerializer, QuizFinishedSerializer
 from moelasware.models import Quiz, QuizAnswer, User, Tag, Review
 
 
