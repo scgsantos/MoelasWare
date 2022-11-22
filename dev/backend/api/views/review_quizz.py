@@ -43,21 +43,29 @@ def get_quiz_view(request, pk):
 # @login_required
 def create_quiz_review_view(request):
 
+    
     serializer = CreateReviewSerializer(data=request.data)
     
     # raises exception on why its not valid
     if serializer.is_valid(raise_exception=True):
+        serializer = serializer.data
+        review = Review.objects.filter(quiz__id=request.data['quiz']).filter(reviewer__id = serializer['reviewer'])
+        review = review[0]
 
-        review = Review.objects.filter(quiz=request.quiz)
-        review.accepted = serializer.data["accepted"]
-        if review.accepted == True:
-            review.quiz.review_count += 1
-        if review.quiz.review_count == 3:
+        review.pending = False
+        review.accepted = serializer["accepted"]
+        
+        quiz_reviews = Review.objects.filter(quiz = review.quiz).filter(accepted = False).filter(pending = False)
+
+        if quiz_reviews.exists():
+            review.quiz.approved = False
+
+        if Review.objects.filter(quiz = review.quiz).filter(accepted = True).filter(pending = False).count() == 3:
             review.quiz.approved = True
-        review.comment = serializer.data["comment"]
-        review.save()
 
-        return JsonResponse(serializer.data)
+        review.comment = serializer["comment"]
+        review.save()
+        return JsonResponse(serializer)
 
     return JsonResponse({"error": "Bad data"})
 
@@ -74,7 +82,7 @@ def get_quizzes_for_reviewer(request, id):
 
     user = get_object_or_404(User, id=id)
 
-    reviewer = Review.objects.filter(reviewer=user, pending=True)
+    reviewer = Review.objects.filter(reviewer=user).filter(pending=True)
 
     if not reviewer.exists():
         return HttpResponseBadRequest("Reviews not found")

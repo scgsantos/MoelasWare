@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import API from 'api.js';
 
 function UsersList() {
   const [query, setQuery] = useState("");
@@ -17,12 +18,9 @@ function UsersList() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/fame/", {
-      method: "get",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.json())
-      .then((data) => setUsers(data.fame));
+    API.getHallOfFame().then((data) => {
+      setUsers(data.fame);
+     });
   }, []);
 
 

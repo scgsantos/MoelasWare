@@ -81,7 +81,7 @@ function ReviewQuizPage() {
                       <td width={200}>{data[i][2]}</td>
                       <td width={200}>{data[i][3]}</td>
                       <td width={200}>{data[i][5]}</td>
-                      <td width={200}>{data[i][4]}/3</td>
+                      <td width={200}>{3 - data[i][4]}/3</td>
                     </button>
                   </tr>)
               } else if (i === 0 && data.length > 0) {
@@ -92,7 +92,7 @@ function ReviewQuizPage() {
                       <td width={200}>{data[i][2]}</td>
                       <td width={200}>{data[i][3]}</td>
                       <td width={200}>{data[i][5]}</td>
-                      <td width={200}>{data[i][4]}/3</td>
+                      <td width={200}>{3 - data[i][4]}/3</td>
                     </button>
                   </tr>)
               } else if (i > 0 && i !== data.length - 1) {
@@ -103,7 +103,7 @@ function ReviewQuizPage() {
                       <td width={200}>{data[i][2]}</td>
                       <td width={200}>{data[i][3]}</td>
                       <td width={200}>{data[i][5]}</td>
-                      <td width={200}>{data[i][4]}/3</td>
+                      <td width={200}>{3 - data[i][4]}/3</td>
                       </button>
                   </tr>)
               } else if (i === data.length - 1) {
@@ -114,7 +114,7 @@ function ReviewQuizPage() {
                       <td width={200}>{data[i][2]}</td>
                       <td width={200}>{data[i][3]}</td>
                       <td width={200}>{data[i][5]}</td>
-                      <td width={200}>{data[i][4]}/3</td>
+                      <td width={200}>{3 - data[i][4]}/3</td>
                     </button>
                   </tr>)
               }
