@@ -8,16 +8,20 @@ from api.serializers.quiz import QuizInfoSerializer
 
 
 class GetQuizReviewSerializer(serializers.ModelSerializer):
+    tags = GetTagSerializer(read_only = True, many = True)
+    author = GetUserUsername(read_only = True)
     class Meta:
         model = Quiz
         fields = [
             "id",
+            "name",
             "author",
-            "author_id",
             "tags",
             "question",
             "description",
+            "creation_date",
         ]
+
 
 class GetQuizReviewNewSerializer(serializers.ModelSerializer):
     reviewer = GetUserUsername(read_only = True)

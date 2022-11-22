@@ -160,7 +160,7 @@ def create_quiz_view(request):
     return JsonResponse(response)
 
 
-@api_view(['POST'])
+@api_view(['PATCH'])
 def edit_quiz_view(request):
 
     dataRequest = request.data['inputs']
