@@ -104,7 +104,6 @@ def handle_get_unapproved_quizzes_view(obj):
     info_review = []
 
     for i in obj:
-        print(i)
         reviewer = i["reviewer"]["user"]["username"]
         id = i["id"]
         creation_date = i["creation_date"]
