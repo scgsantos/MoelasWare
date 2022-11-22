@@ -6,12 +6,14 @@
   --blue: #d2dddf;
   --yellow: #f3d59e;
 
-  font-size: 18px; /* 1rem is now 18px */
+  --base: ;
+
+  font-size: 16px; /* 1rem is now 16px */
 }
 
 * {
-  background-color: var(--beige);
-  font-family: "Basic", sans-serif;
+  background-color: var(--base);
+  font-family: 'Basic', sans-serif;
   font-size: 1rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -19,43 +21,69 @@
 }
 
 html {
-  margin: 2em 2.7em;
+  margin: 1.5em 1em;
 }
 
 header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
+
+header #logo { flex-grow: 4; }
 
 header a {
-  text-decoration: none;
-}
-header a:hover,
-header a:active {
-  text-decoration: underline;
+  text-decoration: none; 
+  font-size: 1rem;
+  margin: 0 1rem;
 }
 
-button,
-select,
-input[type="button"] {
+header a:hover, header a.active { text-decoration: underline; }
+
+h1 {
+  font-size: 1.8rem;
+  text-align: center;
+  font-weight: 100;
+  margin: 1rem 0;
+}
+
+h2 {
+  margin: 0;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 100;
+  text-transform: uppercase;
+}
+
+h3 {
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+
+p {
+  margin: 0 0 0.5rem;
+}
+
+button, select, input[type=button], input[type=submit] {
   background-color: transparent;
   color: black;
   border-radius: 10px;
   border: 1px solid black;
-  padding: 0.3em 0.8em;
+  padding: 0.3em 0.7em;
 }
 
-button:hover,
-input[type="button"]:hover {
+button:hover, input[type=button]:hover, input[type=submit]:hover {
   background-color: black;
-  color: var(--beige);
+  color: var(--base);
   cursor: pointer;
 }
 
-input[type="text"] {
-  padding: 1em;
-  margin: 1em;
+input[type=text], input[type=search] {
+  padding: 0.3em 0.7em;
+  margin: 1em 1em 1em 0.5em;
   text-align: left;
   background-color: transparent;
   color: black;
@@ -63,15 +91,59 @@ input[type="text"] {
   border: 1px solid black;
 }
 
-textarea[type=text] {
-  padding: 0.5em;
-  text-align: left;
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: black;
+  font-size: 0.9rem;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: black;
+  font-size: 0.9rem;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: black;
+  font-size: 0.9rem;
+}
+
+.startmenu {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: stretch;
+  height: 80vh;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.startmenu a {
+  text-decoration: none; 
   background-color: transparent;
   color: black;
   border-radius: 10px;
   border: 1px solid black;
-  width: 13.5em;
-  height: 4em;
-  resize: none;
-  overflow:hidden;
+  line-height: 35vh;
+  flex-basis: 49%;
+  margin: 0;
 }
+
+.startmenu a:first-child { background-color: var(--blue); }
+.startmenu a:nth-child(2) { background-color: var(--yellow); }
+.startmenu a:nth-child(3) { background-color: var(--green); }
+.startmenu a:nth-child(4) { background-color: var(--pink); }
+.startmenu a:nth-child(5) {
+  background-color: var(--beige);
+  position: absolute;
+  top: 40vh;
+  display: block;
+  padding: 2rem 0;
+  width: 15rem;
+  line-height: 3rem;
+}
+
+.startmenu h1 {
+  background-color: transparent;
+}
+
+.startmenu a:hover { text-decoration: underline; }

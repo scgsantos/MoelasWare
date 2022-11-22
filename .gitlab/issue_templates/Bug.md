@@ -24,7 +24,7 @@
 	Description of what caused the bug and how it was fixed -->
 
 /label ~bug
-/milestone %"Sprint 4"
+/milestone %"Sprint 5"
 
 <!--- /estimate time_spent -->
 /estimate 1h

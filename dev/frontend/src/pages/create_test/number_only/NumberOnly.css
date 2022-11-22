@@ -1,0 +1,165 @@
+NumberOnly-secondPage * {
+  background-color: var(--pink) !important;
+}
+
+NumberOnly-firstPage * {
+  background-color: var(--pink) !important;
+}
+
+.NumberOnly-logo {
+  width: 11.5em;
+  height: 3.6em;
+  display: flex;
+  justify-content: center;
+}
+.NumberOnly-title {
+  text-transform: uppercase;
+  font-size: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.NumberOnly-subTitle {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.NumberOnly-firstPage .inputNumber {
+  justify-content: center;
+}
+
+.NumberOnly-formControl .formControl {
+  height: 2.25em;
+  width: 1.5em;
+  text-align: center !important;
+}
+
+.NumberOnly-buttonCreate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4em;
+}
+
+.NumberOnly-inputNumber .inputNumberTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6em;
+}
+
+/* Page 2 Elements*/
+
+.NumberOnly-inputDiv {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.NumberOnly-inputTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2em;
+}
+
+.NumberOnly-inputText {
+  display: flex;
+  justify-content: center;
+  align-items: center !important;
+  height: 1.5em;
+  width: 15em;
+}
+
+.NumberAndTags-inputText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1.5em;
+}
+
+.NumberOnly-quizList {
+  margin-top: 2em;
+  justify-content: center;
+  align-items: center;
+}
+
+.NumberOnly-quiz {
+  display: flex;
+  padding: 1em;
+  margin: 1em;
+  text-align: center;
+  background-color: transparent;
+  color: black;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+.NumberOnly-buttonPublish {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.NumberOnly-Publish-GoBack-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.NumberOnly-GoBackbutton {
+  margin: 0.5em;
+}
+
+.NumberOnly-NextButton {
+  margin: 0.5em;
+}
+
+.checkbox {
+  justify-content: center;
+  margin: 2em;
+  cursor: pointer;
+
+  color: var(--pink);
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+}
+
+.NumberOnly-errorInput {
+  color: #c51244;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  margin-top: 0em;
+  margin-bottom: 3em;
+}
+
+.NumberOnly-errorQuizzesCounter {
+  color: #c51244 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-size: 14px !important;
+  margin-bottom: 2em !important;
+}
+
+/* Last Page Elements */
+
+.req2-lastPage-correctImage {
+  margin-top: 4.5em;
+  width: 18em;
+  height: 18em;
+  display: flex;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}
