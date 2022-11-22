@@ -22,6 +22,8 @@ const CreateQuiz = () => {
   const [selected, setSelected] = useState("");
   const navigate = useNavigate();
 
+  console.log(quizzes);
+
   const handleClick = (e) => {
     //console.log(e);
     navigate(`./myquiz/${e}`);
