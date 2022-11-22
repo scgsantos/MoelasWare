@@ -19,6 +19,7 @@ urlpatterns = [
     path("quizzes/<int:quiz_id>/answers/", views.get_answers_for_quiz_view),
     path("quizzes/count/", views.get_total_number_of_quizzes_view),
     path("review/quizzes/<int:pk>/", views.get_quiz_view),
+    # CHANGED ALTHOUGH THEY ARE QUITE SIMILAR
     path("quiz/<int:pk>/", views.get_info_quiz_view),
     path("quizzes/finished/", views.get_user_quizzes),
     path("quizzes/<int:id>/reviewers/", views.get_quiz_reviewers_view),
