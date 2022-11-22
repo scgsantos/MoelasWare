@@ -13,12 +13,13 @@ urlpatterns = [
     path("tags/<int:pk>/", views.get_tag_view),
     path("tags/", views.get_tag_view),
 
-    path("quiz/create/", views.create_quiz_view),
-	path("quiz/edit/", views.edit_quiz_view),
+    path("quizzes/", views.create_quiz_view),
+	path("quizzes/<int:id>/", views.edit_quiz_view),
     path("quizzes/gen/", views.get_n_quizzes_view),
     path("quizzes/<int:quiz_id>/answers/", views.get_answers_for_quiz_view),
     path("quizzes/count/", views.get_total_number_of_quizzes_view),
-    path("quizzes/<int:pk>/", views.get_quiz_view),
+    path("review/quizzes/<int:pk>/", views.get_quiz_view),
+    path("quiz/<int:pk>/", views.get_info_quiz_view),
     path("quizzes/finished/", views.get_user_quizzes),
     path("quizzes/<int:id>/reviewers/", views.get_quiz_reviewers_view),
     path("quizzes/review/", views.create_quiz_review_view),
@@ -38,5 +39,5 @@ urlpatterns = [
     path("token/blacklist/", TokenBlacklistView.as_view(), name="token_blacklist"),
     path("register/", views.register_view),
 
-    path("rejected/quiz/<int:id>", views.get_unapproved_quizzes_view), #NOVO
+    path("rejected/quiz/<int:id>", views.get_unapproved_quizzes_view),
 ]

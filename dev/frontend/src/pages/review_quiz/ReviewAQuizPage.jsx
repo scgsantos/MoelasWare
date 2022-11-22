@@ -31,7 +31,7 @@ function ReviewAQuizPage() {
 
   //fetch quiz from the backend and log it to the console
   useEffect(() => {
-    fetch(config.svurl + "/api/quizzes/" + id)
+    fetch(config.svurl + "/api/review/quizzes/" + id + "/")
       .then(res => {
         if (res.ok) {
           return res.json();

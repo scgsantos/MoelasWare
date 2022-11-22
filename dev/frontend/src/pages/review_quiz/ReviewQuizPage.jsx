@@ -56,7 +56,7 @@ function ReviewQuizPage() {
       <tr className='center'>
         <td width={200}>QUIZ NAME</td>
         <td width={200}>TAGS</td>
-        <td width={200}>NAME OF CREATER</td>
+        <td width={200}>CREATOR</td>
         <td width={200}>CREATION DATE</td>
         <td width={200}>REVIEWS</td>
       </tr>
