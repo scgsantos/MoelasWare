@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 function NewQuiz() {
     document.documentElement.style.setProperty("--base", "var(--blue)");
@@ -30,6 +31,7 @@ function NewQuiz() {
         correct: "",
     });
 
+    const navigate = useNavigate();
     function handleChange(event) {
         setInputs({
             ...inputs,
@@ -51,6 +53,7 @@ function NewQuiz() {
             .then((response) => response.json())
             .then((data) => setResposta(data.resposta));
         console.log(resposta);
+        navigate(-1);
     };
 
     let options = [];

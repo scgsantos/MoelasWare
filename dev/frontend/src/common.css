@@ -147,3 +147,19 @@ input[type=text], input[type=search] {
 }
 
 .startmenu a:hover { text-decoration: underline; }
+
+.startpage {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
+.startpage img {
+  margin-bottom: 2rem;
+}
+
+.startpage h2 {
+  text-transform: none;
+}

@@ -56,9 +56,10 @@ import history from "history.js";
 function App() {
     return (
         <Router>
-            <Header />
+            <Header isLoggedIn={false} />
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Home isLoggedIn={false} />} />
+                <Route path="/auth" />
 
                 <Route
                     exact
