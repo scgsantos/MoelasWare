@@ -4,15 +4,20 @@ import { useParams, useNavigate } from "react-router-dom";
 function MyQuiz() {
     const [quizzes, setQuizzes] = useState([]);
     const [answers, setAnswers] = useState([]);
+    const [reviews, setReviews] = useState([
+        ["user1", "approved", "justification"],
+        ["user2", "approved", "justification"],
+        ["user3", "rejected", "justification"],
+    ]);
 
     const navigate = useNavigate();
 
     const { id } = useParams();
 
-    const users_link = "http://127.0.0.1:8000/api/quizzes/" + id + "/";
+    const quizzes_link = "http://127.0.0.1:8000/api/quizzes/" + id + "/";
 
     useEffect(() => {
-        fetch(users_link, {
+        fetch(quizzes_link, {
             method: "get",
             headers: { "Content-Type": "application/json" },
         })
@@ -46,6 +51,21 @@ function MyQuiz() {
         );
     }
 
+    let evaluations = [];
+    for (let i = 0; i < reviews.length; i++) {
+        evaluations.push(
+            <React.Fragment>
+                <p className="review-title">REVIEW #{i + 1}:</p>
+                <p key={"r" + i} id="review">
+                    {reviews[i][1]}
+                </p>
+                <p key={"e" + i} id="evaluation">
+                    {reviews[i][2]}
+                </p>
+            </React.Fragment>
+        );
+    }
+
     return (
         <div
             role="button"
@@ -60,10 +80,14 @@ function MyQuiz() {
                 >
                     <h2>{quizzes[1]}</h2>
                     <p id="tag">{quizzes[3]}</p>
-                    <h3>QUESTION #1</h3>
+                    <h3>QUESTIONS</h3>
                     <p id="question">{quizzes[4]}</p>
                     <p id="description">({quizzes[5]})</p>
                     <div className="answers">{options}</div>
+                    <div className="reviews">
+                        <h3>REVIEWS</h3>
+                        {evaluations}
+                    </div>
                 </div>
             </div>
         </div>

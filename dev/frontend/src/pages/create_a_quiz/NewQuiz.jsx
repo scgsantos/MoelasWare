@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
 function NewQuiz() {
@@ -32,6 +32,7 @@ function NewQuiz() {
     });
 
     const navigate = useNavigate();
+
     function handleChange(event) {
         setInputs({
             ...inputs,
@@ -137,8 +138,6 @@ function NewQuiz() {
                                 </select>
                             </label>
                         </div>
-                        <div className="break"></div>
-                        <h5> {resposta} </h5>
                         <div className="break"></div>
                         <div className="question-container">
                             <h3>QUESTION #1</h3>

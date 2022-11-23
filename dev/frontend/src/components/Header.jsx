@@ -59,7 +59,9 @@ function Header(props) {
                     className={(navData) =>
                         navData.isActive ? "active" : "none"
                     }
-                    style={{ float: "right" }}
+                    style={(navData) =>
+                        !navData.isActive ? { marginLeft: "auto" } : null
+                    }
                     to={AUTH_URL}
                 >
                     LOGIN/REGISTER
