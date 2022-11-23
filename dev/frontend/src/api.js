@@ -1,6 +1,6 @@
 import config from "config.js";
 
-// const config = { svurl: "https://api.moelasware.xyz/" };
+// const config = { apiUrl: "https://api.moelasware.xyz/" };
 
 const ACCEPT_JSON = {
   "Accept": "application/json",
@@ -9,7 +9,6 @@ const ACCEPT_JSON = {
 
 class API {
   static getBearerToken() {
-
     return sessionStorage.access === undefined ? {} : {
       "Authorization": "Bearer " + sessionStorage.access,
     }
@@ -23,7 +22,7 @@ class API {
     headers = undefined
   ) {
     const searchParams = new URLSearchParams(params);
-    const pathURL = new URL(path, config.svurl);
+    const pathURL = new URL(path, config.apiUrl);
     searchParams.forEach((value, key) => pathURL.searchParams.set(key, value));
 
     return fetch(pathURL, {
@@ -35,35 +34,32 @@ class API {
 
   // Get test by ID
   static getTest(test_id) {
-    return this.makeRequest("api/tests/", test_id.toString() + "/");
+    return this.makeRequest(`tests/${test_id}/`);
   }
 
   // Get all submissions of a test
   static getTestSubmissions(test_id) {
-    return this.makeRequest(
-      "api/tests/",
-      test_id.toString() + "/submissions/"
-    );
+    return this.makeRequest(`tests/${test_id}/submissions/`);
   }
 
   // Get all tests
   static getTests() {
-    return this.makeRequest("api/tests/");
+    return this.makeRequest("tests/");
   }
 
   // Get a tag by ID
   static getTag(tag_id) {
-    return this.makeRequest("api/tags/", tag_id.toString() + "/");
+    return this.makeRequest(`tags/${tag_id}/`);
   }
 
   // Get all tags
   static getTags() {
-    return this.makeRequest("api/tags/");
+    return this.makeRequest("tags/");
   }
 
   // Get num_quizzes quizzes with tags in tags list (no tags ==> any tags allowed)
   static genQuizzes(num_quizzes, tags) {
-    return this.makeRequest("api/quizzes/gen/", "POST", {
+    return this.makeRequest("quizzes/gen/", "POST", {
       num_quizzes: num_quizzes,
       tags: tags,
     });
@@ -72,31 +68,30 @@ class API {
   // Get all possible answers for a given quiz
   static getQuizAnswers(quiz_id) {
     return this.makeRequest(
-      "api/quizzes/",
-      quiz_id.toString() + "/answers/"
+      `quizzes/${quiz_id}/answers/`
     );
   }
 
   // Get number of quizzes in db
   static getNumQuizzes() {
-    return this.makeRequest("api/quizzes/count/");
+    return this.makeRequest("quizzes/count/");
   }
 
   // Get a quiz by ID
   static getQuiz(quiz_id) {
-    return this.makeRequest("api/quizzes/" + quiz_id.toString() + "/");
+    return this.makeRequest(`quizzes/${quiz_id}/`);
   }
 
   // NOT YET IMPLEMENTED
   // Get all quizzes
   static getQuizzes() {
-    return this.makeRequest("api/quizzes");
+    return this.makeRequest("quizzes");
   }
 
   // Get all reviewers of a given quiz
   static getQuizReviewers(quiz_id) {
     return this.makeRequest(
-      "api/quizzes/" + quiz_id.toString() + "/reviewers/"
+      `quizzes/${quiz_id}/reviewers/`
     );
   }
 
@@ -114,18 +109,20 @@ class API {
   // Get all test submissions made by a given user
   static getUserSubmissions(user_id) {
     return this.makeRequest(
-      "api/users/" + user_id.toString() + "/submissions/"
+      `users/${user_id}/submissions/`
     );
   }
 
   // Get hall of fame
   static getHallOfFame() {
-    return this.makeRequest("api/fame/");
+    return this.makeRequest("fame/");
   }
+
+  // TODO: implement register
 
   // Get user login token
   static login(username, password) {
-    let tokens = this.makeRequest("api/token/", "POST", {
+    let tokens = this.makeRequest("token/", "POST", {
       username: username,
       password: password,
     });
@@ -140,7 +137,7 @@ class API {
 
   // Refresh token
   static tokenRefresh(refresh) {
-    return this.makeRequest("api/token/refresh/", "POST", {
+    return this.makeRequest("token/refresh/", "POST", {
       refresh: refresh,
     });
   }
@@ -150,14 +147,14 @@ class API {
   // Add revision
   static addRevision(quiz_id) {
     return this.makeRequest(
-      "api/quizzes/" + quiz_id.toString() + "/",
+      `quizzes/${quiz_id}/`,
       "PATCH"
     );
   }
 
   // Post a quiz
   static postQuiz(question, accepted, answers) {
-    return this.makeRequest("api/quizzes/", "POST", {
+    return this.makeRequest("quizzes/", "POST", {
       question: question,
       accepted: accepted,
       answers: answers,
@@ -167,28 +164,28 @@ class API {
   // Get rejected reviews
   static getRejectedReviews(quiz_id) {
     return this.makeRequest(
-      "api/quizzes/" + quiz_id.toString() + "/revisions/"
+      `quizzes/${quiz_id}/revisions/`
     );
   }
 
   // Get a quizz's reviews
   static getQuizzReview(quiz_id) {
     return this.makeRequest(
-      "api/quizzes/" + quiz_id.toString() + "/reviews/"
+      `quizzes/${quiz_id}/reviews/`
     );
   }
 
   // Post a review
   static postQuizzReview(quiz_id) {
     return this.makeRequest(
-      "api/quizzes/" + quiz_id.toString() + "/reviews/",
+      `quizzes/${quiz_id}/reviews/`,
       "POST"
     );
   }
 
   // Generate a new test
   static postTest(num_quizzes, allowed_tags, quizzes) {
-    return this.makeRequest("api/tests/", "POST", {
+    return this.makeRequest("tests/", "POST", {
       num_quizzes: num_quizzes,
       allowed_tags: allowed_tags,
       quizzes: quizzes,
@@ -198,21 +195,21 @@ class API {
   // Get all submissions of a given test
   static getAllTestSubmissions(test_id) {
     return this.makeRequest(
-      "api/tests/" + test_id.toString() + "/submissions/"
+      `tests/${test_id}/submissions/`
     );
   }
 
   // Add new submission
   static postSubmission(test_id,) {
     return this.makeRequest(
-      "api/tests/" + test_id.toString + "submissions",
+      `tests/${test_id}submissions`,
       "POST"
     );
   }
 
   // Get user with a given id
   static getUser(user_id) {
-    return this.makeRequest("api/users/" + user_id.toString() + "/");
+    return this.makeRequest(`users/${user_id}/`);
   }
 }
 
