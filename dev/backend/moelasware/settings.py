@@ -8,6 +8,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 import dj_database_url
@@ -18,16 +19,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
+DJANGO_SECRET_KEYFIL_ENVVAR = "DJANGO_SECRET_KEYFILE"  # nosec
+FALLBACK_SECRET_KEY_BYTES = 64
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-2n^n*c)$l7f=!rl3!u&!(r_=vtiq^6jbu=#im2u_om_btnon*h"  # nosec
-)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # nosec
+def set_secret_key_and_debug():
+    import os
+    import secrets
 
-ALLOWED_HOSTS = []
+    try:
+        key_filename = os.environ[DJANGO_SECRET_KEYFIL_ENVVAR]
+        with open(key_filename) as fp:
+            return fp.read().strip(), False
+    except KeyError:
+        return secrets.token_bytes(FALLBACK_SECRET_KEY_BYTES), True
+
+
+SECRET_KEY, DEBUG = set_secret_key_and_debug()
+
+ALLOWED_HOSTS = ["moelasware", "api.moelasware.xyz"]
+if DEBUG: ALLOWED_HOSTS.append("localhost")
 
 # TODO: Check if we really want to allow all origins
 CORS_ALLOW_ALL_ORIGINS = True 
@@ -51,7 +62,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-    'django.middleware.security.SecurityMiddleware',
+    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -118,6 +129,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -139,6 +156,3 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True

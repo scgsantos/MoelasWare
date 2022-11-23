@@ -22,7 +22,7 @@ select {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background: url(downarrow.svg) no-repeat right;
+    background: url(assets/SVG/downarrow.svg) no-repeat right;
     background-position-x: 90%;
     background-position-y: 50%;
     width: 7rem;
@@ -30,11 +30,6 @@ select {
     margin: 0 auto 2rem;
 }
 
-#users, #tests {
-    display: block;
-    width: 913px;
-    margin: 3rem auto;
-}
 
 input.searchbar {
     margin: 0;

@@ -11,7 +11,6 @@ from moelasware.models import *
 
 SAVE = False
 
-
 def save(*obj):
     if SAVE:
         for o in obj:
@@ -31,23 +30,28 @@ except IntegrityError:
     print("John already exists")
     pass
 
+try:
+    esdrubaldo = AuthUser.objects.create_user("esdrubaldo", "esdrubaldo@gmail.com", "1234")
+except IntegrityError:
+    print("Esdrubaldo already exists")
+    pass
+
 
 try:
     manel = AuthUser.objects.get(username="manel")
     john = AuthUser.objects.get(username="john")
+    esdrubaldo = AuthUser.objects.get(username="esdrubaldo")
 
     User.objects.bulk_create(
         [
             User(user=manel),
             User(user=john),
+            User(user=esdrubaldo),
         ]
     )
 
     tags = Tag.objects.bulk_create(
         [
-            Tag(text="Math"),
-            Tag(text="Travel"),
-            Tag(text="Culture"),
             Tag(text="REQ"),
             Tag(text="PM"),
             Tag(text="A&D"),
@@ -69,54 +73,61 @@ try:
                 author=User.objects.get(user=manel),
                 question="Question1",
                 description="description1",
-                name="Quiz1"
+                name="Quiz1",
+                finished = True,
             ),
             Quiz(
                 author=User.objects.get(user=manel),
                 question="Baby is ____?",
                 description="How would you describe baby?",
                 name="Quiz2",
+                finished = True,
             ),
             Quiz(
                 author=User.objects.get(user=manel),
                 question="What is the best fruit?",
                 description="objectively, what fruit is the best ever",
                 name="Quiz3",
+                finished = True,
             ),
             Quiz(
                 author=User.objects.get(user=manel),
                 question="A B C _ ?",
                 description="do you know lettets?",
                 name="Quiz4",
+                finished = True,
             ),
             Quiz(
                 author=User.objects.get(user=manel),
                 question="What is 9 + 10?",
                 description="math is easy",
                 name="Quiz5",
+                finished = True,
             ),
             Quiz(
                 author=User.objects.get(user=manel),
                 question="How many Fast and Furious Movies are there?",
                 description="too many?",
                 name="Quiz6",
+                finished = True,
             ),
             Quiz(
                 author=User.objects.get(user=manel),
                 question="When was Minecraft 1.0 released?",
                 description="too many?",
                 name="Quiz7",
+                finished = True,
             ),
         ]
     )
 
-    quizzes[0].tags.set([tags[2]])
-    quizzes[1].tags.set([tags[2], tags[5]])
-    quizzes[2].tags.set([tags[2], tags[6]])
-    quizzes[3].tags.set([tags[2], tags[4]])
-    quizzes[4].tags.set([tags[0]])
-    quizzes[5].tags.set([tags[2], tags[3]])
-    quizzes[6].tags.set([tags[2], tags[7]])
+    quizzes[0].tags.set([tags[3]])
+    quizzes[1].tags.set([tags[3], tags[5]])
+    quizzes[2].tags.set([tags[3], tags[6]])
+    quizzes[3].tags.set([tags[3], tags[4]])
+    quizzes[4].tags.set([tags[9]])
+    quizzes[5].tags.set([tags[3], tags[3]])
+    quizzes[6].tags.set([tags[3], tags[7]])
     
 
     answers = QuizAnswer.objects.bulk_create(
@@ -172,9 +183,6 @@ try:
 
             QuizAnswer(
                 quiz=quizzes[2],
-                text="apple",
-                correct=True,
-                justification="is best",
             ),
             QuizAnswer(
                 quiz=quizzes[2],
