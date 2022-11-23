@@ -37,7 +37,7 @@ def set_secret_key_and_debug():
 
 SECRET_KEY, DEBUG = set_secret_key_and_debug()
 
-ALLOWED_HOSTS = ["moelasware", "api.moelasware.xyz"]
+ALLOWED_HOSTS = ["moelasware", "api.moelasware.xyz", "127.0.0.1"]
 if DEBUG: ALLOWED_HOSTS.append("localhost")
 
 # TODO: Check if we really want to allow all origins

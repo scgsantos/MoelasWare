@@ -90,37 +90,6 @@ def quiz_finished_serializer_handler(data):
     for i in data:
         quiz_list.append([i['id'],i['name'], i['tags'],i['number_of_reviews_done'], i['review_result']])
     return quiz_list
-    
-def handle_get_unapproved_quizzes_view(obj):
-    info_review = []
-
-    for i in obj:
-        reviewer = i["reviewer"]["user"]["username"]
-        id = i["id"]
-        creation_date = i["creation_date"]
-        comment = i["comment"]
-        info_review.append([id, reviewer, comment, creation_date])
-    
-    return info_review
-
-
-@api_view(['GET'])
-def get_unapproved_quizzes_view(request, id):
-    unapproved_quiz = Quiz.objects.filter(approved = False).filter(id = id)
-
-    if not unapproved_quiz.exists():
-        return HttpResponseBadRequest('quiz not found')
-
-    unapproved_quiz = unapproved_quiz[0]
-
-    reviews = Review.objects.filter(quiz = unapproved_quiz).filter(accepted = False).filter(pending = False)
-
-    serializer = GetQuizReviewNewSerializer(reviews, many = True).data
-
-
-    serializer = handle_get_unapproved_quizzes_view(serializer)
-
-    return JsonResponse({"Reviews": serializer})
 
 @api_view(['GET'])
 def get_user_quizzes(request):
@@ -461,3 +430,36 @@ def finish_quiz(quiz : Quiz, quiz_answers : list):
 
     '''
     return response
+
+
+def handle_get_unapproved_quizzes_reviews_view(obj):
+    info_review = []
+
+    for i in obj:
+        reviewer = i["reviewer"]["user"]["username"]
+        id = i["id"]
+        creation_date = i["creation_date"]
+        comment = i["comment"]
+        info_review.append([id, reviewer, comment, creation_date])
+    
+    return info_review
+
+@api_view(['GET'])
+def get_unapproved_quizzes_reviews_view(request, id):
+    unapproved_quiz = Quiz.objects.filter(approved = False).filter(id = id)
+
+    if not unapproved_quiz.exists():
+        return HttpResponseBadRequest('quiz not found')
+
+    unapproved_quiz = unapproved_quiz[0]
+
+    reviews = Review.objects.filter(quiz = unapproved_quiz).filter(accepted = False).filter(pending = False)
+
+    if not reviews.exists():
+        return HttpResponseBadRequest('quiz is pending or approved, therefore there are no negative reviews')
+
+    serializer = GetQuizReviewNewSerializer(reviews, many = True).data
+
+    serializer = handle_get_unapproved_quizzes_reviews_view(serializer)
+
+    return JsonResponse({"Reviews": serializer})
