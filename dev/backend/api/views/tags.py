@@ -1,8 +1,8 @@
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
-from api.serializers import GetTagSerializer
 
+from api.serializers import GetTagSerializer
 from moelasware.models import Tag
 
 DEFAULT_TAG_PAGE_LIMIT = 20

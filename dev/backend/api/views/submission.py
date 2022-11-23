@@ -5,11 +5,11 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 
 from api.serializers import (
+    AnsweredSubmissionsSerializer,
     QuizAnswerSerializerWithRes,
     QuizSerializer,
     SubmissionAnswerSerializer,
     SubmissionSerializer,
-    AnsweredSubmissionsSerializer
 )
 from moelasware.models import Quiz, QuizAnswer, Submission, SubmissionAnswer, Test, User
 
@@ -32,12 +32,13 @@ def handle_serializer_test(obj):
         author = i["submitter"]["user"]["username"]
         correct_answers = i["correct_answers"]
         total_answers = i["total_answers"]
-        
-        obj_list.append({id : [id, author, correct_answers, total_answers]})
+
+        obj_list.append({id: [id, author, correct_answers, total_answers]})
         id += 1
     return obj_list
- 
-@api_view(['GET'])
+
+
+@api_view(["GET"])
 def submission_of_a_test_view(request, pk):
 
     test = get_object_or_404(Test, id=pk)
@@ -45,13 +46,12 @@ def submission_of_a_test_view(request, pk):
     submissions = Submission.objects.filter(test__id=pk)
 
     if not submissions.exists():
-        return HttpResponseNotFound('Submissions not found')
+        return HttpResponseNotFound("Submissions not found")
 
-    sub = AnsweredSubmissionsSerializer(submissions, many = True).data
+    sub = AnsweredSubmissionsSerializer(submissions, many=True).data
     sub = handle_serializer_test(sub)
 
-    return JsonResponse({"submissions": sub})  
-
+    return JsonResponse({"submissions": sub})
 
 
 def handle_serializer(obj):
@@ -68,29 +68,30 @@ def handle_serializer(obj):
                 if tag["text"] not in tags:
                     tags += tag["text"]
                     tags += ","
-        
-        tags = tags[0:len(tags)-1]
+
+        tags = tags[0 : len(tags) - 1]
         id += 1
-        obj_list.append({test_id : [test_id, tags, author, id]})
+        obj_list.append({test_id: [test_id, tags, author, id]})
 
     return obj_list
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def submissions_by_user_view(request, pk):
 
     user = get_object_or_404(User, id=pk)
 
-    user = user.user.username 
+    user = user.user.username
 
     submissions = Submission.objects.filter(submitter__user__username=user)
 
     if not submissions.exists():
-        return HttpResponseNotFound('Submissions not found')
+        return HttpResponseNotFound("Submissions not found")
 
     submission = SubmissionSerializer(submissions, many=True).data
     submission = handle_serializer(submission)
 
-    return JsonResponse({'submissions' : submission, 'user':user})
+    return JsonResponse({"submissions": submission, "user": user})
 
 
 def get_self_submission_view(request, pk, user):
