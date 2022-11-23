@@ -10,4 +10,4 @@ Update @username's profile.
 Closes #123 
 
 /label ~profile
-/milestone %"Sprint 5"
+/milestone %"Sprint 6"

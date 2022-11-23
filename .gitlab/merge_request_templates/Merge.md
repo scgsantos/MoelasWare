@@ -2,4 +2,4 @@
 Closes #123 
 
 /label ~task
-/milestone %"Sprint 5"
+/milestone %"Sprint 6"

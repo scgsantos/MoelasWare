@@ -8,7 +8,7 @@ Update @username's profile.
 
 
 /label ~profile
-/milestone %"Sprint 5"
+/milestone %"Sprint 6"
 
 <!--- /estimate time_spent -->
 /estimate 10m
