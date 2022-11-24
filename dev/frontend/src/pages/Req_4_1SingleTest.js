@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
+import HeaderComp from '../components/Header';
 import './TestSelection.css';
 import utils from '../utils';
-import { SELECT_TEST_URL, SOLVE_TEST_URL } from "../urls.js";
 
 function SingleTestPage(props) {
     const [testinfo, setTestinfo] = useState(undefined);
@@ -20,7 +20,7 @@ function SingleTestPage(props) {
 
 
     function fetchTestInfo() {
-        fetch(utils.svurl + '/api/tests/' + test, {
+        fetch(utils.svurl + 'api/tests/' + test, {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -30,27 +30,6 @@ function SingleTestPage(props) {
             .then(response => response.json())
             .then(data => {
                 setTestinfo(data.test);
-
-                /*
-                "tests": [
-        {
-            "id": 1,
-            "author": 1,
-            "quizzes": [
-                {
-                    "id": 2,
-                    "name": "hello",
-                    "author": 1,
-                    "tags": [
-                        {
-                            "text": "Cool"
-                        }
-                    ],
-                    "question": "Who wins in a fight vs a gorilla?",
-                    "description": "(serious answers only)"
-                }
-            ]
-                */
                 setError(null);
             }).catch(error => {
                 console.log(error);
@@ -63,6 +42,7 @@ function SingleTestPage(props) {
     if (error || testinfo === undefined) {
         return (
             <div>
+                <HeaderComp />
                 <div className="centerTitles">
                     <span className='main-title'>SOLVE A TEST</span>
                     <span className="sub-title">Something Wrong Happened</span>
@@ -77,6 +57,8 @@ function SingleTestPage(props) {
 
     return (
         <div>
+            <HeaderComp />
+
             {loading ? (
                 <div className="centerLoad">
                     <span>Loading...</span>
@@ -89,26 +71,18 @@ function SingleTestPage(props) {
                     </div>
 
                     <div className="quizcenter">
-                        <span className='main-name'>{testinfo.quizzes[0].name}</span>
-                        <span className='sub-name'>{testinfo.quizzes.reduce((acc, quiz) => {
-                            // keep adding ", " to the accumulator
-                            // at the end, remove the last ", " 
-                            quiz.tags.forEach(tag => {
-                                if (!acc.includes(tag.text)) {
-                                    acc += tag.text + ", ";
-                                }
-                            });
-                            return acc;
-                        }, "").slice(0, -2)}</span>
+                        <span className='main-name'>{testinfo.quizzes[0].question}</span>
+                        <span className='sub-name'>{testinfo.quizzes[0].tags[0].text}</span>
                     </div>
 
                     <div className="quizbottom">
                         <button className='solve-quizbtn' onClick={() => {
-                            navigate(`${SOLVE_TEST_URL}/${testinfo.id}`);
+                            console.log('/solvequizz/' + testinfo.id);
+                            navigate('/solvequizz/' + testinfo.id);
                         }}>Solve quiz</button>
 
                         <button className='back-btn' onClick={() => {
-                            navigate(SELECT_TEST_URL);
+                            navigate('/selecttest');
                             window.location.reload();
                         }}>Back to test selection</button>
                     </div>

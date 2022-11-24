@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react';
+import Popup from 'reactjs-popup';
+
 import './TestSelection.css';
 
-import { SELECT_TEST_URL } from "../urls.js";
 import { useParams, useNavigate } from 'react-router';
+import { PopupInside } from '../components/Errors/PopupStopTest';
+import HeaderComp from '../components/Header';
 import utils from '../utils';
+
+const contentStylePopup = {
+    maxWidth: "650px",
+    width: "80%",
+}
 
 function CheckAnswers() {
     const [quizzRes, setQuizzRes] = useState();
@@ -35,7 +43,7 @@ function CheckAnswers() {
 
     function getQuizzRes() {
         setLoading(true);
-        fetch(utils.svurl + '/api/tests/' + test + '/submissions', {
+        fetch(utils.svurl + 'api/tests/' + test + '/submissions', {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -69,6 +77,7 @@ function CheckAnswers() {
     if (error || !quizzRes) {
         return (
             <div>
+                <HeaderComp />
                 <div className="centerTitles">
                     <span className='main-title'>SOLVE A TEST</span>
                     <span className="sub-title">Something Wrong Happened</span>
@@ -86,6 +95,8 @@ function CheckAnswers() {
     }
     return (
         <div>
+            <HeaderComp />
+
             {loading === true ? (
                 <div className="centerLoad">
                     <span>Loading...</span>
@@ -130,7 +141,7 @@ function CheckAnswers() {
 
                     <div className="bottomcenterntns">
                         <button onClick={() => {
-                            navigate(SELECT_TEST_URL);
+                            navigate('/selecttest');
                         }}>Back to test selection</button>
                     </div>
                 </>

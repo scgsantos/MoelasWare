@@ -19,7 +19,6 @@ urlpatterns = [
     path("quizzes/finished/", views.get_user_quizzes),
     path("quizzes/<int:id>/reviewers/", views.get_quiz_reviewers_view),
     path("quizzes/review/", views.create_quiz_review_view),
-
     path("fame/", views.hall_of_fame_view),
     path("fame/users/<int:pk>/submissions/", views.submissions_by_user_view),
     path("fame/tests/<int:pk>/submissions/", views.submission_of_a_test_view),

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
+import HeaderComp from '../components/Header';
 import { useParams, useNavigate } from 'react-router';
 import utils from '../utils';
 import Popup from 'reactjs-popup';
 
-import { SELECT_TEST_URL, TEST_GRADE_URL } from "../urls.js";
 
 import './TestSelection.css';
 import { PopupInside } from '../components/Errors/PopupStopTest';
@@ -21,10 +21,9 @@ function SolveQuizz() {
     const [quizzInfo, setQuizzQuestions] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [submissionAnswers, setSub] = useState(localStorage.getItem('subs#' + test) !== null || localStorage.getItem('subs#' + test) !== undefined ? JSON.parse(localStorage.getItem('subs#' + test)) : []);
+    const [submissionAnswers, setSub] = useState(JSON.parse(localStorage.getItem('subs#' + test)) !== null ? JSON.parse(localStorage.getItem('subs#' + test)).answers : []);
     const [rerender, setRerender] = useState(false); // used to trigger a rerender
-    const [openNoAnswers, setopenNoAnswers] = useState(false);
-    const [openMoreThanOne, setopenMoreThanOne] = useState(false);
+    const [open, setOpen] = useState(false);
 
     function isbtnSelected(quizz_id, answerid) {
         /* "submissionAnswers": [
@@ -37,19 +36,12 @@ function SolveQuizz() {
                 "quiz_answers": [2] # id's of the answers choosen
             }
         ] */
-        console.log("isbtnSelected");
-        console.log(submissionAnswers);
-        return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_id === quizz_id && sub.quiz_answers.includes(answerid));
+        return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_id === quizz_id && sub.quiz_answers.includes(answerid)) ? true : false;
     }
 
     function checkEmptyAnswers() {
         // if quiz_answers len is 0, then it's empty
-        return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_answers.length === 0);
-    }
-
-    function checkMoreThanTwoAnswers() {
-        // if quiz_answers len is 0, then it's empty
-        return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_answers.length > 1);
+        return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_answers.length === 0) ? true : false;
     }
 
     function addAnswer(answeridgiven, quiz_id) {
@@ -91,31 +83,13 @@ function SolveQuizz() {
     }
 
     function submitAnswers() {
-        localStorage.setItem('subs#' + test, JSON.stringify(submissionAnswers));
-
-        // user can't submit if there are empty answers
-        if (checkEmptyAnswers()) {
-            setopenNoAnswers(true);
-            return;
-        }
-        // check if there are more than 1 answer for a question
-        if (checkMoreThanTwoAnswers()) {
-            setopenMoreThanOne(true);
-            return;
-        }
         setLoading(true);
-
-        // transform the submissionAnswers to the correct format, by making quiz_answers an integer
-        let subCorrectFormat = submissionAnswers;
-        subCorrectFormat.forEach((answer) => {
-            answer.quiz_answers = answer.quiz_answers[0];
-        });
-
         const body = {
-            "answers": subCorrectFormat
+            "answers": submissionAnswers
         }
-        console.log(JSON.stringify(body));
-        fetch(utils.svurl + `/api/tests/${test}/submissions`, {
+        localStorage.setItem('subs#' + test, JSON.stringify(body));
+
+        fetch(utils.svurl + `api/tests/${test}/submissions`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -125,7 +99,7 @@ function SolveQuizz() {
         })
             .then(response => response.json())
             .then(data => {
-                navigate(`${TEST_GRADE_URL}/${test}/result`, {
+                navigate(`/grade/${test}/result`, {
                     state: {
                         grade: data.grade,
                         id: test
@@ -133,7 +107,6 @@ function SolveQuizz() {
                 });
             }).catch(error => {
                 console.log(error);
-                setError("Error: " + error);
             }).finally(() => {
                 setLoading(false);
             });
@@ -141,7 +114,7 @@ function SolveQuizz() {
 
     function getQuizzQuestions() {
         setLoading(true);
-        fetch(utils.svurl + '/api/quizzes/' + test, {
+        fetch(utils.svurl + 'api/quizzes/' + test, {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -155,7 +128,7 @@ function SolveQuizz() {
                 setQuizzQuestions(data);
 
                 // if not, they are already in the localstorage
-                if (submissionAnswers === null || submissionAnswers === undefined) {
+                if (submissionAnswers === null || submissionAnswers.length === 0 || submissionAnswers === undefined) {
                     setSub(answer);
                 }
             }).catch(error => {
@@ -172,15 +145,13 @@ function SolveQuizz() {
         if (!quizzInfo) {
             getQuizzQuestions();
         }
-        console.log("fdlsçajkflçds");
-        console.log(localStorage.getItem('subs#' + test));
-
         setRerender(false);
     }, []);
 
-    if (error) {
+    if (error || !quizzInfo) {
         return (
             <div>
+                <HeaderComp />
                 <div className="centerTitles">
                     <span className='main-title'>SOLVE A TEST</span>
                     <span className="sub-title">Something Wrong Happened</span>
@@ -197,6 +168,8 @@ function SolveQuizz() {
     }
     return (
         <div>
+            <HeaderComp />
+
             {loading === true ? (
                 <div className="centerLoad">
                     <span>Loading...</span>
@@ -204,7 +177,7 @@ function SolveQuizz() {
             ) : (
                 <>
                     <div className="centerTitles">
-                        <span className='main-title'>{quizzInfo.quizzes[0].name ? quizzInfo.quizzes[0].name : `Quizz #${test}`}</span>
+                        <span className='main-title'>{quizzInfo.name ? quizzInfo.name : `Quizz #${test} Name`}</span>
                         <span className='sub-title'>Solve the quiz bellow to finish the test</span>
                     </div>
 
@@ -255,31 +228,18 @@ function SolveQuizz() {
 
                     <div className="bottomcenterntns">
                         <button className='button' onClick={() => {
-                            submitAnswers();
+                            checkEmptyAnswers() ? setOpen(o => !o) : submitAnswers();
                         }}>Submit answers</button>
                         <Popup
                             position="center center"
                             modal
                             contentStyle={contentStylePopup}
-                            open={openNoAnswers}
+                            open={open}
                         >
                             {close => (
                                 <PopupInside onClick={() => {
-                                    setopenNoAnswers(o => !o)
+                                    setOpen(o => !o)
                                 }} close={close} title={"You still have unanswered questions."} singleButton={true} />
-                            )}
-                        </Popup>
-
-                        <Popup
-                            position="center center"
-                            modal
-                            contentStyle={contentStylePopup}
-                            open={openMoreThanOne}
-                        >
-                            {close => (
-                                <PopupInside onClick={() => {
-                                    setopenMoreThanOne(o => !o)
-                                }} close={close} title={"You can't select more than two answers."} singleButton={true} />
                             )}
                         </Popup>
 
@@ -291,8 +251,11 @@ function SolveQuizz() {
                         >
                             {close => (
                                 <PopupInside onClick={() => {
-                                    navigate(SELECT_TEST_URL);
-                                    localStorage.setItem('subs#' + test, JSON.stringify(submissionAnswers));
+                                    navigate('/selecttest');
+                                    const save = {
+                                        answers: submissionAnswers,
+                                    }
+                                    localStorage.setItem('subs#' + test, JSON.stringify(save));
                                 }} close={close} title={"Do you wish to return to test selection?"} subtitle={"Your progress will be saved"} singleButton={false} />
                             )}
                         </Popup>

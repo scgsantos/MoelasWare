@@ -37,8 +37,7 @@ def set_secret_key_and_debug():
 
 SECRET_KEY, DEBUG = set_secret_key_and_debug()
 
-ALLOWED_HOSTS = ["moelasware", "api.moelasware.xyz"]
-if DEBUG: ALLOWED_HOSTS.append("localhost")
+ALLOWED_HOSTS = ["moelasware", "api.moelasware.xyz", "localhost", "127.0.0.1"]
 
 # TODO: Check if we really want to allow all origins
 CORS_ALLOW_ALL_ORIGINS = True 
@@ -155,4 +154,11 @@ STATIC_URL = "static/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOW_ALL_ORIGINS = True  
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
