@@ -2,13 +2,13 @@
 
 *.log
 *.db
-*.sqlite3
-database/
 
 # virtual environments
 .venv/
 venv/
 .env/
 env/
+
+*.sqlite3
 
 .coverage

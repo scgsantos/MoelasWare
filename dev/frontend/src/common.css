@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Corinthia&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap%27');
+
 :root {
   /* layout colors */
   --beige: #efe7e4;
@@ -6,11 +8,13 @@
   --blue: #d2dddf;
   --yellow: #f3d59e;
 
-  font-size: 18px; /* 1rem is now 18px */
+  font-size: 16px; /* 1rem is now 18px */
 }
 
-* {
-  font-family: "Basic", sans-serif;
+body {
+  background-color: var(--beige);
+  font-family: 'Corinthia', cursive;
+  font-family: 'Montserrat', sans-serif;
   font-size: 1rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -18,8 +22,7 @@
 }
 
 html {
-  background-color: var(--yellow);
-  margin: 2em 2.7em;
+  margin: 1em 1.7em;
 }
 
 header {
@@ -46,14 +49,15 @@ input[type="button"] {
   padding: 0.3em 0.8em;
 }
 
-button:hover, input[type=button]:hover {
+button:hover,
+input[type="button"]:hover {
   background-color: black;
   color: var(--beige);
   cursor: pointer;
 }
 
-input[type=text] {
-  padding: 1em;
+input[type="text"], input[type="search"] {
+  padding: 0.3em 0.8em;
   margin: 1em;
   text-align: left;
   background-color: transparent;
@@ -62,15 +66,56 @@ input[type=text] {
   border: 1px solid black;
 }
 
-textarea[type=text] {
-  padding: 0.5em;
-  text-align: left;
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: black;
+  font-size: 0.9rem;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: black;
+  font-size: 0.9rem;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: black;
+  font-size: 0.9rem;
+}
+
+.startmenu {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: stretch;
+  height: 80vh;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.startmenu a {
   background-color: transparent;
   color: black;
   border-radius: 10px;
   border: 1px solid black;
-  width: 13.5em;
-  height: 4em;
-  resize: none;
-  overflow:hidden;
+  line-height: 35vh;
+  flex-basis: 49%;
+  margin: 0;
+}
+
+.startmenu a:first-child { background-color: var(--blue); }
+.startmenu a:nth-child(2) { background-color: var(--yellow); }
+.startmenu a:nth-child(3) { background-color: var(--green); }
+.startmenu a:nth-child(4) { background-color: var(--pink); }
+.startmenu a:nth-child(5) {
+  background-color: var(--beige);
+  position: absolute;
+  top: 40vh;
+  display: block;
+  padding: 2rem 0;
+  width: 15rem;
+  line-height: 3rem;
+}
+
+.startmenu h1 {
+  background-color: transparent;
 }
