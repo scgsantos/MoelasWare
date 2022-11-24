@@ -59,16 +59,16 @@ def get_info_quiz_view(request, pk):
 
 
 @api_view(["POST"])
-# @login_required
+@login_required
 def create_quiz_review_view(request):
 
-
-    serializer = CreateReviewSerializer(data=request.data["args"])
+    data = request.data['args']
+    serializer = CreateReviewSerializer(data=data)
     
     # raises exception on why its not valid
     if serializer.is_valid(raise_exception=True):
         serializer = serializer.data
-        review = Review.objects.filter(quiz__id=request.data['quiz']).filter(reviewer__id = serializer['reviewer'])
+        review = Review.objects.filter(quiz__id=data['quiz']).filter(reviewer__user__username = request.user)
         review = review[0]
 
         review.pending = False
@@ -85,7 +85,9 @@ def create_quiz_review_view(request):
         review.comment = serializer["comment"]
         review.save()
         return JsonResponse(serializer)
+
     return JsonResponse({"error": "Bad data"})
+    
 
 
 def quiz_review_serializer_handler(data):

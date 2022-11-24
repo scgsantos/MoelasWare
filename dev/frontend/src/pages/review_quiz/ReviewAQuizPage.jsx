@@ -23,6 +23,13 @@ function ReviewAQuizPage() {
 
   let navigate = useNavigate();
 
+  const [inputs, setInputs] = useState({
+    quiz: "",
+    reviewer: "",
+    accepted: false,
+    comment: ""
+});
+
   const handleJustificationChange = event => {
     // 👇️ access textarea value
     setJustification(event.target.value);
@@ -119,17 +126,17 @@ function ReviewAQuizPage() {
           <h4>Justification</h4>
           <textarea className="justification" type="text" name="Justification" placeholder="Justification"
             value={justification}
-            onChange={handleJustificationChange}></textarea>
+            onChange={handleJustificationChange} required></textarea>
           <div style={{ height: "40px" }}></div>
 
           <div className="btn_line">
             <button className="btn success" onClick={() => {
-              const args = JSON.stringify({
+              const args = {
                 "quiz": "" + id,
                 "reviewer": "1",
                 "accepted": true,
                 "comment": justification
-              });
+              };
               console.log(args);
               //post to backend
               API.createReview(args)
@@ -141,17 +148,17 @@ function ReviewAQuizPage() {
             }}>ACCEPT</button>
 
               <button className="btn success" onClick={() => {
-                const args = JSON.stringify({
+                const args = {
                   "quiz": "" + id,
                   "reviewer": "1",
-                  "accepted": false,
+                  "accepted": true,
                   "comment": justification
-                });
+                };
                 console.log(args);
                 //post to backend
                 API.createReview(args)
                 .then(
-                  alert("Quiz Rejected")
+                  alert("Quiz Accepted")
                 ).then(
                   navigate(REVIEW_URL)
                 )

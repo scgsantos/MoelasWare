@@ -113,10 +113,12 @@ class API {
         );
     }
 
-    // Get hall of fame
-    static getHallOfFame() {
-        return this.makeRequest("fame/");
+    static createQuiz(inputs) {
+        return this.makeRequest("quizzes/", "POST", {
+            inputs: inputs
+        });
     }
+
 
     static getQuizzesOfReviewer() {
         return this.makeRequest("review/quizzes/");
@@ -131,6 +133,11 @@ class API {
         return this.makeRequest(
             "users/" + user_id.toString() + "/submissions/"
         );
+    }
+
+    // Get hall of fame
+    static getHallOfFameTests() {
+        return this.makeRequest("fame/tests/");
     }
 
     // Get hall of fame users
