@@ -17,7 +17,7 @@ function MainSelectionPage() {
     const { test } = useParams();
     const navigate = useNavigate();
     function getTests() {
-        fetch(utils.svurl + '/api/tests', {
+        fetch(utils.svurl + 'api/tests', {
             method: "GET",
             headers: {
                 'Accept': 'application/json',

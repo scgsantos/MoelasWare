@@ -21,7 +21,7 @@ function MainSelectionPage() {
   function getTests() {
     setLoading(true); // important!
 
-    fetch(config.svurl + '/api/tests?' + new URLSearchParams({
+    fetch(config.svurl + 'api/tests?' + new URLSearchParams({
       'includeMySubmissions': true,
     }), {
       method: "GET",

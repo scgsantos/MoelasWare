@@ -89,7 +89,7 @@ function SolveQuizz() {
         }
         localStorage.setItem('subs#' + test, JSON.stringify(body));
 
-        fetch(utils.svurl + `/api/tests/${test}/submissions`, {
+        fetch(utils.svurl + `api/tests/${test}/submissions`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -114,7 +114,7 @@ function SolveQuizz() {
 
     function getQuizzQuestions() {
         setLoading(true);
-        fetch(utils.svurl + '/api/quizzes/' + test, {
+        fetch(utils.svurl + 'api/quizzes/' + test, {
             method: "GET",
             headers: {
                 'Accept': 'application/json',

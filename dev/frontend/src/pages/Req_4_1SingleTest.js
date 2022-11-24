@@ -20,7 +20,7 @@ function SingleTestPage(props) {
 
 
     function fetchTestInfo() {
-        fetch(utils.svurl + '/api/tests/' + test, {
+        fetch(utils.svurl + 'api/tests/' + test, {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
