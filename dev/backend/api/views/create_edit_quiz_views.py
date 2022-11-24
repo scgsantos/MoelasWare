@@ -1,3 +1,4 @@
+'''
 from django.http.response import HttpResponseNotFound, HttpResponseBadRequest
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
@@ -16,7 +17,7 @@ def quiz_finished_serializer_handler(data):
 @api_view(['GET'])
 def get_user_quizzes(request):
 
-    user = User.objects.filter(user__id = 1)
+    user = User.objects.filter(user__id = 0)
 
     if not user.exists():
         return HttpResponseBadRequest('User not found')
@@ -62,7 +63,6 @@ def create_quiz_view(request):
         return JsonResponse({"resposta" : f"Quiz {data['name']} already exists"})
         
     author = User.objects.get(id = 1)
-    '''
     if "author" not in data:
         author = User.objects.get(id = 1)
         return HttpResponseBadRequest('Author not found')
@@ -73,7 +73,6 @@ def create_quiz_view(request):
         return HttpResponseNotFound('Author not found')
 
     author = author[0]
-    '''
     quiz = Quiz(name = data['name'], author = author)
     quiz.save()
     for i in range(0,6):
@@ -345,7 +344,7 @@ def finish_quiz(quiz : Quiz, quiz_answers : list):
 
         quiz.finished = True
         quiz.save()
-    '''
+    
     print(quiz.id, "---", quiz.name, "---", quiz.question, "---", quiz.description)
 
     for i in quiz.tags.all():
@@ -354,5 +353,6 @@ def finish_quiz(quiz : Quiz, quiz_answers : list):
     for i in QuizAnswer.objects.filter(quiz = quiz):
         print(i.text, "--", i.justification, "---", i.correct)
 
-    '''
+
     return response
+'''

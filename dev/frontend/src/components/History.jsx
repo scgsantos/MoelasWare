@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import API from 'api.js';
 
 function History(props) {
   const userHistHeader = ["TEST ID", "TAG", "AUTHOR"];
@@ -11,36 +12,19 @@ function History(props) {
   const navigate = useNavigate();
 
   const { id } = useParams();
-
-  const users_link = "http://localhost:8000/api/fame/users/" + id + "/submissions/";
-  const tests_link = "http://localhost:8000/api/fame/tests/" + id + "/submissions/";
-
+  
   useEffect(() => {
-    fetch(
-      users_link,
-      {
-        method: "get",
-        headers: { "Content-Type": "application/json" },
-      }
-    )
-      .then((response) => response.json())
+    API.getHallOfFameUserById(id)
       .then((data) => {
         setUsers(data.submissions);
         setUser(data.user);});
   }, []);
 
   useEffect(() => {
-    fetch(
-      tests_link,
-      {
-        method: "get",
-        headers: { "Content-Type": "application/json" },
-      }
-    )
-      .then((response) => response.json())
+    API.getHallOfFameTestById(id)
       .then((data) => setTests(data.submissions));
   }, []);
-  /* TO DO : CHANGE TO NAME'S HISTORY */
+  
   if (props.selected === "users") {
     return (
       <div

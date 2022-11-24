@@ -7,5 +7,6 @@ from api.views.tags import *
 from api.views.test import *
 from api.views.user import *
 
+
 DEFAULT_TEST_PAGE_LIMIT = 20
 DEFAULT_TAG_PAGE_LIMIT = 20

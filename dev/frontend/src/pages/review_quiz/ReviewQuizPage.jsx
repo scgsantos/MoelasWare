@@ -5,6 +5,7 @@ import { REVIEW_QUIZ_URL } from "urls.js";
 import { useState, useEffect, setState } from "react";
 import { useNavigate } from "react-router-dom";
 import config from 'config.js';
+import API from 'api.js';
 
 function ReviewQuizPage() {
   document.documentElement.style.setProperty("--base", "var(--green)");
@@ -15,14 +16,18 @@ function ReviewQuizPage() {
   //loading
   const [isLoaded, setLoading] = useState(false);
 
-  //id should be the user id
-  const id = 1;
-
   let navigate = useNavigate();
 
   //fetch quiz from the backend and log it to the console
   useEffect(() => {
-    fetch(config.svurl + "/api/quizzes/review/" + id)
+    API.getQuizzesOfReviewer()
+    .then(
+        (data) => {
+          setLoading(true);
+          setData(data.info);
+          console.log(data.access);
+          console.log(data.info);
+        })
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -30,21 +35,16 @@ function ReviewQuizPage() {
           throw new Error("Something went wrong", { cause: res });
         }
       })
-      .then(
-        (result) => {
-          setLoading(true);
-          setData(result.info);
-        }
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
         // exceptions from actual bugs in components.
-      ).catch((error) => {
+      .catch((error) => {
         setLoading(true);
         setError(true);
       })
-  }, [])
+  }, []);
 
-  console.log(data)
+  console.log(data);
 
   return (
     <div className='ReviewQuizPage-Container'>

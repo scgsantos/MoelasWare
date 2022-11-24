@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
-
+import API from 'api.js';
 import Button from "components/CreateQuizButton.jsx";
 import "pages/create_a_quiz/CreateQuiz.css";
 
@@ -10,13 +10,11 @@ const CreateQuiz = () => {
     const quizzesHeader = ["QUIZ NAME", "TAG", "REVIEWS", "STATE"];
     const [quizzes, setQuizzes] = useState([]);
 
-    useEffect(() => {
-        fetch("http://localhost:8000/api/quizzes/finished/", {
-            method: "get",
-            headers: { "Content-Type": "application/json" },
-        })
-            .then((response) => response.json())
-            .then((data) => setQuizzes(data.list_of_quizzes));
+    useEffect(() => {   
+    API.getMyFinishedQuizzes()
+    .then((data) => {
+        setQuizzes(data.list_of_quizzes)
+    });
     }, []);
 
     const [selected, setSelected] = useState("");

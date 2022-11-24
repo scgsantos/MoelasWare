@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import API from 'api.js';
 
 export default function Profile() {
   const [profile, setProfile] = useState([]);
@@ -9,18 +10,14 @@ export default function Profile() {
     "TAG",
     "CORRECT ANSWERS"
   ];
-
-useEffect(() => {
-  fetch("http://localhost:8000/api/profile/", {
-    method: "get",
-    headers: { "Content-Type": "application/json" },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      setProfile(data.profile);
-      setUser(data.user);
-      setNumberCorrectAnswers(data.correct_answers)});
-}, []);
+  
+  useEffect(() => {
+    API.getMyFinishedQuizzes()
+      .then((data) => {
+        setProfile(data.profile);
+        setUser(data.user);
+        setNumberCorrectAnswers(data.correct_answers)});
+  }, []);
 
   return (
 

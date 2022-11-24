@@ -23,6 +23,24 @@ class GetQuizReviewSerializer(serializers.ModelSerializer):
         ]
 
 
+class GetQuizReviewNewSerializer(serializers.ModelSerializer):
+    reviewer = GetUserUsername(read_only = True)
+    review_result = serializers.SerializerMethodField("get_review_result")
+
+    class Meta:
+        model = Review
+        fields = ["id", "reviewer", "creation_date","comment", "review_result"]
+
+    def get_review_result(self,obj):
+        
+        if Review.objects.filter(id = obj.id).filter(accepted = False).filter(pending = False).count() > 0:
+            return "rejected"
+
+        elif Review.objects.filter(quiz = obj.id).filter(pending = False).filter(accepted = True).count() == 3:
+                return "accepted"
+        else:
+            return "pending"
+
 
 class GetQuizAnswerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,7 +51,7 @@ class GetQuizAnswerSerializer(serializers.ModelSerializer):
 class GetReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ["id", "comment", "quiz", "reviewer", "approved"]
+        fields = ["id", "comment", "quiz", "reviewer"]
 
 
 class CreateReviewSerializer(serializers.ModelSerializer):

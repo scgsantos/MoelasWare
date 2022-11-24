@@ -18,8 +18,9 @@ function UsersList() {
   };
 
   useEffect(() => {
-    API.getHallOfFame().then((data) => {
+    API.getHallOfFameUsers().then((data) => {
       setUsers(data.fame);
+      console.log(users)
      });
   }, []);
 

@@ -96,10 +96,12 @@ def quiz_review_serializer_handler(data):
     return data_list
 
 @api_view(["GET"])
-# @login_required
-def get_quizzes_for_reviewer(request, id):
+@login_required
+def get_quizzes_of_a_reviewer_view(request):
 
-    user = get_object_or_404(User, id=id)
+    user = request.user
+
+    user = User.objects.get(user__username = user)
 
     reviewer = Review.objects.filter(reviewer=user).filter(pending=True)
 
@@ -116,10 +118,10 @@ def get_quizzes_for_reviewer(request, id):
 
 
 @api_view(["GET"])
-# @login_required
-def get_quiz_reviewers_view(request, id):
+@login_required
+def get_quiz_info_review_view(request, id):
 
     chosen_quiz = get_object_or_404(Review, id=id)
-    serializer = GetReviewSerializer(chosen_quiz)
+    serializer = GetReviewSerializer(chosen_quiz).data
 
-    return JsonResponse({"reviewer": serializer.data["reviewer"]})
+    return JsonResponse({"reviewer": serializer})
