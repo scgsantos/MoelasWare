@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Navigate, NavLink } from "react-router-dom";
 import logo from "assets/SVG/LOGO.svg";
-import API from 'api.js';
+import API from "api.js";
 import { useNavigate } from "react-router";
 
-import { PROFILE_URL, LOGOUT_URL, AUTH_URL } from "urls.js";
+import { PROFILE_URL, AUTH_URL } from "urls.js";
 
 function Header(props) {
     const isLoggedIn = props.isLoggedIn;
@@ -16,7 +16,7 @@ function Header(props) {
             navigate("/");
             window.location.reload();
         });
-    } 
+    };
     if (isLoggedIn) {
         return (
             <header>
@@ -38,12 +38,7 @@ function Header(props) {
                 >
                     USER'S PROFILE
                 </NavLink>
-                <NavLink
-                    className={(navData) =>
-                        navData.isActive ? "active" : "none"
-                    }
-                    onClick={handleLogout}
-                >
+                <NavLink id="logout" onClick={handleLogout}>
                     LOGOUT
                 </NavLink>
             </header>

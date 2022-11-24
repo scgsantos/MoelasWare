@@ -58,9 +58,13 @@ import {
 function App() {
     return (
         <Router>
-            <Header isLoggedIn={ isLoggedIn() } />
+            <Header isLoggedIn={isLoggedIn()} />
             <Routes>
-                <Route path="/" element={<Home isLoggedIn={isLoggedIn()} />} />
+                <Route
+                    exact
+                    path="/"
+                    element={<Home isLoggedIn={isLoggedIn()} />}
+                />
                 <Route path={AUTH_URL} element={<Login />} />
 
                 <Route
