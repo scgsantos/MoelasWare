@@ -152,6 +152,14 @@ class API {
         return this.makeRequest("quizzes/finished/");
     }
 
+    static getInfoQuiz(id){
+        return this.makeRequest("quiz/"+ id.toString() + "/");
+    }
+
+    static getReviewsOfQuiz(id){
+        return this.makeRequest("myquiz/" + id.toString() + "/");
+    }
+
     // Get user login token
     static login(username, password) {
         let tokens = this.makeRequest("token/", "POST", {
