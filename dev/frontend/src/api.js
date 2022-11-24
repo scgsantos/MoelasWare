@@ -142,6 +142,16 @@ class API {
     });
   }
 
+  static logout() {
+    return this.makeRequest("token/blacklist/", "POST", {
+        refresh : sessionStorage.getItem("refresh"),
+    }).then(() => {
+        sessionStorage.removeItem("access");
+        sessionStorage.removeItem("refresh");
+      }
+      );
+  }
+
   // THE FOLLOWING ENDPOINTS ARE NOT IMPLEMENTED IN BACKEND
 
   // Add revision

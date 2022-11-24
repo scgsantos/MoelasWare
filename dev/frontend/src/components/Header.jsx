@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "assets/SVG/LOGO.svg";
+import API from 'api.js';
 
 import { PROFILE_URL, LOGOUT_URL, AUTH_URL } from "urls.js";
 
 function Header(props) {
     const isLoggedIn = props.isLoggedIn;
+
+    const handleLogout = () => {
+        API.logout();
+    } 
     if (isLoggedIn) {
         return (
             <header>
@@ -31,7 +36,7 @@ function Header(props) {
                     className={(navData) =>
                         navData.isActive ? "active" : "none"
                     }
-                    to={LOGOUT_URL}
+                    onClick={handleLogout}
                 >
                     LOGOUT
                 </NavLink>
