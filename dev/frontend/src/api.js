@@ -303,6 +303,17 @@ class API {
     static getUser(user_id) {
         return this.makeRequest(`users/${user_id}/`);
     }
+
+    static getUnfinishedQuizzes(){
+        return API.makeRequest("unfinished_quizzes/");
+    }
+
+    static sendQuizId(quiz_id){
+        return this.makeRequest("unfinished_quizzes_edit/", "POST", {
+            id:quiz_id,
+        });
+    }
+
 }
 
 export default API;

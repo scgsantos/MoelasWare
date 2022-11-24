@@ -5,6 +5,10 @@ import "App.css";
 import Header from "components/Header";
 import isLoggedIn from "utils";
 
+// Group 1
+import MyDraft from "components/draft_details";
+import Drafts from "pages/create_a_quiz/Drafts";
+
 // Group 2
 import CreateRandomTest from "pages/create_test/number_only/NumberOnly.jsx";
 import Preview from "pages/create_test/preview/Preview.jsx";
@@ -25,7 +29,6 @@ import Users from "pages/hall_of_fame/Users.jsx";
 import Tests from "pages/hall_of_fame/Tests.jsx";
 import CreateQuiz from "pages/create_a_quiz/index";
 import NewQuiz from "pages/create_a_quiz/NewQuiz";
-import Drafts from "pages/create_a_quiz/Drafts";
 import History from "components/History.jsx";
 import MyQuiz from "./components/quiz_details";
 
@@ -107,7 +110,12 @@ function App() {
                 </Route>
 
                 <Route path="/createquiz/new" element={<NewQuiz />} />
-                <Route path="/createquiz/drafts" element={<Drafts />} />
+                <Route path="/createquiz/drafts" element={<Drafts />}>
+                <Route
+                        path="/createquiz/drafts/:id/"
+                        element={<MyDraft />}
+                    />
+                    </Route>
 
                 <Route path={SELECT_TEST_URL} element={<MainSelectionPage />}>
                     <Route path=":test" element={<SingleTestPage />} />
