@@ -62,8 +62,8 @@ def get_info_quiz_view(request, pk):
 # @login_required
 def create_quiz_review_view(request):
 
-    
-    serializer = CreateReviewSerializer(data=request.data)
+
+    serializer = CreateReviewSerializer(data=request.data["args"])
     
     # raises exception on why its not valid
     if serializer.is_valid(raise_exception=True):
@@ -85,7 +85,6 @@ def create_quiz_review_view(request):
         review.comment = serializer["comment"]
         review.save()
         return JsonResponse(serializer)
-
     return JsonResponse({"error": "Bad data"})
 
 

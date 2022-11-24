@@ -25,8 +25,6 @@ function ReviewQuizPage() {
         (data) => {
           setLoading(true);
           setData(data.info);
-          console.log(data.access);
-          console.log(data.info);
         })
       .then(res => {
         if (res.ok) {
@@ -43,8 +41,6 @@ function ReviewQuizPage() {
         setError(true);
       })
   }, []);
-
-  console.log(data);
 
   return (
     <div className='ReviewQuizPage-Container'>

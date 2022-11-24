@@ -6,8 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router';
 import config from 'config.js';
 import { REVIEW_URL } from "urls.js";
-
-
+import API from 'api.js';
 
 function ReviewAQuizPage() {
   document.documentElement.style.setProperty("--base", "var(--green)");
@@ -31,7 +30,14 @@ function ReviewAQuizPage() {
 
   //fetch quiz from the backend and log it to the console
   useEffect(() => {
-    fetch(config.svurl + "/api/review/quizzes/" + id + "/")
+    API.getQuiz(id)
+    .then(
+      (result) => {
+        setLoading(true);
+        setQuiz(result);
+        console.log(data);
+      })
+      /*
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -39,18 +45,13 @@ function ReviewAQuizPage() {
           throw new Error("Something went wrong", { cause: res });
         }
       })
-      .then(
-        (result) => {
-          setLoading(true);
-          setQuiz(result);
-        }
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
         // exceptions from actual bugs in components.
-      ).catch((error) => {
+      .catch((error) => {
         setLoading(true);
         setError(true);
-      })
+      })*/
   }, [])
 
   if (error) {
@@ -131,11 +132,8 @@ function ReviewAQuizPage() {
               });
               console.log(args);
               //post to backend
-              fetch(config.svurl + "/api/quizzes/review/", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: args
-              }).then(
+              API.createReview(args)
+              .then(
                 alert("Quiz Accepted")
               ).then(
                 navigate(REVIEW_URL)
@@ -151,11 +149,8 @@ function ReviewAQuizPage() {
                 });
                 console.log(args);
                 //post to backend
-                fetch(config.svurl + "/api/quizzes/review/", {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: args
-                }).then(
+                API.createReview(args)
+                .then(
                   alert("Quiz Rejected")
                 ).then(
                   navigate(REVIEW_URL)

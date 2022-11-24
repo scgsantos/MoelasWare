@@ -160,6 +160,16 @@ class API {
         return this.makeRequest("myquiz/" + id.toString() + "/");
     }
 
+    static getQuiz(id){
+        return this.makeRequest("review/quizzes/" + id.toString() + "/");
+    }
+
+    static createReview(args){
+        return this.makeRequest("review/create/", "POST", {
+            args: args,
+        });
+    }
+
     // Get user login token
     static login(username, password) {
         let tokens = this.makeRequest("token/", "POST", {
