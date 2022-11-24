@@ -1,4 +1,5 @@
 import random
+from collections import Counter
 
 from django.http import HttpResponseBadRequest, JsonResponse
 from rest_framework import status
@@ -56,23 +57,48 @@ def get_n_quizzes_view(request):
         )
 
     tags = request.data.get("allowed_tags")
-    quizzes_set = Quiz.objects.can_be_added_to_a_test().order_by("?")
+    all_quizzes = Quiz.objects.can_be_added_to_a_test().order_by("?")
 
-    quizzes_set = (
-        quizzes_set.all()
-        if not tags
-        else quizzes_set.filter(tags__text__in=tags).distinct()
-    )
+    quizzes_set = []
+    if not tags:
+        quizzes_set = all_quizzes.all()[:num_quizzes]
+    else:
+        n_tags = len(tags)
+        fraction = int(num_quizzes / n_tags)
+        rest = int(num_quizzes % n_tags)
 
-    quizzes_list = quizzes_set[:num_quizzes]
+        tag_count = {}
+        for tag in tags:
+            tag_count[tag] = all_quizzes.filter(tags__text=tag).distinct().count()
+        tags = sorted(tag_count.items(), key=lambda x: x[1])
+
+        for tag in tags:
+            tag_fraction = fraction + rest
+            rest = 0
+            quizzes_count = tag[1]
+
+            if quizzes_count >= tag_fraction:
+                quizzes_set += all_quizzes.filter(tags__text=tag[0]).distinct()[
+                    :tag_fraction
+                ]
+            else:
+                quizzes_set += all_quizzes.filter(tags__text=tag[0]).distinct()[
+                    :quizzes_count
+                ]
+                rest = tag_fraction - quizzes_count
+
+        if rest:
+            return HttpResponseBadRequest(
+                "There aren't enough quizzes with the given tags"
+            )
 
     # Not enough quizzes that meet the specs
-    if len(quizzes_list) < num_quizzes:
+    if len(quizzes_set) < num_quizzes:
         return HttpResponseBadRequest(
             "The number of requested quizzes is bigger than the number of existing quizzes meeting the given specifications"
         )
 
-    quizzes_serializer = QuizSerializer(quizzes_list, many=True)
+    quizzes_serializer = QuizSerializer(quizzes_set, many=True)
 
     return JsonResponse({"quizzes": quizzes_serializer.data})
 
