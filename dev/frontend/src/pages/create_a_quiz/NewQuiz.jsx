@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import API from 'api.js';
+import API from "api.js";
 
 function NewQuiz() {
     document.documentElement.style.setProperty("--base", "var(--blue)");
@@ -44,8 +44,7 @@ function NewQuiz() {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(inputs);
-        API.createQuiz(inputs)
-        .then((data) => setResposta(data.resposta));
+        API.createQuiz(inputs).then((data) => setResposta(data.resposta));
         navigate(-1);
     };
 

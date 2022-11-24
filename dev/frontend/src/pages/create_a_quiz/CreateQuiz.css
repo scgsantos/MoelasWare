@@ -109,6 +109,40 @@
     background-color: var(--green);
 }
 
+.myquiz .reviews {
+    margin-top: 2rem;
+    width: 90%;
+    display: inline-grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    text-align: left;
+}
+
+.myquiz .reviews .review-title {
+    grid-column: 3;
+    justify-self: center;
+    margin-right: 1rem;
+}
+
+.myquiz .reviews .options, .myquiz .reviews .justifications {
+    justify-self: center;
+}
+
+.myquiz .answers #option {
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 0.3em 0.7em;
+}
+
+.myquiz .answers #justification {
+    font-size: 0.9rem;
+}
+
+.myquiz .answers p.correct {
+    background-color: var(--green);
+}
+
 .createquiznav {
     margin: 0 0.5rem;
 }

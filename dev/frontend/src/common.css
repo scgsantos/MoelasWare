@@ -36,6 +36,10 @@ header {
 
 header #logo { margin-right: auto; }
 
+header #logout { text-decoration: none; }
+
+header #logout:hover { text-decoration: underline; }
+
 header a {
   text-decoration: none; 
   font-size: 1rem;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import API from 'api.js';
+import API from "api.js";
 
 function MyQuiz() {
     const [quizzes, setQuizzes] = useState([]);
@@ -12,20 +12,18 @@ function MyQuiz() {
     const { id } = useParams();
 
     useEffect(() => {
-        API.getInfoQuiz(id)
-        .then((data) => {
+        API.getInfoQuiz(id).then((data) => {
             setQuizzes(data.quiz);
             setAnswers(data.answers);
             console.log(quizzes);
             console.log(answers);
-        });  
-        API.getReviewsOfQuiz(id)
-        .then((data) => {
+        });
+        API.getReviewsOfQuiz(id).then((data) => {
             setReviews(data.reviews);
             console.log(reviews);
         });
     }, []);
-   
+
     let options = [];
     for (let i = 0; i < answers.length; i++) {
         options.push(
@@ -54,12 +52,25 @@ function MyQuiz() {
         evaluations.push(
             <React.Fragment>
                 <p className="review-title">REVIEW #{i + 1}:</p>
-                <p key={"r" + i} id="review">
-                    {reviews[i][1]}
-                </p>
-                <p key={"e" + i} id="evaluation">
-                    {reviews[i][2]}
-                </p>
+                <div className="reviews">
+                    <p
+                        key={"r" + i}
+                        id="review"
+                        className={
+                            reviews[i][4] === "accepted" ? "accepted" : "none"
+                        }
+                    >
+                        {reviews[i][4]}
+                    </p>
+                </div>
+                <div className="reviews">
+                    <p key={"e" + i} id="evaluation">
+                        {reviews[i][2]}
+                    </p>
+                    <p key={"e" + i} id="evaluation">
+                        {reviews[i][1]}
+                    </p>
+                </div>
             </React.Fragment>
         );
     }
@@ -82,10 +93,8 @@ function MyQuiz() {
                     <p id="question">{quizzes[4]}</p>
                     <p id="description">({quizzes[5]})</p>
                     <div className="answers">{options}</div>
-                    <div className="reviews">
-                        <h3>REVIEWS</h3>
-                        {evaluations}
-                    </div>
+                    <h3>REVIEWS</h3>
+                    {evaluations}
                 </div>
             </div>
         </div>

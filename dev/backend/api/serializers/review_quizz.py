@@ -33,13 +33,11 @@ class GetQuizReviewNewSerializer(serializers.ModelSerializer):
 
     def get_review_result(self,obj):
         
-        if Review.objects.filter(id = obj.id).filter(accepted = False).filter(pending = False).count() > 0:
+        if Review.objects.filter(id = obj.id).filter(accepted = False):
             return "rejected"
 
-        elif Review.objects.filter(quiz = obj.id).filter(pending = False).filter(accepted = True).count() == 3:
-                return "accepted"
         else:
-            return "pending"
+            return "accepted"
 
 
 class GetQuizAnswerSerializer(serializers.ModelSerializer):
