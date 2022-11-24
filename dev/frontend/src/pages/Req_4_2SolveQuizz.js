@@ -199,7 +199,6 @@ function SolveQuizz() {
                                             <button key={i} className={`btnlist buttoncorners ${isbtnSelected(quizz.id, answer.id) ? 'selected' : ''}`} onClick={() => {
                                                 addAnswer(answer.id, quizz.id)
                                                 setRerender(!rerender);
-
                                             }}>
                                                 {answer.text}
                                             </button>
@@ -215,7 +214,6 @@ function SolveQuizz() {
                                             <button key={i} className={`btnlist button_end ${isbtnSelected(quizz.id, answer.id) ? 'selected' : ''}`} onClick={() => {
                                                 addAnswer(answer.id, quizz.id)
                                                 setRerender(!rerender);
-
                                             }}>
                                                 {answer.text}
                                             </button>
