@@ -1,56 +1,29 @@
-.loc input[type=email], [type=password] {
-  padding: 1em;
-  margin: 1em;
+#auth {
   text-align: center;
-  background-color: transparent;
-  color: black;
-  border-radius: 10px;
-  border: 1px solid #000000;
-}
-
-* {
-  background-color: var(--beige);
-}
-
-.loc .btn {
-  background-color: transparent;
-  color: black;
-  border-radius: 10px;
-  border: 1px solid black;
-  padding: 0.3em 0.8em;
-}
-
-.loc .btn_click:hover {
-  background-color: black;
-  color: var(--beige);
-  cursor: pointer;
-  width: 150px;
-}
-
-.loc .start {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.loc .click {
-  cursor: pointer;
-}
-
-.loc .login {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.loc .register {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.loc {
-  display: flex;
+  width: 70%;
+  margin: 3rem auto;
+  align-items: flex-start;
   justify-content: space-evenly;
-  padding: 5rem;
+  margin-top: 10%;
+}
+
+#auth h1 {
+  margin-bottom: 2rem;
+}
+
+#auth div form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#auth input {
+  text-align: center;
+  margin: 0.2rem 0;
+}
+
+#auth input[type=submit] {
+  margin-top: 1rem;
 }

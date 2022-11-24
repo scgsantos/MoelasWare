@@ -1,15 +1,16 @@
 from django.http import JsonResponse
 from django.http.response import HttpResponseNotFound
 from rest_framework.decorators import api_view
-
-from api.serializers import *
 from moelasware.models import *
+from api.serializers import *
+from django.contrib.auth.decorators import login_required
 
 
-@api_view(["GET"])
+@api_view(['GET'])
+@login_required
 def profile_view(request):
 
-    user = User.objects.filter(user__id=2)
+    user = User.objects.filter(user__username = request.user)
 
     if not user.exists():
         return HttpResponseNotFound("User not found")

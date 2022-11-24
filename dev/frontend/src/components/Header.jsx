@@ -1,15 +1,21 @@
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import logo from "assets/SVG/LOGO.svg";
 import API from 'api.js';
+import { useNavigate } from "react-router";
 
 import { PROFILE_URL, LOGOUT_URL, AUTH_URL } from "urls.js";
 
 function Header(props) {
     const isLoggedIn = props.isLoggedIn;
 
+    const navigate = useNavigate();
+
     const handleLogout = () => {
-        API.logout();
+        API.logout().then(() => {
+            navigate("/");
+            window.location.reload();
+        });
     } 
     if (isLoggedIn) {
         return (
@@ -64,7 +70,7 @@ function Header(props) {
                     className={(navData) =>
                         navData.isActive ? "active" : "none"
                     }
-                    style={{ float: "right" }}
+                    style={{ marginLeft: "auto" }}
                     to={AUTH_URL}
                 >
                     LOGIN/REGISTER

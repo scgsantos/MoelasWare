@@ -4,8 +4,10 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 
-from api.serializers import QuizAnswerSerializer, QuizSerializer, QuizFinishedSerializer
+from api.serializers import QuizAnswerSerializer, QuizSerializer, QuizFinishedSerializer, GetQuizReviewNewSerializer
 from moelasware.models import Quiz, QuizAnswer, User, Tag, Review
+from django.contrib.auth.decorators import login_required
+
 
 
 @api_view(["GET"])
@@ -101,19 +103,12 @@ def quiz_finished_serializer_handler(data):
     return quiz_list
     
 @api_view(['GET'])
-def get_user_quizzes(request):
+@login_required
+def get_user_quizzes_view(request):
 
-    user = User.objects.filter(user__id=1)
-
-    if not user.exists():
-        return HttpResponseBadRequest("User not found")
-
-    user = user[0]
-
-    quizzes = Quiz.objects.filter(author=user).filter(finished=True)
-
-    quizzes = QuizFinishedSerializer(quizzes, many=True).data
-
+    user = request.user
+    quizzes = Quiz.objects.filter(author__user__username = user).filter(finished = True)
+    quizzes = QuizFinishedSerializer(quizzes, many = True).data
     quizzes = quiz_finished_serializer_handler(quizzes)
 
     return JsonResponse({"list_of_quizzes": quizzes})
@@ -154,23 +149,11 @@ def create_quiz_view(request):
     quiz = Quiz.objects.filter(name=data["name"])
 
     if quiz.exists():
-        # return HttpResponseBadRequest(f"Quiz {data['name']} already exists")
-        return JsonResponse({"resposta": f"Quiz {data['name']} already exists"})
-
-    author = User.objects.get(id=1)
-    """
-    if "author" not in data:
-        author = User.objects.get(id = 1)
-        return HttpResponseBadRequest('Author not found')
-
-    author = User.objects.filter(user__id = data['author'])
-
-    if not author.exists():
-        return HttpResponseNotFound('Author not found')
-
-    author = author[0]
-    """
-    quiz = Quiz(name=data["name"], author=author)
+        #return HttpResponseBadRequest(f"Quiz {data['name']} already exists")
+        return JsonResponse({"resposta" : f"Quiz {data['name']} already exists"})
+        
+    author = User.objects.get(user__username = request.user)
+    quiz = Quiz(name = data['name'], author = author)
     quiz.save()
     for i in range(0, 6):
         quiz_answer = QuizAnswer(
@@ -261,7 +244,8 @@ def create_quiz_view(request):
     return JsonResponse(response)
 
 
-@api_view(["POST"])
+@api_view(['PATCH'])
+@login_required
 def edit_quiz_view(request):
 
     dataRequest = request.data["inputs"]
@@ -286,11 +270,11 @@ def edit_quiz_view(request):
         # return HttpResponseNotFound(f"Quiz {data['name']} already exists")
         return JsonResponse(f"Quiz {data['name']} already exists")
 
-    if "author" not in data:
-        # return HttpResponseNotFound('Author not found')
-        return JsonResponse("Author not found")
 
-    author = User.objects.filter(user__id=data["author"])
+    
+
+    author = User.objects.filter(user__username = request.user)
+
 
     if author.exists() and author[0] != quiz.author:
         # return HttpResponseNotFound('Author not allowed to edit this quiz')
@@ -471,3 +455,37 @@ def finish_quiz(quiz: Quiz, quiz_answers: list):
 
     """
     return response
+
+
+def handle_get_unapproved_quizzes_reviews_view(obj):
+    info_review = []
+
+    for i in obj:
+        reviewer = i["reviewer"]["user"]["username"]
+        id = i["id"]
+        creation_date = i["creation_date"]
+        comment = i["comment"]
+        info_review.append([id, reviewer, comment, creation_date])
+    
+    return info_review
+
+@api_view(['GET'])
+def get_unapproved_quizzes_reviews_view(request, id):
+    unapproved_quiz = Quiz.objects.filter(approved = False).filter(id = id)
+
+    if not unapproved_quiz.exists():
+        return HttpResponseBadRequest('quiz not found')
+
+    unapproved_quiz = unapproved_quiz[0]
+
+    reviews = Review.objects.filter(quiz = unapproved_quiz).filter(accepted = False).filter(pending = False)
+
+    if not reviews.exists():
+        return HttpResponseBadRequest('quiz is pending or approved, therefore there are no negative reviews')
+
+    serializer = GetQuizReviewNewSerializer(reviews, many = True).data
+
+    serializer = handle_get_unapproved_quizzes_reviews_view(serializer)
+
+    return JsonResponse({"Reviews": serializer})
+

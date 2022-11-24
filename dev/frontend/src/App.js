@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "common.css";
 import "App.css";
 import Header from "components/Header";
+import isLoggedIn from "utils";
 
 // Group 2
 import CreateRandomTest from "pages/create_test/number_only/NumberOnly.jsx";
@@ -15,6 +16,7 @@ import CreateTestLastPage from "pages/create_test/preview/LastPage.jsx";
 // Group 3
 import ReviewQuizPage from "pages/review_quiz/ReviewQuizPage.jsx";
 import ReviewAQuizPage from "pages/review_quiz/ReviewAQuizPage.jsx";
+import Login from "pages/login_register/Login.jsx";
 
 // Group 4
 import Home from "pages/Home.jsx";
@@ -35,6 +37,7 @@ import GradeTestSolved from "pages/solve_test/SolvedAllQuizzes.jsx";
 import TestGradePreviews from "pages/solve_test/Resolution.jsx";
 
 import {
+    AUTH_URL,
     PROFILE_URL,
     USERS_URL,
     TESTS_URL,
@@ -51,15 +54,14 @@ import {
     REVIEW_URL,
     REVIEW_QUIZ_URL,
 } from "urls.js";
-import history from "history.js";
 
 function App() {
     return (
         <Router>
-            <Header isLoggedIn={true} />
+            <Header isLoggedIn={ isLoggedIn() } />
             <Routes>
-                <Route path="/" element={<Home isLoggedIn={true} />} />
-                <Route path="/auth" />
+                <Route path="/" element={<Home isLoggedIn={isLoggedIn()} />} />
+                <Route path={AUTH_URL} element={<Login />} />
 
                 <Route
                     exact

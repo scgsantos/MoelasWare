@@ -10,6 +10,7 @@ def register_view(request):
     username = request.data.get("username")
     password = request.data.get("password")
 
+    print(f"username:{username}, password: {password}")
     user_already_exists = AuthUser.objects.filter(username=username).count() != 0
 
     print(user_already_exists)
@@ -20,7 +21,7 @@ def register_view(request):
         )
 
     auth_user = AuthUser.objects.create_user(username=username, password=password)
-    auth_user.save()
+    #auth_user.save()
 
     user = User.objects.create(user=auth_user)
     user.save()

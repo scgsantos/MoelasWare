@@ -23,6 +23,12 @@ class GetQuizReviewSerializer(serializers.ModelSerializer):
         ]
 
 
+class GetQuizReviewNewSerializer(serializers.ModelSerializer):
+    reviewer = GetUserUsername(read_only = True)
+    class Meta:
+        model = Review
+        fields = ["id", "reviewer", "creation_date","comment",]
+
 
 class GetQuizAnswerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,7 +39,7 @@ class GetQuizAnswerSerializer(serializers.ModelSerializer):
 class GetReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ["id", "comment", "quiz", "reviewer", "approved"]
+        fields = ["id", "comment", "quiz", "reviewer"]
 
 
 class CreateReviewSerializer(serializers.ModelSerializer):
