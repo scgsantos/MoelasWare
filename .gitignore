@@ -5,6 +5,7 @@
 .timegraphtoken
 .gitlab-token
 .pgpass
+.pgserverpass
 
 *.py[cod]
 
