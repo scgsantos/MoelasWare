@@ -5,6 +5,9 @@ from django.http import HttpResponseBadRequest, JsonResponse, HttpRequest, HttpR
 from rest_framework import status
 from rest_framework.decorators import api_view
 
+from api.serializers import QuizAnswerSerializer, QuizSerializer, QuizFinishedSerializer, GetQuizReviewNewSerializer
+from moelasware.models import Quiz, QuizAnswer, User, Tag, Review
+from django.contrib.auth.decorators import login_required
 
 
 @api_view(["GET"])
@@ -573,7 +576,7 @@ def import_xml(request: HttpRequest):
                         justification = ""
                     else:
                         justification = answer.find("justificacao").text
-                    
+
                     try:
                         answer = QuizAnswer(
                             quiz=quiz,
@@ -614,7 +617,7 @@ def export_xml(request):
         tags = quiz.tags.all()
         for tag in tags:
             tag_list.append(tag.text)
-    
+
 
     # Create the XML file
     root = ET.Element("quizzes")

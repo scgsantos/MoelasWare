@@ -3,21 +3,15 @@ import config from "config.js";
 // const config = { apiUrl: "https://api.moelasware.xyz/" };
 
 const ACCEPT_JSON = {
-    Accept: "application/json",
+    "Accept": "application/json",
     "Content-Type": "application/json",
 };
 
 class API {
     static getBearerToken() {
-        return sessionStorage.access === undefined
-            ? {}
-            : {
-                Authorization: "Bearer " + sessionStorage.access,
-            };
-    }
-
-    static makePathURL(path) {
-        return new URL(path, config.apiUrl);
+        return sessionStorage.access === undefined ? {} : {
+            "Authorization": "Bearer " + sessionStorage.access,
+        }
     }
 
     static makeRequest(

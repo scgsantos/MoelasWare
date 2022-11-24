@@ -15,7 +15,6 @@ function ReviewQuizPage() {
   //loading
   const [isLoaded, setLoading] = useState(false);
 
-
   let navigate = useNavigate();
 
   //fetch quiz from the backend and log it to the console

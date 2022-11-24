@@ -20,6 +20,7 @@ function UsersList() {
   useEffect(() => {
     API.getHallOfFameUsers().then((data) => {
       setUsers(data.fame);
+      console.log(users)
      });
   }, []);
 

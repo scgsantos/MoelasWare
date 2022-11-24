@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import API from 'api.js';
 
 function NewQuiz() {
     document.documentElement.style.setProperty("--base", "var(--blue)");
@@ -32,6 +33,7 @@ function NewQuiz() {
     });
 
     const navigate = useNavigate();
+
     function handleChange(event) {
         setInputs({
             ...inputs,
@@ -42,17 +44,9 @@ function NewQuiz() {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(inputs);
-        fetch("http://localhost:8000/api/quizzes/", {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ inputs }),
-        })
-            .then((response) => response.json())
-            .then((data) => setResposta(data.resposta));
-            navigate(-1);
+        API.createQuiz(inputs)
+        .then((data) => setResposta(data.resposta));
+        navigate(-1);
     };
 
     let options = [];
@@ -136,8 +130,6 @@ function NewQuiz() {
                                 </select>
                             </label>
                         </div>
-                        <div className="break"></div>
-                        <h5> {resposta} </h5>
                         <div className="break"></div>
                         <div className="question-container">
                             <h3>QUESTION #1</h3>

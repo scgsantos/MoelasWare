@@ -9,5 +9,6 @@ from api.views.user import *
 from api.views.unfinished_quizzes import *
 
 
+
 DEFAULT_TEST_PAGE_LIMIT = 20
 DEFAULT_TAG_PAGE_LIMIT = 20
