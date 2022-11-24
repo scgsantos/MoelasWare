@@ -32,12 +32,6 @@ import SolveTest from 'pages/solve_test/SolveQuizz.jsx';
 import GradeTestSolved from 'pages/solve_test/SolvedAllQuizzes.jsx';
 import TestGradePreviews from 'pages/solve_test/Resolution.jsx';
 
-import MainSelectionPage from './pages/Req_4_1AllTests';
-import SingleTestPage from './pages/Req_4_1SingleTest';
-import SolveTest from './pages/Req_4_2SolveQuizz';
-import GradeTestSolved from './pages/Req_4_2SolvedAllQuizzes';
-import TestGradePreviews from './pages/Req_4_3Resolution';
-
 import {
   PROFILE_URL,
   USERS_URL,
