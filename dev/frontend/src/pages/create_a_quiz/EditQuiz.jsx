@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router";
 import API from "api.js";
 
-function NewQuiz() {
+function EditQuiz() {
     document.documentElement.style.setProperty("--base", "var(--blue)");
     const [resposta, setResposta] = useState([]);
+
+    const { id } = useParams();
 
     const tags = [
         { label: "-", value: "null" },
@@ -22,8 +24,6 @@ function NewQuiz() {
         { label: "RSK", value: "RSK" },
     ];
 
-    //const answers = ["", "", "", "", "", ""];
-
     const [inputs, setInputs] = useState({
         name: "",
         tag: "",
@@ -40,6 +40,12 @@ function NewQuiz() {
             [event.target.name]: event.target.value,
         });
     }
+
+    useEffect(() => {
+        API.sendQuizId(id).then((data) => {
+            setInputs(data);
+        });
+    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -96,7 +102,7 @@ function NewQuiz() {
         <React.Fragment>
             <main className="container" id="newquiz">
                 <h1 className="title">CREATE A QUIZ</h1>
-                <h2>NEW QUIZ</h2>
+                <h2>EDIT QUIZ</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="newquiz">
                         <div className="name-container">
@@ -172,4 +178,4 @@ function NewQuiz() {
     );
 }
 
-export default NewQuiz;
+export default EditQuiz;

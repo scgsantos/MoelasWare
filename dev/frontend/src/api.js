@@ -3,15 +3,17 @@ import config from "config.js";
 // const config = { apiUrl: "https://api.moelasware.xyz/" };
 
 const ACCEPT_JSON = {
-    "Accept": "application/json",
+    Accept: "application/json",
     "Content-Type": "application/json",
 };
 
 class API {
     static getBearerToken() {
-        return sessionStorage.access === undefined ? {} : {
-            "Authorization": "Bearer " + sessionStorage.access,
-        }
+        return sessionStorage.access === undefined
+            ? {}
+            : {
+                  Authorization: "Bearer " + sessionStorage.access,
+              };
     }
 
     static makeRequest(
@@ -23,7 +25,9 @@ class API {
     ) {
         const searchParams = new URLSearchParams(params);
         const pathURL = new URL(path, config.apiUrl);
-        searchParams.forEach((value, key) => pathURL.searchParams.set(key, value));
+        searchParams.forEach((value, key) =>
+            pathURL.searchParams.set(key, value)
+        );
 
         return fetch(pathURL, {
             method: method,
@@ -67,9 +71,7 @@ class API {
 
     // Get all possible answers for a given quiz
     static getQuizAnswers(quiz_id) {
-        return this.makeRequest(
-            `quizzes/${quiz_id}/answers/`
-        );
+        return this.makeRequest(`quizzes/${quiz_id}/answers/`);
     }
 
     // Get number of quizzes in db
@@ -90,9 +92,7 @@ class API {
 
     // Get all reviewers of a given quiz
     static getQuizReviewers(quiz_id) {
-        return this.makeRequest(
-            `quizzes/${quiz_id}/reviewers/`
-        );
+        return this.makeRequest(`quizzes/${quiz_id}/reviewers/`);
     }
 
     // NOT WORKING IN BACKEND
@@ -108,14 +108,13 @@ class API {
 
     // Get all test submissions made by a given user
     static getUserSubmissions(user_id) {
-        return this.makeRequest(
-            `users/${user_id}/submissions/`
-        );
+        return this.makeRequest(`users/${user_id}/submissions/`);
     }
 
-    // Get hall of fame
-    static getHallOfFame() {
-        return this.makeRequest("fame/");
+    static createQuiz(inputs) {
+        return this.makeRequest("quizzes/", "POST", {
+            inputs: inputs,
+        });
     }
 
     static getQuizzesOfReviewer() {
@@ -133,6 +132,11 @@ class API {
         );
     }
 
+    // Get hall of fame
+    static getHallOfFameTests() {
+        return this.makeRequest("fame/tests/");
+    }
+
     // Get hall of fame users
     static getHallOfFameUsers() {
         return this.makeRequest("fame/users/");
@@ -140,24 +144,38 @@ class API {
 
     // Get hall of fame test by Id
     static getHallOfFameTestById(id) {
-        return this.makeRequest("fame/tests/" + id.toString() + "/submissions/");
+        return this.makeRequest(
+            "fame/tests/" + id.toString() + "/submissions/"
+        );
     }
 
     // Get hall of fame user by Id
     static getHallOfFameUserById(id) {
-        return this.makeRequest("fame/users/" + id.toString() + "/submissions/");
+        return this.makeRequest(
+            "fame/users/" + id.toString() + "/submissions/"
+        );
     }
 
-    static getMyFinishedQuizzes(){
+    static getMyFinishedQuizzes() {
         return this.makeRequest("quizzes/finished/");
     }
 
-    static getInfoQuiz(id){
-        return this.makeRequest("quiz/"+ id.toString() + "/");
+    static getInfoQuiz(id) {
+        return this.makeRequest("quiz/" + id.toString() + "/");
     }
 
-    static getReviewsOfQuiz(id){
+    static getReviewsOfQuiz(id) {
         return this.makeRequest("myquiz/" + id.toString() + "/");
+    }
+
+    static getQuiz(id) {
+        return this.makeRequest("review/quizzes/" + id.toString() + "/");
+    }
+
+    static createReview(args) {
+        return this.makeRequest("review/create/", "POST", {
+            args: args,
+        });
     }
 
     // Get user login token
@@ -170,8 +188,7 @@ class API {
         tokens.then((data) => {
             sessionStorage.setItem("access", data.access);
             sessionStorage.setItem("refresh", data.refresh);
-        }
-        );
+        });
         return tokens;
     }
 
@@ -195,8 +212,7 @@ class API {
         tokens.then((data) => {
             sessionStorage.setItem("access", data.access);
             sessionStorage.setItem("refresh", data.refresh);
-        }
-        );
+        });
         return tokens;
     }
 
@@ -213,18 +229,14 @@ class API {
         }).then(() => {
             sessionStorage.removeItem("access");
             sessionStorage.removeItem("refresh");
-        }
-        );
+        });
     }
 
     // THE FOLLOWING ENDPOINTS ARE NOT IMPLEMENTED IN BACKEND
 
     // Add revision
     static addRevision(quiz_id) {
-        return this.makeRequest(
-            `quizzes/${quiz_id}/`,
-            "PATCH"
-        );
+        return this.makeRequest(`quizzes/${quiz_id}/`, "PATCH");
     }
 
     // Post a quiz
@@ -238,24 +250,17 @@ class API {
 
     // Get rejected reviews
     static getRejectedReviews(quiz_id) {
-        return this.makeRequest(
-            `quizzes/${quiz_id}/revisions/`
-        );
+        return this.makeRequest(`quizzes/${quiz_id}/revisions/`);
     }
 
     // Get a quizz's reviews
     static getQuizzReview(quiz_id) {
-        return this.makeRequest(
-            `quizzes/${quiz_id}/reviews/`
-        );
+        return this.makeRequest(`quizzes/${quiz_id}/reviews/`);
     }
 
     // Post a review
     static postQuizzReview(quiz_id) {
-        return this.makeRequest(
-            `quizzes/${quiz_id}/reviews/`,
-            "POST"
-        );
+        return this.makeRequest(`quizzes/${quiz_id}/reviews/`, "POST");
     }
 
     // Generate a new test
@@ -269,22 +274,27 @@ class API {
 
     // Get all submissions of a given test
     static getAllTestSubmissions(test_id) {
-        return this.makeRequest(
-            `tests/${test_id}/submissions/`
-        );
+        return this.makeRequest(`tests/${test_id}/submissions/`);
     }
 
     // Add new submission
-    static postSubmission(test_id,) {
-        return this.makeRequest(
-            `tests/${test_id}submissions`,
-            "POST"
-        );
+    static postSubmission(test_id) {
+        return this.makeRequest(`tests/${test_id}submissions`, "POST");
     }
 
     // Get user with a given id
     static getUser(user_id) {
         return this.makeRequest(`users/${user_id}/`);
+    }
+
+    static getUnfinishedQuizzes() {
+        return this.makeRequest("unfinished_quizzes/");
+    }
+
+    static sendQuizId(quiz_id) {
+        return this.makeRequest("unfinished_quizzes_edit/", "POST", {
+            id: quiz_id,
+        });
     }
 }
 
