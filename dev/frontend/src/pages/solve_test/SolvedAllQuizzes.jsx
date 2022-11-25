@@ -19,7 +19,7 @@ function QuestionSolving(props) {
   function getGrade() {
     setLoading(true);
     setError("");
-    fetch(config.svurl + "/api/tests/" + test + "/grade", {
+    fetch(config.svurl + "api/tests/" + test + "/grade", {
       method: "GET",
       headers: {
         'Accept': 'application/json',

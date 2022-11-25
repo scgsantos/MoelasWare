@@ -38,7 +38,7 @@ function CheckAnswers() {
 
   function getQuizzRes() {
     setLoading(true);
-    fetch(config.svurl + '/api/tests/' + test + '/submissions', {
+    fetch(config.svurl + 'api/tests/' + test + '/submissions', {
       method: "GET",
       headers: {
         'Accept': 'application/json',

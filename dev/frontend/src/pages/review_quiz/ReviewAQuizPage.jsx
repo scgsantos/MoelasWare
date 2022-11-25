@@ -31,7 +31,7 @@ function ReviewAQuizPage() {
 
   //fetch quiz from the backend and log it to the console
   useEffect(() => {
-    fetch(config.svurl + "/api/quizzes/" + id)
+    fetch(config.svurl + "api/quizzes/" + id)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -131,7 +131,7 @@ function ReviewAQuizPage() {
               });
               console.log(args);
               //post to backend
-              fetch(config.svurl + "/api/quizzes/review/", {
+              fetch(config.svurl + "api/quizzes/review/", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: args
@@ -151,7 +151,7 @@ function ReviewAQuizPage() {
                 });
                 console.log(args);
                 //post to backend
-                fetch(config.svurl + "/api/quizzes/review/", {
+                fetch(config.svurl + "api/quizzes/review/", {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: args

@@ -117,7 +117,7 @@ function SolveQuizz() {
       "answers": subCorrectFormat
     }
     console.log(JSON.stringify(body));
-    fetch(config.svurl + `/api/tests/${test}/submissions`, {
+    fetch(config.svurl + `api/tests/${test}/submissions`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -143,7 +143,7 @@ function SolveQuizz() {
 
   function getQuizzQuestions() {
     setLoading(true);
-    fetch(config.svurl + '/api/quizzes/' + test, {
+    fetch(config.svurl + 'api/quizzes/' + test, {
       method: "GET",
       headers: {
         'Accept': 'application/json',
