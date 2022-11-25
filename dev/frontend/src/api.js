@@ -303,7 +303,7 @@ class API {
     }
 
     static getDraftById(quiz_id) {
-        return this.makeJSONRequest("draft/info/" + quiz_id.toString() + "/");
+        return this.makeJSONRequest(`draft/info/${quiz_id}/`);
     }
 
     static getXML() {

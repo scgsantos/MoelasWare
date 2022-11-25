@@ -13,7 +13,6 @@ function History(props) {
 
   const { id } = useParams();
   
-
   if (props.selected === "users") {
     API.getHallOfFameUserById(id)
       .then((data) => {
