@@ -1,12 +1,15 @@
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
-
-from moelasware.models import Quiz
+from django.http.response import HttpResponseBadRequest
+from moelasware.models import Quiz, QuizAnswer
+from api.views import QuizSerializer, QuizAnswerSerializer
 
 from ..serializers.unfinished_quizzes import CreateEditQuizSerializer
 
 
 @api_view(["GET"])
+@login_required
 def get_unfinished_quizzes(request):
 
     user_id = 1
@@ -17,39 +20,32 @@ def get_unfinished_quizzes(request):
     return JsonResponse({"quizzes": quizzes}, status=200)
 
 
-@api_view(["POST"])
-def get_draft_info(request):
-    id = request.data.get("id")
-    quiz = Quiz.objects.get(id=id)
-    author = request.user
-    tags = getattr(quiz, "tags", None)
-    text = getattr(quiz, "text", None)
-    description = getattr(quiz, "description", None)
-    question = getattr(quiz, "question", None)
-    answer = getattr(quiz, "answer", None)
-    name = getattr(quiz, "name", None)
-    approved = getattr(quiz, "approved", None)
-    finished = getattr(quiz, "finished", None)
-    tags = getattr(quiz, "tags", None)
-    reviews = getattr(quiz, "reviews", None)
-    creation_date = getattr(quiz, "creation_date", None)
+@api_view(["GET"])
+@login_required
+def get_draft_info(request, id):
 
-    serializer = CreateEditQuizSerializer(
-        data={
-            "id": id,
-            "author_id": author,
-            "text": text,
-            "description": description,
-            "question": question,
-            "answer": answer,
-            "name": name,
-            "approved": approved,
-            "finished": finished,
-            "tags": tags,
-            "reviews": reviews,
-            "creation_date": creation_date,
-        }
-    )
-    valid = serializer.is_valid()
-    if valid:
-        return JsonResponse(serializer.validated_data)
+    author = request.user
+    quiz = Quiz.objects.filter(id = id).filter(author__user__username = author)
+
+    if not quiz.exists():
+        return HttpResponseBadRequest("Quiz not found")
+
+    quiz = quiz[0]
+    answers = QuizAnswer.objects.filter(quiz = quiz)
+
+    if not answers.exists():
+        return HttpResponseBadRequest("Answers not found")
+
+    quiz = QuizSerializer(quiz).data
+
+    answers = QuizAnswerSerializer(answers, many = True).data
+
+    count = 1
+    for i in answers:
+        if i['correct'] == True:
+            quiz['correct'] = count
+        else:
+            count += 1
+
+    return JsonResponse({"draft": quiz, "answers" : answers})
+    

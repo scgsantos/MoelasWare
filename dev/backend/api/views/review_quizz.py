@@ -28,7 +28,7 @@ from moelasware.models import (
 
 
 @api_view(["GET"])
-# @login_required
+@login_required
 def get_quiz_view(request, pk):
     quiz = get_object_or_404(Quiz, id=pk)
 
@@ -39,7 +39,7 @@ def get_quiz_view(request, pk):
     return JsonResponse({"quiz": quiz_serializer.data, "answers": answer_serializer.data})
 
 @api_view(["GET"])
-# @login_required
+@login_required
 def get_info_quiz_view(request, pk):
     quiz = get_object_or_404(Quiz, id=pk)
     answers = QuizAnswer.objects.filter(quiz=quiz.id)
@@ -59,7 +59,7 @@ def get_info_quiz_view(request, pk):
 
 
 @api_view(["POST"])
-# @login_required
+@login_required
 def create_quiz_review_view(request):
 
     

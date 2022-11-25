@@ -20,7 +20,6 @@ function UsersList() {
   useEffect(() => {
     API.getHallOfFameUsers().then((data) => {
       setUsers(data.fame);
-      console.log(users)
      });
   }, []);
 
@@ -30,7 +29,6 @@ function UsersList() {
 
   const handleBtnClick = (selectedBtn) => {
     setSelectedBtn(selectedBtn);
-    console.log(selectedBtn.target.id);
     navigate(`./${selectedBtn.target.id}`);
   };
 

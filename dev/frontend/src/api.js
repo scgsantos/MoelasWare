@@ -32,7 +32,7 @@ class API {
         return fetch(pathURL, {
             method: method,
             headers: { ...headers, ...ACCEPT_JSON, ...API.getBearerToken() },
-            body: method == "GET" ? undefined : JSON.stringify(body),
+            body: method === "GET" ? undefined : JSON.stringify(body),
         }).then((response) => response.json());
     }
 
@@ -106,11 +106,6 @@ class API {
         });
     }
 
-    // Get all test submissions made by a given user
-    static getUserSubmissions(user_id) {
-        return this.makeRequest(`users/${user_id}/submissions/`);
-    }
-
     static createQuiz(inputs) {
         return this.makeRequest("quizzes/", "POST", {
             inputs: inputs,
@@ -177,27 +172,13 @@ class API {
             args: args,
         });
     }
-
-    // Get user login token
-    static login(username, password) {
-        let tokens = this.makeRequest("token/", "POST", {
-            username: username,
-            password: password,
-        });
-
-        tokens.then((data) => {
-            sessionStorage.setItem("access", data.access);
-            sessionStorage.setItem("refresh", data.refresh);
-        });
-        return tokens;
-    }
-
     static register(username, password, repeat_password) {
-        console.log(username, password, repeat_password);
-        return this.makeRequest("register/", "POST", {
-            username: username,
-            password: password,
-        });
+        if (password === repeat_password) {
+            return this.makeRequest("register/", "POST", {
+                username: username,
+                password: password,
+            });
+        }
     }
 
     // TODO: implement register
@@ -248,6 +229,11 @@ class API {
         });
     }
 
+    // Get profile
+    static getProfile() {
+        return this.makeRequest("profile/");
+    }
+
     // Get rejected reviews
     static getRejectedReviews(quiz_id) {
         return this.makeRequest(`quizzes/${quiz_id}/revisions/`);
@@ -291,10 +277,8 @@ class API {
         return this.makeRequest("unfinished_quizzes/");
     }
 
-    static sendQuizId(quiz_id) {
-        return this.makeRequest("unfinished_quizzes_edit/", "POST", {
-            id: quiz_id,
-        });
+    static getDraftById(quiz_id) {
+        return this.makeRequest("draft/info/" + quiz_id.toString() + "/");
     }
 }
 

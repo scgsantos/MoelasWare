@@ -22,7 +22,6 @@ function TestsList() {
 
   const handleBtnClick = (selectedBtn) => {
     setSelectedBtn(selectedBtn);
-    //console.log(selectedBtn.target.id);
     navigate(`./${selectedBtn.target.id}`);
   };
 

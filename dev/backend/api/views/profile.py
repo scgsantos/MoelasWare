@@ -13,14 +13,16 @@ def profile_view(request):
     user = User.objects.filter(user__username = request.user)
 
     if not user.exists():
-        return HttpResponseNotFound("User not found")
+        return JsonResponse({"user": user.user.username, "error": True, "message": "User not found"})
+        #return HttpResponseNotFound("User not found")
 
     user = user[0]
 
     tests_done = Submission.objects.filter(submitter=user)
 
     if not tests_done.exists():
-        return HttpResponseNotFound("Submissions not found")
+        return JsonResponse({"user": user.user.username, "error": True, "message": "No tests found"})
+        #return HttpResponseNotFound("Submissions not found")
 
     correct_answers = SubmissionAnswer.objects.filter(answer__correct=True).filter(
         submission__submitter=user

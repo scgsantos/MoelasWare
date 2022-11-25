@@ -37,13 +37,13 @@ function Drafts() {
                             </tr>
                         </thead>
                         <tbody>
-                            {drafts.map((t) => (
+                            {drafts.map((d) => (
                                 <tr
-                                    key={drafts[0][1]}
-                                    onClick={(e) => handleClick(drafts[0][1])}
+                                    key={d[1]}
+                                    onClick={(e) => handleClick(d[1])}
                                 >
-                                    <td>{drafts[0][0]}</td>
-                                    <td>{drafts[0][2]}</td>
+                                    <td>{d[0]}</td>
+                                    <td>{d[2]}</td>
                                 </tr>
                             ))}
                         </tbody>

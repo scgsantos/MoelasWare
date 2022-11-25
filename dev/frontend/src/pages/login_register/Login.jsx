@@ -13,17 +13,15 @@ function Login() {
         repeat_password: "",
     });
 
+    const [errorLogin, setErrorLogin] = useState("");
+    const [errorRegister, setErrorRegister] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
         if (isLoggedIn()) {
             navigate("/");
         }
-    }, []);
-
-    if (isLoggedIn()) {
-        navigate("/");
-    }
+    });
 
     function handleChange(event) {
         setInputs({
@@ -35,23 +33,40 @@ function Login() {
     const handleLogin = (event) => {
         event.preventDefault();
         API.login(inputs.username, inputs.password).then(() => {
-            navigate("/");
+            if (isLoggedIn()) {
+                navigate("/");
+            } else {
+                setErrorLogin("Invalid credentials");
+            }
             window.location.reload();
         });
     };
 
     const handleRegister = (event) => {
         event.preventDefault();
-        API.register(
-            inputs.username,
-            inputs.password,
-            inputs.repeat_password
-        ).then(() => {
-            API.login(inputs.username, inputs.password).then(() => {
-                navigate("/");
-                window.location.reload();
+        if (inputs.password === inputs.repeat_password) {
+            API.register(
+                inputs.username,
+                inputs.password,
+                inputs.repeat_password
+            ).then((data) => {
+                if (data.message) {
+                    API.login(inputs.username, inputs.password).then(() => {
+                        if (isLoggedIn()) {
+                            navigate("/");
+                            window.location.reload();
+                        } else {
+                            setErrorRegister("User already exists");
+                        }
+                        
+                    });
+                } else {
+                    setErrorRegister("User already exists");
+                }
             });
-        });
+        } else {
+            setErrorRegister("Passwords don't match");
+        }
     };
 
     return (
@@ -73,6 +88,7 @@ function Login() {
                         size="30"
                         onChange={handleChange}
                     ></input>
+                    <div>{errorLogin}</div>
                     <input type="submit" value="ENTER"></input>
                 </form>
             </div>
@@ -100,6 +116,7 @@ function Login() {
                         size="30"
                         onChange={handleChange}
                     ></input>
+                    <div>{errorRegister}</div>
                     <input type="submit" value="ENTER"></input>
                 </form>
             </div>
