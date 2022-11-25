@@ -32,6 +32,14 @@ function EditQuiz() {
         correct: "",
     });
 
+    const [answers, setAnswers] = useState(
+        {
+            text : "", 
+            justification : "",
+            correct : false,
+        }
+    );
+
     const navigate = useNavigate();
 
     function handleChange(event) {
@@ -42,8 +50,11 @@ function EditQuiz() {
     }
 
     useEffect(() => {
-        API.sendQuizId(id).then((data) => {
-            setInputs(data);
+        API.getDraftById(id).then((data) => {
+            setInputs(data.draft); 
+            setAnswers(data.answers);
+            console.log(data.answers[0]);
+            console.log(answers);
         });
     }, []);
 

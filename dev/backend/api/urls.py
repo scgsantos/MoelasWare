@@ -46,7 +46,7 @@ urlpatterns = [
     path("myquiz/<int:id>/", views.get_reviews_of_a_quiz),
 
     path("unfinished_quizzes/", views.get_unfinished_quizzes),
-    path("unfinished_quizzes_edit/", views.get_draft_info),
+    path("draft/info/<int:id>/", views.get_draft_info),
 
 
 ]

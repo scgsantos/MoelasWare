@@ -291,10 +291,8 @@ class API {
         return this.makeRequest("unfinished_quizzes/");
     }
 
-    static sendQuizId(quiz_id) {
-        return this.makeRequest("unfinished_quizzes_edit/", "POST", {
-            id: quiz_id,
-        });
+    static getDraftById(quiz_id) {
+        return this.makeRequest("draft/info/" + quiz_id.toString() + "/");
     }
 }
 

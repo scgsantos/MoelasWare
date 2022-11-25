@@ -46,6 +46,7 @@ function NewQuiz() {
         console.log(inputs);
         API.createQuiz(inputs).then((data) => setResposta(data.resposta));
         navigate(-1);
+        //window.location.reload();
     };
 
     let options = [];

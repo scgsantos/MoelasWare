@@ -13,19 +13,12 @@ function History(props) {
 
   const { id } = useParams();
   
-  useEffect(() => {
+ 
+  if (props.selected === "users") {
     API.getHallOfFameUserById(id)
       .then((data) => {
         setUsers(data.submissions);
         setUser(data.user);});
-  }, []);
-
-  useEffect(() => {
-    API.getHallOfFameTestById(id)
-      .then((data) => setTests(data.submissions));
-  }, []);
-  
-  if (props.selected === "users") {
     return (
       <div
         role="button"
@@ -62,6 +55,8 @@ function History(props) {
       </div>
     );
   } else {
+    API.getHallOfFameTestById(id)
+    .then((data) => setTests(data.submissions));
     return (
       <div
         role="button"
