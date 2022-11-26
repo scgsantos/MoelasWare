@@ -47,6 +47,13 @@ class API {
     return this.makeRequest("tests/");
   }
 
+  // Get all tests including My submissions
+  static getTestsMySub() {
+    return this.makeRequest("tests/?" + new URLSearchParams({
+      'includeMySubmissions': true,
+    }));
+  }
+
   // Get a tag by ID
   static getTag(tag_id) {
     return this.makeRequest(`tags/${tag_id}/`);
