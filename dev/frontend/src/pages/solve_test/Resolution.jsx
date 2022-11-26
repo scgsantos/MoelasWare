@@ -5,6 +5,8 @@ import 'pages/solve_test/TestSelection.css';
 
 import config from 'config.js';
 import { SELECT_TEST_URL } from "urls.js";
+import ErrorCompPage from 'components/Errors/errorCompSolveTest';
+import API from 'api';
 
 function CheckAnswers() {
   document.documentElement.style.setProperty("--base", "var(--yellow)");
@@ -38,26 +40,17 @@ function CheckAnswers() {
 
   function getQuizzRes() {
     setLoading(true);
-    fetch(config.svurl + 'api/tests/' + test + '/submissions', {
-      method: "GET",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        let answer = []; /* quiz_id: 0, answers: [] */
-        data.quizzes.forEach((question) => { answer.push({ quiz_id: question.id, quiz_answers: [] }) });
-        setQuizzRes(data); // questions and stuff
-        setError(null);
-      }).catch(error => {
-        console.log(error);
-        setError("Error: " + error);
-      }).finally(() => {
-        setLoading(false);
-      });
+    API.getAllTestSubmissions(test).then((data) => {
+      let answer = []; /* quiz_id: 0, answers: [] */
+      data.quizzes.forEach((question) => { answer.push({ quiz_id: question.id, quiz_answers: [] }) });
+      setQuizzRes(data); // questions and stuff
+      setError(null);
+    }).catch((error) => {
+      console.log(error);
+      setError("Error: " + error);
+    }).finally(() => {
+      setLoading(false);
+    });
   }
 
 
@@ -71,20 +64,13 @@ function CheckAnswers() {
 
   if (error || !quizzRes) {
     return (
-      <div>
-        <div className="TestSelection-centerTitles">
-          <span className='TestSelection-main-title'>SOLVE A TEST</span>
-          <span className="TestSelection-sub-title">Something Wrong Happened</span>
-        </div>
-
-        <div className="TestSelection-centerLoad just-column mt-2">
-          <span>{error}</span>
-          <button className='TestSelection-solve-quizbtn mt-2' onClick={() => {
-            setError(null);
-            getQuizzRes();
-          }}>Ok</button>
-        </div>
-      </div>
+      <ErrorCompPage
+        resetError={() => {
+          setError(null);
+          getQuizzRes();
+        }}
+        error={error}
+      />
     )
   }
   return (

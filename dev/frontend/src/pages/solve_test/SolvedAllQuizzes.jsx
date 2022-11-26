@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import 'pages/solve_test/TestSelection.css';
 import config from 'config.js';
 import { SELECT_TEST_URL } from "urls.js";
+import ErrorCompPage from 'components/Errors/errorCompSolveTest';
 
 function QuestionSolving(props) {
   document.documentElement.style.setProperty("--base", "var(--yellow)");
@@ -39,9 +40,8 @@ function QuestionSolving(props) {
 
   useEffect(() => {
     document.title = "Solved Test " + test;
-    console.log(location.state);
+    // console.log(location.state);
     if (!location.state) {
-      //TODO: need to make a request to get the grade of the test given.
       getGrade();
     }
   }, []);
@@ -49,19 +49,13 @@ function QuestionSolving(props) {
 
   if (error) {
     return (
-      <div>
-        <div className="TestSelection-centerTitles">
-          <span className='TestSelection-main-title'>SOLVE A TEST</span>
-          <span className="TestSelection-sub-title">Something Wrong Happened</span>
-        </div>
-
-        <div className="TestSelection-centerLoad just-column">
-          <span>{error}</span>
-          <button className='TestSelection-solve-quizbtn' onClick={() => {
-            setError(null);
-          }}>Ok</button>
-        </div>
-      </div>
+     <ErrorCompPage
+        error={error}
+        resetError={() => {
+          setError("")
+          getGrade();
+        }}
+      />
     )
   }
 

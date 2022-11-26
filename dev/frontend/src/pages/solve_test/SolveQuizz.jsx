@@ -7,6 +7,7 @@ import { SELECT_TEST_URL, TEST_GRADE_URL } from "urls.js";
 
 import 'pages/solve_test/TestSelection.css';
 import { PopupInside } from 'components/Errors/PopupStopTest.jsx';
+import ErrorCompPage from 'components/Errors/errorCompSolveTest';
 
 
 const contentStylePopup = {
@@ -174,7 +175,6 @@ function SolveQuizz() {
     if (!quizzInfo) {
       getQuizzQuestions();
     }
-    console.log("fdlsçajkflçds");
     console.log(localStorage.getItem('subs#' + test));
 
     setRerender(false);
@@ -182,19 +182,13 @@ function SolveQuizz() {
 
   if (error) {
     return (
-      <div>
-        <div className="TestSelection-centerTitles">
-          <span className='TestSelection-main-title'>SOLVE A TEST</span>
-          <span className="TestSelection-sub-title">Something Wrong Happened</span>
-        </div>
-
-        <div className="TestSelection-centerLoad just-column mt-2">
-          <span>{error}</span>
-          <button className='TestSelection-solve-quizbtn mt-2' onClick={() => {
-            setError(null);
-          }}>Ok</button>
-        </div>
-      </div>
+      <ErrorCompPage
+        error={error}
+        resetError={() => {
+          setError(null)
+          getQuizzQuestions();
+        }}
+      />
     )
   }
   return (

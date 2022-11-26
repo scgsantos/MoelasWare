@@ -7,24 +7,28 @@ import Button from 'components/Button.jsx';
 import config from 'config.js';
 import { SELECT_TEST_URL, TEST_GRADE_URL } from "urls.js";
 import API from 'api';
+import ErrorCompPage from 'components/Errors/errorCompSolveTest';
 
 function MainSelectionPage() {
   document.documentElement.style.setProperty("--base", "var(--yellow)");
 
   const [loading, setLoading] = useState(true);
+  const [everythingTests, setEverythingTests] = useState();
   const [tests, setTests] = useState();
   const [error, setError] = useState("");
-  const [selectedTags, setSelectedTags] = useState("manual");
+  // const [selectedTags, setSelectedTags] = useState("manual");
   const [selectedTest, setSelectedTest] = useState();
 
   const { test } = useParams();
   const navigate = useNavigate();
+  
   function getTests() {
     setLoading(true); // important!
     API.getTestsMySub().then((data) => {
       setTests(data.tests);
+      setEverythingTests(data.tests);
     }).catch((error) => {
-      setError("Error loading tests");
+      setError("Error: " + error);
     }).finally(() => {
       setLoading(false);
     });
@@ -40,20 +44,10 @@ function MainSelectionPage() {
 
   if (error) {
     return (
-      <div>
-        <div className="TestSelection-centerTitles">
-          <span className='TestSelection-main-title'>SOLVE A TEST</span>
-          <span className="TestSelection-sub-title">Something Wrong Happened</span>
-        </div>
-
-        <div className="TestSelection-centerLoad just-column">
-          <span>{error}</span>
-          <button className='TestSelection-solve-quizbtn mt-2' onClick={() => {
-            setError(null);
-            getTests();
-          }}>Ok</button>
-        </div>
-      </div>
+      <ErrorCompPage resetError={() => {
+        setError(null);
+        getTests();
+      }} error={error} />
     )
   }
 
@@ -68,7 +62,7 @@ function MainSelectionPage() {
       <div className="TestSelection-centerTitles">
         <span className='TestSelection-main-title'>SOLVE A TEST</span>
         <span className='TestSelection-sub-title'>Please choose the test you would like to take</span>
-        <div className="TestSelection-radio-buttons mt-2">
+        {/*  <div className="TestSelection-radio-buttons mt-2">
           <span className="TestSelection-f-text">Filters</span>
           <Radiobutton text={"random"} selected={"random" === selectedTags} onClick={() => {
             setSelectedTags("random")
@@ -93,9 +87,19 @@ function MainSelectionPage() {
             const newtests = tests.sort((a, b) => a.id - b.id);
             setTests(newtests);
           }} />
-        </div>
+        </div> */}
       </div>
-
+      <input className="TestSelection-search-box" type="text" placeholder="Search test by name or tag..." onChange={(e) => {
+        if (e.target.value === "") {
+          setTests(everythingTests);
+          return;
+        }
+        // check by name and tag name
+        const newtests = everythingTests.filter((test) => {
+          return test.name.toLowerCase().includes(e.target.value.toLowerCase()) || test.quizzes[0].tags.some((tag) => tag.text.toLowerCase().includes(e.target.value.toLowerCase()));
+        });
+        setTests(newtests);
+      }} />
       {loading === true ? (
         <div className="TestSelection-centerLoad">
           <span>Loading...</span>
@@ -108,9 +112,10 @@ function MainSelectionPage() {
           <div className='TestSelection-line'>
             {tests.map((test, i) => (
               < div key={i} className='TestSelection-box-text'>
-                <span className={`testTitle ${test.submissions.length > 0 ? 'disabled-text' : ''}`}>Test #{test.id} - {test.quizzes[0].tags[0].text
+                <span className={`TestSelection-testTitle ${test.submissions.length > 0 ? 'TestSelection-disabled-text' : ''}`}>Test #{test.id} - {test.quizzes[0].tags[0].text
                 }</span>
                 <Button onClick={() => {
+                  console.log("test", test.submissions);
                   if (test.submissions.length > 0) {
                     navigate(`${TEST_GRADE_URL}/${test.id}/result`);
                     return;
