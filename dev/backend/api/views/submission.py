@@ -11,7 +11,7 @@ from api.serializers import (
     SubmissionAnswerSerializer,
     SubmissionSerializer,
 )
-from moelasware.models import Quiz, QuizAnswer, SubmissionAnswer, User
+from moelasware.models import Quiz, QuizAnswer, SubmissionAnswer, User, Submission
 from moelasware.models.test import Test
 import json
 
@@ -221,8 +221,9 @@ def create_submission(request, pk, user):
 
     # create the submission
     try:
-        new_sub, grade = instance.create_submission(user, answers)
+        new_sub, grade = create_submission_from_test(instance, user, answers)
     except Exception as e:
+        print(e)
         return HttpResponseBadRequest(e)
 
     submission_serializer = SubmissionSerializer(new_sub, many=False)
@@ -266,3 +267,54 @@ def get_submission_grade(pk_test, user):
     grade = (grade / num_quizzes) * 100
 
     return grade
+
+def create_submission_from_test(test, user, answers):
+        # create a submission from the answers according to this json:
+        """
+        {
+            "answers": [
+                {
+                    "quiz_id": 1,
+                    "quiz_answers": 1
+                },
+                {
+                    "quiz_id": 2,
+                    "quiz_answers": 2
+                }
+            ]
+        }
+        """
+
+        # create a submission and calculate a grade
+        submission = Submission.objects.create(
+            test=test,
+            submitter=user,
+        )
+        grade = 0
+        # add answers to this submission
+        for answer in answers:
+            quiz_id = answer.get("quiz_id", None)
+            quiz_answers = answer.get("quiz_answers", None)
+
+            quiz_answer_obj = QuizAnswer.objects.get(pk=quiz_answers)
+
+            if quiz_answer_obj.correct is True:
+                grade += 1
+
+            if quiz_answer_obj is None:
+                raise ValueError("QuizAnswer not found")
+
+            # chck if quizz answer is in quizz
+            if quiz_answer_obj.quiz.pk != quiz_id:
+                raise ValueError("QuizAnswer not in quiz")
+
+            # create a submission answer
+            SubmissionAnswer.objects.create(
+                submission=submission, answer=quiz_answer_obj
+                )
+
+        # get the numb of quizzes from the test
+        num_quizzes = Quiz.objects.filter(test=test).count()
+
+        grade = grade / num_quizzes * 100
+        return submission, grade
