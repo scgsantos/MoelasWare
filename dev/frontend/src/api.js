@@ -193,11 +193,12 @@ class API {
     }
 
     static register(username, password, repeat_password) {
-        console.log(username, password, repeat_password);
-        return this.makeRequest("register/", "POST", {
-            username: username,
-            password: password,
-        });
+        if (password !== repeat_password) {
+            return this.makeRequest("register/", "POST", {
+                username: username,
+                password: password,
+            });
+        }
     }
 
     // TODO: implement register

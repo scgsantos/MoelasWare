@@ -13,6 +13,10 @@ function Login() {
         repeat_password: "",
     });
 
+    const [errorLogin, setErrorLogin] = useState("");
+    const [errorRegister, setErrorRegister] = useState("");
+
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,10 +24,6 @@ function Login() {
             navigate("/");
         }
     }, []);
-
-    if (isLoggedIn()) {
-        navigate("/");
-    }
 
     function handleChange(event) {
         setInputs({
@@ -35,7 +35,11 @@ function Login() {
     const handleLogin = (event) => {
         event.preventDefault();
         API.login(inputs.username, inputs.password).then(() => {
-            navigate("/");
+            if (isLoggedIn()) {
+                navigate("/");
+            } else {
+                setErrorLogin("Invalid credentials");
+            }
             window.location.reload();
         });
     };
@@ -46,10 +50,15 @@ function Login() {
             inputs.username,
             inputs.password,
             inputs.repeat_password
+        ).then((data) => setErrorLogin(data.invalid)
         ).then(() => {
             API.login(inputs.username, inputs.password).then(() => {
-                navigate("/");
-                window.location.reload();
+                if (isLoggedIn()) {
+                    navigate("/");
+                } else {
+                    setErrorRegister("User already exists");
+                }
+                //window.location.reload();
             });
         });
     };
@@ -73,6 +82,7 @@ function Login() {
                         size="30"
                         onChange={handleChange}
                     ></input>
+                    <div>{errorLogin}</div>
                     <input type="submit" value="ENTER"></input>
                 </form>
             </div>
@@ -100,6 +110,7 @@ function Login() {
                         size="30"
                         onChange={handleChange}
                     ></input>
+                    <div>{errorRegister}</div>
                     <input type="submit" value="ENTER"></input>
                 </form>
             </div>
