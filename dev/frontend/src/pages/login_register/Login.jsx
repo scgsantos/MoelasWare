@@ -15,14 +15,13 @@ function Login() {
 
     const [errorLogin, setErrorLogin] = useState("");
     const [errorRegister, setErrorRegister] = useState("");
-
     const navigate = useNavigate();
 
     useEffect(() => {
         if (isLoggedIn()) {
             navigate("/");
         }
-    }, []);
+    });
 
     function handleChange(event) {
         setInputs({
