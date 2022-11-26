@@ -45,20 +45,27 @@ function Login() {
 
     const handleRegister = (event) => {
         event.preventDefault();
-        if (inputs.password == inputs.repeat_password) {
+        if (inputs.password === inputs.repeat_password) {
             API.register(
                 inputs.username,
                 inputs.password,
                 inputs.repeat_password
-            ).then(() => {
-                API.login(inputs.username, inputs.password).then(() => {
-                    if (isLoggedIn()) {
-                        navigate("/");
-                    } else {
-                        setErrorRegister("User already exists");
-                    }
-                    //window.location.reload();
-                });
+            ).then((data) => {
+                if (data.message) {
+                    console.log(data.message);
+                    API.login(inputs.username, inputs.password).then(() => {
+                        if (isLoggedIn()) {
+                            navigate("/");
+                            window.location.reload();
+                        } else {
+                            setErrorRegister("User already exists");
+                        }
+                        
+                    });
+                } else {
+                    setErrorRegister("User already exists");
+                    console.log(data.message);
+                }
             });
         } else {
             setErrorRegister("Passwords don't match");
