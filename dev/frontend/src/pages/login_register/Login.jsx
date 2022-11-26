@@ -52,7 +52,6 @@ function Login() {
                 inputs.repeat_password
             ).then((data) => {
                 if (data.message) {
-                    console.log(data.message);
                     API.login(inputs.username, inputs.password).then(() => {
                         if (isLoggedIn()) {
                             navigate("/");
@@ -64,7 +63,6 @@ function Login() {
                     });
                 } else {
                     setErrorRegister("User already exists");
-                    console.log(data.message);
                 }
             });
         } else {
