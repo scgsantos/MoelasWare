@@ -252,22 +252,22 @@ input[type='radio']:checked:after {
 }
 
 .TestSelection-button_uniq {
-    border-radius: var(--buttoncorners) var(--buttoncorners) var(--buttoncorners) var(--buttoncorners); 
+    border-radius: var(--buttoncorners) var(--buttoncorners) var(--buttoncorners) var(--buttoncorners) !important; 
 }
 
 .TestSelection-buttoncorners {
-    border-radius: var(--buttoncorners) var(--buttoncorners) 0px 0px;
+    border-radius: var(--buttoncorners) var(--buttoncorners) 0px 0px !important;
     border-bottom: 0px;
 }
 
 
 .TestSelection-other_buttons {
-    border-radius: 0px 0px 0px 0px;
+    border-radius: 0px 0px 0px 0px !important;
     border-bottom: 0px;
 }
 
 .TestSelection-button_end {
-    border-radius: 0px 0px 12px 12px;
+    border-radius: 0px 0px 12px 12px !important;
 }
 
 .TestSelection-btnlist {
@@ -280,12 +280,12 @@ input[type='radio']:checked:after {
     font-weight: 600;
 }
 
-.btnlist:hover {
+.TestSelection-btnlist:hover {
     color: #3d2e00!important;
     background-color: #fff4d1!important;	
 }
 
-.btnlist:active {
+.TestSelection-btnlist:active {
     background-color: #f9bf12!important;
     color: black!important;
 }
@@ -308,21 +308,23 @@ input[type='radio']:checked:after {
 .TestSelection-popupInside {
   font-size: 12px;
 }
-.popupInside > .TestSelection-header {
+.TestSelection-popupInside > .TestSelection-header {
   width: 100%;
   font-size: 1.2rem;
   margin-top: 1.4rem;
   font-weight: 500;
   text-align: center;
   padding: 5px;
+    background-color: rgba(255, 255, 255, 0);
 }
-.popupInside > .TestSelection-content {
+.TestSelection-popupInside > .TestSelection-content {
   width: 100%;
   text-align: center;
   margin: 0.3rem;
   font-size: 0.9rem;
+  background-color: rgba(255, 255, 255, 0);
 }
-.popupInside > .TestSelection-actions {
+.TestSelection-popupInside > .TestSelection-actions {
   padding: 10px 5px;
   text-align: center;   
   display: flex;
@@ -330,12 +332,17 @@ input[type='radio']:checked:after {
 justify-content: space-around;
 margin-bottom: 0.5rem;
 width: 80%;
+background-color: rgba(255, 255, 255, 0);
+
   
 }
-.TestSelection-popup-content {
+
+/* Please dont change this into TestSelection-popup-content, im overriding the default popup content from the module */
+.popup-content {
     padding: 0!important;
     background: transparent!important;
     border: 0!important;
+    -webkit-animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
 }
 
 .TestSelection-buttonpop {
@@ -365,9 +372,6 @@ width: 80%;
     box-shadow: 0 0 500px rgba(241, 241, 241, 0);
   }
 }
-.TestSelection-popup-content {
-  -webkit-animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
-}
 
 .TestSelection-bottomcenterntns {
     display: flex;
@@ -384,6 +388,6 @@ width: 80%;
     background-color: #b3e6b3!important;
 }
 
-.correct:hover {
+.TestSelection-correct:hover {
     background-color: #b3e6b3!important;
 }

@@ -5,6 +5,7 @@ import 'pages/solve_test/TestSelection.css';
 import config from 'config.js';
 import { SELECT_TEST_URL } from "urls.js";
 import ErrorCompPage from 'components/Errors/errorCompSolveTest';
+import API from 'api';
 
 function QuestionSolving(props) {
   document.documentElement.style.setProperty("--base", "var(--yellow)");
@@ -19,19 +20,12 @@ function QuestionSolving(props) {
 
   function getGrade() {
     setLoading(true);
-    setError("");
-    fetch(config.svurl + "api/tests/" + test + "/grade", {
-      method: "GET",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
+      API.getTestSubmissions(test).then((data) => {
+        if (data.error) {
+          setError("Error: " + data.error);
+        }
         setGrade(data.grade);
-      }).catch(error => {
-        console.log(error);
+      }).catch((error) => {
         setError("Error: " + error);
       }).finally(() => {
         setLoading(false);
@@ -39,13 +33,13 @@ function QuestionSolving(props) {
   }
 
   useEffect(() => {
-    document.title = "Solved Test " + test;
+    document.title = "Solved Test Grade" + test;
     // console.log(location.state);
     if (!location.state) {
       getGrade();
     }
   }, []);
-
+  console.log(error);
 
   if (error) {
     return (
@@ -77,7 +71,7 @@ function QuestionSolving(props) {
 
         <div className="TestSelection-bottomcenterntns mt-10">
           <button onClick={() => {
-            navigate('/solved/' + test);
+            navigate('/test/solved/' + test);
 
           }}>Check the answers</button>
           <button onClick={() => {

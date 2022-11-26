@@ -25,6 +25,7 @@ from moelasware.models import (
 )
 
 
+""" Already implemented....
 @api_view(["GET"])
 # @login_required
 def get_quiz_view(request, pk):
@@ -36,7 +37,7 @@ def get_quiz_view(request, pk):
     answer_serializer = GetQuizAnswerSerializer(answers, many=True)
     return JsonResponse(
         {"quiz": quiz_serializer.data, "answers": answer_serializer.data}
-    )
+    ) """
 
 
 @api_view(["POST"])

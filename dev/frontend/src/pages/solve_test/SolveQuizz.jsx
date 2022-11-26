@@ -8,6 +8,7 @@ import { SELECT_TEST_URL, TEST_GRADE_URL } from "urls.js";
 import 'pages/solve_test/TestSelection.css';
 import { PopupInside } from 'components/Errors/PopupStopTest.jsx';
 import ErrorCompPage from 'components/Errors/errorCompSolveTest';
+import API from 'api';
 
 
 const contentStylePopup = {
@@ -40,8 +41,6 @@ function SolveQuizz() {
             "quiz_answers": [2] # id's of the answers choosen
         }
     ] */
-    console.log("isbtnSelected");
-    console.log(submissionAnswers);
     return submissionAnswers && submissionAnswers.find((sub) => sub.quiz_id === quizz_id && sub.quiz_answers.includes(answerid));
   }
 
@@ -98,15 +97,18 @@ function SolveQuizz() {
 
     // user can't submit if there are empty answers
     if (checkEmptyAnswers()) {
+      console.log("empty answers");
       setopenNoAnswers(true);
       return;
     }
     // check if there are more than 1 answer for a question
     if (checkMoreThanTwoAnswers()) {
+      console.log("more than 1 answer");
       setopenMoreThanOne(true);
       return;
     }
     setLoading(true);
+    console.log(submissionAnswers);
 
     // transform the submissionAnswers to the correct format, by making quiz_answers an integer
     let subCorrectFormat = submissionAnswers;
@@ -114,68 +116,44 @@ function SolveQuizz() {
       answer.quiz_answers = answer.quiz_answers[0];
     });
 
-    const body = {
-      "answers": subCorrectFormat
-    }
-    console.log(JSON.stringify(body));
-    fetch(config.svurl + `api/tests/${test}/submissions`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    })
-      .then(response => response.json())
-      .then(data => {
-        navigate(`${TEST_GRADE_URL}/${test}/result`, {
-          state: {
-            grade: data.grade,
-            id: test
-          }
-        });
-      }).catch(error => {
-        console.log(error);
-        setError("Error: " + error);
-      }).finally(() => {
-        setLoading(false);
+    API.postSubmission(test, subCorrectFormat).then((data) => {
+      navigate(`${TEST_GRADE_URL}/${test}/result`, {
+        state: {
+          grade: data.grade,
+          id: test
+        }
       });
+    }).catch((error) => {
+      setError("Error: " + error);
+    }).finally(() => {
+      setLoading(false);
+    });
   }
 
   function getQuizzQuestions() {
     setLoading(true);
-    fetch(config.svurl + 'api/quizzes/' + test, {
-      method: "GET",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+    API.getQuiz(test).then((data) => {
+      let answer = []; /* quiz_id: 0, answers: [] */
+      data.quizzes.forEach((question) => { answer.push({ quiz_id: question.id, quiz_answers: [] }) });
+      setQuizzQuestions(data);
+
+      // if not, they are already in the localstorage
+      if (submissionAnswers === null || submissionAnswers === undefined) {
+        setSub(answer);
       }
-    })
-      .then(response => response.json())
-      .then(data => {
-        let answer = []; /* quiz_id: 0, answers: [] */
-        data.quizzes.forEach((question) => { answer.push({ quiz_id: question.id, quiz_answers: [] }) });
-        setQuizzQuestions(data);
-
-        // if not, they are already in the localstorage
-        if (submissionAnswers === null || submissionAnswers === undefined) {
-          setSub(answer);
-        }
-      }).catch(error => {
-        console.log(error);
-        setError("Error: " + error);
-      }).finally(() => {
-        setLoading(false);
-      });
+    }).catch((error) => {
+      setError("Error: " + error);
+    }).finally(() => {
+      setLoading(false);
+    });
   }
-
 
   useEffect(() => {
     document.title = "Test " + test;
     if (!quizzInfo) {
       getQuizzQuestions();
     }
-    console.log(localStorage.getItem('subs#' + test));
+    // console.log(localStorage.getItem('subs#' + test));
 
     setRerender(false);
   }, []);
@@ -186,7 +164,8 @@ function SolveQuizz() {
         error={error}
         resetError={() => {
           setError(null)
-          getQuizzQuestions();
+          // reload the page
+          window.location.reload();
         }}
       />
     )
@@ -212,32 +191,39 @@ function SolveQuizz() {
                 <div className='TestSelection-center_tab'>
                   {quizz.answers.map((answer, i) => (
                     i === 0 && quizz.answers.length === 1 ? (
-                      <button key={i} className={`btnlist button_uniq ${isbtnSelected(quizz.id, answer.id) ? 'selected' : ''}`} onClick={() => {
-                        addAnswer(answer.id, quizz.id)
-                        setRerender(!rerender); // to update classNames
-                      }}>
+                      <button key={i} className={
+                        `TestSelection-btnlist TestSelection-button_uniq ${isbtnSelected(quizz.id, answer.id) ? 'TestSelection-selected' : ''}`}
+                        onClick={() => {
+                          addAnswer(answer.id, quizz.id)
+                          setRerender(!rerender); // to update classNames
+                        }}>
                         {answer.text}
                       </button>
                     ) : i === 0 && quizz.answers.length > 0 ? (
-                      <button key={i} className={`btnlist buttoncorners ${isbtnSelected(quizz.id, answer.id) ? 'selected' : ''}`} onClick={() => {
-                        addAnswer(answer.id, quizz.id)
-                        setRerender(!rerender);
-                      }}>
+                      <button key={i} className={
+                        `TestSelection-btnlist TestSelection-buttoncorners ${isbtnSelected(quizz.id, answer.id) ? 'TestSelection-selected' : ''}`}
+                        onClick={() => {
+                          addAnswer(answer.id, quizz.id)
+                          setRerender(!rerender);
+                        }}>
                         {answer.text}
                       </button>
                     ) : i > 0 && i !== quizz.answers.length - 1 ? (
-                      <button key={i} className={`btnlist other_buttons ${isbtnSelected(quizz.id, answer.id) ? 'selected' : ''}`} onClick={() => {
-                        addAnswer(answer.id, quizz.id)
-                        setRerender(!rerender);
-
-                      }}>
+                      <button key={i} className={
+                        `TestSelection-btnlist TestSelection-other_buttons ${isbtnSelected(quizz.id, answer.id) ? 'TestSelection-selected' : ''}`}
+                        onClick={() => {
+                          addAnswer(answer.id, quizz.id)
+                          setRerender(!rerender);
+                        }}>
                         {answer.text}
                       </button>
                     ) : i === quizz.answers.length - 1 ? (
-                      <button key={i} className={`btnlist button_end ${isbtnSelected(quizz.id, answer.id) ? 'selected' : ''}`} onClick={() => {
-                        addAnswer(answer.id, quizz.id)
-                        setRerender(!rerender);
-                      }}>
+                      <button key={i} className={
+                        `TestSelection-btnlist TestSelection-button_end ${isbtnSelected(quizz.id, answer.id) ? 'TestSelection-selected' : ''}`}
+                        onClick={() => {
+                          addAnswer(answer.id, quizz.id)
+                          setRerender(!rerender);
+                        }}>
                         {answer.text}
                       </button>
                     ) : null
@@ -248,9 +234,9 @@ function SolveQuizz() {
             ))}
           </div>
 
-
           <div className="TestSelection-bottomcenterntns">
             <button className='TestSelection-button' onClick={() => {
+              console.log("gdfehwfhjds");
               submitAnswers();
             }}>Submit answers</button>
             <Popup
@@ -258,10 +244,13 @@ function SolveQuizz() {
               modal
               contentStyle={contentStylePopup}
               open={openNoAnswers}
+              onClose={() => {
+                setopenNoAnswers(false);
+              }}
             >
               {close => (
                 <PopupInside onClick={() => {
-                  setopenNoAnswers(o => !o)
+                  setopenNoAnswers(false)
                 }} close={close} title={"You still have unanswered questions."} singleButton={true} />
               )}
             </Popup>
@@ -271,16 +260,19 @@ function SolveQuizz() {
               modal
               contentStyle={contentStylePopup}
               open={openMoreThanOne}
+              onClose={() => {
+                setopenMoreThanOne(false);
+              }}
             >
               {close => (
                 <PopupInside onClick={() => {
-                  setopenMoreThanOne(o => !o)
+                  setopenMoreThanOne(false)
                 }} close={close} title={"You can't select more than two answers."} singleButton={true} />
               )}
             </Popup>
 
             <Popup trigger={
-              <button>Back to test selection</button>
+              <button className='TestSelection-button'>Back to test selection</button>
             } position="center center"
               modal
               contentStyle={contentStylePopup}
@@ -293,10 +285,7 @@ function SolveQuizz() {
               )}
             </Popup>
           </div>
-
         </>
-
-
       )}
     </div>
 

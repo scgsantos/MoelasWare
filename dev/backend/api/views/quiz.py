@@ -3,9 +3,10 @@ import random
 from django.http import HttpResponseBadRequest, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
+from django.shortcuts import get_object_or_404
 
-from api.serializers import QuizAnswerSerializer, QuizFinishedSerializer, QuizSerializer
-from moelasware.models import Quiz, QuizAnswer, Review, Tag, User
+from api.serializers import GetTestSerializer, QuizAnswerSerializer, QuizFinishedSerializer, QuizSerializer
+from moelasware.models import Quiz, QuizAnswer, Review, Tag, User,Test
 
 
 @api_view(["GET"])
@@ -32,29 +33,6 @@ def get_quiz_view(request, pk):
     return JsonResponse(
         {"invalid": "not good data"}, status=status.HTTP_400_BAD_REQUEST
     )
-
-
-@api_view(["GET"])
-def get_quiz_view(request, pk):
-    # get a test with all the quizzAnswers attached to it
-    if pk is not None:
-        instance = get_object_or_404(Test, pk=pk)
-        serializer = GetTestSerializer(instance, many=False)
-
-        # get all the Quizzes for this test
-        quizzes = Quiz.objects.filter(test__id=pk)
-        quizzes_serializer = QuizSerializer(quizzes, many=True)
-
-        # for each quiz get all the answers
-        for quiz in quizzes_serializer.data:
-            answers = QuizAnswer.objects.filter(quiz__id=quiz["id"])
-            answers_serializer = QuizAnswerSerializer(answers, many=True)
-            quiz["answers"] = answers_serializer.data
-
-        return JsonResponse({"test": serializer.data, "quizzes": quizzes_serializer.data})
-
-    return JsonResponse({"invalid": "not good data"}, status=status.HTTP_400_BAD_REQUEST)
-
 
 @api_view(["GET"])
 def get_total_number_of_quizzes_view(request):

@@ -3,14 +3,14 @@ import 'reactjs-popup/dist/index.css';
 
 export const PopupInside = (props) => {
     return (
-        <div className='popupInside'>
-            <span className="header">{props.title}</span>
-            <span className="content">{props.subtitle}</span>
-            <div className="actions">
-                {props.singleButton ? <button className="button" onClick={props.onClick}>Try Again</button> :
+        <div className='TestSelection-popupInside'>
+            <span className="TestSelection-header">{props.title}</span>
+            <span className="TestSelection-content">{props.subtitle}</span>
+            <div className="TestSelection-actions">
+                {props.singleButton ? <button className="TestSelection-button" onClick={props.onClick}>Try Again</button> :
                     <>
-                        <button onClick={props.onClick} className="buttonpop">Yes</button>
-                        <button onClick={props.close} className="buttonpop">No</button>
+                        <button onClick={props.onClick} className="TestSelection-buttonpop">Yes</button>
+                        <button onClick={props.close} className="TestSelection-buttonpop">No</button>
                     </>
                 }
             </div>

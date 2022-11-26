@@ -2,9 +2,8 @@ from django.db import models
 
 from moelasware.models import fk
 from moelasware.models.quiz import QuizAnswer
-from moelasware.models.test import Test
 from moelasware.models.user import User
-
+from moelasware.models.test import Test
 
 class Submission(models.Model):
     """

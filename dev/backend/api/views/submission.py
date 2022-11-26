@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.http.response import HttpResponseBadRequest, HttpResponseNotFound
+from django.http.response import HttpResponseBadRequest, HttpResponseNotFound, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -11,8 +11,9 @@ from api.serializers import (
     SubmissionAnswerSerializer,
     SubmissionSerializer,
 )
-from moelasware.models import Quiz, QuizAnswer, Submission, SubmissionAnswer, Test, User
-
+from moelasware.models import Quiz, QuizAnswer, SubmissionAnswer, User
+from moelasware.models.test import Test
+import json
 
 @api_view(["GET", "POST"])
 def submission_view(request, pk):
@@ -100,9 +101,10 @@ def get_self_submission_view(request, pk, user):
     """
 
     # check if the uer is able to solve the test
-    if not user.can_solve_tests():
+    if Quiz.objects.filter(author=user).exists() is False:
         # You should just return a simple plain-text response, no need for JSON. Use HttpResponseForbidden.
-        return HttpResponseForbidden("You are not allowed to solve tests")
+        stringified = json.dumps({"error": "You are not allowed to solve this test"})
+        return HttpResponseForbidden(stringified)
 
     # get all quizzes that are in the test
     quizzes = Quiz.objects.filter(test__id=pk)
@@ -117,13 +119,14 @@ def get_self_submission_view(request, pk, user):
 
     # get the submission
     submission = Submission.objects.filter(test__id=pk, submitter=user).last()
+    grade = get_submission_grade(pk, user)
 
     # get all the SubmissionAnswer for the submissions with the user and the submission
     submission_answers = SubmissionAnswer.objects.filter(submission__id=submission.id)
     submission_answers_serializer = SubmissionAnswerSerializer(
         submission_answers, many=True
     )
-
+    
     # append the quizz id to the submission answer
     for submission_answer in submission_answers_serializer.data:
         # from the quizz answer get the quiz id
@@ -145,7 +148,7 @@ def get_self_submission_view(request, pk, user):
         for quiz_id in [quiz["id"] for quiz in quizzes_serializer.data]
     }
     return JsonResponse(
-        {"answers": grouped_answers, "quizzes": quizzes_serializer.data},
+        {"answers": grouped_answers, "quizzes": quizzes_serializer.data, "grade": grade},
         status=status.HTTP_200_OK,
     )
 
@@ -167,9 +170,10 @@ def create_submission(request, pk, user):
         ]
     """
     # check if the uer is able to solve the test
-    if not user.can_solve_tests():
+    if Quiz.objects.filter(author=user).exists() is False:
         # You should just return a simple plain-text response, no need for JSON. Use HttpResponseForbidden.
-        return HttpResponseForbidden("You are not allowed to solve tests")
+        stringified = json.dumps({"error": "You are not allowed to solve this test"})
+        return HttpResponseForbidden(stringified)
 
     # get test by id -> detail view
     instance = get_object_or_404(Test, pk=pk)
@@ -230,9 +234,7 @@ def create_submission(request, pk, user):
     )
 
 
-@api_view(["GET"])
-# @login_required
-def get_submission_grade(request, pk):
+def get_submission_grade(pk_test, user):
     # TODO: remove this in produciton
     user = User.objects.get(pk=1)
 
@@ -242,18 +244,17 @@ def get_submission_grade(request, pk):
 
     # get the SubmissionAnswer from pk of the test, get the latest submission
 
-    submission = Submission.objects.filter(test__id=pk, submitter=user).last()
-    print(submission)
+    submission = Submission.objects.filter(test__id=pk_test, submitter=user).last()
 
     # check if the user is the owner of the submission
     if submission.submitter != user:
-        return HttpResponseForbidden("You are not allowed to see this submission")
+        stringified = json.dumps({"error": "You are not allowed to see this submission"})
+        return HttpResponseForbidden(stringified)
 
     grade = 0
 
     # get all the Quizz Answers from the submission
     submission_answers = SubmissionAnswer.objects.filter(submission__id=submission.id)
-    print(submission_answers)
 
     # get all the quizz answers from the submission_answers
     for sub_answer in submission_answers:
@@ -264,4 +265,4 @@ def get_submission_grade(request, pk):
 
     grade = (grade / num_quizzes) * 100
 
-    return JsonResponse({"grade": grade}, status=status.HTTP_200_OK)
+    return grade

@@ -115,7 +115,6 @@ function MainSelectionPage() {
                 <span className={`TestSelection-testTitle ${test.submissions.length > 0 ? 'TestSelection-disabled-text' : ''}`}>Test #{test.id} - {test.quizzes[0].tags[0].text
                 }</span>
                 <Button onClick={() => {
-                  console.log("test", test.submissions);
                   if (test.submissions.length > 0) {
                     navigate(`${TEST_GRADE_URL}/${test.id}/result`);
                     return;

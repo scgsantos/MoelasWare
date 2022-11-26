@@ -11,13 +11,6 @@ class QuizSerializer(serializers.ModelSerializer):
         model = Quiz
         fields = ["id", "name", "author", "tags", "question", "description"]
 
-
-class QuizAnswerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = QuizAnswer
-        fields = ["id", "text", "justification"]
-
-
 class QuizAnswerSerializerWithRes(serializers.ModelSerializer):
     class Meta:
         model = QuizAnswer

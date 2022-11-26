@@ -85,8 +85,8 @@ class API {
   }
 
   // Get a quiz by ID
-  static getQuiz(quiz_id) {
-    return this.makeRequest(`quizzes/${quiz_id}/`);
+  static getQuiz(test_id) {
+    return this.makeRequest(`quizzes/${test_id}/`);
   }
 
   // NOT YET IMPLEMENTED
@@ -207,10 +207,13 @@ class API {
   }
 
   // Add new submission
-  static postSubmission(test_id,) {
+  static postSubmission(test_id,subCorrectFormat) {
     return this.makeRequest(
-      `tests/${test_id}submissions`,
-      "POST"
+      `tests/${test_id}/submissions/`,
+      "POST",
+      {
+        "answers": subCorrectFormat
+      }
     );
   }
 

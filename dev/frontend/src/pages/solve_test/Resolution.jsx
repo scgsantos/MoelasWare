@@ -94,19 +94,19 @@ function CheckAnswers() {
                 <div className='TestSelection-center_tab'>
                   {quizz.answers.map((answer, i) => (
                     i === 0 && quizz.answers.length === 1 ? (
-                      <button key={i} className={`btnlist button_uniq ${isbtnSelected(quizz.id, answer.id) ? 'selected' : ''} ${isbtnCorrect(quizz.id, answer.id) ? 'correct' : ''}`}>
+                      <button key={i} className={`TestSelection-btnlist TestSelection-button_uniq ${isbtnSelected(quizz.id, answer.id) ? 'TestSelection-selected' : ''} ${isbtnCorrect(quizz.id, answer.id) ? 'TestSelection-correct' : ''}`}>
                         {answer.text}
                       </button>
                     ) : i === 0 && quizz.answers.length > 0 ? (
-                      <button key={i} className={`btnlist buttoncorners ${isbtnSelected(quizz.id, answer.id) ? 'selected' : ''} ${isbtnCorrect(quizz.id, answer.id) ? 'correct' : ''}`}>
+                      <button key={i} className={`TestSelection-btnlist TestSelection-buttoncorners ${isbtnSelected(quizz.id, answer.id) ? 'TestSelection-selected' : ''} ${isbtnCorrect(quizz.id, answer.id) ? 'TestSelection-correct' : ''}`}>
                         {answer.text}
                       </button>
                     ) : i > 0 && i !== quizz.answers.length - 1 ? (
-                      <button key={i} className={`btnlist other_buttons ${isbtnSelected(quizz.id, answer.id) ? 'selected' : ''} ${isbtnCorrect(quizz.id, answer.id) ? 'correct' : ''}`}>
+                      <button key={i} className={`TestSelection-btnlist TestSelection-other_buttons ${isbtnSelected(quizz.id, answer.id) ? 'TestSelection-selected' : ''} ${isbtnCorrect(quizz.id, answer.id) ? 'TestSelection-correct' : ''}`}>
                         {answer.text}
                       </button>
                     ) : i === quizz.answers.length - 1 ? (
-                      <button key={i} className={`btnlist button_end ${isbtnSelected(quizz.id, answer.id) ? 'selected' : ''} ${isbtnCorrect(quizz.id, answer.id) ? 'correct' : ''}`}>
+                      <button key={i} className={`TestSelection-btnlist TestSelection-button_end ${isbtnSelected(quizz.id, answer.id) ? 'TestSelection-selected' : ''} ${isbtnCorrect(quizz.id, answer.id) ? 'TestSelection-correct' : ''}`}>
                         {answer.text}
                       </button>
                     ) : null
