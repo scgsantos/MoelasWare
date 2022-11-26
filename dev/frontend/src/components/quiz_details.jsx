@@ -47,15 +47,15 @@ function MyQuiz() {
         );
     }
 
-    let evaluations = [];
+    let reviews_list = [];
     for (let i = 0; i < reviews.length; i++) {
-        evaluations.push(
+        reviews_list.push(
             <React.Fragment>
                 <p className="review-title">REVIEW #{i + 1}:</p>
-                <div className="reviews">
+                <div className="results">
                     <p
                         key={"r" + i}
-                        id="review"
+                        id="result"
                         className={
                             reviews[i][4] === "accepted" ? "accepted" : "none"
                         }
@@ -63,10 +63,12 @@ function MyQuiz() {
                         {reviews[i][4]}
                     </p>
                 </div>
-                <div className="reviews">
+                <div className="evaluations">
                     <p key={"e" + i} id="evaluation">
                         {reviews[i][2]}
                     </p>
+                </div>
+                <div>
                     <p key={"e" + i} id="evaluation">
                         {reviews[i][1]}
                     </p>
@@ -94,7 +96,7 @@ function MyQuiz() {
                     <p id="description">({quizzes[5]})</p>
                     <div className="answers">{options}</div>
                     <h3>REVIEWS</h3>
-                    {evaluations}
+                    <div className="reviews">{reviews_list}</div>
                 </div>
             </div>
         </div>

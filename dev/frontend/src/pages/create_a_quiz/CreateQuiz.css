@@ -109,6 +109,9 @@
     background-color: var(--green);
 }
 
+
+
+
 .myquiz .reviews {
     margin-top: 2rem;
     width: 90%;
@@ -129,19 +132,21 @@
     justify-self: center;
 }
 
-.myquiz .answers #option {
+.myquiz .reviews #result {
     border-radius: 10px;
     border: 1px solid black;
     padding: 0.3em 0.7em;
 }
 
-.myquiz .answers #justification {
+.myquiz .reviews #evaluation {
     font-size: 0.9rem;
 }
 
-.myquiz .answers p.correct {
+.myquiz .reviews p.accepted {
     background-color: var(--green);
 }
+
+
 
 .createquiznav {
     margin: 0 0.5rem;

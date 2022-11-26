@@ -47,5 +47,4 @@ def get_draft_info(request, id):
         else:
             count += 1
 
-    return JsonResponse({"draft": quiz, "answers" : answers})
-    
+    return JsonResponse({"draft": [quiz, *answers]})
