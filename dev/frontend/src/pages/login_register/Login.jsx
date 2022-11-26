@@ -58,7 +58,6 @@ function Login() {
                         } else {
                             setErrorRegister("User already exists");
                         }
-
                     });
                 } else {
                     setErrorRegister("User already exists");
