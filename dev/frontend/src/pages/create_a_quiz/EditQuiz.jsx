@@ -7,50 +7,45 @@ function EditQuiz() {
 
     const { id } = useParams();
 
-    var [inputs, setInputs] = useState([]);
+    var [inputs, setInputs] = useState({});
 
     useEffect(() => {
         API.getDraftById(id).then((data) => {
             console.log(data.draft);
-            setInputs((inputs) => [
+            setInputs({
                 ...inputs,
-                {
+                info: {
                     name: data.draft[0].name,
-                    tag: data.draft[0].tags[0].text,
+                    tag: data.draft[0].tags[0]?.text,
                     question: data.draft[0].question,
                     description: data.draft[0].description,
+                    correct: `${data.draft[0].correct}`,
                 },
-                {
+                answer1: {
                     option: data.draft[1].text,
                     justification: data.draft[1].justification,
-                    correct: data.draft[1].correct,
                 },
-                {
+                answer2: {
                     option: data.draft[2].text,
                     justification: data.draft[2].justification,
-                    correct: data.draft[2].correct,
                 },
-                {
+                answer3: {
                     option: data.draft[3].text,
                     justification: data.draft[3].justification,
-                    correct: data.draft[3].correct,
                 },
-                {
+                answer4: {
                     option: data.draft[4].text,
                     justification: data.draft[4].justification,
-                    correct: data.draft[4].correct,
                 },
-                {
+                answer5: {
                     option: data.draft[5].text,
                     justification: data.draft[5].justification,
-                    correct: data.draft[5].correct,
                 },
-                {
+                answer6: {
                     option: data.draft[6].text,
                     justification: data.draft[6].justification,
-                    correct: data.draft[6].correct,
                 },
-            ]);
+            });
         });
     }, []);
     console.log(inputs);
@@ -73,65 +68,74 @@ function EditQuiz() {
 
     const navigate = useNavigate();
 
-    function handleChange(event) {
-        const newState = inputs.map((obj) => {
-            return (
-                { [event.target.name]: event.target.value },
-                { id: 1 },
-                { id: 2 },
-                { id: 2 },
-                { id: 2 },
-                { id: 2 },
-                { id: 2 }
-            );
+    function handleInfoChange(event) {
+        setInputs({
+            ...inputs,
+            info: {
+                ...inputs.info,
+                [event.target.name]: event.target.value,
+            },
         });
+    }
 
-        setInputs(newState);
+    function handleAnswerChange(event) {
+        setInputs({
+            ...inputs,
+            [event.target.className]: {
+                ...inputs[event.target.className],
+                [event.target.name]: event.target.value,
+            },
+        });
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(inputs);
-        //API.createQuiz(inputs).then((data) => setResposta(data.resposta));
-        //navigate(-1);
-        //window.location.reload();
+        API.createQuiz(inputs);
+        navigate(-1);
+        window.location.reload();
     };
 
     let options = [];
     for (let i = 1; i < 7; i++) {
+        var answeri = "answer" + i;
         options.push(
             <React.Fragment>
                 <div className="option">
                     <input
+                        value={i}
                         type="radio"
                         name="correct"
-                        checked={inputs[i]?.correct}
-                        onChange={handleChange}
+                        className={"answer" + i}
+                        checked={inputs?.info?.correct == i}
+                        onChange={handleInfoChange}
                     />
 
                     <label key={"o" + i}>
                         <p>OPTION #{i}</p>
                         <input
-                            name={"option" + i}
-                            value={inputs[i]?.option}
+                            name="option"
+                            className={"answer" + i}
+                            value={inputs[answeri]?.option}
                             type="text"
                             placeholder={"Insert answer #" + i}
                             size="40"
-                            onChange={handleChange}
+                            onChange={handleAnswerChange}
                         />
                     </label>
 
                     <label key={"j" + i}>
                         <p>JUSTIFICATION</p>
                         <input
-                            name={"justification" + i}
-                            value={inputs[i]?.justification}
+                            name="justification"
+                            className={"answer" + i}
+                            value={inputs[answeri]?.justification}
                             type="text"
                             placeholder={
                                 "Insert answer #" + i + " justification"
                             }
                             size="60"
-                            onChange={handleChange}
+                            onChange={handleAnswerChange}
                         />
                     </label>
                 </div>
@@ -153,11 +157,11 @@ function EditQuiz() {
 
                                 <input
                                     name="name"
-                                    value={inputs[0]?.name}
+                                    value={inputs?.info?.name}
                                     type="text"
                                     placeholder="Insert a name for the quiz"
                                     size="40"
-                                    onChange={handleChange}
+                                    onChange={handleInfoChange}
                                 />
                             </label>
                         </div>
@@ -166,8 +170,8 @@ function EditQuiz() {
                                 <p>TAG</p>
                                 <select
                                     name="tag"
-                                    value={inputs[0]?.tag}
-                                    onChange={handleChange}
+                                    value={inputs?.info?.tag}
+                                    onChange={handleInfoChange}
                                 >
                                     {tags.map((o) => (
                                         <option key={o.value} value={o.value}>
@@ -185,10 +189,10 @@ function EditQuiz() {
                                 <input
                                     name="question"
                                     type="text"
-                                    value={inputs[0]?.question}
+                                    value={inputs?.info?.question}
                                     placeholder="Insert question"
                                     size="50"
-                                    onChange={handleChange}
+                                    onChange={handleInfoChange}
                                 />
                             </label>
 
@@ -198,10 +202,10 @@ function EditQuiz() {
                                     <input
                                         name="description"
                                         type="text"
-                                        value={inputs[0]?.description}
+                                        value={inputs?.info?.description}
                                         placeholder="Insert question description"
                                         size="70"
-                                        onChange={handleChange}
+                                        onChange={handleInfoChange}
                                     />
                                 </label>
                             </div>
