@@ -10,41 +10,64 @@ export default function Profile() {
     "TAG",
     "CORRECT ANSWERS"
   ];
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   
   useEffect(() => {
-    API.getMyFinishedQuizzes()
+    API.getProfile()
       .then((data) => {
-        setProfile(data.profile);
-        setUser(data.user);
-        setNumberCorrectAnswers(data.correct_answers)});
-  }, []);
+        if (data.error){
+          setError(data.error);
+          setErrorMessage(data.message);
+          setUser(data.user);
+        } else {
+          setProfile(data.profile);
+          setUser(data.user);
+          setNumberCorrectAnswers(data.correct_answers)
+        }
+      });
+  });
 
-  return (
+  if (error){
+    return (
 
-    <section id="profile">
-      <h1>{user.toLocaleUpperCase()}'S PROFILE</h1>
-      <table>
-        <thead>
-          <tr>
-            {quizHeader.map((h) => (
-              <th key={h}>{h}</th>
+      <section id="profile">
+        <h1>{user.toLocaleUpperCase()}'S PROFILE</h1>
+        <h2>{errorMessage}</h2>
+        <Outlet />
+      </section>
+    );
+  } else {
+    return (
+
+      <section id="profile">
+        <h1>{user.toLocaleUpperCase()}'S PROFILE</h1>
+        <table>
+          <thead>
+            <tr>
+              {quizHeader.map((h) => (
+                <th key={h}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+  
+          <tbody>
+            
+            {Object.keys(profile).map((entrada) => (
+            <tr>
+              <td>{entrada}</td>
+              <td>{profile[entrada]}/{number_of_correct_answers}</td>
+            </tr>
             ))}
-          </tr>
-        </thead>
+            
+          </tbody>
+  
+        </table>
+        <Outlet />
+      </section>
+    );
+  }
 
-        <tbody>
-          
-          {Object.keys(profile).map((entrada) => (
-          <tr>
-            <td>{entrada}</td>
-            <td>{profile[entrada]}/{number_of_correct_answers}</td>
-          </tr>
-          ))}
-          
-        </tbody>
-
-      </table>
-      <Outlet />
-    </section>
-  );
+  
 };
