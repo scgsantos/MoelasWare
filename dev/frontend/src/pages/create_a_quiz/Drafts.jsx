@@ -21,6 +21,7 @@ function Drafts() {
             setDrafts(data.quizzes);
         });
     }, []);
+    console.log(drafts);
 
     return (
         <React.Fragment>
