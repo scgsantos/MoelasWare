@@ -13,7 +13,7 @@ def register_view(request):
     print(f"username:{username}, password: {password}")
     user_already_exists = AuthUser.objects.filter(username=username).count() != 0
 
-    print(user_already_exists)
+    #print(user_already_exists)
 
     if user_already_exists:
         return JsonResponse(

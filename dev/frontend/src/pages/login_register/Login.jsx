@@ -16,7 +16,6 @@ function Login() {
     const [errorLogin, setErrorLogin] = useState("");
     const [errorRegister, setErrorRegister] = useState("");
 
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -46,21 +45,24 @@ function Login() {
 
     const handleRegister = (event) => {
         event.preventDefault();
-        API.register(
-            inputs.username,
-            inputs.password,
-            inputs.repeat_password
-        ).then((data) => setErrorLogin(data.invalid)
-        ).then(() => {
-            API.login(inputs.username, inputs.password).then(() => {
-                if (isLoggedIn()) {
-                    navigate("/");
-                } else {
-                    setErrorRegister("User already exists");
-                }
-                //window.location.reload();
+        if (inputs.password == inputs.repeat_password) {
+            API.register(
+                inputs.username,
+                inputs.password,
+                inputs.repeat_password
+            ).then(() => {
+                API.login(inputs.username, inputs.password).then(() => {
+                    if (isLoggedIn()) {
+                        navigate("/");
+                    } else {
+                        setErrorRegister("User already exists");
+                    }
+                    //window.location.reload();
+                });
             });
-        });
+        } else {
+            setErrorRegister("Passwords don't match");
+        }
     };
 
     return (

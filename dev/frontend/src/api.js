@@ -193,7 +193,7 @@ class API {
     }
 
     static register(username, password, repeat_password) {
-        if (password !== repeat_password) {
+        if (password === repeat_password) {
             return this.makeRequest("register/", "POST", {
                 username: username,
                 password: password,
