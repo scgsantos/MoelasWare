@@ -93,7 +93,7 @@ function EditQuiz() {
         console.log(inputs);
         API.createQuiz(inputs);
         navigate(-1);
-        window.location.reload();
+        //window.location.reload();
     };
 
     let options = [];
