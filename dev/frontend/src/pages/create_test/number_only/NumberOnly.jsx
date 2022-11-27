@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import IncDecCounter from "components/InputNumber";
 import "pages/create_test/number_only/NumberOnly.css";
 
+import API from "api.js";
+
 import { useNavigate } from "react-router-dom";
 
-import { CREATE_RANDOM_TEST_URL, TEST_MENU_URL, TEST_PREVIEW_URL } from "urls.js";
+import { CREATE_RANDOM_TEST_URL, TEST_MENU_URL, TEST_PUBLISHED_URL, } from "urls.js";
 import history from "history.js";
 
 function CreateRandomTest() {
@@ -70,9 +72,12 @@ function CreateRandomTest() {
 
   function handleNextButtonChange() {
     if (text.length != 0) {
+
+    API.postTest(text, 1, quizzes); // TODO: get author -> logged in user
+
       history.push(CREATE_RANDOM_TEST_URL);
 
-      navigate(TEST_PREVIEW_URL, {
+      navigate(TEST_PUBLISHED_URL, {
         state: {
           name: text,
           quizzes: quizzes,
@@ -112,7 +117,7 @@ function CreateRandomTest() {
           <div className="NumberOnly-buttonCreate">
             <button onClick={handleGoBackToMenu}>Go Back</button>
           </div>
-          &ensp;&ensp;
+          &nbsp;&nbsp;
           <div className="NumberOnly-buttonCreate">
             <button onClick={handleCreateButtonChange}>Next</button>
           </div>
@@ -142,17 +147,13 @@ function CreateRandomTest() {
         <h3 className="NumberOnly-title"> Chosen Quizzes: </h3>
         <ul className="NumberOnly-quizList">
           {quizzes.map((quiz) => (
-            <li className="NumberOnly-quiz">{quiz.question}</li>
+            <li className="NumberOnly-quiz">{quiz.name}</li>
           ))}
         </ul>
 
         <div className="NumberOnly-Publish-GoBack-buttons">
           <button className="NumberOnly-GoBackbutton" onClick={handleGoBackChange}>
             Go Back
-          </button>
-
-          <button className="NumberOnly-GoBackbutton" onClick={getFirstQuiz}>
-            Reroll Quizzes
           </button>
 
           <button

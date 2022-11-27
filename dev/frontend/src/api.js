@@ -184,10 +184,10 @@ class API {
   }
 
   // Generate a new test
-  static postTest(num_quizzes, allowed_tags, quizzes) {
+  static postTest(name, author, quizzes) {
     return this.makeRequest("tests/", "POST", {
-      num_quizzes: num_quizzes,
-      allowed_tags: allowed_tags,
+      name: name,
+      author: author,
       quizzes: quizzes,
     });
   }

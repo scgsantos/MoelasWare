@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import "pages/create_test/select_quizzes/SelectQuizzes.css";
 import "pages/create_test/preview/TestPreview.css";
 
+import API from "api.js";
+
 import { useNavigate } from "react-router-dom";
 import { format } from 'react-string-format';
 
-import { TEST_MENU_URL, TEST_PREVIEW_URL, CREATE_TEST_URL } from "urls.js";
+import { TEST_MENU_URL, TEST_PUBLISHED_URL, CREATE_TEST_URL } from "urls.js";
 import history from 'history.js';
 
 
@@ -159,9 +161,11 @@ function CreateTest() {
         }
       }
 
+      API.postTest(text, 1, quizzes); // TODO: get author -> logged in user
+
       history.push(CREATE_TEST_URL);
 
-      navigate(TEST_PREVIEW_URL,
+      navigate(TEST_PUBLISHED_URL,
         { state: { name: text, quizzes: q, previous_path: CREATE_TEST_URL } },
       );
       window.location.reload();
@@ -287,7 +291,7 @@ function CreateTest() {
   function renderQuiz(quiz) {
     if (quizHasBeenSelected(quiz)) {
       return (<li style={{ cursor: 'pointer' }} onClick={() => handleQuizSelectionChange(quiz)}>
-        <p style={{ color: 'green' }} onClick={() => handleQuizPreview(quiz)}>{quiz.question}</p>
+        <p style={{ color: 'green' }} onClick={() => handleQuizPreview(quiz)}>{quiz.name}</p>
         {quiz.tags.map((tag) => <text style={{ fontSize: '0.8rem' }}>{tag.text},&nbsp;</text>)}
         <br />
       </li>
@@ -296,7 +300,7 @@ function CreateTest() {
 
     } else {
       return (<li type="checkbox" style={{ cursor: 'pointer', backgroundColor: 'blue !important' }} onClick={() => handleQuizSelectionChange(quiz)}>
-        <p style={{ color: 'black' }} onClick={() => handleQuizPreview(quiz)}>{quiz.question}</p>
+        <p style={{ color: 'black' }} onClick={() => handleQuizPreview(quiz)}>{quiz.name}</p>
         {quiz.tags.map((tag) => <text style={{ fontSize: '0.8rem' }}>{tag.text},&nbsp;</text>)}
         <br />
       </li>
@@ -310,7 +314,7 @@ function CreateTest() {
 
     for (let i = 0; i < all_quizzes.length; i++) {
       if (all_quizzes[i].id == id)
-        return <li className="NumberOnly-quiz">{all_quizzes[i].question}</li>
+        return <li className="NumberOnly-quiz">{all_quizzes[i].name}</li>
     }
 
   }
@@ -333,8 +337,6 @@ function CreateTest() {
             {getPaginationArray().map((quiz) => renderQuiz(quiz))}
           </ul>
         </section>
-
-        {pop_up}
 
         <section id="createTest">
 
@@ -368,6 +370,9 @@ function CreateTest() {
             value={text}
             onChange={handleNameChange}
           />
+           <h2 className="NumberOnly-errorInput">
+            {text.length > 0 ? "" : "Name is mandatory"}
+          </h2>
         </div>
 
         <h3 className="NumberOnly-title"> Chosen Quizzes: </h3>

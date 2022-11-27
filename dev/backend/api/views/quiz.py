@@ -57,6 +57,7 @@ def get_n_quizzes_view(request):
         )
 
     tags = request.data.get("allowed_tags")
+    #print(tags)
     all_quizzes = Quiz.objects.can_be_added_to_a_test().order_by("?")
 
     quizzes_set = []
@@ -67,25 +68,32 @@ def get_n_quizzes_view(request):
         fraction = int(num_quizzes / n_tags)
         rest = int(num_quizzes % n_tags)
 
+        # criar lista de tags = [ (<TAG_TEXT>, <NUM_QUIZZES_WITH_TAG>), ...]
         tag_count = {}
         for tag in tags:
             tag_count[tag] = all_quizzes.filter(tags__text=tag).distinct().count()
-        tags = sorted(tag_count.items(), key=lambda x: x[1])
+        tags = sorted(tag_count.items(), key=lambda x: x[1]) # ordenar da tag com menos quizzes para as que têm mais
 
+        # Para cada tag tentar adicionar uma fracao -> se não houver suficientes tenta-se obter o que falta em quizzes com a proxima tag
         for tag in tags:
             tag_fraction = fraction + rest
             rest = 0
             quizzes_count = tag[1]
 
-            if quizzes_count >= tag_fraction:
-                quizzes_set += all_quizzes.filter(tags__text=tag[0]).distinct()[
-                    :tag_fraction
-                ]
-            else:
-                quizzes_set += all_quizzes.filter(tags__text=tag[0]).distinct()[
-                    :quizzes_count
-                ]
-                rest = tag_fraction - quizzes_count
+            added_quizzes = 0
+            quizzes_with_tag = list(all_quizzes.filter(tags__text=tag[0]).distinct())
+
+            # Percorrer os quizzes com a tag e adicionar quizzes que ainda nao estejam no quizzes_set
+            for i in range(quizzes_count):
+                if added_quizzes == tag_fraction:
+                    break
+
+                if quizzes_with_tag[i] not in quizzes_set:
+                    quizzes_set.append(quizzes_with_tag[i])
+                    added_quizzes = added_quizzes + 1
+
+            rest = tag_fraction - added_quizzes
+
 
         if rest:
             return HttpResponseBadRequest(

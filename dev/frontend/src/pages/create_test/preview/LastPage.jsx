@@ -1,4 +1,5 @@
-import correct from "correct.png";
+//import correct from "correct.png";
+import checkmark from "checkmark.svg";
 import "pages/create_test/number_only/NumberOnly.css";
 
 import {
