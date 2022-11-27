@@ -106,9 +106,16 @@ class API {
         });
     }
 
-    static createQuiz(inputs) {
+    static createQuiz(inputs, flag) {
         return this.makeRequest("quizzes/", "POST", {
             inputs: inputs,
+            flag : flag,
+        });
+    }
+    static editQuiz(inputs, id, flag) {
+        return this.makeRequest(`quizzes/${id}/`, "PATCH", {
+            inputs: inputs,
+            flag : flag,
         });
     }
 

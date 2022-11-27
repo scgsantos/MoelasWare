@@ -240,21 +240,27 @@ def create_quiz_view(request):
 
     quizzes = QuizAnswer.objects.filter(quiz=quiz)
 
-    response = finish_quiz(quiz, quizzes)
+    if request.data["flag"]:
+        response = finish_quiz(quiz, quizzes)
+
+    else:
+        response = {"resposta": "Saved as Draft"}
+        
     return JsonResponse(response)
 
 
 @api_view(['PATCH'])
 @login_required
-def edit_quiz_view(request):
+def edit_quiz_view(request, id):
 
-    dataRequest = request.data["inputs"]
-    data = handle_frontend_fields(dataRequest)
-    id = data["id"]
+    dataRequest = request.data["inputs"]["info"]
 
-    if "id" not in data:
-        # return HttpResponseNotFound('Quiz not found')
-        return JsonResponse("Quiz not found")
+    answers = []
+    for i,j in request.data["inputs"].items():
+        if i != "info":
+            answers.append({"answer":j})
+    
+
 
     quiz = Quiz.objects.filter(id=id).filter(finished=False)
 
@@ -264,17 +270,13 @@ def edit_quiz_view(request):
 
     quiz = quiz[0]
 
-    new_name = Quiz.objects.filter(name=data["name"]).filter(author=quiz.author)
+    new_name = Quiz.objects.filter(name=dataRequest["name"]).filter(author=quiz.author)
 
     if new_name.exists() and quiz.name != new_name[0].name:
         # return HttpResponseNotFound(f"Quiz {data['name']} already exists")
-        return JsonResponse(f"Quiz {data['name']} already exists")
-
-
-    
+        return JsonResponse(f"Quiz {dataRequest['name']} already exists")
 
     author = User.objects.filter(user__username = request.user)
-
 
     if author.exists() and author[0] != quiz.author:
         # return HttpResponseNotFound('Author not allowed to edit this quiz')
@@ -285,35 +287,35 @@ def edit_quiz_view(request):
         return JsonResponse("Author not found")
 
     author = author[0]
-    quiz_answers = QuizAnswer.objects.filter(quiz=quiz)
+    quiz_answers = QuizAnswer.objects.filter(quiz=quiz).order_by('id')
 
-    for i in data:
+    for i in dataRequest:
         match i:
             case "name":
-                if type(data["name"]) is str and data["name"] != "":
-                    quiz.name = data["name"]
-                elif data["name"] == "":
+                if type(dataRequest["name"]) is str and dataRequest["name"] != "":
+                    quiz.name = dataRequest["name"]
+                elif dataRequest["name"] == "":
                     # return HttpResponseNotFound("Invalid name for quiz")
                     return JsonResponse("Invalid quiz name")
 
             case "description":
-                if type(data["description"]) is str and data["description"] is not None:
-                    quiz.description = data["description"]
+                if type(dataRequest["description"]) is str and dataRequest["description"] is not None:
+                    quiz.description = dataRequest["description"]
                 else:
                     # return HttpResponseNotFound("Wrong Data for Description Field")
                     return JsonResponse("Wrong Data for Description Field")
 
             case "question":
-                if type(data["question"]) is str and data["question"] is not None:
-                    quiz.question = data["question"]
+                if type(dataRequest["question"]) is str and dataRequest["question"] is not None:
+                    quiz.question = dataRequest["question"]
                 else:
                     # return HttpResponseNotFound("Wrong Data for Question Field")
                     return JsonResponse("Wrong Data for Question Field")
 
-            case "tags":
-                if type(data["tags"]) is str:
-                    if len(data["tags"]) > 0:
-                        tag = Tag.objects.filter(text=data["tags"])
+            case "tag":
+                if type(dataRequest["tag"]) is str:
+                    if len(dataRequest["tag"]) > 0:
+                        tag = Tag.objects.filter(text=dataRequest["tag"])
                         if tag.exists():
                             tag = tag[0]
                             quiz.tags.add(tag)
@@ -321,74 +323,34 @@ def edit_quiz_view(request):
                         for j in quiz.tags.all():
                             quiz.tags.remove(i)
                 else:
-                    # return HttpResponseNotFound("Wrong Data for Tags Field")
+                    #return HttpResponseNotFound("Wrong Data for Tags Field")
                     return JsonResponse("Wrong Data for Tags Field")
 
-            case "answers":
-                if (
-                    type(data["answers"]) is list
-                    and len(data["answers"]) > 0
-                    and len(data["answers"]) <= 6
-                ):
-                    for j in range(len(data["answers"])):
-                        answer = quiz_answers[j]
-                        answer.text = data["answers"][j]
-                        answer.save()
-
-                elif type(data["answers"]) is not list:
-                    # return HttpResponseNotFound("Wrong Data for Answers Field")
-                    return JsonResponse("Wrong Data for Answers Field")
-
-                elif len(data["answers"]) == 0:
-                    for j in range(len(quiz_answers)):
-                        answer = quiz_answers[j]
-                        answer.text = ""
-                        answer.save()
-
-            case "justification":
-                if (
-                    type(data["justification"]) is list
-                    and len(data["answers"]) > 0
-                    and len(data["answers"]) <= 6
-                ):
-                    for j in range(len(data["justification"])):
-                        answer = quiz_answers[j]
-                        answer.justification = data["justification"][j]
-                        answer.save()
-                elif type(data["justification"]) is not list:
-                    # return HttpResponseNotFound("Wrong Data for Justification Field")
-                    return JsonResponse("Wrong Data for Justification Field")
-
-                elif len(data["justification"]) == 0:
-                    for j in range(len(quiz_answers)):
-                        answer = quiz_answers[j]
-                        answer.justification = ""
-                        answer.save()
-
             case "correct":
-                if (
-                    type(data["correct"]) is int
-                    and data["correct"] > 0
-                    and data["correct"] <= 6
-                ):
-                    answers = QuizAnswer.objects.filter(quiz=quiz).order_by("id")
-                    flag = False
-                    for i in range(len(answers)):
-                        if answers[i].correct == True and i + 1 == data["correct"]:
-                            flag = True
+                if (type(dataRequest["correct"])) is str:
+                    correct_option = int(dataRequest["correct"])
+                    if correct_option > 0 and correct_option <= 6:
+                        for j in range(len(quiz_answers)):
+                            if j + 1 == correct_option:
+                                quiz_answers[j].correct = True
+                            else:
+                                quiz_answers[j].correct = False
+                            quiz_answers[j].save()
 
-                    if not flag:
-                        for i in answers:
-                            i.correct = False
-                            i.save()
-
-                    answers[data["correct"] - 1].correct = True
-                    answers[data["correct"] - 1].save()
+    for i in range(len(answers)):
+        if type(answers[i]["answer"]) is dict and "option" in answers[i]["answer"] and "justification" in answers[i]["answer"]:
+            answer = quiz_answers[i]
+            answer.text = answers[i]["answer"]["option"]
+            answer.justification = answers[i]["answer"]["justification"]
+            answer.save()
 
     quiz.save()
-
     quizzes = QuizAnswer.objects.filter(quiz=quiz)
-    response = finish_quiz(quiz, quizzes)
+    if request.data["flag"]:
+        response = finish_quiz(quiz, quizzes)
+
+    else:
+        response = {"resposta": "Saved as Draft"}
     return JsonResponse(response)
 
 
