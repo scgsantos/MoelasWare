@@ -5,6 +5,7 @@ import API from "api.js";
 function NewQuiz() {
     document.documentElement.style.setProperty("--base", "var(--blue)");
     const [resposta, setResposta] = useState([]);
+    const [buttonClick, setButtonClick] = useState("");
 
     const tags = [
         { label: "-", value: "null" },
@@ -43,8 +44,11 @@ function NewQuiz() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(inputs);
-        API.createQuiz(inputs).then((data) => setResposta(data.resposta));
+        if (buttonClick === "submit"){
+            API.createQuiz(inputs, true).then((data) => setResposta(data.resposta));
+        } else if (buttonClick === "draft"){
+            API.createQuiz(inputs, false).then((data) => setResposta(data.resposta));
+        }
         navigate(-1);
         //window.location.reload();
     };
@@ -164,8 +168,8 @@ function NewQuiz() {
 
                         <div className="options-container">{options}</div>
                         <div className="break"></div>
-                        <input type="submit" value="SAVE AS DRAFT" />
-                        <input type="submit" value="SUBMIT" />
+                        <input type="submit" value="SAVE AS DRAFT" onClick={() => {setButtonClick("draft")}}/>
+                        <input type="submit" value="SUBMIT" onClick={() => {setButtonClick("submit")}}/>
                     </div>
                 </form>
             </main>

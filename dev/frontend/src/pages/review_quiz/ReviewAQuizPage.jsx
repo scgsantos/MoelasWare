@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router';
 import config from 'config.js';
 import { REVIEW_URL } from "urls.js";
+import API from 'api.js';
+
 
 
 
@@ -31,27 +33,13 @@ function ReviewAQuizPage() {
 
   //fetch quiz from the backend and log it to the console
   useEffect(() => {
-    fetch(config.svurl + "/api/review/quizzes/" + id + "/")
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error("Something went wrong", { cause: res });
-        }
-      })
-      .then(
-        (result) => {
-          setLoading(true);
-          setQuiz(result);
-        }
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-      ).catch((error) => {
-        setLoading(true);
-        setError(true);
-      })
-  }, [])
+    API.getQuizInfoReview(id)
+        .then((data) => {
+            console.log(data);
+            setLoading(true);
+            setQuiz(data);
+        });
+}, []);
 
   if (error) {
      return <div>Could not get quiz</div>;
@@ -123,40 +111,33 @@ function ReviewAQuizPage() {
 
           <div className="btn_line">
             <button className="btn success" onClick={() => {
-              const args = JSON.stringify({
+              const args = {
                 "quiz": "" + id,
-                "reviewer": "1",
                 "accepted": true,
                 "comment": justification
-              });
+              };
               console.log(args);
               //post to backend
-              fetch(config.svurl + "/api/quizzes/review/", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: args
-              }).then(
+              API.createReview(args)
+              .then(
                 alert("Quiz Accepted")
               ).then(
                 navigate(REVIEW_URL)
               )
             }}>ACCEPT</button>
 
-              <button className="btn success" onClick={() => {
-                const args = JSON.stringify({
+
+            <button className="btn success" onClick={() => {
+                const args = {
                   "quiz": "" + id,
-                  "reviewer": "1",
                   "accepted": false,
                   "comment": justification
-                });
+                };
                 console.log(args);
                 //post to backend
-                fetch(config.svurl + "/api/quizzes/review/", {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: args
-                }).then(
-                  alert("Quiz Rejected")
+                API.createReview(args)
+                .then(
+                  alert("Quiz Accepted")
                 ).then(
                   navigate(REVIEW_URL)
                 )

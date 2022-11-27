@@ -12,11 +12,13 @@ from ..serializers.unfinished_quizzes import CreateEditQuizSerializer
 @login_required
 def get_unfinished_quizzes(request):
 
-    user_id = 1
-    info = Quiz.objects.filter(author=user_id, approved=False).filter(finished = False).order_by("-creation_date")
+    user = request.user
+    info = Quiz.objects.filter(author__user__username=user, approved=False).filter(finished = False).order_by("creation_date")
     quizzes = []
     for i in range(len(info)):
         quizzes.append([info[i].name, info[i].id, info[i].creation_date])
+
+
     return JsonResponse({"quizzes": quizzes}, status=200)
 
 

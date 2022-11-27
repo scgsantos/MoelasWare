@@ -67,7 +67,7 @@ function EditQuiz() {
     ];
 
     const navigate = useNavigate();
-
+    const [buttonClick, setButtonClick] = useState("");
     function handleInfoChange(event) {
         setInputs({
             ...inputs,
@@ -90,8 +90,11 @@ function EditQuiz() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(inputs);
-        API.createQuiz(inputs);
+        if (buttonClick === "submit"){
+            API.editQuiz(inputs, id, true).then((data) => console.log(data.resposta));
+        } else if (buttonClick === "draft"){
+            API.editQuiz(inputs, id, false).then((data) => console.log(data.resposta));
+        }
         navigate(-1);
         //window.location.reload();
     };
@@ -215,8 +218,8 @@ function EditQuiz() {
 
                         <div className="options-container">{options}</div>
                         <div className="break"></div>
-                        <input type="submit" value="SAVE AS DRAFT" />
-                        <input type="submit" value="SUBMIT" />
+                        <input type="submit" value="SAVE AS DRAFT" onClick={() => {setButtonClick("draft")}}/>
+                        <input type="submit" value="SUBMIT" onClick={() => {setButtonClick("submit")}}/>
                     </div>
                 </form>
             </main>

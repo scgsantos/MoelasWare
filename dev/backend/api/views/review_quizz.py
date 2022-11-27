@@ -62,13 +62,22 @@ def get_info_quiz_view(request, pk):
 @login_required
 def create_quiz_review_view(request):
 
-    
-    serializer = CreateReviewSerializer(data=request.data)
-    
+    data = request.data['args']
+    user = User.objects.filter(user__username = request.user)
+
+    if not user.exists():
+        return HttpResponseBadRequest("User not found")
+
+    user = user[0]
+
+    data["reviewer"] = user.id
+    print(data, "dsdsadas")
+    serializer = CreateReviewSerializer(data=data)
+
     # raises exception on why its not valid
     if serializer.is_valid(raise_exception=True):
         serializer = serializer.data
-        review = Review.objects.filter(quiz__id=request.data['quiz']).filter(reviewer__id = serializer['reviewer'])
+        review = Review.objects.filter(quiz__id=data['quiz']).filter(reviewer__id = serializer['reviewer'])
         review = review[0]
 
         review.pending = False
@@ -84,6 +93,7 @@ def create_quiz_review_view(request):
 
         review.comment = serializer["comment"]
         review.save()
+        print(serializer, "---------------")
         return JsonResponse(serializer)
 
     return JsonResponse({"error": "Bad data"})
@@ -99,14 +109,11 @@ def quiz_review_serializer_handler(data):
 @login_required
 def get_quizzes_of_a_reviewer_view(request):
 
-    user = request.user
-
-    user = User.objects.get(user__username = user)
-
-    reviewer = Review.objects.filter(reviewer=user).filter(pending=True)
+    reviewer = Review.objects.filter(reviewer__user__username=request.user).filter(pending=True)
 
     if not reviewer.exists():
-        return HttpResponseBadRequest("Reviews not found")
+        return JsonResponse({"error": True, "message": "Reviews not found"})
+        #return HttpResponseBadRequest("Reviews not found")
 
     reviewer_list = []
     for i in reviewer:
@@ -114,7 +121,7 @@ def get_quizzes_of_a_reviewer_view(request):
 
     reviewer_list = quiz_review_serializer_handler(reviewer_list)
 
-    return JsonResponse({"info": reviewer_list})
+    return JsonResponse({"error": False, "info": reviewer_list})
 
 
 @api_view(["GET"])
