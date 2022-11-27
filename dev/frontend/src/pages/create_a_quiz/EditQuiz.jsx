@@ -11,7 +11,6 @@ function EditQuiz() {
 
     useEffect(() => {
         API.getDraftById(id).then((data) => {
-            console.log(data.draft);
             setInputs({
                 ...inputs,
                 info: {
@@ -48,7 +47,6 @@ function EditQuiz() {
             });
         });
     }, []);
-    console.log(inputs);
 
     const tags = [
         { index: 0, label: "-", value: "null" },

@@ -92,6 +92,7 @@ def create_quiz_review_view(request):
 
         review.comment = serializer["comment"]
         review.save()
+        print(serializer, "---------------")
         return JsonResponse(serializer)
 
     return JsonResponse({"error": "Bad data"})

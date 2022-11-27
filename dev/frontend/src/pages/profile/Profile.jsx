@@ -45,7 +45,7 @@ export default function Profile() {
         );
     } else {
         return (
-            <div id="profile" style={{ width: "50%", margin: "0 auto" }}>
+            <div id="profile" style={{ width: "25%", margin: "0 auto" }}>
                 <h1>{user.toLocaleUpperCase()}'S PROFILE</h1>
                 <Pie
                     width={128}

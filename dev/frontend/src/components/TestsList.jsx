@@ -5,7 +5,7 @@ import API from 'api.js';
 function TestsList() {
   const [tests, setTests] = useState([]);
   const testsHeader = [
-    "TEST ID",
+    "TEST NAME",
     "TIMES TAKEN",
     "TAG",
     "AUTHOR",
@@ -38,10 +38,10 @@ function TestsList() {
         <tbody>
           {tests.map((t) => (
             <tr key={Object.values(t)[0][0]}>
-              <td>{Object.values(t)[0][0]}</td>
+              <td>{Object.values(t)[0][1]}</td>
               <td>
-                {Object.values(t)[0][1]}
-                {Object.values(t)[0][1] > 0 && (
+                {Object.values(t)[0][2]}
+                {Object.values(t)[0][2] > 0 && (
                   <button
                     className="btn"
                     id={Object.values(t)[0][0]}
@@ -51,8 +51,8 @@ function TestsList() {
                   </button>
                 )}
               </td>
-              <td>{Object.values(t)[0][2]}</td>
               <td>{Object.values(t)[0][3]}</td>
+              <td>{Object.values(t)[0][4]}</td>
             </tr>
           ))}
         </tbody>

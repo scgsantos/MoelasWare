@@ -116,7 +116,7 @@ def get_n_quizzes_view(request):
 
 @api_view(["GET"])
 def get_answers_for_quiz_view(request, quiz_id):
-    answers_set = QuizAnswer.objects.filter(quiz__id=quiz_id)
+    answers_set = QuizAnswer.objects.filter(quiz__id=quiz_id).order_by("id")
 
     answers_serializer = QuizAnswerSerializer(answers_set, many=True)
 
@@ -151,6 +151,13 @@ def get_user_quizzes_view(request):
 
 
 def handle_frontend_fields(dataRequest):
+    data = {'name': dataRequest['name'],
+            'question': dataRequest['question'],
+            'description' : dataRequest['description'],
+            'tag' : dataRequest['tag'],
+            'correct' : dataRequest['correct'],
+            "answers": [], "justification": []
+        }
     option_list = ["option1", "option2", "option3", "option4", "option5", "option6"]
     justification_list = [
         "justification1",
@@ -161,14 +168,18 @@ def handle_frontend_fields(dataRequest):
         "justification6",
     ]
 
-    data = {"answers": [], "justification": []}
-    for i in dataRequest:
-        if i in option_list:
+    for i in option_list:
+        if i in dataRequest:
             data["answers"].append(dataRequest[i])
-        elif i in justification_list:
+        else:
+            data["answers"].append("")
+
+    for i in justification_list:
+        if i in dataRequest:
             data["justification"].append(dataRequest[i])
         else:
-            data[i] = dataRequest[i]
+            data["justification"].append("")
+
     return data
 
 
@@ -197,7 +208,7 @@ def create_quiz_view(request):
         )
         quiz_answer.save()
 
-    quiz_answers = QuizAnswer.objects.filter(quiz=quiz)
+    quiz_answers = QuizAnswer.objects.filter(quiz=quiz).order_by("id")
 
     for i in data:
         match i:
@@ -224,11 +235,7 @@ def create_quiz_view(request):
                     return JsonResponse({"resposta": "Wrong Data for Tags Field"})
 
             case "answers":
-                if (
-                    type(data["answers"]) is list
-                    and len(data["answers"]) > 0
-                    and len(data["answers"]) <= 6
-                ):
+                if type(data["answers"]) is list and len(data["answers"]) > 0 and len(data["answers"]) <= 6:
                     for j in range(len(data["answers"])):
                         answer = quiz_answers[j]
                         answer.text = data["answers"][j]
@@ -244,11 +251,7 @@ def create_quiz_view(request):
                         answer.save()
 
             case "justification":
-                if (
-                    type(data["justification"]) is list
-                    and len(data["answers"]) > 0
-                    and len(data["answers"]) <= 6
-                ):
+                if type(data["justification"]) is list and len(data["justification"]) > 0 and len(data["justification"]) <= 6:
                     for j in range(len(data["justification"])):
                         answer = quiz_answers[j]
                         answer.justification = data["justification"][j]
@@ -274,14 +277,19 @@ def create_quiz_view(request):
                             answers[i - 1].save()
     quiz.save()
 
-    quizzes = QuizAnswer.objects.filter(quiz=quiz)
+    quizzes = QuizAnswer.objects.filter(quiz=quiz).order_by('id')
 
     if request.data["flag"]:
         response = finish_quiz(quiz, quizzes)
 
     else:
         response = {"resposta": "Saved as Draft"}
-    print(response, "-------------")
+
+    if request.data["flag"]:
+        response = finish_quiz(quiz, quizzes)
+    else:
+        response = {"resposta": "Saved as Draft"}
+
     return JsonResponse(response)
 
 
@@ -363,7 +371,7 @@ def edit_quiz_view(request, id):
                         for j in quiz.tags.all():
                             quiz.tags.remove(i)
                 else:
-                    # return HttpResponseNotFound("Wrong Data for Tags Field")
+                    #return HttpResponseNotFound("Wrong Data for Tags Field")
                     return JsonResponse("Wrong Data for Tags Field")
 
             case "correct":

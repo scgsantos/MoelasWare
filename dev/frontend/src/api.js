@@ -140,7 +140,7 @@ class API {
     }
 
     static getQuizInfoReview(pk) {
-        return this.makeJSONRequest("review/quizzes/" + pk.toString() + "/");
+        return this.makeJSONRequest(`review/quizzes/${pk}/`);
     }
 
     // Get all test submissions made by a given user

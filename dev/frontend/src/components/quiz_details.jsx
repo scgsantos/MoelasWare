@@ -81,21 +81,6 @@ function MyQuiz() {
     }
 }
 
-    let evaluations = [];
-    for (let i = 0; i < reviews.length; i++) {
-        evaluations.push(
-            <React.Fragment>
-                <p className="review-title">REVIEW #{i + 1}:</p>
-                <p key={"r" + i} id="review">
-                    {reviews[i][1]}
-                </p>
-                <p key={"e" + i} id="evaluation">
-                    {reviews[i][2]}
-                </p>
-            </React.Fragment>
-        );
-    }
-
     return (
         <div
             role="button"
