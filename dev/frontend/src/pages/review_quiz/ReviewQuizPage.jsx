@@ -4,7 +4,6 @@ import React from 'react';
 import { REVIEW_QUIZ_URL } from "urls.js";
 import { useState, useEffect, setState } from "react";
 import { useNavigate } from "react-router-dom";
-import config from 'config.js';
 import API from 'api.js';
 
 function ReviewQuizPage() {
