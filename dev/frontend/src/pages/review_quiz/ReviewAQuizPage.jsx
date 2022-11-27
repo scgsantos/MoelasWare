@@ -113,7 +113,6 @@ function ReviewAQuizPage() {
             <button className="btn success" onClick={() => {
               const args = {
                 "quiz": "" + id,
-                "reviewer": "1",
                 "accepted": true,
                 "comment": justification
               };
@@ -131,8 +130,7 @@ function ReviewAQuizPage() {
             <button className="btn success" onClick={() => {
                 const args = {
                   "quiz": "" + id,
-                  "reviewer": "1",
-                  "accepted": true,
+                  "accepted": false,
                   "comment": justification
                 };
                 console.log(args);

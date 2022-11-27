@@ -447,11 +447,11 @@ def get_reviews_of_a_quiz(request, id):
     reviews = Review.objects.filter(quiz = quiz).filter(pending = False)
 
     if not reviews.exists():
-        return HttpResponseBadRequest('No Reviews found')
+        return JsonResponse({"error": True})
+        #return HttpResponseBadRequest('No Reviews found')
 
     serializer = GetQuizReviewNewSerializer(reviews, many = True).data
-
     serializer = handle_get_unapproved_quizzes_reviews_view(serializer)
-    print(serializer, "-------")
-    return JsonResponse({"reviews": serializer})
+
+    return JsonResponse({"error": False,"reviews": serializer})
 

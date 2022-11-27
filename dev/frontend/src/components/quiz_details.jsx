@@ -6,6 +6,7 @@ function MyQuiz() {
     const [quizzes, setQuizzes] = useState([]);
     const [answers, setAnswers] = useState([]);
     const [reviews, setReviews] = useState([]);
+    const [error, setError] = useState(false);
 
     const navigate = useNavigate();
 
@@ -19,8 +20,10 @@ function MyQuiz() {
             console.log(answers);
         });
         API.getReviewsOfQuiz(id).then((data) => {
-            setReviews(data.reviews);
-            console.log(reviews);
+            setError(data.error);
+            if (!data.error){
+                setReviews(data.reviews);
+            }            
         });
     }, []);
 
@@ -46,8 +49,8 @@ function MyQuiz() {
             </React.Fragment>
         );
     }
-
     let reviews_list = [];
+    if (!error){
     for (let i = 0; i < reviews.length; i++) {
         reviews_list.push(
             <React.Fragment>
@@ -76,6 +79,7 @@ function MyQuiz() {
             </React.Fragment>
         );
     }
+}
 
     return (
         <div

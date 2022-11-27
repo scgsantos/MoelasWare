@@ -63,8 +63,17 @@ def get_info_quiz_view(request, pk):
 def create_quiz_review_view(request):
 
     data = request.data['args']
+    user = User.objects.filter(user__username = request.user)
+
+    if not user.exists():
+        return HttpResponseBadRequest("User not found")
+
+    user = user[0]
+
+    data["reviewer"] = user.id
+    print(data, "dsdsadas")
     serializer = CreateReviewSerializer(data=data)
-    
+
     # raises exception on why its not valid
     if serializer.is_valid(raise_exception=True):
         serializer = serializer.data

@@ -15,6 +15,7 @@ function ReviewQuizPage() {
   //loading
   const [isLoaded, setLoading] = useState(false);
 
+
   let navigate = useNavigate();
 
   //fetch quiz from the backend and log it to the console
@@ -23,9 +24,10 @@ function ReviewQuizPage() {
     .then(
         (data) => {
           setLoading(true);
-          setData(data.info);
-          console.log(data.access);
-          console.log(data.info);
+          setError(data.error);
+          if (!data.error){
+            setData(data.info);
+          }
         })
       .then(res => {
         if (res.ok) {
@@ -59,17 +61,14 @@ function ReviewQuizPage() {
         <td width={200}>CREATION DATE</td>
         <td width={200}>REVIEWS</td>
       </tr>
-        {
-         (() => {
-          if (error) {
-            return <ul className="pad" style={{"marginTop":"100px"}}>Could not get quizzes</ul>;
-          } else if (!isLoaded) {
-            return <ul className="pad" style={{"marginTop":"100px"}}>Loading...</ul>;
-          }
-         })()
-          }
         <ul className='pad'>
-          {(() => {
+          {
+          (() => {
+            if (error) {
+              return <ul className="pad" style={{"marginTop":"100px"}}>Could not get quizzes</ul>;
+            } else if (!isLoaded) {
+              return <ul className="pad" style={{"marginTop":"100px"}}>Loading...</ul>;
+            } else {
             var d = [];
             for (let i = 0; i < data.length; i++) {
               if (i === 0 && data.length === 1) {
@@ -119,6 +118,7 @@ function ReviewQuizPage() {
               }
             }
             return d;
+          }
           })()}
         </ul>
       </div>
