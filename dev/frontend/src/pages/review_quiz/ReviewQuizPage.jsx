@@ -29,20 +29,6 @@ function ReviewQuizPage() {
             setData(data.info);
           }
         })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error("Something went wrong", { cause: res });
-        }
-      })
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-      .catch((error) => {
-        setLoading(true);
-        setError(true);
-      })
   }, []);
 
   console.log(data);
@@ -53,19 +39,27 @@ function ReviewQuizPage() {
         <h2>LIST OF QUIZZES FOR REVIEW</h2>
         <p>Please click on the quiz that you would like review</p>
       </div>
-      <div className='center_tab'>
-      <tr className='center'>
-        <td width={200}>QUIZ NAME</td>
-        <td width={200}>TAGS</td>
-        <td width={200}>CREATOR</td>
-        <td width={200}>CREATION DATE</td>
-        <td width={200}>REVIEWS</td>
-      </tr>
+      <div className='center_tab'> 
+      {(() => {
+        var array = [];
+            if (!error) {
+              array.push(
+              <tr className='center'>
+              <td width={200}>QUIZ NAME</td>
+              <td width={200}>TAGS</td>
+              <td width={200}>CREATOR</td>
+              <td width={200}>CREATION DATE</td>
+              <td width={200}>REVIEWS</td>
+              </tr>)
+            }
+            return array;
+          })()}
+
         <ul className='pad'>
           {
           (() => {
             if (error) {
-              return <ul className="pad" style={{"marginTop":"100px"}}>Could not get quizzes</ul>;
+              return <ul className="pad" style={{"marginTop":"100px"}}>There are no quizzes to review</ul>;
             } else if (!isLoaded) {
               return <ul className="pad" style={{"marginTop":"100px"}}>Loading...</ul>;
             } else {
