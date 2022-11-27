@@ -7,7 +7,6 @@ import { Pie } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Profile() {
-    const [profile, setProfile] = useState([]);
     const [tags, setTags] = useState([]);
     const [frequency, setFrequency] = useState([]);
     const [user, setUser] = useState("Nothing");
@@ -25,16 +24,14 @@ export default function Profile() {
             } else {
                 const getTag = [];
                 const getFreq = [];
-                setProfile(data.profile);
                 setUser(data.user);
                 setNumberCorrectAnswers(data.correct_answers);
-                Object.entries(profile).forEach(([key, value]) => {
+                Object.entries(data.profile).forEach(([key, value]) => {
                     getTag.push(key);
                     getFreq.push(value);
                 });
                 setTags(getTag);
                 setFrequency(getFreq);
-
             }
         });
     }, []);
@@ -48,7 +45,7 @@ export default function Profile() {
         );
     } else {
         return (
-            <div id="profile" style={{width: "50%", margin: "0 auto"}} >
+            <div id="profile" style={{ width: "50%", margin: "0 auto" }}>
                 <h1>{user.toLocaleUpperCase()}'S PROFILE</h1>
                 <Pie
                     width={128}
@@ -87,6 +84,7 @@ export default function Profile() {
                                     "rgba(255, 255, 0, 1)",
                                     "rgba(148, 0, 211, 1)",
                                 ],
+                                hoverOffset: 20,
                                 borderWidth: 3,
                                 offset: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                             },
