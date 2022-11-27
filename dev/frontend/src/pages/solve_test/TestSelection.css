@@ -203,6 +203,7 @@ input[type='radio']:checked:after {
 
 
 .TestSelection-center_tab {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -251,24 +252,34 @@ input[type='radio']:checked:after {
     margin-bottom: 3.2rem;
 }
 
+.TestSelection-answerslist{
+    margin: 1rem;
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 
 .TestSelection-button_uniq {
     border-radius: var(--buttoncorners) var(--buttoncorners) var(--buttoncorners) var(--buttoncorners) !important; 
-}
+} */
 
 .TestSelection-buttoncorners {
-    border-radius: var(--buttoncorners) var(--buttoncorners) 0px 0px !important;
-    border-bottom: 0px;
+    border-radius: var(--buttoncorners) var(--buttoncorners) var(--buttoncorners) var(--buttoncorners) !important;
+    /* border-bottom: 0px; */
 }
 
-
+/* 
 .TestSelection-other_buttons {
     border-radius: 0px 0px 0px 0px !important;
     border-bottom: 0px;
-}
-
+} */
+/* 
 .TestSelection-button_end {
     border-radius: 0px 0px 12px 12px !important;
-}
+} */
 
 .TestSelection-btnlist {
     width: 30rem;
@@ -279,7 +290,7 @@ input[type='radio']:checked:after {
     transition: all 0.25s ease-in-out;
     font-weight: 600;
 }
-
+/* 
 .TestSelection-btnlist:hover {
     color: #3d2e00!important;
     background-color: #fff4d1!important;	
@@ -288,12 +299,13 @@ input[type='radio']:checked:after {
 .TestSelection-btnlist:active {
     background-color: #f9bf12!important;
     color: black!important;
-}
+} */
 
 .TestSelection-selected {
-    background-color: #FFD966!important;
+    background-color: black !important;
+    color: var(--base) !important;
 }
-
+/* 
 .TestSelection-popupInside {
     background-color: #F1C064!important;
     border: 1px solid #000000;
@@ -303,7 +315,7 @@ input[type='radio']:checked:after {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-}
+} */
 
 .TestSelection-popupInside {
   font-size: 12px;
@@ -385,9 +397,10 @@ background-color: rgba(255, 255, 255, 0);
 }
 
 .TestSelection-correct {
-    background-color: #b3e6b3!important;
+    background-color: #AEB884 !important;
+    color: black !important;
 }
 
-.TestSelection-correct:hover {
-    background-color: #b3e6b3!important;
-}
+/* .TestSelection-correct:hover {
+    background-color: #AEB884!important;
+} */
