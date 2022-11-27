@@ -54,6 +54,9 @@ def get_info_quiz_view(request, pk):
     for i in answer_serializer:
         answer_list.append([i['text'], i['justification'], i['correct']])
 
+    print(obj_list)
+    print("_--------------------")
+    print(answer_list)
     return JsonResponse({"quiz": obj_list, "answers": answer_list})
 
 
@@ -99,14 +102,11 @@ def quiz_review_serializer_handler(data):
 @login_required
 def get_quizzes_of_a_reviewer_view(request):
 
-    user = request.user
-
-    user = User.objects.get(user__username = user)
-
-    reviewer = Review.objects.filter(reviewer=user).filter(pending=True)
+    reviewer = Review.objects.filter(reviewer__user__username=request.user).filter(pending=True)
 
     if not reviewer.exists():
-        return HttpResponseBadRequest("Reviews not found")
+        return JsonResponse({"error": True, "message": "Reviews not found"})
+        #return HttpResponseBadRequest("Reviews not found")
 
     reviewer_list = []
     for i in reviewer:
@@ -114,7 +114,7 @@ def get_quizzes_of_a_reviewer_view(request):
 
     reviewer_list = quiz_review_serializer_handler(reviewer_list)
 
-    return JsonResponse({"info": reviewer_list})
+    return JsonResponse({"error": False, "info": reviewer_list})
 
 
 @api_view(["GET"])

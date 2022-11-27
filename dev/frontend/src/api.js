@@ -123,8 +123,8 @@ class API {
         return this.makeRequest("review/quizzes/");
     }
 
-    static getQuizInfoReview(id) {
-        return this.makeRequest("review/quiz/" + id.toString() + "/");
+    static getQuizInfoReview(pk) {
+        return this.makeRequest("review/quizzes/" + pk.toString() + "/");
     }
 
     // Get all test submissions made by a given user

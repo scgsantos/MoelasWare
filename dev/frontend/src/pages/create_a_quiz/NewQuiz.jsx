@@ -44,7 +44,6 @@ function NewQuiz() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(inputs);
         if (buttonClick === "submit"){
             API.createQuiz(inputs, true).then((data) => setResposta(data.resposta));
         } else if (buttonClick === "draft"){

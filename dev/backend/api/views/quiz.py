@@ -245,7 +245,7 @@ def create_quiz_view(request):
 
     else:
         response = {"resposta": "Saved as Draft"}
-        
+    print(response, "-------------") 
     return JsonResponse(response)
 
 
@@ -452,6 +452,6 @@ def get_reviews_of_a_quiz(request, id):
     serializer = GetQuizReviewNewSerializer(reviews, many = True).data
 
     serializer = handle_get_unapproved_quizzes_reviews_view(serializer)
-
+    print(serializer, "-------")
     return JsonResponse({"reviews": serializer})
 

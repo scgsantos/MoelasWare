@@ -21,7 +21,6 @@ const CreateQuiz = () => {
     const navigate = useNavigate();
 
     const handleClick = (e) => {
-        //console.log(e);
         navigate(`./myquiz/${e}`);
     };
 
@@ -33,7 +32,7 @@ const CreateQuiz = () => {
                 <Button
                     to="./drafts"
                     className="createquiznav"
-                    text="DRAFTS (6)"
+                    text="DRAFTS"
                 />
                 <section id="myquizzes">
                     <h2>MY QUIZZES</h2>
