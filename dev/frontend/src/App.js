@@ -9,6 +9,9 @@ import isLoggedIn from "utils";
 import EditQuiz from "pages/create_a_quiz/EditQuiz";
 import Drafts from "pages/create_a_quiz/Drafts";
 
+// Group 1
+import MainUnfinishedQuizzes from "pages/unfinished_quizzes/mainUnfinishedQuizzes.jsx"
+
 // Group 2
 import CreateRandomTest from "pages/create_test/number_only/NumberOnly.jsx";
 import Preview from "pages/create_test/preview/Preview.jsx";

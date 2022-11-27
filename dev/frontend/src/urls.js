@@ -19,6 +19,9 @@ const TEST_GRADE_URL = "/test/grade";
 const REVIEW_URL = "/review";
 const REVIEW_QUIZ_URL = "/review/quiz/";
 
+const UNFINISHED_QUIZZES = "unfinished_quizzes/"
+const UNFINISHED_QUIZZES_EDIT = "unfinished_quizzes_edit/"
+
 export {
     AUTH_URL,
     LOGOUT_URL,

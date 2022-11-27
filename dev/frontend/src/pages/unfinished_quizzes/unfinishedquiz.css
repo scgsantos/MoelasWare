@@ -1,0 +1,96 @@
+.unfinishedQuizzes-App {
+    text-align: center;
+    background-color:#D2DDDF;
+    font-family: "BasicRegular";
+  }
+
+.unfinishedQuizzes-row {
+  display: flex;
+  border-bottom: 2px solid black;
+  width: auto;
+  margin-top: 10px;
+  height: 2em;
+}
+
+.unfinishedQuizzes-row2 {
+  display: flex;
+  width: auto;
+  margin-left: 10px;
+}
+
+/*
+.
+*/
+.unfinishedQuizzes-column { 
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.unfinishedQuizzes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;  
+}
+
+
+.unfinishedQuizzes-esq{
+  font-size: 20px !important;
+  text-align: left;
+}
+
+
+.unfinishedQuizzes-titleText{
+  font-size: 28px;
+  font-weight: bold
+}
+
+.unfinishedQuizzes-titleText2{
+  font-size: 20px;
+  font-weight: bold
+}
+
+.unfinishedQuizzes-scroll-div{
+  margin-top: 10px;
+  margin:4px, 4px;
+  padding:1px;
+  width: 600px;
+  height: 300px;
+  border: 2px solid black;
+  border-radius: 10px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.unfinishedQuizzes-scroll-div2{
+  margin-top: 35px;
+  margin:4px, 4px;
+  padding:1px;
+  width: 600px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.unfinishedQuizzes-link-btn{
+  outline: none !important;
+  border: none !important;
+  cursor:pointer !important;
+  font-size: 20px !important;
+  font-weight: normal !important;
+}
+
+button, select, input[type=button], input[type=submit] {
+  background-color: transparent !important;
+  color: none !important;
+  border-radius: 0px !important;
+  border: none !important;
+  padding: 0px !important;
+}
+
+button:hover, input[type=button]:hover, input[type=submit]:hover {
+  background-color: none !important;
+  color: none !important;
+  cursor: pointer !important;
+}

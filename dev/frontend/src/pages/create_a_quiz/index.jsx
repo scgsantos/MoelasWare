@@ -5,6 +5,7 @@ import Button from "components/CreateQuizButton.jsx";
 import "pages/create_a_quiz/CreateQuiz.css";
 import Button2 from "components/Button.jsx";
 
+
 const CreateQuiz = () => {
     document.documentElement.style.setProperty("--base", "var(--blue)");
 

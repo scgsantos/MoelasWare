@@ -320,6 +320,16 @@ class API {
             body: data
         });
     }
+
+    static getUnfinishedQuizzes(){
+        return API.makeRequest("api/unfinished_quizzes/");
+    }
+
+    static sendQuizId(quiz_id){
+        return this.makeRequest("api/unfinished_quizzes_edit/", "POST", {
+            id:quiz_id,
+        });
+    }
 }
 
 export default API;
