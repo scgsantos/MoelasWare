@@ -157,7 +157,6 @@ function CreateTest() {
       navigate(TEST_PUBLISHED_URL,
         { state: { name: text, quizzes: q, previous_path: CREATE_TEST_URL } },
       );
-      window.location.reload();
     }
   }
 
@@ -354,7 +353,7 @@ function CreateTest() {
             value={text}
             onChange={handleNameChange}
           />
-           <h2 className="NumberOnly-errorInput">
+          <h2 className="NumberOnly-errorInput">
             {text.length > 0 ? "" : "Name is mandatory"}
           </h2>
         </div>

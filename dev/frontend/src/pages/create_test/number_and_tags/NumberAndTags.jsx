@@ -51,17 +51,17 @@ function CreateRandomTestWithSpecs() {
 
   let navigate = useNavigate();
 
-async function genQuizzes() {
-    const response = await API.makeRequest("quizzes/gen/", "POST", {
-        num_quizzes: num,
-        tags: tags,
-    });
+  async function genQuizzes() {
+      const response = await API.makeRequest("quizzes/gen/", "POST", {
+          num_quizzes: num,
+          tags: tags,
+      });
 
 
-    if( !response.ok){
-        setError(true);
-        setQuizzes([]);
-        return null;
+    if (!response.ok) {
+      setError(true);
+      setQuizzes([]);
+      return null;
     }
     const result = await response.json();
 
@@ -71,10 +71,10 @@ async function genQuizzes() {
   }
 
   function getQuizzesCount() {
-      API.getNumQuizzes()
-        .then((data) => {
-            setQuizzesCount(data.quizzes_count)
-        });
+    API.getNumQuizzes()
+      .then((data) => {
+        setQuizzesCount(data.quizzes_count)
+      });
   }
 
   function getAllTags() {
@@ -86,7 +86,7 @@ async function genQuizzes() {
   }
 
   async function handleSearchChange(e) {
-      setSearch(e.target.value);
+    setSearch(e.target.value);
 
     if (e.target.value !== "") {
       var tags_matching_search = [];
@@ -109,16 +109,16 @@ async function genQuizzes() {
     const date = Date.now();
     let currentDate = null;
     do {
-        currentDate = Date.now();
+      currentDate = Date.now();
     } while (currentDate - date < milliseconds);
-    }
+  }
 
   async function handleCreateButtonChange() {
 
     if (num <= quizzes_count) {
       let result = await genQuizzes();
 
-      if( result != null )
+      if (result != null)
         setIsPage1(false);
     }
   }
@@ -145,7 +145,6 @@ async function genQuizzes() {
           previous_path: CREATE_TEST_WITH_TAGS_URL,
         },
       });
-      window.location.reload();
     }
   }
 
@@ -196,14 +195,14 @@ async function genQuizzes() {
   }
 
 
-  function getTagDistribution(tag){
-      let n_occurences = 0;
-        for(let i = 0; i < quizzes.length; i++){
-            for(let j = 0; j < quizzes[i].tags.length; j++){
-                if(quizzes[i].tags[j].text == tag)
-                    n_occurences++;
-            }
-        }
+  function getTagDistribution(tag) {
+    let n_occurences = 0;
+    for (let i = 0; i < quizzes.length; i++) {
+      for (let j = 0; j < quizzes[i].tags.length; j++) {
+        if (quizzes[i].tags[j].text == tag)
+          n_occurences++;
+      }
+    }
     return n_occurences;
   }
 
@@ -229,17 +228,17 @@ async function genQuizzes() {
 
          <div className="SelectQuizzes-listTest">
           <h1 className="NumberOnly-inputTitle">
-                {"Specify the tags you must have in the quizzes"}
-            </h1>
+            {"Specify the tags you must have in the quizzes"}
+          </h1>
           <input placeholder="search the #tag you want here" type="text" value={search} onChange={handleSearchChange} />
-            <div className="NumberOnly-inputDiv">
+          <div className="NumberOnly-inputDiv">
             <h2 className="NumberOnly-errorInput">
-            {!error ? "" : "Not enough quizzes with the given specifications."}
+              {!error ? "" : "Not enough quizzes with the given specifications."}
             </h2>
             <ul>
-                {searched_tags.map((tag) => renderTag(tag))}
+              {searched_tags.map((tag) => renderTag(tag))}
             </ul>
-        </div>
+          </div>
 
         </div>
         <div className="NumberOnly-Publish-GoBack-buttons">
@@ -273,13 +272,13 @@ async function genQuizzes() {
           </h2>
 
 
-        <h3 className="NumberOnly-title"> Chosen Quizzes: </h3>
+          <h3 className="NumberOnly-title"> Chosen Quizzes: </h3>
 
-        <ul style={{width: "20em"}}>
-          {tags.map((tag) => (
-            <li className="NumberOnly-quiz">{tag} x{getTagDistribution(tag)}</li>
-          ))}
-        </ul>
+          <ul style={{ width: "20em" }}>
+            {tags.map((tag) => (
+              <li className="NumberOnly-quiz">{tag} x{getTagDistribution(tag)}</li>
+            ))}
+          </ul>
         </div>
 
         <div className="NumberOnly-Publish-GoBack-buttons">
@@ -287,7 +286,7 @@ async function genQuizzes() {
             Go Back
           </button>
 
-            &nbsp;
+          &nbsp;
           <button
             className="NumberOnly-CreateButton"
             onClick={handleNextButtonChange}

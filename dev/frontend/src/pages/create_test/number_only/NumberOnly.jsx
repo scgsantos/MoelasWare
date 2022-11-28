@@ -64,7 +64,7 @@ function CreateRandomTest() {
   function handleNextButtonChange() {
     if (text.length != 0) {
 
-    API.postTest(text, 1, quizzes); // TODO: get author -> logged in user
+      API.postTest(text, 1, quizzes); // TODO: get author -> logged in user
 
       history.push(CREATE_RANDOM_TEST_URL);
 
@@ -75,7 +75,6 @@ function CreateRandomTest() {
           previous_path: CREATE_RANDOM_TEST_URL,
         },
       });
-      window.location.reload();
     }
   }
 

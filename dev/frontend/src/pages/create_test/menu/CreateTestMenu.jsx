@@ -34,7 +34,6 @@ function CreateTestMenu() {
     history.push(TEST_MENU_URL);
 
     navigate(CREATE_RANDOM_TEST_URL);
-    window.location.reload();
   }
 
 
@@ -42,14 +41,12 @@ function CreateTestMenu() {
     history.push(TEST_MENU_URL);
 
     navigate(CREATE_TEST_WITH_TAGS_URL);
-    window.location.reload();
   }
 
   function handleCreateTestButton() {
     history.push(TEST_MENU_URL);
 
     navigate(CREATE_TEST_URL);
-    window.location.reload();
   }
 
   return (
