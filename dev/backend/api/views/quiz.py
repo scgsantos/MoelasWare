@@ -81,7 +81,7 @@ def get_n_quizzes_view(request):
 
 @api_view(["GET"])
 def get_answers_for_quiz_view(request, quiz_id):
-    answers_set = QuizAnswer.objects.filter(quiz__id=quiz_id)
+    answers_set = QuizAnswer.objects.filter(quiz__id=quiz_id).order_by("id")
 
     answers_serializer = QuizAnswerSerializer(answers_set, many=True)
 
@@ -161,7 +161,7 @@ def create_quiz_view(request):
         )
         quiz_answer.save()
 
-    quiz_answers = QuizAnswer.objects.filter(quiz=quiz)
+    quiz_answers = QuizAnswer.objects.filter(quiz=quiz).order_by("id")
 
     for i in data:
         match i:
@@ -238,7 +238,7 @@ def create_quiz_view(request):
                             answers[i - 1].save()
     quiz.save()
 
-    quizzes = QuizAnswer.objects.filter(quiz=quiz)
+    quizzes = QuizAnswer.objects.filter(quiz=quiz).order_by('id')
 
     if request.data["flag"]:
         response = finish_quiz(quiz, quizzes)
@@ -345,7 +345,7 @@ def edit_quiz_view(request, id):
             answer.save()
 
     quiz.save()
-    quizzes = QuizAnswer.objects.filter(quiz=quiz)
+    quizzes = QuizAnswer.objects.filter(quiz=quiz).order_by("id")
     if request.data["flag"]:
         response = finish_quiz(quiz, quizzes)
 
