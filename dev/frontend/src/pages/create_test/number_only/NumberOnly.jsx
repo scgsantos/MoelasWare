@@ -34,23 +34,14 @@ function CreateRandomTest() {
   let navigate = useNavigate();
 
   function getFirstQuiz() {
-    fetch("http://localhost:8000/api/quizzes/gen/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ num_quizzes: num }),
-    })
-      .then((response) => response.json())
+    API.genQuizzes(num)
       .then((data) => {
         setQuizzes(data.quizzes);
       });
   }
 
   function getQuizzesCount() {
-    fetch("http://localhost:8000/api/quizzes/count/")
-      .then((response) => response.json())
+    API.getNumQuizzes()
       .then((data) => {
         setQuizzesCount(data.quizzes_count);
       });
