@@ -64,27 +64,16 @@ function CreateTest() {
   let navigate = useNavigate();
 
   async function getAllQuizes() {
-
-    fetch('http://localhost:8000/api/quizzes/gen/', {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ num_quizzes: quizzes_count })
-    })
-      .then(response => response.json())
+    API.genQuizzes(quizzes_count)
       .then(data => {
         setAllQuizzes(data.quizzes.sort((a, b) => (a.id > b.id) ? 1 : -1));
         setSearchedQuizzes(data.quizzes.sort((a, b) => (a.id > b.id) ? 1 : -1));
         setPageTotal(Math.ceil(data.quizzes.length / quizzes_per_page))
       });
-
   }
 
   function getQuizzesCount() {
-    fetch("http://localhost:8000/api/quizzes/count/")
-      .then((response) => response.json())
+    API.getNumQuizzes()
       .then((data) => {
         setQuizzesCount(data.quizzes_count);
       });
@@ -254,10 +243,7 @@ function CreateTest() {
   }
 
   function handleQuizPreview(quiz) {
-
-    var url = format('http://localhost:8000/api/quizzes/{0}/answers/', quiz.id);
-    fetch(url)
-      .then(response => response.json())
+    API.getQuizAnswers(id)
       .then(data => {
         setPopUp(<div className="SelectQuizzes-windowList">
           <h1 className="SelectQuizzes-windowWrapper">{quiz.question}</h1>
@@ -267,9 +253,7 @@ function CreateTest() {
           {data.answers.map((answer => renderJustification(answer)))}
 
         </div>);
-
       });
-
   }
 
   function handleClick() {

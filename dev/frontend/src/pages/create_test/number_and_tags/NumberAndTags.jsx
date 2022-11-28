@@ -52,14 +52,10 @@ function CreateRandomTestWithSpecs() {
   let navigate = useNavigate();
 
 async function genQuizzes() {
-    const response = await fetch("http://localhost:8000/api/quizzes/gen/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ num_quizzes: num, allowed_tags: tags }),
-    })
+    const response = await API.makeRequest("quizzes/gen/", "POST", {
+        num_quizzes: num,
+        tags: tags,
+    });
 
 
     if( !response.ok){
@@ -69,13 +65,10 @@ async function genQuizzes() {
     }
     const result = await response.json();
 
-
     setError(false);
     setQuizzes(result.quizzes);
     return true;
   }
-
-
 
   function getQuizzesCount() {
       API.getNumQuizzes()
@@ -127,11 +120,7 @@ async function genQuizzes() {
 
       if( result != null )
         setIsPage1(false);
-
-
     }
-
-
   }
 
   function handleNameChange(e) {
@@ -238,7 +227,7 @@ async function genQuizzes() {
             : ""}
         </h2>
 
-         <div class="SelectQuizzes-listTest">
+         <div className="SelectQuizzes-listTest">
           <h1 className="NumberOnly-inputTitle">
                 {"Specify the tags you must have in the quizzes"}
             </h1>

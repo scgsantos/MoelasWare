@@ -44,6 +44,7 @@ def get_total_number_of_quizzes_view(request):
 
 
 @api_view(["POST"])
+@login_required
 def get_n_quizzes_view(request):
     # If no quizzes are sent in the request -> quizzes are selected randomly
     # User gave config (num_quizes, allowed_tags (optional))

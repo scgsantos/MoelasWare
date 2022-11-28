@@ -1,6 +1,7 @@
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
+from django.contrib.auth.decorators import login_required
 
 from api.serializers import (
     CreateTestSerializer,
@@ -24,7 +25,7 @@ def get_test_view(request, pk):
 # Create a test
 @api_view(["POST"])
 # TODO: ADD DECORATOR WHEN LOGIN IS IMPLEMENTED
-# @login_required
+@login_required
 def post_test_view(request):
     # TODO: ADD THIS LINE WHEN LOGIN IS IMPLEMENTED
     # author_id = request.user.id

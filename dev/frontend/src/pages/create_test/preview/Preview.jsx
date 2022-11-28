@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { format } from "react-string-format";
 import { useNavigate } from "react-router-dom";
 
+import API from "api.js";
 import "common.css";
 import "pages/create_test/preview/TestPreview.css";
 import { CREATE_TEST_URL, TEST_PUBLISHED_URL } from "urls.js";
@@ -19,9 +20,7 @@ function Preview() {
   let navigate = useNavigate();
 
   function getQuizAnswers(id) {
-    var url = format("http://localhost:8000/api/quizzes/{0}/answers/", id);
-    fetch(url)
-      .then((response) => response.json())
+    API.getQuizAnswers(id)
       .then((data) => {
         setAnswers(data.answers);
         setIndex(1);
@@ -92,14 +91,7 @@ function Preview() {
       quizzes_ids.push(quizzes[j]?.id);
     }
 
-    fetch("http://localhost:8000/api/tests/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ quizzes: quizzes_ids, name: name, author: 1 }),
-    }).then((response) => response.json());
+    API.postTest(name, 1, quizzes_ids);
 
     navigate(TEST_PUBLISHED_URL);
     window.location.reload();
@@ -144,8 +136,6 @@ function Preview() {
         {/* TODO: Justification is not vertically aligned with answer */}
 
         {answers.map((answer => renderJustification(answer)))}
-
-
 
       </div>
 
