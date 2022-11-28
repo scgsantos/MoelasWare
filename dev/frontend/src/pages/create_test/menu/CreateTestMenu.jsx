@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import API from "api.js"
 
 import {
   CREATE_RANDOM_TEST_URL,
@@ -17,10 +18,19 @@ import history from "history.js";
 function CreateTestMenu() {
   document.documentElement.style.setProperty("--base", "var(--pink)");
 
-  var [hasCreationPermisison, setCreationPermision] = useState(false);
+  var [hasCreationPermission, setCreationPermission] = useState(false);
   var [isHovering, setHovering] = useState(false);
 
   let navigate = useNavigate();
+
+
+  useEffect(() => {
+    API.canCreateTest().then((data) => {
+      setCreationPermission(data.can_create_test);
+    });
+  }, []);
+
+
 
   function handleMouseOver() {
     setHovering(true);
@@ -33,20 +43,24 @@ function CreateTestMenu() {
   function handleCreateRandomTestButton() {
     history.push(TEST_MENU_URL);
 
-    navigate(CREATE_RANDOM_TEST_URL);
+    if (hasCreationPermission) {
+      navigate(CREATE_RANDOM_TEST_URL);
+    }
   }
 
 
   function handleCreateRandomTestWithTagsButton() {
     history.push(TEST_MENU_URL);
-
-    navigate(CREATE_TEST_WITH_TAGS_URL);
+    if (hasCreationPermission) {
+      navigate(CREATE_TEST_WITH_TAGS_URL);
+    }
   }
 
   function handleCreateTestButton() {
     history.push(TEST_MENU_URL);
-
-    navigate(CREATE_TEST_URL);
+    if (hasCreationPermission) {
+      navigate(CREATE_TEST_URL);
+    }
   }
 
   return (
@@ -76,7 +90,7 @@ function CreateTestMenu() {
         />
       </section>
 
-      {!hasCreationPermisison && isHovering && (
+      {!hasCreationPermission && isHovering && (
         <div className="CreateTestMenu-warning">
           <button>You must have reviewed 3 quizzes to create a test</button>
         </div>

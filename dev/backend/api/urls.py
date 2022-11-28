@@ -13,6 +13,9 @@ urlpatterns = [
     path("tags/<int:pk>/", views.get_tag_view),
     path("tags/", views.get_tag_view),
 
+
+    path("user/can_create/test/", views.can_create_test_view),
+
     path("quizzes/", views.create_quiz_view),
 	path("quizzes/<int:id>/", views.edit_quiz_view),
 

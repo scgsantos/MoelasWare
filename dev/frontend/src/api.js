@@ -67,6 +67,12 @@ class API {
         return this.makeJSONRequest("tests/");
     }
 
+    static canCreateTest() {
+        return this.makeJSONRequest(`user/can_create/test/`);
+    }
+
+
+
     // Get a tag by ID
     static getTag(tag_id) {
         return this.makeJSONRequest(`tags/${tag_id}/`);

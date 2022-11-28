@@ -1,6 +1,7 @@
 from django.http import HttpResponseBadRequest, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
+from django.contrib.auth.decorators import login_required
 
 from moelasware.models import AuthUser, User
 
@@ -27,3 +28,10 @@ def register_view(request):
     user.save()
 
     return JsonResponse({"id": user.id, "message":True})
+
+@api_view(["GET"])
+@login_required
+def can_create_test_view(request):
+    can_create_test = request.user.user.review_set.all().count() >= 3
+    return JsonResponse( {"can_create_test": can_create_test} )
+    
