@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
-import API from 'api.js';
+import API from "api.js";
 import Button from "components/CreateQuizButton.jsx";
 import "pages/create_a_quiz/CreateQuiz.css";
 
@@ -10,14 +10,12 @@ const CreateQuiz = () => {
     const quizzesHeader = ["QUIZ NAME", "TAG", "REVIEWS", "STATE"];
     const [quizzes, setQuizzes] = useState([]);
 
-    useEffect(() => {   
-    API.getMyFinishedQuizzes()
-    .then((data) => {
-        setQuizzes(data.list_of_quizzes)
-    });
+    useEffect(() => {
+        API.getMyFinishedQuizzes().then((data) => {
+            setQuizzes(data.list_of_quizzes);
+        });
     }, []);
 
-    const [selected, setSelected] = useState("");
     const navigate = useNavigate();
 
     const handleClick = (e) => {
@@ -29,11 +27,7 @@ const CreateQuiz = () => {
             <main className="container" id="createquiz">
                 <h1 className="title">CREATE A QUIZ</h1>
                 <Button to="./new" className="createquiznav" text="NEW QUIZ" />
-                <Button
-                    to="./drafts"
-                    className="createquiznav"
-                    text="DRAFTS"
-                />
+                <Button to="./drafts" className="createquiznav" text="DRAFTS" />
                 <section id="myquizzes">
                     <h2>MY QUIZZES</h2>
                     <table>

@@ -88,10 +88,14 @@ function EditQuiz() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (buttonClick === "submit"){
-            API.editQuiz(inputs, id, true).then((data) => console.log(data.resposta));
-        } else if (buttonClick === "draft"){
-            API.editQuiz(inputs, id, false).then((data) => console.log(data.resposta));
+        if (buttonClick === "submit") {
+            API.editQuiz(inputs, id, true).then((data) =>
+                console.log(data.resposta)
+            );
+        } else if (buttonClick === "draft") {
+            API.editQuiz(inputs, id, false).then((data) =>
+                console.log(data.resposta)
+            );
         }
         navigate(-1);
         //window.location.reload();
@@ -150,7 +154,7 @@ function EditQuiz() {
             <main className="container" id="newquiz">
                 <h1 className="title">CREATE A QUIZ</h1>
                 <h2>EDIT QUIZ</h2>
-                <form onSubmit={handleSubmit}>
+                <form autocomplete="off" onSubmit={handleSubmit}>
                     <div className="newquiz">
                         <div className="name-container">
                             <label>
@@ -216,8 +220,20 @@ function EditQuiz() {
 
                         <div className="options-container">{options}</div>
                         <div className="break"></div>
-                        <input type="submit" value="SAVE AS DRAFT" onClick={() => {setButtonClick("draft")}}/>
-                        <input type="submit" value="SUBMIT" onClick={() => {setButtonClick("submit")}}/>
+                        <input
+                            type="submit"
+                            value="SAVE AS DRAFT"
+                            onClick={() => {
+                                setButtonClick("draft");
+                            }}
+                        />
+                        <input
+                            type="submit"
+                            value="SUBMIT"
+                            onClick={() => {
+                                setButtonClick("submit");
+                            }}
+                        />
                     </div>
                 </form>
             </main>
