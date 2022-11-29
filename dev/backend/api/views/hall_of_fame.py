@@ -75,6 +75,7 @@ def handle_fame_serializer_all_tests(obj):
 
     for i in obj:
         test_id = i["id"]
+        test_name = i["name"]
         author = i["author"]["user"]["username"]
         solved_tests = i["solved_tests"]
         tags = ""
@@ -86,7 +87,7 @@ def handle_fame_serializer_all_tests(obj):
 
         tags = tags[0 : len(tags) - 1]
         id += 1
-        obj_list.append({test_id: [test_id, solved_tests, tags, author]})
+        obj_list.append({test_id: [test_id, test_name, solved_tests, tags, author]})
 
     return obj_list
 
