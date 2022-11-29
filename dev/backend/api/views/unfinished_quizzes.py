@@ -33,7 +33,7 @@ def get_draft_info(request, id):
         return HttpResponseBadRequest("Quiz not found")
 
     quiz = quiz[0]
-    answers = QuizAnswer.objects.filter(quiz = quiz)
+    answers = QuizAnswer.objects.filter(quiz = quiz).order_by("id")
 
     if not answers.exists():
         return HttpResponseBadRequest("Answers not found")

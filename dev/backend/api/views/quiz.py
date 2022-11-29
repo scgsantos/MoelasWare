@@ -115,6 +115,13 @@ def get_user_quizzes_view(request):
 
 
 def handle_frontend_fields(dataRequest):
+    data = {'name': dataRequest['name'],
+            'question': dataRequest['question'],
+            'description' : dataRequest['description'],
+            'tag' : dataRequest['tag'],
+            'correct' : dataRequest['correct'],
+            "answers": [], "justification": []
+        }
     option_list = ["option1", "option2", "option3", "option4", "option5", "option6"]
     justification_list = [
         "justification1",
@@ -125,14 +132,18 @@ def handle_frontend_fields(dataRequest):
         "justification6",
     ]
 
-    data = {"answers": [], "justification": []}
-    for i in dataRequest:
-        if i in option_list:
+    for i in option_list:
+        if i in dataRequest:
             data["answers"].append(dataRequest[i])
-        elif i in justification_list:
+        else:
+            data["answers"].append("")
+
+    for i in justification_list:
+        if i in dataRequest:
             data["justification"].append(dataRequest[i])
         else:
-            data[i] = dataRequest[i]
+            data["justification"].append("")
+
     return data
 
 
@@ -188,11 +199,7 @@ def create_quiz_view(request):
                     return JsonResponse({"resposta": "Wrong Data for Tags Field"})
 
             case "answers":
-                if (
-                    type(data["answers"]) is list
-                    and len(data["answers"]) > 0
-                    and len(data["answers"]) <= 6
-                ):
+                if type(data["answers"]) is list and len(data["answers"]) > 0 and len(data["answers"]) <= 6:
                     for j in range(len(data["answers"])):
                         answer = quiz_answers[j]
                         answer.text = data["answers"][j]
@@ -208,11 +215,7 @@ def create_quiz_view(request):
                         answer.save()
 
             case "justification":
-                if (
-                    type(data["justification"]) is list
-                    and len(data["answers"]) > 0
-                    and len(data["answers"]) <= 6
-                ):
+                if type(data["justification"]) is list and len(data["justification"]) > 0 and len(data["justification"]) <= 6:
                     for j in range(len(data["justification"])):
                         answer = quiz_answers[j]
                         answer.justification = data["justification"][j]
@@ -245,7 +248,7 @@ def create_quiz_view(request):
 
     else:
         response = {"resposta": "Saved as Draft"}
-    print(response, "-------------") 
+
     return JsonResponse(response)
 
 
@@ -351,6 +354,7 @@ def edit_quiz_view(request, id):
 
     else:
         response = {"resposta": "Saved as Draft"}
+
     return JsonResponse(response)
 
 
