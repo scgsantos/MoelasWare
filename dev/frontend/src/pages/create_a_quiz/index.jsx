@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
-import API from 'api.js';
+import API from "api.js";
 import Button from "components/CreateQuizButton.jsx";
 import "pages/create_a_quiz/CreateQuiz.css";
 import Button2 from "components/Button.jsx";
@@ -12,13 +12,11 @@ const CreateQuiz = () => {
     const [quizzes, setQuizzes] = useState([]);
 
     useEffect(() => {
-        API.getMyFinishedQuizzes()
-            .then((data) => {
-                setQuizzes(data.list_of_quizzes)
-            });
+        API.getMyFinishedQuizzes().then((data) => {
+            setQuizzes(data.list_of_quizzes);
+        });
     }, []);
 
-    const [selected, setSelected] = useState("");
     const navigate = useNavigate();
 
     const handleClick = (e) => {
@@ -41,11 +39,7 @@ const CreateQuiz = () => {
                 }} />
 
                 <Button to="./new" className="createquiznav" text="NEW QUIZ" />
-                <Button
-                    to="./drafts"
-                    className="createquiznav"
-                    text="DRAFTS"
-                />
+                <Button to="./drafts" className="createquiznav" text="DRAFTS" />
                 <section id="myquizzes">
                     <h2>MY QUIZZES</h2>
                     <table>

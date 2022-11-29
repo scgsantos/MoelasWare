@@ -57,6 +57,10 @@
     height: 50%;
 }
 
+.myquizbox:hover #createquiz {
+    overflow: hidden;
+}
+
 .myquiz {
     box-sizing: border-box;
     width: 100%;
@@ -68,6 +72,9 @@
     padding: 0.5em 0.5rem;
     overflow-y: scroll;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .myquiz #description {
@@ -75,25 +82,24 @@
 }
 
 .myquiz .answers {
-    margin-top: 2rem;
+    margin: 1.5rem 0;
     width: 90%;
     display: inline-grid;
     align-items: center;
-    justify-items: center;
-    grid-template-columns: auto auto auto auto auto auto auto;
+    justify-items: stretch;
+    grid-template-columns: auto auto auto auto auto auto;
     text-align: left;
 }
 
 .myquiz .answers .option-title {
-    grid-column: 3;
-    justify-self: center;
-    margin-right: 1rem;
+    grid-column: 2;
+    justify-self: start;
 }
 
 .myquiz .answers .options, .myquiz .answers .justifications {
     justify-self: center;
+    text-align: center;
 }
-
 
 .myquiz .answers #option {
     border-radius: 10px;
@@ -110,22 +116,30 @@
 }
 
 .myquiz .reviews {
-    margin-top: 2rem;
     width: 90%;
     display: inline-grid;
     align-items: center;
     justify-items: center;
-    grid-template-columns: auto auto auto auto auto auto auto;
+    grid-template-columns: auto auto auto auto auto auto auto auto;
     text-align: left;
+    row-gap: 0.5rem;
 }
 
 .myquiz .reviews .review-title {
     grid-column: 3;
     justify-self: center;
-    margin-right: 1rem;
+    text-align: center;
 }
 
-.myquiz .reviews .options, .myquiz .reviews .justifications {
+.myquiz .reviews #title {
+    margin: 0;
+}
+
+.myquiz .reviews #author {
+    font-size: 0.9rem;
+}
+
+.myquiz .reviews .results, .myquiz .reviews .evaluations {
     justify-self: center;
 }
 
@@ -138,12 +152,6 @@
 .myquiz .reviews #evaluation {
     font-size: 0.9rem;
 }
-
-.myquiz .reviews p.accepted {
-    background-color: var(--green);
-}
-
-
 
 .createquiznav {
     margin: 0 0.5rem;

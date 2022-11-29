@@ -16,22 +16,22 @@ function MyQuiz() {
         API.getInfoQuiz(id).then((data) => {
             setQuizzes(data.quiz);
             setAnswers(data.answers);
-            console.log(quizzes);
-            console.log(answers);
         });
         API.getReviewsOfQuiz(id).then((data) => {
             setError(data.error);
-            if (!data.error){
+            if (!data.error) {
                 setReviews(data.reviews);
             }
         });
     }, []);
+    console.log(reviews);
 
     let options = [];
     for (let i = 0; i < answers.length; i++) {
         options.push(
             <React.Fragment>
-                <p className="option-title">OPTION #{i + 1}:</p>
+                <p className="option-title">OPTION #{i + 1}</p>
+                <div>&nbsp;</div>
                 <div className="options">
                     <p
                         key={"o" + i}
@@ -50,36 +50,38 @@ function MyQuiz() {
         );
     }
     let reviews_list = [];
-    if (!error){
-    for (let i = 0; i < reviews.length; i++) {
-        reviews_list.push(
-            <React.Fragment>
-                <p className="review-title">REVIEW #{i + 1}:</p>
-                <div className="results">
-                    <p
-                        key={"r" + i}
-                        id="result"
-                        className={
-                            reviews[i][4] === "accepted" ? "accepted" : "none"
-                        }
-                    >
-                        {reviews[i][4]}
-                    </p>
-                </div>
-                <div className="evaluations">
-                    <p key={"e" + i} id="evaluation">
-                        {reviews[i][2]}
-                    </p>
-                </div>
-                <div>
-                    <p key={"e" + i} id="evaluation">
-                        {reviews[i][1]}
-                    </p>
-                </div>
-            </React.Fragment>
-        );
+    if (!error) {
+        for (let i = 0; i < reviews.length; i++) {
+            reviews_list.push(
+                <React.Fragment>
+                    <div className="review-title">
+                        <p id="title">REVIEW #{i + 1}</p>
+                        <p id="author">by {reviews[i][1]}</p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div className="results">
+                        <p
+                            key={"r" + i}
+                            id="result"
+                            className={
+                                reviews[i][4] === "accepted"
+                                    ? "accepted"
+                                    : "rejected"
+                            }
+                        >
+                            {reviews[i][4]}
+                        </p>
+                    </div>
+                    <div className="evaluations">
+                        <p key={"e" + i} id="evaluation">
+                            ({reviews[i][2]})
+                        </p>
+                    </div>
+                </React.Fragment>
+            );
+        }
     }
-}
 
     return (
         <div
@@ -99,8 +101,12 @@ function MyQuiz() {
                     <p id="question">{quizzes[4]}</p>
                     <p id="description">({quizzes[5]})</p>
                     <div className="answers">{options}</div>
-                    <h3>REVIEWS</h3>
-                    <div className="reviews">{reviews_list}</div>
+                    {reviews.length > 0 && (
+                        <React.Fragment>
+                            <h3>REVIEWS</h3>
+                            <div className="reviews">{reviews_list}</div>
+                        </React.Fragment>
+                    )}
                 </div>
             </div>
         </div>

@@ -70,7 +70,6 @@ h3 {
   font-size: 1rem;
 }
 
-
 p {
   margin: 0 0 0.5rem;
 }
@@ -99,6 +98,21 @@ input[type=text], input[type=search], input[type=email], input[type=password] {
   border: 1px solid black;
 }
 
+/* clears input browser styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px background-color inset;
+  box-shadow: 0 0 0px 1000px background-color inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 /* clears the ‘X’ from Internet Explorer */
 input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
 input[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
@@ -122,6 +136,22 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 ::-ms-input-placeholder { /* Microsoft Edge */
   color: black;
   font-size: 0.9rem;
+}
+
+input:focus-visible, select:focus-visible {
+  outline: 1px solid black;
+  border-radius: 10px;
+}
+
+button:focus-visible {
+  background-color: black;
+  color: var(--base);
+  outline: none;
+}
+
+a:focus-visible {
+  outline: none;
+  text-decoration: underline;
 }
 
 .startmenu {
