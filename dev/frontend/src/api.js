@@ -31,7 +31,7 @@ class API {
 
         return fetch(pathURL, {
             method: method,
-            headers: { ...headers, ...ACCEPT_JSON, ...API.getBearerToken() },
+            headers: { ...ACCEPT_JSON, ...headers, ...API.getBearerToken() },
             body: method === "GET" ? undefined : JSON.stringify(body),
         });
     }
@@ -300,6 +300,15 @@ class API {
     static getDraftById(quiz_id) {
         return this.makeJSONRequest("draft/info/" + quiz_id.toString() + "/");
     }
+
+    static getXML() {
+        return this.makeRequest("quiz/export/").then((res) => {return res.blob()})
+    }
+
+    static uploadXML(file) {
+        return this.makeRequest("quiz/import/", "POST", file, undefined)
+    }
+    
 }
 
 export default API;

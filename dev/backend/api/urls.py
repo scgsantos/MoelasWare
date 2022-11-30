@@ -48,5 +48,8 @@ urlpatterns = [
     path("unfinished_quizzes/", views.get_unfinished_quizzes),
     path("draft/info/<int:id>/", views.get_draft_info),
 
+    path("quiz/import/", views.importXML),
+    path("quiz/export/", views.exportXML),
+
 
 ]
