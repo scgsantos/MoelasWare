@@ -179,11 +179,12 @@ class API {
             args: args,
         });
     }
-    static register(username, password, repeat_password) {
+    static register(username, password, repeat_password, email) {
         if (password === repeat_password) {
             return this.makeRequest("register/", "POST", {
                 username: username,
                 password: password,
+                email: email,
             });
         }
     }

@@ -11,6 +11,7 @@ function Login() {
         username: "",
         password: "",
         repeat_password: "",
+        email: "",
     });
 
     const [errorLogin, setErrorLogin] = useState("");
@@ -48,7 +49,8 @@ function Login() {
             API.register(
                 inputs.username,
                 inputs.password,
-                inputs.repeat_password
+                inputs.repeat_password,
+                inputs.email
             ).then((data) => {
                 if (data.message) {
                     API.login(inputs.username, inputs.password).then(() => {
@@ -99,6 +101,13 @@ function Login() {
                         type="text"
                         placeholder="username"
                         name="username"
+                        size="30"
+                        onChange={handleChange}
+                    ></input>
+                    <input
+                        type="email"
+                        placeholder="email"
+                        name="email"
                         size="30"
                         onChange={handleChange}
                     ></input>
