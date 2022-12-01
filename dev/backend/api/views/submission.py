@@ -63,6 +63,7 @@ def handle_serializer(obj):
     for i in obj:
         test_id = i["test"]["id"]
         author = i["test"]["author"]["user"]["username"]
+        test_name = i["test"]["name"]
 
         tags = ""
         for j in i["test"]["quizzes"]:
@@ -73,7 +74,7 @@ def handle_serializer(obj):
 
         tags = tags[0 : len(tags) - 1]
         id += 1
-        obj_list.append({test_id: [test_id, tags, author, id]})
+        obj_list.append({test_id: [test_id, tags, author, id, test_name]})
 
     return obj_list
 

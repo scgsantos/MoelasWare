@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import API from 'api.js';
 
 function History(props) {
-  const userHistHeader = ["TEST ID", "TAG", "AUTHOR"];
+  const userHistHeader = ["TEST NAME", "TAG", "AUTHOR"];
   const testHistHeader = ["USERNAME", "GRADE"];
   const [tests, setTests] = useState([]);
   const [users, setUsers] = useState([]);
@@ -44,7 +44,7 @@ function History(props) {
             <tbody>
               {users.map((u) => (
                 <tr key={Object.values(u)[0][3]}>
-                  <td>{Object.values(u)[0][0]}</td>
+                  <td>{Object.values(u)[0][4]}</td>
                   <td>{Object.values(u)[0][1]}</td>
                   <td>{Object.values(u)[0][2]}</td>
                 </tr>

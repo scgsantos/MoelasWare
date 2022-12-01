@@ -58,7 +58,7 @@ class GetTestInfo(serializers.ModelSerializer):
 
     class Meta:
         model = Test
-        fields = ["id", "author", "quizzes"]
+        fields = ["id", "author", "quizzes", "name"]
 
 
 class GetTestWithSubmissionsSerializer(serializers.ModelSerializer):
