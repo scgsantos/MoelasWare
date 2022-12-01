@@ -6,4 +6,4 @@ from api.serializers.submission import *
 from api.serializers.tag import *
 from api.serializers.test import *
 from api.serializers.user import *
-from api.serializers.unfinished_quizzes import *
+from api.serializers.drafts import *

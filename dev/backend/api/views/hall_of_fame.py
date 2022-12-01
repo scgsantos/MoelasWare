@@ -99,6 +99,7 @@ def get_fame_all_tests_view(request):
     if not tests.exists():
         return HttpResponseNotFound("User not found")
 
+
     sub = HallOfFameGetTestInfo(tests, many=True).data
     sub = handle_fame_serializer_all_tests(sub)
 

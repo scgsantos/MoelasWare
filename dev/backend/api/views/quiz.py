@@ -4,7 +4,6 @@ from collections import Counter
 from django.http import HttpResponseBadRequest, JsonResponse, HttpRequest, HttpResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
-
 from api.serializers import QuizAnswerSerializer, QuizSerializer, QuizFinishedSerializer, GetQuizReviewNewSerializer
 from moelasware.models import Quiz, QuizAnswer, User, Tag, Review
 from django.contrib.auth.decorators import login_required
@@ -143,11 +142,14 @@ def quiz_finished_serializer_handler(data):
 def get_user_quizzes_view(request):
 
     user = request.user
-    quizzes = Quiz.objects.filter(author__user__username=user).filter(finished=True)
-    quizzes = QuizFinishedSerializer(quizzes, many=True).data
+    quizzes = Quiz.objects.filter(author__user__username = user).filter(finished = True)
+
+    if not quizzes.exists():
+        return JsonResponse({"error":True, "message":"No finished quizzes found"})
+    quizzes = QuizFinishedSerializer(quizzes, many = True).data
     quizzes = quiz_finished_serializer_handler(quizzes)
 
-    return JsonResponse({"list_of_quizzes": quizzes})
+    return JsonResponse({"list_of_quizzes": quizzes, "error":False, "message":""})
 
 
 def handle_frontend_fields(dataRequest):
@@ -375,7 +377,7 @@ def edit_quiz_view(request, id):
                     return JsonResponse("Wrong Data for Tags Field")
 
             case "correct":
-                if (type(dataRequest["correct"])) is str:
+                if (type(dataRequest["correct"])) is str and dataRequest["correct"] != "undefined":
                     correct_option = int(dataRequest["correct"])
                     if correct_option > 0 and correct_option <= 6:
                         for j in range(len(quiz_answers)):
@@ -434,21 +436,11 @@ def finish_quiz(quiz: Quiz, quiz_answers: list):
         response = {"resposta": f"Your quiz {quiz.name} has been finished successfully"}
         # response = {'resposta' : f"Your quiz has been finished successfully{[quiz.name, quiz.id]}"}
 
-        users = User.objects.all()
+        users = User.objects.exclude(user__username = quiz.author.user.username)
         users = list(users)
-        reviewers_list = []
+        reviewers_list = random.sample(users,3)
 
-        number_of_reviewers = 0
-
-        while True:
-            if number_of_reviewers == 3:
-                break
-
-            random_number = random.randint(0, len(users) - 1)
-            user = users.pop(random_number)
-            reviewers_list.append(user)
-            number_of_reviewers += 1
-
+      
         for i in reviewers_list:
             review = Review(
                 reviewer=i,
@@ -487,7 +479,7 @@ def handle_get_unapproved_quizzes_reviews_view(obj):
 
 @api_view(["GET"])
 @login_required
-def get_reviews_of_a_quiz(request, id):
+def get_reviews_of_a_quiz_view(request, id):
 
     user = request.user
     quiz = Quiz.objects.filter(id=id).filter(author__user__username=user)

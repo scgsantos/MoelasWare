@@ -29,12 +29,11 @@ from moelasware.models import (
 
 @api_view(["GET"])
 @login_required
-def get_quiz_view(request, pk):
+def get_info_review_view(request, pk):
     quiz = get_object_or_404(Quiz, id=pk)
 
     quiz_serializer = GetQuizReviewSerializer(quiz)
     answers = QuizAnswer.objects.filter(quiz=quiz.id)
-
     answer_serializer = GetQuizAnswerSerializer(answers, many=True)
     return JsonResponse({"quiz": quiz_serializer.data, "answers": answer_serializer.data})
 
@@ -60,7 +59,7 @@ def get_info_quiz_view(request, pk):
 
 @api_view(["POST"])
 @login_required
-def create_quiz_review_view(request):
+def create_review_view(request):
 
     data = request.data['args']
     user = User.objects.filter(user__username = request.user)
@@ -92,7 +91,6 @@ def create_quiz_review_view(request):
 
         review.comment = serializer["comment"]
         review.save()
-        print(serializer, "---------------")
         return JsonResponse(serializer)
 
     return JsonResponse({"error": "Bad data"})
@@ -120,7 +118,7 @@ def get_quizzes_of_a_reviewer_view(request):
 
     reviewer_list = quiz_review_serializer_handler(reviewer_list)
 
-    return JsonResponse({"error": False, "info": reviewer_list})
+    return JsonResponse({"error": False, "message":"", "info": reviewer_list})
 
 
 @api_view(["GET"])
@@ -129,5 +127,4 @@ def get_quiz_info_review_view(request, id):
 
     chosen_quiz = get_object_or_404(Review, id=id)
     serializer = GetReviewSerializer(chosen_quiz).data
-
     return JsonResponse({"reviewer": serializer})

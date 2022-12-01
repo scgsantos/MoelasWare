@@ -103,7 +103,7 @@ class API {
     // NOT YET IMPLEMENTED
     // Get all quizzes
     static getQuizzes() {
-        return this.makeJSONRequest("quizzes");
+        return this.makeJSONRequest("quizzes/");
     }
 
     // Get all reviewers of a given quiz
@@ -175,15 +175,15 @@ class API {
     }
 
     static getMyFinishedQuizzes() {
-        return this.makeJSONRequest("quizzes/finished/");
+        return this.makeJSONRequest("myquizzes/");
     }
 
     static getInfoQuiz(id) {
-        return this.makeJSONRequest("quiz/" + id.toString() + "/");
+        return this.makeJSONRequest(`quiz/${id}/info/`);
     }
 
     static getReviewsOfQuiz(id) {
-        return this.makeJSONRequest("myquiz/" + id.toString() + "/");
+        return this.makeJSONRequest(`myquiz/${id}/reviews/`);
     }
 
     static getQuiz(id) {
@@ -195,11 +195,12 @@ class API {
             args: args,
         });
     }
-    static register(username, password, repeat_password) {
+    static register(username, password, repeat_password, email) {
         if (password === repeat_password) {
             return this.makeJSONRequest("register/", "POST", {
                 username: username,
                 password: password,
+                email: email,
             });
         }
     }
@@ -298,12 +299,12 @@ class API {
         return this.makeJSONRequest(`users/${user_id}/`);
     }
 
-    static getUnfinishedQuizzes() {
-        return this.makeJSONRequest("unfinished_quizzes/");
+    static getDrafts() {
+        return this.makeRequest("drafts/");
     }
 
     static getDraftById(quiz_id) {
-        return this.makeJSONRequest(`draft/info/${quiz_id}/`);
+        return this.makeJSONRequest(`draft/${quiz_id}/`);
     }
 
     static getXML() {

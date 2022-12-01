@@ -6,7 +6,7 @@ from api.views.submission import *
 from api.views.tags import *
 from api.views.test import *
 from api.views.user import *
-from api.views.unfinished_quizzes import *
+from api.views.drafts import *
 
 
 

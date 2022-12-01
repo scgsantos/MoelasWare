@@ -31,67 +31,65 @@ function UsersList() {
     setSelectedBtn(selectedBtn);
     navigate(`./${selectedBtn.target.id}`);
   };
-
-  return (
-    <section id="users">
-      <form onSubmit={handleSubmit}>
-        <input
-          className="searchbar"
-          type="search"
-          placeholder="Search user by username or e-mail"
-          size="30"
-          onChange={(event) => setQuery(event.target.value)}
-        />
-      </form>
-
-      <table>
-        <thead>
-          <tr>
-            {usersHeader.map((h) => (
-              <th key={h}>{h}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {users
-            .filter((u) => {
-              if (query === "") {
-                return u;
-              } else if (
-                Object.values(u)[0][0].toLowerCase().includes(query.toLowerCase())
-              ) {
-                return u;
-              } else if (
-                Object.values(u)[0][5].toLowerCase().includes(query.toLowerCase())
-              ) {
-                return u;
-              }
-              return false;
-            })
-            .map((u) => (
-              <tr key={Object.values(u)[0][0]}>
-                <td>{Object.values(u)[0][0]}</td>
-                <td>{Object.values(u)[0][1]}</td>
-                <td>
-                  {Object.values(u)[0][2]}
-                  {Object.values(u)[0][2] > 0 && (
-                    <button
-                      className="btn"
-                      id={Object.values(u)[0][4]}
-                      onClick={(e) => handleBtnClick(e)}
-                    >
-                      history
-                    </button>
-                  )}
-                </td>
-                <td><p>{Object.values(u)[0][3]}</p></td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-      <Outlet />
-    </section>
-  );
-}
+    return (
+      <section id="users">
+        <form onSubmit={handleSubmit}>
+          <input
+            className="searchbar"
+            type="search"
+            placeholder="Search user by username or e-mail"
+            size="30"
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </form>
+        <table>
+          <thead>
+            <tr>
+              {usersHeader.map((h) => (
+                <th key={h}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {users
+              .filter((u) => {
+                if (query === "") {
+                  return u;
+                } else if (
+                  Object.values(u)[0][0].toLowerCase().includes(query.toLowerCase())
+                ) {
+                  return u;
+                } else if (
+                  Object.values(u)[0][5].toLowerCase().includes(query.toLowerCase())
+                ) {
+                  return u;
+                }
+                return false;
+              })
+              .map((u) => (
+                <tr key={Object.values(u)[0][0]}>
+                  <td>{Object.values(u)[0][0]}</td>
+                  <td>{Object.values(u)[0][1]}</td>
+                  <td>
+                    {Object.values(u)[0][2]}
+                    {Object.values(u)[0][2] > 0 && (
+                      <button
+                        className="btn"
+                        id={Object.values(u)[0][4]}
+                        onClick={(e) => handleBtnClick(e)}
+                      >
+                        history
+                      </button>
+                    )}
+                  </td>
+                  <td><p>{Object.values(u)[0][3]}</p></td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+        <Outlet />
+      </section>
+    );
+  }
 
 export default UsersList;

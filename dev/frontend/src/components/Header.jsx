@@ -36,7 +36,7 @@ function Header(props) {
                     }
                     to={PROFILE_URL}
                 >
-                    USER'S PROFILE
+                    PROFILE
                 </NavLink>
                 <NavLink id="logout" onClick={handleLogout}>
                     LOGOUT

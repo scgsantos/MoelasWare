@@ -1,15 +1,10 @@
 import 'pages/review_quiz/ReviewAQuizPage.css';
 import React from 'react';
-import logo from 'assets/SVG/LOGO.svg';
-import { useState, useEffect, setState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router';
-import config from 'config.js';
 import { REVIEW_URL } from "urls.js";
 import API from 'api.js';
-
-
-
 
 function ReviewAQuizPage() {
   document.documentElement.style.setProperty("--base", "var(--green)");
@@ -33,7 +28,7 @@ function ReviewAQuizPage() {
 
   //fetch quiz from the backend and log it to the console
   useEffect(() => {
-    API.getQuizInfoReview(id)
+    API.getInfoReview(id)
         .then((data) => {
             console.log(data);
             setLoading(true);
@@ -116,8 +111,6 @@ function ReviewAQuizPage() {
                 "accepted": true,
                 "comment": justification
               };
-              console.log(args);
-              //post to backend
               API.createReview(args)
               .then(
                 alert("Quiz Accepted")
@@ -126,18 +119,15 @@ function ReviewAQuizPage() {
               )
             }}>ACCEPT</button>
 
-
             <button className="btn success" onClick={() => {
                 const args = {
                   "quiz": "" + id,
                   "accepted": false,
                   "comment": justification
                 };
-                console.log(args);
-                //post to backend
                 API.createReview(args)
                 .then(
-                  alert("Quiz Accepted")
+                  alert("Quiz Rejected")
                 ).then(
                   navigate(REVIEW_URL)
                 )
