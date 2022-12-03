@@ -6,7 +6,6 @@ import API from 'api.js';
 function UsersList() {
   const [query, setQuery] = useState("");
   const [users, setUsers] = useState([]);
-  const [error, setError] = useState(false);
   const usersHeader = [
     "USERNAME",
     "CORRECT ANSWERS",
@@ -20,12 +19,10 @@ function UsersList() {
 
   useEffect(() => {
     API.getHallOfFameUsers().then((data) => {
-      setError(data.error);
-      if (!error){
-        setUsers(data.fame);
-      }
+      setUsers(data.fame);
      });
   }, []);
+
 
   const [selectedBtn, setSelectedBtn] = useState("");
   const navigate = useNavigate();
@@ -34,13 +31,6 @@ function UsersList() {
     setSelectedBtn(selectedBtn);
     navigate(`./${selectedBtn.target.id}`);
   };
-  if (error) {
-    return (
-      <section id="users">
-        <h1>NO USERS FOUND</h1>
-      </section>
-    );
-  } else {
     return (
       <section id="users">
         <form onSubmit={handleSubmit}>
@@ -52,7 +42,6 @@ function UsersList() {
             onChange={(event) => setQuery(event.target.value)}
           />
         </form>
-
         <table>
           <thead>
             <tr>
@@ -102,6 +91,5 @@ function UsersList() {
       </section>
     );
   }
-}
 
 export default UsersList;

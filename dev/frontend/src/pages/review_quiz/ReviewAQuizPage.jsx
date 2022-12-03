@@ -1,15 +1,10 @@
 import 'pages/review_quiz/ReviewAQuizPage.css';
 import React from 'react';
-import logo from 'assets/SVG/LOGO.svg';
-import { useState, useEffect, setState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router';
-import config from 'config.js';
 import { REVIEW_URL } from "urls.js";
 import API from 'api.js';
-
-
-
 
 function ReviewAQuizPage() {
   document.documentElement.style.setProperty("--base", "var(--green)");

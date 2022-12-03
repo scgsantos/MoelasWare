@@ -57,18 +57,16 @@ def hall_of_fame_view(request):
 
     users = User.objects.all().order_by("user")
     if not users.exists():
-        #return HttpResponseNotFound("User not found")
-        return JsonResponse({"error": True, "message":"User not found"})
+        return HttpResponseNotFound("User not found")
 
     if not SubmissionAnswer.objects.all().exists():
-        #return HttpResponseNotFound("Submissions not found")
-        return JsonResponse({"error": True, "message":"No submissions found"})
+        return HttpResponseNotFound("Submissions not found")
 
     sub = HallOfFameGetUserInfo(users, many=True).data
 
     sub = handle_serializer_hall_of_fame_view(sub)
 
-    return JsonResponse({"fame": sub,"error": False, "message":""})
+    return JsonResponse({"fame": sub})
 
 
 def handle_fame_serializer_all_tests(obj):
@@ -99,11 +97,10 @@ def get_fame_all_tests_view(request):
 
     tests = Test.objects.all().order_by("id")
     if not tests.exists():
-        #return HttpResponseNotFound("User not found")
-        return JsonResponse({"error": True, "message":"No tests found"})
+        return HttpResponseNotFound("User not found")
 
 
     sub = HallOfFameGetTestInfo(tests, many=True).data
     sub = handle_fame_serializer_all_tests(sub)
 
-    return JsonResponse({"submissions_by_test": sub, "error": False, "message":""})
+    return JsonResponse({"submissions_by_test": sub})

@@ -170,10 +170,6 @@ class API {
         return this.makeRequest("quiz/" + id.toString() + "/reviews/");
     }
 
-    static getQuiz(id) {
-        return this.makeRequest("review/quizzes/" + id.toString() + "/");
-    }
-
     static createReview(args) {
         return this.makeRequest("review/create/", "POST", {
             args: args,

@@ -4,8 +4,6 @@ import { Outlet } from "react-router-dom";
 import API from 'api.js';
 function TestsList() {
   const [tests, setTests] = useState([]);
-  const [error, setError] = useState(false);
-  const [message, setMessage] = useState("");
   const testsHeader = [
     "TEST NAME",
     "TIMES TAKEN",
@@ -15,10 +13,7 @@ function TestsList() {
 
   useEffect(() => {
     API.getHallOfFameTests().then((data) => {
-      setError(data.error);
-      if (!error){
         setTests(data.submissions_by_test);
-      }
      });
   }, []);
 
@@ -29,48 +24,41 @@ function TestsList() {
     setSelectedBtn(selectedBtn);
     navigate(`./${selectedBtn.target.id}`);
   };
-  if (error){
-    return (
-      <section id="tests">
-      <h1>NO TESTS FOUND</h1>
-      </section>);
-  } else {
-      return (
-        <section id="tests">
-        <table>
-          <thead>
-            <tr>
-              {testsHeader.map((h) => (
-                <th key={h}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {tests.map((t) => (
-              <tr key={Object.values(t)[0][0]}>
-                <td>{Object.values(t)[0][1]}</td>
-                <td>
-                  {Object.values(t)[0][2]}
-                  {Object.values(t)[0][2] > 0 && (
-                    <button
-                    className="btn"
-                      id={Object.values(t)[0][0]}
-                      onClick={(e) => handleBtnClick(e)}
-                      >
-                      history
-                    </button>
-                  )}
-                </td>
-                <td>{Object.values(t)[0][3]}</td>
-                <td>{Object.values(t)[0][4]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Outlet />
-      </section>
-    );
-  }
+  return (
+    <section id="tests">
+    <table>
+      <thead>
+        <tr>
+          {testsHeader.map((h) => (
+            <th key={h}>{h}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {tests.map((t) => (
+          <tr key={Object.values(t)[0][0]}>
+            <td>{Object.values(t)[0][1]}</td>
+            <td>
+              {Object.values(t)[0][2]}
+              {Object.values(t)[0][2] > 0 && (
+                <button
+                className="btn"
+                  id={Object.values(t)[0][0]}
+                  onClick={(e) => handleBtnClick(e)}
+                  >
+                  history
+                </button>
+              )}
+            </td>
+            <td>{Object.values(t)[0][3]}</td>
+            <td>{Object.values(t)[0][4]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <Outlet />
+  </section>
+);
 }
 
 export default TestsList;

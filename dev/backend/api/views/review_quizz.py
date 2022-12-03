@@ -34,7 +34,6 @@ def get_info_review_view(request, pk):
 
     quiz_serializer = GetQuizReviewSerializer(quiz)
     answers = QuizAnswer.objects.filter(quiz=quiz.id)
-    print("POTETUUUUUUUUUUUUUUUUUUUUUUUUUUU")
     answer_serializer = GetQuizAnswerSerializer(answers, many=True)
     return JsonResponse({"quiz": quiz_serializer.data, "answers": answer_serializer.data})
 
@@ -71,7 +70,6 @@ def create_review_view(request):
     user = user[0]
 
     data["reviewer"] = user.id
-    print(data, "dsdsadas")
     serializer = CreateReviewSerializer(data=data)
 
     # raises exception on why its not valid
@@ -129,5 +127,4 @@ def get_quiz_info_review_view(request, id):
 
     chosen_quiz = get_object_or_404(Review, id=id)
     serializer = GetReviewSerializer(chosen_quiz).data
-    print("MEH")
     return JsonResponse({"reviewer": serializer})

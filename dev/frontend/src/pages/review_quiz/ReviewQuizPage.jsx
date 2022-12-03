@@ -1,8 +1,7 @@
 import 'pages/review_quiz/ReviewQuizPage.css';
-import logo from 'assets/SVG/LOGO.svg';
 import React from 'react';
 import { REVIEW_QUIZ_URL } from "urls.js";
-import { useState, useEffect, setState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from 'api.js';
 
@@ -14,7 +13,6 @@ function ReviewQuizPage() {
   const [error, setError] = useState(false);
   //loading
   const [isLoaded, setLoading] = useState(false);
-
 
   let navigate = useNavigate();
 

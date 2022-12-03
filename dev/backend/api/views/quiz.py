@@ -263,8 +263,6 @@ def edit_quiz_view(request, id):
         if i != "info":
             answers.append({"answer":j})
     
-
-
     quiz = Quiz.objects.filter(id=id).filter(finished=False)
 
     if not quiz.exists():
@@ -330,7 +328,7 @@ def edit_quiz_view(request, id):
                     return JsonResponse("Wrong Data for Tags Field")
 
             case "correct":
-                if (type(dataRequest["correct"])) is str:
+                if (type(dataRequest["correct"])) is str and dataRequest["correct"] != "undefined":
                     correct_option = int(dataRequest["correct"])
                     if correct_option > 0 and correct_option <= 6:
                         for j in range(len(quiz_answers)):
@@ -386,12 +384,11 @@ def finish_quiz(quiz: Quiz, quiz_answers: list):
         response = {"resposta": f"Your quiz {quiz.name} has been finished successfully"}
         # response = {'resposta' : f"Your quiz has been finished successfully{[quiz.name, quiz.id]}"}
 
-        users = User.objects.all()
+        users = User.objects.exclude(user__username = quiz.author.user.username)
         users = list(users)
         reviewers_list = random.sample(users,3)
 
-        
-
+      
         for i in reviewers_list:
             review = Review(
                 reviewer=i,

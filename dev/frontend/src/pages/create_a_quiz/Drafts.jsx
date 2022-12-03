@@ -1,7 +1,7 @@
 import React from "react";
 import API from "api.js";
 import { useEffect, useState } from "react";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Drafts.css";
 
 function Drafts() {
@@ -31,7 +31,7 @@ function Drafts() {
                     <h1 className="title">CREATE A QUIZ</h1>
                     <h2>DRAFTS</h2>
                     <h3>No drafts found</h3>
-                    </main>
+                </main>
             </React.Fragment>
         );
     } else {
