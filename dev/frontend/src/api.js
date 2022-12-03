@@ -47,8 +47,9 @@ class API {
         params = undefined,
         headers = undefined
     ) {
-        return this.makeRequest(path, method, body, params, headers)
-            .then((response) => response.json());
+        return this.makeRequest(path, method, body, params, headers).then(
+            (response) => response.json()
+        );
     }
 
     // Get test by ID
@@ -272,13 +273,13 @@ class API {
     }
 
     // Generate a new test
-    static postTest(name, author, quizzes) {
+    static postTest(name, author, quiz_ids) {
         return this.makeJSONRequest("tests/", "POST", {
             name: name,
             // TODO: author needs to be removed from payload, it should be derived from request
             // authentication   ~tomasduarte
             author: author,
-            quizzes: quizzes,
+            quizzes: quiz_ids,
         });
     }
 
