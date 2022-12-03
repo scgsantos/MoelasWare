@@ -87,7 +87,7 @@ class API {
     // NOT YET IMPLEMENTED
     // Get all quizzes
     static getQuizzes() {
-        return this.makeRequest("quizzes");
+        return this.makeRequest("quizzes/");
     }
 
     // Get all reviewers of a given quiz
@@ -123,8 +123,8 @@ class API {
         return this.makeRequest("review/quizzes/");
     }
 
-    static getQuizInfoReview(pk) {
-        return this.makeRequest("review/quizzes/" + pk.toString() + "/");
+    static getInfoReview(pk) {
+        return this.makeRequest("review/quiz/" + pk.toString() + "/");
     }
 
     // Get all test submissions made by a given user
@@ -159,15 +159,15 @@ class API {
     }
 
     static getMyFinishedQuizzes() {
-        return this.makeRequest("quizzes/finished/");
+        return this.makeRequest("myquizzes/");
     }
 
     static getInfoQuiz(id) {
-        return this.makeRequest("quiz/" + id.toString() + "/");
+        return this.makeRequest("quiz/" + id.toString() + "/info/");
     }
 
     static getReviewsOfQuiz(id) {
-        return this.makeRequest("myquiz/" + id.toString() + "/");
+        return this.makeRequest("quiz/" + id.toString() + "/reviews/");
     }
 
     static getQuiz(id) {
@@ -286,7 +286,7 @@ class API {
     }
 
     static getDraftById(quiz_id) {
-        return this.makeRequest("draft/info/" + quiz_id.toString() + "/");
+        return this.makeRequest("draft/" + quiz_id.toString() + "/");
     }
 }
 

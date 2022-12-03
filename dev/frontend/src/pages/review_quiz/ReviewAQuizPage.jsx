@@ -33,7 +33,7 @@ function ReviewAQuizPage() {
 
   //fetch quiz from the backend and log it to the console
   useEffect(() => {
-    API.getQuizInfoReview(id)
+    API.getInfoReview(id)
         .then((data) => {
             console.log(data);
             setLoading(true);
