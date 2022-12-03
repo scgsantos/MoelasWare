@@ -23,8 +23,6 @@ function NewQuiz() {
         { label: "RSK", value: "RSK" },
     ];
 
-    //const answers = ["", "", "", "", "", ""];
-
     const [inputs, setInputs] = useState({
         name: "",
         tag: "",

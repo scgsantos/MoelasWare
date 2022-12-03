@@ -5,26 +5,27 @@ from django.http.response import HttpResponseBadRequest
 from moelasware.models import Quiz, QuizAnswer
 from api.views import QuizSerializer, QuizAnswerSerializer
 
-from ..serializers.unfinished_quizzes import CreateEditQuizSerializer
-
-
 @api_view(["GET"])
 @login_required
-def get_unfinished_quizzes(request):
+def get_drafts_view(request):
 
     user = request.user
     info = Quiz.objects.filter(author__user__username=user, approved=False).filter(finished = False).order_by("creation_date")
+    
+    if not info.exists():
+        return JsonResponse({"error":True, "message":"No drafts found"})
+        
     quizzes = []
     for i in range(len(info)):
         quizzes.append([info[i].name, info[i].id, info[i].creation_date])
 
 
-    return JsonResponse({"quizzes": quizzes}, status=200)
+    return JsonResponse({"quizzes": quizzes, "error":False, "message":""}, status=200)
 
 
 @api_view(["GET"])
 @login_required
-def get_draft_info(request, id):
+def get_draft_info_view(request, id):
 
     author = request.user
     quiz = Quiz.objects.filter(id = id).filter(author__user__username = author)

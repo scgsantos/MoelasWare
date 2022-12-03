@@ -1,13 +1,10 @@
 import random
-
 from django.http import HttpResponseBadRequest, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
-
 from api.serializers import QuizAnswerSerializer, QuizSerializer, QuizFinishedSerializer, GetQuizReviewNewSerializer
 from moelasware.models import Quiz, QuizAnswer, User, Tag, Review
 from django.contrib.auth.decorators import login_required
-
 
 
 @api_view(["GET"])
@@ -108,10 +105,13 @@ def get_user_quizzes_view(request):
 
     user = request.user
     quizzes = Quiz.objects.filter(author__user__username = user).filter(finished = True)
+
+    if not quizzes.exists():
+        return JsonResponse({"error":True, "message":"No finished quizzes found"})
     quizzes = QuizFinishedSerializer(quizzes, many = True).data
     quizzes = quiz_finished_serializer_handler(quizzes)
 
-    return JsonResponse({"list_of_quizzes": quizzes})
+    return JsonResponse({"list_of_quizzes": quizzes, "error":False, "message":""})
 
 
 def handle_frontend_fields(dataRequest):
@@ -388,18 +388,9 @@ def finish_quiz(quiz: Quiz, quiz_answers: list):
 
         users = User.objects.all()
         users = list(users)
-        reviewers_list = []
+        reviewers_list = random.sample(users,3)
 
-        number_of_reviewers = 0
-
-        while True:
-            if number_of_reviewers == 3:
-                break
-
-            random_number = random.randint(0, len(users) - 1)
-            user = users.pop(random_number)
-            reviewers_list.append(user)
-            number_of_reviewers += 1
+        
 
         for i in reviewers_list:
             review = Review(
@@ -438,7 +429,7 @@ def handle_get_unapproved_quizzes_reviews_view(obj):
 
 @api_view(['GET'])
 @login_required
-def get_reviews_of_a_quiz(request, id):
+def get_reviews_of_a_quiz_view(request, id):
 
     user = request.user
     quiz = Quiz.objects.filter(id = id).filter(author__user__username = user)

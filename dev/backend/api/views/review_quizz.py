@@ -93,7 +93,6 @@ def create_quiz_review_view(request):
 
         review.comment = serializer["comment"]
         review.save()
-        print(serializer, "---------------")
         return JsonResponse(serializer)
 
     return JsonResponse({"error": "Bad data"})
@@ -121,7 +120,7 @@ def get_quizzes_of_a_reviewer_view(request):
 
     reviewer_list = quiz_review_serializer_handler(reviewer_list)
 
-    return JsonResponse({"error": False, "info": reviewer_list})
+    return JsonResponse({"error": False, "message":"", "info": reviewer_list})
 
 
 @api_view(["GET"])

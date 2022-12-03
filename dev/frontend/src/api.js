@@ -282,7 +282,7 @@ class API {
     }
 
     static getUnfinishedQuizzes() {
-        return this.makeRequest("unfinished_quizzes/");
+        return this.makeRequest("drafts/");
     }
 
     static getDraftById(quiz_id) {
