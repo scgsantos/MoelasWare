@@ -281,7 +281,7 @@ class API {
         return this.makeRequest(`users/${user_id}/`);
     }
 
-    static getUnfinishedQuizzes() {
+    static getDrafts() {
         return this.makeRequest("drafts/");
     }
 

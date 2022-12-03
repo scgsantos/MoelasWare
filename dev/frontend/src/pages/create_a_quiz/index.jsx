@@ -10,14 +10,11 @@ const CreateQuiz = () => {
     const quizzesHeader = ["QUIZ NAME", "TAG", "REVIEWS", "STATE"];
     const [quizzes, setQuizzes] = useState([]);
     const [error, setError] = useState(false);
-    const [message, setMessage] = useState("");
 
     useEffect(() => {
         API.getMyFinishedQuizzes().then((data) => {
             setError(data.error);
-            if (error){
-                setMessage(data.message);
-            } else {
+            if (!error){
                 setQuizzes(data.list_of_quizzes);
             }
         });

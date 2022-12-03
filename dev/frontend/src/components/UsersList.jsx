@@ -7,7 +7,6 @@ function UsersList() {
   const [query, setQuery] = useState("");
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(false);
-  const [message, setMessage] = useState("");
   const usersHeader = [
     "USERNAME",
     "CORRECT ANSWERS",
@@ -22,14 +21,11 @@ function UsersList() {
   useEffect(() => {
     API.getHallOfFameUsers().then((data) => {
       setError(data.error);
-      if (error){
-        setMessage(data.message);
-      } else {
+      if (!error){
         setUsers(data.fame);
       }
      });
   }, []);
-
 
   const [selectedBtn, setSelectedBtn] = useState("");
   const navigate = useNavigate();
@@ -41,9 +37,7 @@ function UsersList() {
   if (error) {
     return (
       <section id="users">
-        <h1>
-          {message}
-        </h1>
+        <h1>NO USERS FOUND</h1>
       </section>
     );
   } else {

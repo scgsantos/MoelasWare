@@ -16,9 +16,7 @@ function TestsList() {
   useEffect(() => {
     API.getHallOfFameTests().then((data) => {
       setError(data.error);
-      if (error){
-        setMessage(data.message);
-      } else {
+      if (!error){
         setTests(data.submissions_by_test);
       }
      });
@@ -34,9 +32,8 @@ function TestsList() {
   if (error){
     return (
       <section id="tests">
-      <h1>{message}</h1>
-      </section>
-  );
+      <h1>NO TESTS FOUND</h1>
+      </section>);
   } else {
       return (
         <section id="tests">
