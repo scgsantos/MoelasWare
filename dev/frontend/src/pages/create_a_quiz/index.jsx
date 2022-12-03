@@ -19,7 +19,6 @@ const CreateQuiz = () => {
                 setMessage(data.message);
             } else {
                 setQuizzes(data.list_of_quizzes);
-                console.log(quizzes)
             }
         });
     }, []);
@@ -29,57 +28,57 @@ const CreateQuiz = () => {
     const handleClick = (e) => {
         navigate(`./myquiz/${e}`);
     };
-    if (error){
-        return (
-            <main className="container" id="createquiz">
-                <h1 className="title">CREATE A QUIZ</h1>
-                <Button to="./new" className="createquiznav" text="NEW QUIZ" />
-                <Button to="./drafts" className="createquiznav" text="DRAFTS" />
-                <section id="myquizzes">
-                    <h2>MY QUIZZES</h2>
-                    <h3>{message}</h3>
-                </section>
-            </main>
-    );
-    } else {
-        return (
-            <React.Fragment>
-            <main className="container" id="createquiz">
-                <h1 className="title">CREATE A QUIZ</h1>
-                <Button to="./new" className="createquiznav" text="NEW QUIZ" />
-                <Button to="./drafts" className="createquiznav" text="DRAFTS" />
-                <section id="myquizzes">
-                    <h2>MY QUIZZES</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                {quizzesHeader.map((h) => (
-                                    <th key={h}>{h}</th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {quizzes.map((t) => (
-                                <tr
-                                key={Object.values(t)[0]}
-                                    onClick={(e) =>
-                                        handleClick(Object.values(t)[0])
-                                    }
-                                    >
-                                    <td>{Object.values(t)[1]}</td>
-                                    <td>{Object.values(t)[2][0].text}</td>
-                                    <td>{Object.values(t)[3]}/3</td>
-                                    <td>{Object.values(t)[4]}</td>
+    return (
+        <React.Fragment>
+        <main className="container" id="createquiz">
+            <h1 className="title">CREATE A QUIZ</h1>
+            <Button to="./new" className="createquiznav" text="NEW QUIZ" />
+            <Button to="./drafts" className="createquiznav" text="DRAFTS" />
+            <section id="myquizzes">
+                {(() => {
+                    var array = [];
+                    if (error){
+                        array.push(
+                            <div>
+                            <h2>MY QUIZZES</h2>
+                            <h3>No finished quizzes found</h3>
+                            </div>)
+                            
+                    } else {
+                        array.push(
+                            <table>
+                            <thead>
+                                <tr>
+                                    {quizzesHeader.map((h) => (
+                                        <th key={h}>{h}</th>
+                                    ))}
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </section>
-                <Outlet />
-            </main>
+                            </thead>
+                            <tbody>
+                                {quizzes.map((t) => (
+                                    <tr
+                                    key={Object.values(t)[0]}
+                                        onClick={(e) =>
+                                            handleClick(Object.values(t)[0])
+                                        }
+                                        >
+                                        <td>{Object.values(t)[1]}</td>
+                                        <td>{Object.values(t)[2][0].text}</td>
+                                        <td>{Object.values(t)[3]}/3</td>
+                                        <td>{Object.values(t)[4]}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                            </table>
+                        )
+                    }
+                    return array;
+                    })()}
+            </section>
+            <Outlet />
+        </main>
         </React.Fragment>
     );
-    }
 };
 
 export default CreateQuiz;

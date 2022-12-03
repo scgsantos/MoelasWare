@@ -31,8 +31,6 @@ function ReviewQuizPage() {
         })
   }, []);
 
-  console.log(data);
-
   return (
     <div className='ReviewQuizPage-Container'>
       <div className='center'>
