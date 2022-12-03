@@ -1,13 +1,15 @@
 import random
 from collections import Counter
 
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse,HttpResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
-
+from django.core import serializers
 from api.serializers import QuizAnswerSerializer, QuizSerializer, QuizFinishedSerializer, GetQuizReviewNewSerializer
 from moelasware.models import Quiz, QuizAnswer, User, Tag, Review
 from django.contrib.auth.decorators import login_required
+import xml.etree.ElementTree as ET
+
 
 
 
@@ -490,3 +492,77 @@ def get_reviews_of_a_quiz(request, id):
 
     return JsonResponse({"error": False,"reviews": serializer})
 
+@api_view(['POST'])
+@login_required
+def exportXML(request,id):
+    data = Quiz.objects.filter(id=id).first()
+    if not data:
+        return HttpResponseBadRequest('Quiz not found')
+    description = data.description
+    answer_list = []
+    answers = QuizAnswer.objects.filter(quiz=data)
+    for answer in answers:
+        answer_list.append(
+            {
+                "text": answer.text,
+                "correct": answer.correct,
+                "justification": "",
+            }
+        )
+    tag_list = []
+    tags = data.tags.all()
+    for tag in tags:
+        tag_list.append(tag.text)
+    
+
+    # Create the XML file
+    root = ET.Element("quizzes")
+    tree = ET.ElementTree(root)
+    root.set("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
+    # Create the perguntas element
+    perguntas = ET.SubElement(root, "perguntas")
+
+    # Create the quiz element
+    quiz_element = ET.SubElement(perguntas, "pergunta")
+
+    # Create the tags element
+    tags_element = ET.SubElement(quiz_element, "tags")
+
+    # Create the tag elements
+    for tag in tag_list:
+        tag_element = ET.SubElement(tags_element, "tag")
+        tag_element.text = tag
+
+    # Create the description element
+    description_element = ET.SubElement(quiz_element, "descricao")
+    description_element.text = description
+
+    # Create the answers element
+    answers_element = ET.SubElement(quiz_element, "respostas")
+
+    # Create the answer elements
+    for answer in answer_list:
+        answer_element = ET.SubElement(answers_element, "resposta")
+
+        # Designation
+        answer_text_element = ET.SubElement(answer_element, "designacao")
+        answer_text_element.text = answer["text"]
+
+        # Logic value
+        answer_correct_element = ET.SubElement(answer_element, "valor_logico")
+        answer_correct_element.text = str(answer["correct"])
+
+        # Justification
+        answer_justification_element = ET.SubElement(answer_element, "justification")
+        answer_justification_element.text = answer["justification"]
+
+    # Return xml file
+    response = HttpResponse(content_type="text/xml")
+
+    # Set the filename
+    response["Content-Disposition"] = "attachment; filename=quiz.xml"
+
+    # Write the XML file to the response
+    tree.write(response, encoding="utf-8", xml_declaration=True)
+
+    return response
