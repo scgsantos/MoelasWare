@@ -581,10 +581,10 @@ def import_xml(request: HttpRequest):
                 for answer in item.findall("./respostas/resposta"):
 
                     # If justification is not present, set it to empty string
-                    if answer.find("justification") is None:
+                    if answer.find("justificacao").text is None:
                         justification = ""
                     else:
-                        justification = answer.find("justification").text
+                        justification = answer.find("justificacao").text
                     
                     try:
                         answer = QuizAnswer(
@@ -635,40 +635,31 @@ def export_xml(request):
     # Create the perguntas element
     perguntas = ET.SubElement(root, "perguntas")
 
+    # Create the pergunta element for each quizz in data
     for quiz in data:
-        # Create the quiz element
-        quiz_element = ET.SubElement(perguntas, "pergunta")
+        pergunta = ET.SubElement(perguntas, "pergunta")
 
-        # Create the tags element
-        tags_element = ET.SubElement(quiz_element, "tags")
+        tags = ET.SubElement(pergunta, "tags")
+        # Create the tag element for each tag in the quiz
+        for tag in quiz.tags.all():
+            tag_element = ET.SubElement(tags, "tag")
+            tag_element.text = tag.text
 
-        # Create the tag elements
-        for tag in tag_list:
-            tag_element = ET.SubElement(tags_element, "tag")
-            tag_element.text = tag
+        descricao = ET.SubElement(pergunta, "descricao")
+        descricao.text = quiz.description
 
-        # Create the description element
-        description_element = ET.SubElement(quiz_element, "descricao")
-        description_element.text = description
+        respostas = ET.SubElement(pergunta, "respostas")
+        for answer in QuizAnswer.objects.filter(quiz=quiz):
+            resposta = ET.SubElement(respostas, "resposta")
+            
+            designacao = ET.SubElement(resposta, "designacao")
+            designacao.text = answer.text
 
-        # Create the answers element
-        answers_element = ET.SubElement(quiz_element, "respostas")
+            valor_logico = ET.SubElement(resposta, "valor_logico")
+            valor_logico.text = str(answer.correct)
 
-        # Create the answer elements
-        for answer in answer_list:
-            answer_element = ET.SubElement(answers_element, "resposta")
-
-            # Designation
-            answer_text_element = ET.SubElement(answer_element, "designacao")
-            answer_text_element.text = answer["text"]
-
-            # Logic value
-            answer_correct_element = ET.SubElement(answer_element, "valor_logico")
-            answer_correct_element.text = str(answer["correct"])
-
-            # Justification
-            answer_justification_element = ET.SubElement(answer_element, "justification")
-            answer_justification_element.text = answer["justification"]
+            justification = ET.SubElement(resposta, "justification")
+            justification.text = answer.justification
 
     # Return xml file
     response = HttpResponse(content_type="text/xml")
@@ -680,3 +671,4 @@ def export_xml(request):
     tree.write(response, encoding="utf-8", xml_declaration=True)
 
     return response
+
