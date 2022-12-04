@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import API from 'api.js';
 import Button from "components/CreateQuizButton.jsx";
 import "pages/create_a_quiz/CreateQuiz.css";
+import Button2 from "components/Button.jsx";
 
 const CreateQuiz = () => {
     document.documentElement.style.setProperty("--base", "var(--blue)");
@@ -26,8 +27,25 @@ const CreateQuiz = () => {
 
     return (
         <React.Fragment>
+
+            <input className='candidatura-curriculo' type='file'></input>
+
             <main className="container" id="createquiz">
                 <h1 className="title">CREATE A QUIZ</h1>
+                
+                <Button2 name = "IMPORT" disabled = {false} type = "file" onClick = {()=>{
+                    var input = document.querySelector('input[type="file"]');
+                    var data = new FormData()
+                    data.append("xml", input.files[0]);
+                    console.log(data)
+                    fetch("http://localhost:8000/api/quiz/import/", {
+                        method: "POST",
+                        body: data
+                    }).then((response) => {
+                        console.log(response)
+                    })
+                }}/>
+
                 <Button to="./new" className="createquiznav" text="NEW QUIZ" />
                 <Button
                     to="./drafts"
