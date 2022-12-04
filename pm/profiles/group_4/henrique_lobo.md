@@ -26,5 +26,10 @@ Roles: `D`
 * Pending: #350
 
 ## 5
-* Finished: #488
+* Finished: #488, #523, #535
 * Pending:
+
+
+## 6
+* Finished: #557, #574, #576, #579, #590
+* Pending: 
