@@ -1,34 +1,31 @@
-## Use Case 5
+# Use Case 2
 
-List of Unfinished/Rejected Quizzes
+* List of Unfinished/Rejected Quizzes
 
-## Layouts
+##** Primary Actor **
 
-https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
+* User
 
-(each requirement is identified on the Figma canvas)
+##** Level **
 
-### Primary Actor
+* User goal
 
-User
-
-### Level
-
-User goal
-
-### Precondition 
+##** Precondition  **
 
 * User must be logged in.
 * User selects the option to view unfinished/rejected quizzes.
+* User has started the completion of a quiz, but hasn't completed. (1)
+
+(1) The definition of completion implies the quiz has been approved by the three reviewers.
 
 
-### Main Success Scenario
+##** Main Success Scenario **
 
 1. User gets a page with up to 24 unfinished/rejected quizzes.
-2. User selects the quiz he desires to finished and is redirected to the create a quiz page.
+2. User selects the quiz he desires to finish/remake and is redirected to the create a quiz page with all the data he previously added. Also can
 
 
-### Extensions
+## Extensions
 
 * 1. (a) User has more than 24 unfinished/rejected quizzes:
         1. Only the first 24 will appear and while he finishes them, the other ones will take the first ones place

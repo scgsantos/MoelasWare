@@ -1,17 +1,15 @@
-# **Review Quiz**
-# **User story**
-* As a reviewer I want to choose a quiz and give it a review	
+#Use Case 2	
 
-# **Layouts**
-https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
+*   As a reviewer I want to give a quiz a review, giving it a justification for my approval/refusal 
 
-(each requirement is identified on the Figma canvas)
+## **Primary actor **
 
-# **Use case 2** 
-*   As a reviewer I want to give a quiz a review, giving it a justification and a approval/refusal
+* User
 
-## **Primary actor: User**
-## **Level: User goal**
+## **Level**
+
+* User goal
+
 
 ## **Prerequisites**
 * Be logged in
@@ -28,10 +26,12 @@ https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
 * The reviewer approves or refuses the quiz
 
 
-## **Extensions**
-** The reviewer refuses the quiz
-* The quiz is sent back to the creation page where the creator can re-work it.
-    
+## Extensions
+* 1.    (a) The reviewer reproves the quiz
+            1. The quiz is sent back to the unfinished quizz
+            
+* 2.    (a) The reviewer cancels the review
+            1. The quiz remains in his "to be reviewed" list and if anything is writen in the justification text box it's eliminated.
 
 ## **TESTS**
 * Can he approve a quiz with only 1 approval
@@ -41,5 +41,9 @@ https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
 * Is the justifications attached to the review
 * Does the refused quizz stay on another reviewers list after being refused
 * Does the refuse quizz go back to the creators creating-page
+(to be updated)
 
+# **Layouts**
+https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
 
+(each requirement is identified on the Figma canvas)

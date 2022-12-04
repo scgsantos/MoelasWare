@@ -1,17 +1,14 @@
-# **Review Quiz**
-# **User story**
-* As a reviewer I want to choose a quiz and give it a review	
+# Use case 1 
 
-# **Layouts**
-https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
+* Select a review
 
-(each requirement is identified on the Figma canvas)
+## **Primary actor **
 
-# **Use case 1** 
-*   As a reviewer I want a where I can see all the reviews assigned to me and be able to choose one to start reviewing
+* User
 
-## **Primary actor: User**
-## **Level: User goal**
+## **Level**
+
+* User goal
 
 ## **Prerequisites**
 * Be logged in
@@ -27,10 +24,8 @@ https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
 * The reviewer can select a quiz that he wants to start reviewing
 
 
-## **Extensions or Alternative Paths**
-* 
-
 ## **TESTS**
+(to be updated)
 * Can he access the review-list page
 * Does he have the requirements to choose a quizz
 * Can he select one (and only one) quiz to review
@@ -39,3 +34,7 @@ https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
 * Has the quiz already been approved by 3 other people
 
 
+# **Layouts**
+https://www.figma.com/file/5G5kJ171fKhsf2PJOusZer/MoelasWare?node-id=0%3A1
+
+(each requirement is identified on the Figma canvas)
