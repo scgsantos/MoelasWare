@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import IncDecCounter from "components/InputNumber";
 import "pages/create_test/number_only/NumberOnly.css";
 
+import API from "api.js";
+
 import { useNavigate } from "react-router-dom";
 
-import { CREATE_RANDOM_TEST_URL, TEST_MENU_URL, TEST_PREVIEW_URL } from "urls.js";
+import { CREATE_RANDOM_TEST_URL, TEST_MENU_URL, TEST_PUBLISHED_URL, } from "urls.js";
 import history from "history.js";
 
 function CreateRandomTest() {
-  document.body.style = "background: var(--pink)";
+  document.documentElement.style.setProperty("--base", "var(--pink)");
+
   const [num, setNum] = useState(1);
   const [isPage1, setIsPage1] = useState(true);
   const [text, setText] = useState("");
@@ -31,23 +34,14 @@ function CreateRandomTest() {
   let navigate = useNavigate();
 
   function getFirstQuiz() {
-    fetch("http://localhost:8000/api/quizzes/gen/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ num_quizzes: num }),
-    })
-      .then((response) => response.json())
+    API.genQuizzes(num)
       .then((data) => {
         setQuizzes(data.quizzes);
       });
   }
 
   function getQuizzesCount() {
-    fetch("http://localhost:8000/api/quizzes/count/")
-      .then((response) => response.json())
+    API.getNumQuizzes()
       .then((data) => {
         setQuizzesCount(data.quizzes_count);
       });
@@ -69,9 +63,12 @@ function CreateRandomTest() {
 
   function handleNextButtonChange() {
     if (text.length != 0) {
+
+    API.postTest(text, 1, quizzes); // TODO: get author -> logged in user
+
       history.push(CREATE_RANDOM_TEST_URL);
 
-      navigate(TEST_PREVIEW_URL, {
+      navigate(TEST_PUBLISHED_URL, {
         state: {
           name: text,
           quizzes: quizzes,
@@ -111,7 +108,7 @@ function CreateRandomTest() {
           <div className="NumberOnly-buttonCreate">
             <button onClick={handleGoBackToMenu}>Go Back</button>
           </div>
-          &ensp;&ensp;
+          &nbsp;&nbsp;
           <div className="NumberOnly-buttonCreate">
             <button onClick={handleCreateButtonChange}>Next</button>
           </div>
@@ -141,17 +138,13 @@ function CreateRandomTest() {
         <h3 className="NumberOnly-title"> Chosen Quizzes: </h3>
         <ul className="NumberOnly-quizList">
           {quizzes.map((quiz) => (
-            <li className="NumberOnly-quiz">{quiz.question}</li>
+            <li className="NumberOnly-quiz">{quiz.name}</li>
           ))}
         </ul>
 
         <div className="NumberOnly-Publish-GoBack-buttons">
           <button className="NumberOnly-GoBackbutton" onClick={handleGoBackChange}>
             Go Back
-          </button>
-
-          <button className="NumberOnly-GoBackbutton" onClick={getFirstQuiz}>
-            Reroll Quizzes
           </button>
 
           <button

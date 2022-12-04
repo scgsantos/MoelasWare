@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import API from 'api.js';
 
 function UsersList() {
   const [query, setQuery] = useState("");
@@ -17,12 +18,9 @@ function UsersList() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/fame", {
-      method: "get",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.json())
-      .then((data) => setUsers(data.fame));
+    API.getHallOfFameUsers().then((data) => {
+      setUsers(data.fame);
+     });
   }, []);
 
 
@@ -31,7 +29,6 @@ function UsersList() {
 
   const handleBtnClick = (selectedBtn) => {
     setSelectedBtn(selectedBtn);
-    console.log(selectedBtn.target.id);
     navigate(`./${selectedBtn.target.id}`);
   };
 
@@ -74,7 +71,7 @@ function UsersList() {
             .map((u) => (
               <tr key={Object.values(u)[0][0]}>
                 <td>{Object.values(u)[0][0]}</td>
-                <td>{Object.values(u)[0][3]}</td>
+                <td>{Object.values(u)[0][1]}</td>
                 <td>
                   {Object.values(u)[0][2]}
                   {Object.values(u)[0][2] > 0 && (
@@ -87,7 +84,7 @@ function UsersList() {
                     </button>
                   )}
                 </td>
-                <td><p>{Object.values(u)[0][1]}</p></td>
+                <td><p>{Object.values(u)[0][3]}</p></td>
               </tr>
             ))}
         </tbody>

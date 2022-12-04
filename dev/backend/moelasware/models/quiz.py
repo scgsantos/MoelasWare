@@ -7,6 +7,28 @@ from moelasware.models.tag import Tag
 from moelasware.models.user import User
 
 
+# I really dislike how you cannot do this in a tidy way in Python because inner classes cannot
+# reference other inner classes... oh well
+class QuizQuerySet(models.QuerySet):
+    def can_be_added_to_a_test(self):
+        # here to avoid circular imports;
+        # this is cached anyways, so it isn't a performance hazard
+        from moelasware.models.test import Test
+
+        return self.filter(approved=True).filter(
+            ~models.Exists(Test.objects.filter(quizzes__id=models.OuterRef("id")))
+        )
+
+
+class QuizManager(models.Manager):
+    def get_queryset(self):
+        return QuizQuerySet(self.model)
+
+    def can_be_added_to_a_test(self):
+        print(self.get_queryset().can_be_added_to_a_test().query)
+        return self.get_queryset().can_be_added_to_a_test()
+
+
 class Quiz(models.Model):
     """
     Question that has several answers and associated tags.
@@ -18,13 +40,12 @@ class Quiz(models.Model):
     name = models.TextField()
     question = models.TextField()
     description = models.TextField()
+    finished = models.BooleanField(default=False)
 
     creation_date = models.DateField(default=datetime.date.today)
-
     approved = models.BooleanField(default=False)
 
-    def can_be_added_to_a_test(self):
-        return self.test_set.count() < 2
+    objects = QuizManager()
 
 
 class QuizAnswer(models.Model):

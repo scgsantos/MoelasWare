@@ -37,7 +37,9 @@ def set_secret_key_and_debug():
 
 SECRET_KEY, DEBUG = set_secret_key_and_debug()
 
-ALLOWED_HOSTS = ["moelasware", "api.moelasware.xyz", "localhost"]
+ALLOWED_HOSTS = ["moelasware", "api.moelasware.xyz"]
+if DEBUG:
+    ALLOWED_HOSTS.append("localhost")
 
 # TODO: Check if we really want to allow all origins
 CORS_ALLOW_ALL_ORIGINS = True
@@ -55,6 +57,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     "moelasware",
     "api",
 ]

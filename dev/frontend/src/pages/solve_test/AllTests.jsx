@@ -8,7 +8,7 @@ import config from 'config.js';
 import { SELECT_TEST_URL, TEST_GRADE_URL } from "urls.js";
 
 function MainSelectionPage() {
-  document.body.style = "background: var(--yellow)";
+  document.documentElement.style.setProperty("--base", "var(--yellow)");
 
   const [loading, setLoading] = useState(true);
   const [tests, setTests] = useState();

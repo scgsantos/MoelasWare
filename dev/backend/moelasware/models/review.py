@@ -21,3 +21,4 @@ class Review(models.Model):
     creation_date = models.DateField(default=datetime.date.today)
     accepted = models.BooleanField(default=False)
     comment = models.TextField()
+    pending = models.BooleanField(default=True)

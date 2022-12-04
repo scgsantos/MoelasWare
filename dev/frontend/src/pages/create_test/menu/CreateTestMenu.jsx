@@ -15,7 +15,8 @@ import CreateTestPanel from "pages/create_test/menu/CreateTestPanel.jsx";
 import history from "history.js";
 
 function CreateTestMenu() {
-  document.body.style = "background: var(--pink)";
+  document.documentElement.style.setProperty("--base", "var(--pink)");
+
   var [hasCreationPermisison, setCreationPermision] = useState(false);
   var [isHovering, setHovering] = useState(false);
 

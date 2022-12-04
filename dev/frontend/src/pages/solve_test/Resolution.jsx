@@ -7,7 +7,7 @@ import config from 'config.js';
 import { SELECT_TEST_URL } from "urls.js";
 
 function CheckAnswers() {
-  document.body.style = "background: var(--yellow)";
+  document.documentElement.style.setProperty("--base", "var(--yellow)");
 
   const [quizzRes, setQuizzRes] = useState();
   const [loading, setLoading] = useState(true);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-
+import API from 'api.js';
 function TestsList() {
   const [tests, setTests] = useState([]);
   const testsHeader = [
@@ -9,25 +9,19 @@ function TestsList() {
     "TIMES TAKEN",
     "TAG",
     "AUTHOR",
-    "DATE MODIFIED",
   ];
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/tests", {
-      method: "get",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.json())
-      .then((data) => setTests(data.submissions_by_test));
+    API.getHallOfFameTests().then((data) => {
+      setTests(data.submissions_by_test);
+     });
   }, []);
-
 
   const [selectedBtn, setSelectedBtn] = useState("");
   const navigate = useNavigate();
 
   const handleBtnClick = (selectedBtn) => {
     setSelectedBtn(selectedBtn);
-    console.log(selectedBtn.target.id);
     navigate(`./${selectedBtn.target.id}`);
   };
 
@@ -59,7 +53,6 @@ function TestsList() {
               </td>
               <td>{Object.values(t)[0][2]}</td>
               <td>{Object.values(t)[0][3]}</td>
-              <td>NaN</td>
             </tr>
           ))}
         </tbody>

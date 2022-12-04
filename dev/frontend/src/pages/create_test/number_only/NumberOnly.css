@@ -73,7 +73,7 @@ NumberOnly-firstPage * {
   justify-content: center;
   align-items: center !important;
   height: 1.5em;
-  width: 15em;
+  width: 20em;
 }
 
 .NumberAndTags-inputText {
@@ -154,7 +154,7 @@ NumberOnly-firstPage * {
 
 /* Last Page Elements */
 
-.req2-lastPage-correctImage {
+.req2-lastPage-checkmarkImage {
   margin-top: 4.5em;
   width: 18em;
   height: 18em;

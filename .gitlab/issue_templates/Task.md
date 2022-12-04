@@ -13,7 +13,7 @@
 
 
 /label ~task
-/milestone %"Sprint 5"
+/milestone %"Sprint 6"
 
 <!--- /estimate time_spent -->
 /estimate 1h

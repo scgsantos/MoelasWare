@@ -25,22 +25,22 @@ function IncDecCounter(props) {
     <>
       <h1 className="inputNumberTitle">{props.label}</h1>
       <div
-        class="inputNumber"
+        className="inputNumber"
         style={{ display: "flex", alignItems: "center" }}
       >
-        <div class="addDiv">
+        <div className="addDiv">
           <button className="addButton" type="button" onClick={decNum}>
             -
           </button>&nbsp;
         </div>
         <input
           type="text"
-          class="formControl"
+          className="formControl"
           value={props.num}
           onChange={handleChange}
         />
-        <div class="subDiv">
-          <button class="subButton" type="button" onClick={incNum}>
+        <div className="subDiv">
+          <button className="subButton" type="button" onClick={incNum}>
             +
           </button>
         </div>

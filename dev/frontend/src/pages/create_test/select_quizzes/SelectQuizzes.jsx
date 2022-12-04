@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import "pages/create_test/select_quizzes/SelectQuizzes.css";
 import "pages/create_test/preview/TestPreview.css";
 
+import API from "api.js";
+
 import { useNavigate } from "react-router-dom";
 import { format } from 'react-string-format';
 
-import { TEST_MENU_URL, TEST_PREVIEW_URL, CREATE_TEST_URL } from "urls.js";
+import { TEST_MENU_URL, TEST_PUBLISHED_URL, CREATE_TEST_URL } from "urls.js";
 import history from 'history.js';
 
 
 function CreateTest() {
-  document.body.style = "background: var(--pink)"
+  document.documentElement.style.setProperty("--base", "var(--pink)");
 
   // TODO?: find way to make quiz selection/visualization work without needing the array of ids (quizzes) rather than the array of objects
 
@@ -62,27 +64,16 @@ function CreateTest() {
   let navigate = useNavigate();
 
   async function getAllQuizes() {
-
-    fetch('http://localhost:8000/api/quizzes/gen/', {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ num_quizzes: quizzes_count })
-    })
-      .then(response => response.json())
+    API.genQuizzes(quizzes_count)
       .then(data => {
         setAllQuizzes(data.quizzes.sort((a, b) => (a.id > b.id) ? 1 : -1));
         setSearchedQuizzes(data.quizzes.sort((a, b) => (a.id > b.id) ? 1 : -1));
         setPageTotal(Math.ceil(data.quizzes.length / quizzes_per_page))
       });
-
   }
 
   function getQuizzesCount() {
-    fetch("http://localhost:8000/api/quizzes/count/")
-      .then((response) => response.json())
+    API.getNumQuizzes()
       .then((data) => {
         setQuizzesCount(data.quizzes_count);
       });
@@ -159,9 +150,11 @@ function CreateTest() {
         }
       }
 
+      API.postTest(text, 1, quizzes); // TODO: get author -> logged in user
+
       history.push(CREATE_TEST_URL);
 
-      navigate(TEST_PREVIEW_URL,
+      navigate(TEST_PUBLISHED_URL,
         { state: { name: text, quizzes: q, previous_path: CREATE_TEST_URL } },
       );
       window.location.reload();
@@ -250,10 +243,7 @@ function CreateTest() {
   }
 
   function handleQuizPreview(quiz) {
-
-    var url = format('http://localhost:8000/api/quizzes/{0}/answers/', quiz.id);
-    fetch(url)
-      .then(response => response.json())
+    API.getQuizAnswers(quiz.id)
       .then(data => {
         setPopUp(<div className="SelectQuizzes-windowList">
           <h1 className="SelectQuizzes-windowWrapper">{quiz.question}</h1>
@@ -263,9 +253,7 @@ function CreateTest() {
           {data.answers.map((answer => renderJustification(answer)))}
 
         </div>);
-
       });
-
   }
 
   function handleClick() {
@@ -287,7 +275,7 @@ function CreateTest() {
   function renderQuiz(quiz) {
     if (quizHasBeenSelected(quiz)) {
       return (<li style={{ cursor: 'pointer' }} onClick={() => handleQuizSelectionChange(quiz)}>
-        <p style={{ color: 'green' }} onClick={() => handleQuizPreview(quiz)}>{quiz.question}</p>
+        <p style={{ color: 'green' }} onClick={() => handleQuizPreview(quiz)}>{quiz.name}</p>
         {quiz.tags.map((tag) => <text style={{ fontSize: '0.8rem' }}>{tag.text},&nbsp;</text>)}
         <br />
       </li>
@@ -296,7 +284,7 @@ function CreateTest() {
 
     } else {
       return (<li type="checkbox" style={{ cursor: 'pointer', backgroundColor: 'blue !important' }} onClick={() => handleQuizSelectionChange(quiz)}>
-        <p style={{ color: 'black' }} onClick={() => handleQuizPreview(quiz)}>{quiz.question}</p>
+        <p style={{ color: 'black' }} onClick={() => handleQuizPreview(quiz)}>{quiz.name}</p>
         {quiz.tags.map((tag) => <text style={{ fontSize: '0.8rem' }}>{tag.text},&nbsp;</text>)}
         <br />
       </li>
@@ -310,7 +298,7 @@ function CreateTest() {
 
     for (let i = 0; i < all_quizzes.length; i++) {
       if (all_quizzes[i].id == id)
-        return <li className="NumberOnly-quiz">{all_quizzes[i].question}</li>
+        return <li className="NumberOnly-quiz">{all_quizzes[i].name}</li>
     }
 
   }
@@ -333,8 +321,6 @@ function CreateTest() {
             {getPaginationArray().map((quiz) => renderQuiz(quiz))}
           </ul>
         </section>
-
-        {pop_up}
 
         <section id="createTest">
 
@@ -368,6 +354,9 @@ function CreateTest() {
             value={text}
             onChange={handleNameChange}
           />
+           <h2 className="NumberOnly-errorInput">
+            {text.length > 0 ? "" : "Name is mandatory"}
+          </h2>
         </div>
 
         <h3 className="NumberOnly-title"> Chosen Quizzes: </h3>
