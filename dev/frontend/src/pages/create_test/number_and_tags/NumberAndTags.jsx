@@ -36,17 +36,6 @@ function CreateRandomTestWithSpecs() {
         getAllTags();
     }
 
-    /*if (history.location.state != null && quizzes?.length == 0) {
-    setNum(history.location.state?.quizzes?.length);
-    setText(history.location.state?.name);
-    setQuizzes(history.location.state?.quizzes);
-    setTags(history.location.state?.tags);
-    setPrevTags(history.location.state?.tags);
-
-    setReload(true);
-  }*/
-
-    //console.log(quizzes);
 
     let navigate = useNavigate();
 

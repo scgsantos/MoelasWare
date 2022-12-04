@@ -27,7 +27,6 @@ function CreateRandomTest() {
         getQuizzesCount();
     }
 
-    console.log(history.location);
 
     if (history.location.state != null && quizzes.length == 0) {
         setNum(history.location.state.quizzes?.length);
@@ -37,7 +36,7 @@ function CreateRandomTest() {
 
     let navigate = useNavigate();
 
-    function getFirstQuiz() {
+    function genQuizzesWithoutTags() {
         API.genQuizzes(num).then((data) => {
             setQuizzes(data.quizzes);
         });
@@ -55,7 +54,7 @@ function CreateRandomTest() {
         }
 
         if (quizzes.length != num) {
-            getFirstQuiz();
+            genQuizzesWithoutTags();
         }
     }
 

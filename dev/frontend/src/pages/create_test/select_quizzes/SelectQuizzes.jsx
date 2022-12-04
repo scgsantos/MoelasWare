@@ -13,8 +13,6 @@ import history from "history.js";
 function CreateTest() {
     document.documentElement.style.setProperty("--base", "var(--pink)");
 
-    // TODO?: find way to make quiz selection/visualization work without needing the array of ids (quizzes) rather than the array of objects
-
     // --- INITIALIZATION ---
 
     const [pagination, setPagination] = useState(false);
@@ -29,7 +27,6 @@ function CreateTest() {
 
     const [isPage1, setIsPage1] = useState(true);
 
-    //const [total_quizes, setTotalQuizzes] = useState(7);  // total number of quizzes in bd
     const [all_quizzes, setAllQuizzes] = useState([]); // all quizzes that match current search
     const [searched_quizzes, setSearchedQuizzes] = useState([]); // all quizzes that match current search
 
@@ -42,7 +39,7 @@ function CreateTest() {
     }
 
     if (all_quizzes.length === 0) {
-        getAllQuizes();
+        getAllAssignableQuizzes();
     }
 
     if (history.location.state != null && quizzes.length === 0) {
@@ -60,7 +57,7 @@ function CreateTest() {
 
     let navigate = useNavigate();
 
-    async function getAllQuizes() {
+    async function getAllAssignableQuizzes() {
         API.genQuizzes(quizzes_count).then((data) => {
             setAllQuizzes(data.quizzes.sort((a, b) => (a.id > b.id ? 1 : -1)));
             setSearchedQuizzes(
@@ -303,7 +300,7 @@ function CreateTest() {
                     </p>
                     {quiz.tags.map((tag) => (
                         <text style={{ fontSize: "0.8rem" }}>
-                            {tag.text},&nbsp;
+                            {tag.text}&nbsp;
                         </text>
                     ))}
                     <br />
@@ -327,7 +324,7 @@ function CreateTest() {
                     </p>
                     {quiz.tags.map((tag) => (
                         <text style={{ fontSize: "0.8rem" }}>
-                            {tag.text},&nbsp;
+                            {tag.text}&nbsp;
                         </text>
                     ))}
                     <br />
@@ -347,7 +344,6 @@ function CreateTest() {
         }
     }
 
-    console.log(quizzes);
     if (isPage1) {
         return (
             <div className="NumberOnly-firstPage" onClick={() => handleClick()}>
