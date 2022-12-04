@@ -1,5 +1,5 @@
 //import correct from "correct.png";
-import checkmark from "assets/SGV/checkmark.svg";
+import checkmark from "assets/SVG/checkmark.svg";
 import "pages/create_test/number_only/NumberOnly.css";
 
 import {
