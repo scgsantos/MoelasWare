@@ -111,8 +111,6 @@ function ReviewAQuizPage() {
                 "accepted": true,
                 "comment": justification
               };
-              console.log(args);
-              //post to backend
               API.createReview(args)
               .then(
                 alert("Quiz Accepted")
@@ -121,18 +119,15 @@ function ReviewAQuizPage() {
               )
             }}>ACCEPT</button>
 
-
             <button className="btn success" onClick={() => {
                 const args = {
                   "quiz": "" + id,
                   "accepted": false,
                   "comment": justification
                 };
-                console.log(args);
-                //post to backend
                 API.createReview(args)
                 .then(
-                  alert("Quiz Accepted")
+                  alert("Quiz Rejected")
                 ).then(
                   navigate(REVIEW_URL)
                 )

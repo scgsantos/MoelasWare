@@ -43,14 +43,19 @@ function NewQuiz() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (buttonClick === "submit") {
-            API.createQuiz(inputs, true).then((data) =>
-                setResposta(data.resposta)
+            API.createQuiz(inputs, true).then((data) => {
+                setResposta(data.resposta);
+                alert(data.resposta);
+            }
             );
         } else if (buttonClick === "draft") {
-            API.createQuiz(inputs, false).then((data) =>
-                setResposta(data.resposta)
+            API.createQuiz(inputs, false).then((data) => {
+                setResposta(data.resposta);
+                alert(data.resposta);
+            }
             );
         }
+        
         navigate(-1);
         //window.location.reload();
     };

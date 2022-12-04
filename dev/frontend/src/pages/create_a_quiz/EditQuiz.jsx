@@ -89,16 +89,16 @@ function EditQuiz() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (buttonClick === "submit") {
-            API.editQuiz(inputs, id, true).then((data) =>
-                console.log(data.resposta)
-            );
+            API.editQuiz(inputs, id, true).then((data) =>{
+                alert(data.resposta);
+            });
         } else if (buttonClick === "draft") {
-            API.editQuiz(inputs, id, false).then((data) =>
-                console.log(data.resposta)
-            );
+            API.editQuiz(inputs, id, false).then((data) => {
+                alert(data.resposta);
+            });
         }
         navigate(-1);
-        //window.location.reload();
+        //window.location.reload(true);
     };
 
     let options = [];
