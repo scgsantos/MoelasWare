@@ -47,6 +47,6 @@ urlpatterns = [
 
     path("unfinished_quizzes/", views.get_unfinished_quizzes),
     path("draft/info/<int:id>/", views.get_draft_info),
-    path("quiz/<int:id>/export", views.exportXML),
+    path("quiz/export", views.exportXML),
 
 ]
