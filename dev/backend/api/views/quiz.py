@@ -511,7 +511,7 @@ def get_reviews_of_a_quiz(request, id):
 
 
 @api_view(["POST"])
-def importXML(request: HttpRequest):
+def import_xml(request: HttpRequest):
     """Read the XML file.
 
     Arguments: HttpRequest
@@ -604,7 +604,7 @@ def importXML(request: HttpRequest):
 
 
 @api_view(['GET'])
-def exportXML(request):
+def export_xml(request):
     # Get all quizzes
     data = Quiz.objects.all()
     if not data:

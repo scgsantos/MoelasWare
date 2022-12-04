@@ -11,11 +11,11 @@ const CreateQuiz = () => {
     const quizzesHeader = ["QUIZ NAME", "TAG", "REVIEWS", "STATE"];
     const [quizzes, setQuizzes] = useState([]);
 
-    useEffect(() => {   
-    API.getMyFinishedQuizzes()
-    .then((data) => {
-        setQuizzes(data.list_of_quizzes)
-    });
+    useEffect(() => {
+        API.getMyFinishedQuizzes()
+            .then((data) => {
+                setQuizzes(data.list_of_quizzes)
+            });
     }, []);
 
     const [selected, setSelected] = useState("");
@@ -32,19 +32,13 @@ const CreateQuiz = () => {
 
             <main className="container" id="createquiz">
                 <h1 className="title">CREATE A QUIZ</h1>
-                
-                <Button2 name = "IMPORT" disabled = {false} type = "file" onClick = {()=>{
+
+                <Button2 name="IMPORT" disabled={false} type="file" onClick={() => {
                     var input = document.querySelector('input[type="file"]');
-                    var data = new FormData()
-                    data.append("xml", input.files[0]);
-                    console.log(data)
-                    fetch("http://localhost:8000/api/quiz/import/", {
-                        method: "POST",
-                        body: data
-                    }).then((response) => {
+                    API.uploadXML(input.files[0]).then((response) => {
                         console.log(response)
                     })
-                }}/>
+                }} />
 
                 <Button to="./new" className="createquiznav" text="NEW QUIZ" />
                 <Button

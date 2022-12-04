@@ -12,8 +12,12 @@ class API {
         return sessionStorage.access === undefined
             ? {}
             : {
-                  Authorization: "Bearer " + sessionStorage.access,
-              };
+                Authorization: "Bearer " + sessionStorage.access,
+            };
+    }
+
+    static makePathURL(path) {
+        return new URL(path, config.apiUrl);
     }
 
     static makeRequest(
@@ -24,7 +28,7 @@ class API {
         headers = undefined
     ) {
         const searchParams = new URLSearchParams(params);
-        const pathURL = new URL(path, config.apiUrl);
+        const pathURL = this.makePathURL(path);
         searchParams.forEach((value, key) =>
             pathURL.searchParams.set(key, value)
         );
@@ -120,13 +124,13 @@ class API {
     static createQuiz(inputs, flag) {
         return this.makeJSONRequest("quizzes/", "POST", {
             inputs: inputs,
-            flag : flag,
+            flag: flag,
         });
     }
     static editQuiz(inputs, id, flag) {
         return this.makeJSONRequest(`quizzes/${id}/`, "PATCH", {
             inputs: inputs,
-            flag : flag,
+            flag: flag,
         });
     }
 
@@ -302,13 +306,18 @@ class API {
     }
 
     static getXML() {
-        return this.makeRequest("quiz/export/").then((res) => {return res.blob()})
+        return this.makeRequest("quiz/export/").then((res) => { return res.blob() })
     }
 
     static uploadXML(file) {
-        return this.makeRequest("quiz/import/", "POST", file, undefined)
+        var data = new FormData();
+        data.append("xml", file);
+        // Has to be a custom fetch because of Content-Type headers
+        return fetch(this.makePathURL("quiz/import/"), {
+            method: "POST",
+            body: data
+        });
     }
-    
 }
 
 export default API;
