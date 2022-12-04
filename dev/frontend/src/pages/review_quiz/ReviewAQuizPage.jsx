@@ -46,8 +46,14 @@ function ReviewAQuizPage() {
           <div style={styles.middletitle}>REVIEW A QUIZ</div>
         </div>
         <div style={{ height: "20px" }}></div>
-
         <p style={styles.center}>{data["quiz"]["question"]}</p>
+        <div style={{ height: "20px" }}></div>
+
+        <div className="centered">
+          <div style={styles.middletitle}>DESCRIPTION</div>
+        </div>
+        <div style={{ height: "20px" }}></div>
+        <p style={styles.center}>{data["quiz"]["description"]}</p>
 
         <div className="cent">
           <ul>
@@ -59,7 +65,9 @@ function ReviewAQuizPage() {
                   j = 1;
                   d.push(
                     <tr className="side sep">
-                      <td></td>
+                      <td>
+                      <h2 className="explanation" style={styles.left}>ANSWERS</h2>
+                      </td>
                       <td>
                         <h2 className="explanation" style={styles.left}>JUSTIFICATIONS</h2>
                       </td>
