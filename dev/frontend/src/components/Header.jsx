@@ -17,6 +17,7 @@ function Header(props) {
             window.location.reload();
         });
     };
+
     if (isLoggedIn) {
         return (
             <header>

@@ -52,31 +52,45 @@ const CreateQuiz = () => {
                 </div>
 
                 <section id="myquizzes">
-                    <h2>MY QUIZZES</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                {quizzesHeader.map((h) => (
-                                    <th key={h}>{h}</th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {quizzes.map((t) => (
-                                <tr
-                                    key={Object.values(t)[0]}
-                                    onClick={(e) =>
-                                        handleClick(Object.values(t)[0])
-                                    }
-                                >
-                                    <td>{Object.values(t)[1]}</td>
-                                    <td>{Object.values(t)[2][0].text}</td>
-                                    <td>{Object.values(t)[3]}/3</td>
-                                    <td>{Object.values(t)[4]}</td>
+                    {(() => {
+                    var array = [];
+                    if (error){
+                        array.push(
+                            <div>
+                            <h2>MY QUIZZES</h2>
+                            <h3>No finished quizzes found</h3>
+                            </div>)
+                            
+                    } else {
+                        array.push(
+                            <table>
+                            <thead>
+                                <tr>
+                                    {quizzesHeader.map((h) => (
+                                        <th key={h}>{h}</th>
+                                    ))}
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {quizzes.map((t) => (
+                                    <tr
+                                    key={Object.values(t)[0]}
+                                        onClick={(e) =>
+                                            handleClick(Object.values(t)[0])
+                                        }
+                                        >
+                                        <td>{Object.values(t)[1]}</td>
+                                        <td>{Object.values(t)[2][0].text}</td>
+                                        <td>{Object.values(t)[3]}/3</td>
+                                        <td>{Object.values(t)[4]}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                            </table>
+                        )
+                    }
+                    return array;
+                    })()}
                 </section>
                 <Outlet />
             </main>

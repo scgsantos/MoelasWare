@@ -7,7 +7,10 @@ from rest_framework.decorators import api_view
 from api.serializers import QuizAnswerSerializer, QuizSerializer, QuizFinishedSerializer, GetQuizReviewNewSerializer
 from moelasware.models import Quiz, QuizAnswer, User, Tag, Review
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User as AuthUser
 
+import xml.etree.ElementTree as ET
+from xml.etree.ElementTree import fromstring, ElementTree
 
 @api_view(["GET"])
 def get_quiz_view(request, pk):
@@ -521,7 +524,7 @@ def import_xml(request: HttpRequest):
         print(request.FILES)
         xml = request.FILES["xml"]
     except:
-        return HttpResponseBadRequest("No XML file found")
+        return HttpResponseBadRequest("No XML file found", content_type="text/plain")
 
     # Replace A&D with AD in the XML file
     xml = xml.read().decode("utf-8").replace("A&D", "AD")
@@ -531,7 +534,7 @@ def import_xml(request: HttpRequest):
         tree = ElementTree(fromstring(xml))
         root = tree.getroot()
     except:
-        return HttpResponseBadRequest("Invalid XML file")
+        return HttpResponseBadRequest("Invalid XML file", content_type="text/plain")
 
     try:
         for pergunta in root.findall("./perguntas"):
@@ -548,12 +551,13 @@ def import_xml(request: HttpRequest):
                         tag = Tag.objects.filter(text=tag.text).first()
                         tags.append(tag)
                     except:
-                        return HttpResponseBadRequest("Invalid tag")
+                        return HttpResponseBadRequest("Invalid tag", content_type="text/plain")
 
                 # Check if the description already exists
                 description = item.find("descricao").text
                 if Quiz.objects.filter(description=description).exists():
-                    return HttpResponseBadRequest("One or more quizzes already exist")
+                    return HttpResponseBadRequest("One or more quizzes already exist",
+                                                  content_type="text/plain")
 
                 try:
                     quiz = Quiz(
@@ -567,7 +571,7 @@ def import_xml(request: HttpRequest):
                     quiz.save()
                     quiz.tags.set(tags)
                 except:
-                    return HttpResponseBadRequest("Couldn't create quiz")
+                    return HttpResponseBadRequest("Couldn't create quiz", content_type="text/plain")
 
                 for answer in item.findall("./respostas/resposta"):
 
@@ -586,9 +590,10 @@ def import_xml(request: HttpRequest):
                         )
                         answer.save()
                     except:
-                        return HttpResponseBadRequest("Couldn't create answer")
+                        return HttpResponseBadRequest("Couldn't create answer",
+                                                      content_type="text/plain")
     except:
-        return HttpResponseBadRequest("Invalid XML file format")
+        return HttpResponseBadRequest("Invalid XML file format", content_type="text/plain")
 
     # Return JsonResponse with success message
     return JsonResponse({"message": "XML file loaded successfully"})
@@ -599,7 +604,7 @@ def export_xml(request):
     # Get all quizzes
     data = Quiz.objects.all()
     if not data:
-        return HttpResponseBadRequest('Quizzes not found')
+        return HttpResponseBadRequest('Quizzes not found', content_type="text/plain")
 
     for quiz in data:
         description = quiz.description
@@ -662,4 +667,3 @@ def export_xml(request):
     tree.write(response, encoding="utf-8", xml_declaration=True)
 
     return response
-

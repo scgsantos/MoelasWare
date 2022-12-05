@@ -12,15 +12,14 @@ def register_view(request):
     password = request.data.get("password")
     email = request.data.get("email")
 
-    ##print(f"username:{username}, password: {password}, email: {email}")
-    user_already_exists = AuthUser.objects.filter(username=username).count() != 0
+    user_already_exists = AuthUser.objects.filter(username=username).exists()
 
     if user_already_exists:
         return JsonResponse(
             {"invalid": "user already exists", "message": False}, status=status.HTTP_400_BAD_REQUEST
         )
 
-    user_already_exists = AuthUser.objects.filter(email=email).count() != 0
+    user_already_exists = AuthUser.objects.filter(email=email).exists()
 
     if user_already_exists:
         return JsonResponse(
@@ -34,9 +33,9 @@ def register_view(request):
 
     return JsonResponse({"id": user.id, "message":True})
 
+
 @api_view(["GET"])
 @login_required
 def can_create_test_view(request):
     can_create_test = request.user.user.review_set.all().count() >= 3
     return JsonResponse( {"can_create_test": can_create_test} )
-    

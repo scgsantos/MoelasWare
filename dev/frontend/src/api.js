@@ -14,6 +14,10 @@ class API {
         }
     }
 
+    static makePathURL(path) {
+        return new URL(path, config.apiUrl);
+    }
+
     static makeRequest(
         path,
         method = "GET",
@@ -183,7 +187,7 @@ class API {
     }
 
     static getReviewsOfQuiz(id) {
-        return this.makeJSONRequest(`myquiz/${id}/reviews/`);
+        return this.makeJSONRequest(`quiz/${id}/reviews/`);
     }
 
     static getQuiz(id) {
