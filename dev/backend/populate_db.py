@@ -1026,6 +1026,19 @@ try:
                 accepted=False,
                 comment="comment",
             ),
+            Review(
+                reviewer=User.objects.get(user=manel),
+                quiz=quizzes[1],
+                accepted=False,
+                comment="comment",
+            ),
+            Review(
+                reviewer=User.objects.get(user=manel),
+                quiz=quizzes[2],
+                accepted=False,
+                comment="comment",
+            ),
+
         ]
     )
 
