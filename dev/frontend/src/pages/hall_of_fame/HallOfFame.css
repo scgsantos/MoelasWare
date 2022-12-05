@@ -36,6 +36,11 @@ select {
     margin: 3rem auto;
 }
 
+.hof-side {
+    display: flex;
+    justify-content: space-between;
+}
+
 input.searchbar {
     margin: 0;
     padding: 10px auto;

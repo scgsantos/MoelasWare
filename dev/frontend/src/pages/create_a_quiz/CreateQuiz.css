@@ -246,3 +246,9 @@
 .newquiz input[type=radio]:checked {
     background-color: black;
 }
+
+.cq-inline {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}

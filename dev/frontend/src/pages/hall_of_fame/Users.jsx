@@ -14,20 +14,6 @@ const Users = () => {
         <h1 className="title">HISTORY & HALL OF FAME</h1>
 
         <Dropdown selected="users" />
-        <Button name = {"export"} disabled = {false} onClick = {() =>{
-          API.getXML().then((blob) => {
-            // cria um anchor temporário
-            var anchor = document.createElement("a");
-            // mete lá o URL do blob
-            anchor.href = URL.createObjectURL(blob);
-            // mete o filename
-            anchor.download = "export.xml"; 
-            // clica no anchor por ti, que inicia o download
-            anchor.click();
-            // yeeta o temporário
-            anchor.remove();
-          });
-        }} />
         <UsersList />
       </main>
     </React.Fragment>
