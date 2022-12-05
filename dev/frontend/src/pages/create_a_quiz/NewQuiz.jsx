@@ -48,16 +48,19 @@ function NewQuiz() {
                 alert(data.resposta);
             }
             );
+            navigate("../createquiz");
+            window.location.reload();
         } else if (buttonClick === "draft") {
             API.createQuiz(inputs, false).then((data) => {
                 setResposta(data.resposta);
                 alert(data.resposta);
             }
             );
+            navigate("../createquiz/drafts");
+            window.location.reload();
         }
         
-        navigate(-1);
-        //window.location.reload();
+
     };
 
     let options = [];

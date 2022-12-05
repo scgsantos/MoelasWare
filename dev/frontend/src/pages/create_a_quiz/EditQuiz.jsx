@@ -92,13 +92,16 @@ function EditQuiz() {
             API.editQuiz(inputs, id, true).then((data) =>{
                 alert(data.resposta);
             });
+            navigate("../createquiz");
+            window.location.reload();
         } else if (buttonClick === "draft") {
             API.editQuiz(inputs, id, false).then((data) => {
                 alert(data.resposta);
             });
+            navigate("../createquiz/drafts");
+            window.location.reload();
         }
-        navigate(-1);
-        //window.location.reload(true);
+
     };
 
     let options = [];

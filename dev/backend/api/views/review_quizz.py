@@ -85,6 +85,7 @@ def create_review_view(request):
 
         if quiz_reviews.exists():
             review.quiz.approved = False
+            review.quiz.finished = False
 
         if Review.objects.filter(quiz = review.quiz).filter(accepted = True).filter(pending = False).count() == 3:
             review.quiz.approved = True
