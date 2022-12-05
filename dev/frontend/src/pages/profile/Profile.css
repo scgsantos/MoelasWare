@@ -1,0 +1,38 @@
+#profile {
+    text-align: center;
+    display: block;
+    margin: 14px auto 80px;
+}
+
+#profile h2 {
+    margin-bottom: 4rem;
+}
+
+#profile .score {
+    margin: 0 auto;
+    width: 95%;
+    display: block;
+    text-align: center;
+}
+
+#profile .legend {
+    text-align: left;
+    float: left;
+}
+
+#profile .legend div {
+    margin: 0 0.3rem;
+    display: inline-block;
+}
+
+#profile .legend p {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+#profile .chart {
+    width: 25rem;
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+}
