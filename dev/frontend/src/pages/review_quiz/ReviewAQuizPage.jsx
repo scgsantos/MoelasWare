@@ -71,7 +71,9 @@ function ReviewAQuizPage() {
                   j = 1;
                   d.push(
                     <tr className="side sep">
-                      <td></td>
+                      <td>
+                      <h2 className="explanation" style={styles.left}>ANSWERS</h2>
+                      </td>
                       <td>
                         <h2 className="explanation" style={styles.left}>JUSTIFICATIONS</h2>
                       </td>
