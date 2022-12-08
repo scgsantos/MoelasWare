@@ -1,16 +1,22 @@
 import random
+import xml.etree.ElementTree as ET
 from collections import Counter
+from xml.etree.ElementTree import ElementTree, fromstring
 
-from django.http import HttpResponseBadRequest, JsonResponse, HttpRequest, HttpResponse
-from rest_framework import status
-from rest_framework.decorators import api_view
-from api.serializers import QuizAnswerSerializer, QuizSerializer, QuizFinishedSerializer, GetQuizReviewNewSerializer
-from moelasware.models import Quiz, QuizAnswer, User, Tag, Review
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User as AuthUser
+from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest, JsonResponse
+from rest_framework import status
+from rest_framework.decorators import api_view
 
-import xml.etree.ElementTree as ET
-from xml.etree.ElementTree import fromstring, ElementTree
+from api.serializers import (
+    GetQuizReviewNewSerializer,
+    QuizAnswerSerializer,
+    QuizFinishedSerializer,
+    QuizSerializer,
+)
+from moelasware.models import Quiz, QuizAnswer, Review, Tag, User
+
 
 @api_view(["GET"])
 def get_quiz_view(request, pk):
@@ -145,24 +151,26 @@ def quiz_finished_serializer_handler(data):
 def get_user_quizzes_view(request):
 
     user = request.user
-    quizzes = Quiz.objects.filter(author__user__username = user).filter(finished = True)
+    quizzes = Quiz.objects.filter(author__user__username=user).filter(finished=True)
 
     if not quizzes.exists():
-        return JsonResponse({"error":True, "message":"No finished quizzes found"})
-    quizzes = QuizFinishedSerializer(quizzes, many = True).data
+        return JsonResponse({"error": True, "message": "No finished quizzes found"})
+    quizzes = QuizFinishedSerializer(quizzes, many=True).data
     quizzes = quiz_finished_serializer_handler(quizzes)
 
-    return JsonResponse({"list_of_quizzes": quizzes, "error":False, "message":""})
+    return JsonResponse({"list_of_quizzes": quizzes, "error": False, "message": ""})
 
 
 def handle_frontend_fields(dataRequest):
-    data = {'name': dataRequest['name'],
-            'question': dataRequest['question'],
-            'description' : dataRequest['description'],
-            'tag' : dataRequest['tag'],
-            'correct' : dataRequest['correct'],
-            "answers": [], "justification": []
-        }
+    data = {
+        "name": dataRequest["name"],
+        "question": dataRequest["question"],
+        "description": dataRequest["description"],
+        "tag": dataRequest["tag"],
+        "correct": dataRequest["correct"],
+        "answers": [],
+        "justification": [],
+    }
     option_list = ["option1", "option2", "option3", "option4", "option5", "option6"]
     justification_list = [
         "justification1",
@@ -240,7 +248,11 @@ def create_quiz_view(request):
                     return JsonResponse({"resposta": "Wrong Data for Tags Field"})
 
             case "answers":
-                if type(data["answers"]) is list and len(data["answers"]) > 0 and len(data["answers"]) <= 6:
+                if (
+                    type(data["answers"]) is list
+                    and len(data["answers"]) > 0
+                    and len(data["answers"]) <= 6
+                ):
                     for j in range(len(data["answers"])):
                         answer = quiz_answers[j]
                         answer.text = data["answers"][j]
@@ -256,7 +268,11 @@ def create_quiz_view(request):
                         answer.save()
 
             case "justification":
-                if type(data["justification"]) is list and len(data["justification"]) > 0 and len(data["justification"]) <= 6:
+                if (
+                    type(data["justification"]) is list
+                    and len(data["justification"]) > 0
+                    and len(data["justification"]) <= 6
+                ):
                     for j in range(len(data["justification"])):
                         answer = quiz_answers[j]
                         answer.justification = data["justification"][j]
@@ -282,7 +298,7 @@ def create_quiz_view(request):
                             answers[i - 1].save()
     quiz.save()
 
-    quizzes = QuizAnswer.objects.filter(quiz=quiz).order_by('id')
+    quizzes = QuizAnswer.objects.filter(quiz=quiz).order_by("id")
 
     if request.data["flag"]:
         response = finish_quiz(quiz, quizzes)
@@ -371,11 +387,13 @@ def edit_quiz_view(request, id):
                         for j in quiz.tags.all():
                             quiz.tags.remove(i)
                 else:
-                    #return HttpResponseNotFound("Wrong Data for Tags Field")
+                    # return HttpResponseNotFound("Wrong Data for Tags Field")
                     return JsonResponse("Wrong Data for Tags Field")
 
             case "correct":
-                if (type(dataRequest["correct"])) is str and dataRequest["correct"] != "undefined":
+                if (type(dataRequest["correct"])) is str and dataRequest[
+                    "correct"
+                ] != "undefined":
                     correct_option = int(dataRequest["correct"])
                     if correct_option > 0 and correct_option <= 6:
                         for j in range(len(quiz_answers)):
@@ -404,6 +422,7 @@ def edit_quiz_view(request, id):
     else:
         response = {"resposta": "Saved as Draft"}
     return JsonResponse(response)
+
 
 def finish_quiz(quiz: Quiz, quiz_answers: list):
 
@@ -437,18 +456,17 @@ def finish_quiz(quiz: Quiz, quiz_answers: list):
         # response = {'resposta' : f"Your quiz has been finished successfully{[quiz.name, quiz.id]}"}
 
     if flag:
-        Review.objects.filter(quiz = quiz).delete()
-        users = User.objects.exclude(user__username = quiz.author.user.username)
+        Review.objects.filter(quiz=quiz).delete()
+        users = User.objects.exclude(user__username=quiz.author.user.username)
         users = list(users)
         users_filtered = []
         for i in users:
-            if Quiz.objects.filter(author = i).count() > 0:
+            if Quiz.objects.filter(author=i).count() > 0:
                 users_filtered.append(i)
-                
-        reviewers_list = random.sample(users,3)
-        reviewers_list = random.sample(users_filtered,3)
 
-      
+        reviewers_list = random.sample(users, 3)
+        reviewers_list = random.sample(users_filtered, 3)
+
         for i in reviewers_list:
             review = Review(
                 reviewer=i,
@@ -547,13 +565,16 @@ def import_xml(request: HttpRequest):
                         tag = Tag.objects.filter(text=tag.text).first()
                         tags.append(tag)
                     except:
-                        return HttpResponseBadRequest("Invalid tag", content_type="text/plain")
+                        return HttpResponseBadRequest(
+                            "Invalid tag", content_type="text/plain"
+                        )
 
                 # Check if the description already exists
                 description = item.find("descricao").text
                 if Quiz.objects.filter(description=description).exists():
-                    return HttpResponseBadRequest("One or more quizzes already exist",
-                                                  content_type="text/plain")
+                    return HttpResponseBadRequest(
+                        "One or more quizzes already exist", content_type="text/plain"
+                    )
 
                 try:
                     quiz = Quiz(
@@ -567,7 +588,9 @@ def import_xml(request: HttpRequest):
                     quiz.save()
                     quiz.tags.set(tags)
                 except:
-                    return HttpResponseBadRequest("Couldn't create quiz", content_type="text/plain")
+                    return HttpResponseBadRequest(
+                        "Couldn't create quiz", content_type="text/plain"
+                    )
 
                 for answer in item.findall("./respostas/resposta"):
 
@@ -586,21 +609,24 @@ def import_xml(request: HttpRequest):
                         )
                         answer.save()
                     except:
-                        return HttpResponseBadRequest("Couldn't create answer",
-                                                      content_type="text/plain")
+                        return HttpResponseBadRequest(
+                            "Couldn't create answer", content_type="text/plain"
+                        )
     except:
-        return HttpResponseBadRequest("Invalid XML file format", content_type="text/plain")
+        return HttpResponseBadRequest(
+            "Invalid XML file format", content_type="text/plain"
+        )
 
     # Return JsonResponse with success message
     return JsonResponse({"message": "XML file loaded successfully"})
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def export_xml(request):
     # Get all quizzes
     data = Quiz.objects.all()
     if not data:
-        return HttpResponseBadRequest('Quizzes not found', content_type="text/plain")
+        return HttpResponseBadRequest("Quizzes not found", content_type="text/plain")
 
     for quiz in data:
         description = quiz.description
@@ -618,7 +644,6 @@ def export_xml(request):
         tags = quiz.tags.all()
         for tag in tags:
             tag_list.append(tag.text)
-
 
     # Create the XML file
     root = ET.Element("quizzes")
@@ -643,7 +668,7 @@ def export_xml(request):
         respostas = ET.SubElement(pergunta, "respostas")
         for answer in QuizAnswer.objects.filter(quiz=quiz):
             resposta = ET.SubElement(respostas, "resposta")
-            
+
             designacao = ET.SubElement(resposta, "designacao")
             designacao.text = answer.text
 

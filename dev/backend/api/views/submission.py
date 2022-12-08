@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.http.response import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
@@ -12,8 +13,6 @@ from api.serializers import (
     SubmissionSerializer,
 )
 from moelasware.models import Quiz, QuizAnswer, Submission, SubmissionAnswer, Test, User
-from django.contrib.auth.decorators import login_required
-
 
 
 @api_view(["GET", "POST"])
@@ -38,8 +37,9 @@ def handle_serializer_test(obj):
         obj_list.append({id: [id, author, correct_answers, total_answers]})
         id += 1
     return obj_list
- 
-@api_view(['GET'])
+
+
+@api_view(["GET"])
 @login_required
 def submission_of_a_test_view(request, pk):
 
@@ -78,7 +78,8 @@ def handle_serializer(obj):
 
     return obj_list
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 @login_required
 def submissions_by_user_view(request, pk):
 

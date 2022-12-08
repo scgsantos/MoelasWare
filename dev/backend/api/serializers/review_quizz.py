@@ -1,15 +1,16 @@
 from rest_framework import serializers
 
-from moelasware.models.quiz import Quiz, QuizAnswer
-from moelasware.models.review import Review
+from api.serializers.quiz import QuizInfoSerializer
 from api.serializers.tag import GetTagSerializer
 from api.serializers.user import GetUserUsername
-from api.serializers.quiz import QuizInfoSerializer
+from moelasware.models.quiz import Quiz, QuizAnswer
+from moelasware.models.review import Review
 
 
 class GetQuizReviewSerializer(serializers.ModelSerializer):
-    tags = GetTagSerializer(read_only = True, many = True)
-    author = GetUserUsername(read_only = True)
+    tags = GetTagSerializer(read_only=True, many=True)
+    author = GetUserUsername(read_only=True)
+
     class Meta:
         model = Quiz
         fields = [
@@ -24,16 +25,16 @@ class GetQuizReviewSerializer(serializers.ModelSerializer):
 
 
 class GetQuizReviewNewSerializer(serializers.ModelSerializer):
-    reviewer = GetUserUsername(read_only = True)
+    reviewer = GetUserUsername(read_only=True)
     review_result = serializers.SerializerMethodField("get_review_result")
 
     class Meta:
         model = Review
-        fields = ["id", "reviewer", "creation_date","comment", "review_result"]
+        fields = ["id", "reviewer", "creation_date", "comment", "review_result"]
 
-    def get_review_result(self,obj):
+    def get_review_result(self, obj):
 
-        if Review.objects.filter(id = obj.id).filter(accepted = False):
+        if Review.objects.filter(id=obj.id).filter(accepted=False):
             return "rejected"
 
         else:
@@ -57,13 +58,15 @@ class CreateReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ["reviewer", "quiz", "accepted", "comment"]
 
+
 class QuizReviewSerializer(serializers.ModelSerializer):
     tags = GetTagSerializer(read_only=True, many=True)
-    author = GetUserUsername(read_only = True)
+    author = GetUserUsername(read_only=True)
     review_count = serializers.SerializerMethodField("get_review_count")
+
     class Meta:
         model = Quiz
-        fields = ['id','name','tags','author', "review_count", "creation_date"] 
+        fields = ["id", "name", "tags", "author", "review_count", "creation_date"]
 
     def get_review_count(self, obj):
-        return Review.objects.filter(quiz = obj, pending = True).count()
+        return Review.objects.filter(quiz=obj, pending=True).count()

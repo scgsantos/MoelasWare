@@ -85,7 +85,7 @@ class HallOfFameGetTestInfo(serializers.ModelSerializer):
 
     class Meta:
         model = Test
-        fields = ["id","name", "author", "quizzes", "solved_tests"]
+        fields = ["id", "name", "author", "quizzes", "solved_tests"]
 
     def get_solved_tests(self, obj):
         return Submission.objects.filter(test__id=obj.id).count()

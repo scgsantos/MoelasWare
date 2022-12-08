@@ -7,22 +7,34 @@ from moelasware.models import Quiz, QuizAnswer, Review
 
 class QuizSerializer(serializers.ModelSerializer):
     tags = GetTagSerializer(read_only=True, many=True)
-    author = GetUserUsername(read_only = True)
+    author = GetUserUsername(read_only=True)
+
     class Meta:
         model = Quiz
-        fields = ["id", "name", "author", "tags", "question", "description", "review_count"]
+        fields = [
+            "id",
+            "name",
+            "author",
+            "tags",
+            "question",
+            "description",
+            "review_count",
+        ]
+
 
 class QuizAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizAnswer
         fields = ["id", "text", "justification"]
 
+
 class QuizInfoSerializer(serializers.ModelSerializer):
     tags = GetTagSerializer(read_only=True, many=True)
-    author = GetUserUsername(read_only = True)
+    author = GetUserUsername(read_only=True)
+
     class Meta:
         model = Quiz
-        fields = ['id','name','tags','author']
+        fields = ["id", "name", "tags", "author"]
 
 
 class QuizAnswerSerializerWithRes(serializers.ModelSerializer):
@@ -45,12 +57,24 @@ class QuizFinishedSerializer(serializers.ModelSerializer):
     def get_number_of_reviews_done(self, obj):
         return Review.objects.filter(quiz=obj).filter(pending=False).count()
 
-    def get_review_result(self,obj):
-        
-        if Review.objects.filter(quiz = obj).filter(accepted = False).filter(pending = False).count() > 0:
+    def get_review_result(self, obj):
+
+        if (
+            Review.objects.filter(quiz=obj)
+            .filter(accepted=False)
+            .filter(pending=False)
+            .count()
+            > 0
+        ):
             return "rejected"
 
-        elif Review.objects.filter(quiz = obj).filter(pending = False).filter(accepted = True).count() == 3:
-                return "accepted"
+        elif (
+            Review.objects.filter(quiz=obj)
+            .filter(pending=False)
+            .filter(accepted=True)
+            .count()
+            == 3
+        ):
+            return "accepted"
         else:
             return "pending"
