@@ -69,7 +69,15 @@ class API {
         return this.makeJSONRequest(`user/can_create/test/`);
     }
 
-
+    // Get all tests including My submissions
+    static getTestsMySub() {
+        return this.makeJSONRequest(
+            "tests/?" +
+                new URLSearchParams({
+                    includeMySubmissions: true,
+                })
+        );
+    }
 
     // Get a tag by ID
     static getTag(tag_id) {
@@ -101,7 +109,7 @@ class API {
 
     // Get a quiz by ID
     static getQuiz(quiz_id) {
-        return this.makeJSONRequest(`quizzes/${quiz_id}/`);
+        return this.makeJSONRequest(`quizz/${quiz_id}/`);
     }
 
     // NOT YET IMPLEMENTED
@@ -188,10 +196,6 @@ class API {
 
     static getReviewsOfQuiz(id) {
         return this.makeJSONRequest(`quiz/${id}/reviews/`);
-    }
-
-    static getQuiz(id) {
-        return this.makeJSONRequest("review/quizzes/" + id.toString() + "/");
     }
 
     static createReview(args) {
@@ -298,8 +302,10 @@ class API {
     }
 
     // Add new submission
-    static postSubmission(test_id) {
-        return this.makeJSONRequest(`tests/${test_id}submissions`, "POST");
+    static postSubmission(test_id, subCorrectFormat) {
+        return this.makeJSONRequest(`tests/${test_id}/submissions/`, "POST", {
+            answers: subCorrectFormat,
+        });
     }
 
     // Get user with a given id

@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import 'pages/solve_test/TestSelection.css';
 import config from 'config.js';
 import { SELECT_TEST_URL } from "urls.js";
+import ErrorCompPage from 'components/Errors/errorCompSolveTest';
+import API from 'api';
 
 function QuestionSolving(props) {
   document.documentElement.style.setProperty("--base", "var(--yellow)");
@@ -18,19 +20,12 @@ function QuestionSolving(props) {
 
   function getGrade() {
     setLoading(true);
-    setError("");
-    fetch(config.svurl + "/api/tests/" + test + "/grade", {
-      method: "GET",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
+      API.getTestSubmissions(test).then((data) => {
+        if (data.error) {
+          setError("Error: " + data.error);
+        }
         setGrade(data.grade);
-      }).catch(error => {
-        console.log(error);
+      }).catch((error) => {
         setError("Error: " + error);
       }).finally(() => {
         setLoading(false);
@@ -38,30 +33,23 @@ function QuestionSolving(props) {
   }
 
   useEffect(() => {
-    document.title = "Solved Test " + test;
-    console.log(location.state);
+    document.title = "Solved Test Grade" + test;
+    // console.log(location.state);
     if (!location.state) {
-      //TODO: need to make a request to get the grade of the test given.
       getGrade();
     }
   }, []);
-
+  console.log(error);
 
   if (error) {
     return (
-      <div>
-        <div className="TestSelection-centerTitles">
-          <span className='TestSelection-main-title'>SOLVE A TEST</span>
-          <span className="TestSelection-sub-title">Something Wrong Happened</span>
-        </div>
-
-        <div className="TestSelection-centerLoad just-column">
-          <span>{error}</span>
-          <button className='TestSelection-solve-quizbtn' onClick={() => {
-            setError(null);
-          }}>Ok</button>
-        </div>
-      </div>
+     <ErrorCompPage
+        error={error}
+        resetError={() => {
+          setError("")
+          getGrade();
+        }}
+      />
     )
   }
 
@@ -83,7 +71,7 @@ function QuestionSolving(props) {
 
         <div className="TestSelection-bottomcenterntns mt-10">
           <button onClick={() => {
-            navigate('/solved/' + test);
+            navigate('/test/solved/' + test);
 
           }}>Check the answers</button>
           <button onClick={() => {

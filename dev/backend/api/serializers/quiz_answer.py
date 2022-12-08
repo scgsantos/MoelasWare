@@ -6,4 +6,4 @@ from moelasware.models import QuizAnswer
 class QuizAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizAnswer
-        fields = ["text", "correct", "justification"]
+        fields = ["id", "text", "correct", "justification"]

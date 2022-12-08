@@ -16,19 +16,31 @@
     grid-template-rows: repeat(3, 1fr);
     grid-auto-flow: column;
     grid-auto-columns: var(--buttonwidth)-3vw var(--buttonwidth)-3vw var(--buttonwidth)-3vw;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
     align-items: center;
     justify-content: center;
 }
 
 .TestSelection-testTitle {
-    font-size: 1.1rem;
+    font-size: 1.6rem;
     font-weight: 700;
     margin-bottom: 0.2rem;
 }
 
 .TestSelection-box-test {
     width: 18vw;
+}
+.TestSelection-search-box {
+    font-size: 1.8rem;
+    left: 3rem;
+    margin-left: 14.5rem !important;
+    width: 30rem;
+}
+
+.TestSelection-search-box::placeholder {
+    font-size: 1.3rem;
+    color: #2b2b2b;
+    overflow: visible;
 }
 
 .TestSelection-box-button {
@@ -62,7 +74,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .TestSelection-centraHeader {
@@ -115,14 +127,11 @@
 input[type='radio']:after {
     width: 12px;
     height: 12px;
-    border-radius: 15px;
     position: relative;
     background-color: rgba(255, 255, 255, 0);
     content: '';
     display: inline-block;
     visibility: visible;
-    border: 1px solid black;
-    top: -2px;
 
 }
 
@@ -136,7 +145,6 @@ input[type='radio']:checked:after {
     display: inline-block;
     visibility: visible;
     border: 1px solid black;
-    top: -2px;
 }
 
 .f-text{
@@ -244,22 +252,22 @@ input[type='radio']:checked:after {
 }
 
 .TestSelection-button_uniq {
-    border-radius: var(--buttoncorners) var(--buttoncorners) var(--buttoncorners) var(--buttoncorners); 
+    border-radius: var(--buttoncorners) var(--buttoncorners) var(--buttoncorners) var(--buttoncorners) !important; 
 }
 
 .TestSelection-buttoncorners {
-    border-radius: var(--buttoncorners) var(--buttoncorners) 0px 0px;
+    border-radius: var(--buttoncorners) var(--buttoncorners) 0px 0px !important;
     border-bottom: 0px;
 }
 
 
 .TestSelection-other_buttons {
-    border-radius: 0px 0px 0px 0px;
+    border-radius: 0px 0px 0px 0px !important;
     border-bottom: 0px;
 }
 
 .TestSelection-button_end {
-    border-radius: 0px 0px 12px 12px;
+    border-radius: 0px 0px 12px 12px !important;
 }
 
 .TestSelection-btnlist {
@@ -272,12 +280,12 @@ input[type='radio']:checked:after {
     font-weight: 600;
 }
 
-.btnlist:hover {
+.TestSelection-btnlist:hover {
     color: #3d2e00!important;
     background-color: #fff4d1!important;	
 }
 
-.btnlist:active {
+.TestSelection-btnlist:active {
     background-color: #f9bf12!important;
     color: black!important;
 }
@@ -300,21 +308,23 @@ input[type='radio']:checked:after {
 .TestSelection-popupInside {
   font-size: 12px;
 }
-.popupInside > .TestSelection-header {
+.TestSelection-popupInside > .TestSelection-header {
   width: 100%;
   font-size: 1.2rem;
   margin-top: 1.4rem;
   font-weight: 500;
   text-align: center;
   padding: 5px;
+    background-color: rgba(255, 255, 255, 0);
 }
-.popupInside > .TestSelection-content {
+.TestSelection-popupInside > .TestSelection-content {
   width: 100%;
   text-align: center;
   margin: 0.3rem;
   font-size: 0.9rem;
+  background-color: rgba(255, 255, 255, 0);
 }
-.popupInside > .TestSelection-actions {
+.TestSelection-popupInside > .TestSelection-actions {
   padding: 10px 5px;
   text-align: center;   
   display: flex;
@@ -322,12 +332,17 @@ input[type='radio']:checked:after {
 justify-content: space-around;
 margin-bottom: 0.5rem;
 width: 80%;
+background-color: rgba(255, 255, 255, 0);
+
   
 }
-.TestSelection-popup-content {
+
+/* Please dont change this into TestSelection-popup-content, im overriding the default popup content from the module */
+.popup-content {
     padding: 0!important;
     background: transparent!important;
     border: 0!important;
+    -webkit-animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
 }
 
 .TestSelection-buttonpop {
@@ -357,9 +372,6 @@ width: 80%;
     box-shadow: 0 0 500px rgba(241, 241, 241, 0);
   }
 }
-.TestSelection-popup-content {
-  -webkit-animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
-}
 
 .TestSelection-bottomcenterntns {
     display: flex;
@@ -373,5 +385,9 @@ width: 80%;
 }
 
 .TestSelection-correct {
+    background-color: #b3e6b3!important;
+}
+
+.TestSelection-correct:hover {
     background-color: #b3e6b3!important;
 }

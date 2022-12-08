@@ -14,10 +14,4 @@ class User(models.Model):
     """
 
     user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
-
-    # needs to be haved created at least one quizz
-    def can_solve_tests(self) -> bool:
-        # the user needs to have created at least one quizz
-        # query all the quizzes that has author as the current user
-        instance = Quiz.objects.filter(author=self)
-        return instance.exists()
+    

@@ -5,12 +5,13 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from . import views
+from api import views
 
 urlpatterns = [
     # TESTS
     path("tests/<int:pk>/", views.get_test_view),
     path("tests/", views.tests_view),
+    path("tests/<int:pk>/submissions/", views.submission_view),
     path("tags/<int:pk>/", views.get_tag_view),
     path("tags/", views.get_all_tags_view),
     path("user/can_create/test/", views.can_create_test_view),
@@ -21,6 +22,7 @@ urlpatterns = [
     # CREATE QUIZ
     path("quizzes/", views.create_quiz_view),
     path("quizzes/<int:id>/", views.edit_quiz_view),
+    path("quizz/<int:pk>/", views.get_quiz_view),
     path("quiz/<int:pk>/info/", views.get_info_quiz_view),
     path("myquizzes/", views.get_user_quizzes_view),
     path("quiz/<int:id>/reviews/", views.get_reviews_of_a_quiz_view),
