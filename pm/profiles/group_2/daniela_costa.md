@@ -32,5 +32,5 @@ Roles: `-`
 
 ### 6
 
-* Finished: #544, #549, #555
+* Finished: #544, #549, #555, #584
 * Pending:
