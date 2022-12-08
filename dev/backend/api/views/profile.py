@@ -1,5 +1,4 @@
 from django.http import JsonResponse
-from django.http.response import HttpResponseNotFound
 from rest_framework.decorators import api_view
 from moelasware.models import *
 from api.serializers import *

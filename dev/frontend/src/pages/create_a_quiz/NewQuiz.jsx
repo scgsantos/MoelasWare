@@ -33,6 +33,19 @@ function NewQuiz() {
 
     const navigate = useNavigate();
 
+    function verifyParameters(input){
+        let flag = true;
+        if (Object.keys(input).length !== 17){
+            flag = false;
+        }
+        Object.entries(input).forEach(([key, value]) => {
+            if (value == "" || value === undefined || value == "undefined"){
+                flag = false;
+            }
+        });
+        return flag;
+    }
+
     function handleChange(event) {
         setInputs({
             ...inputs,
@@ -43,21 +56,29 @@ function NewQuiz() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (buttonClick === "submit") {
-            API.createQuiz(inputs, true).then((data) => {
+            if (verifyParameters(inputs)){
+                API.createQuiz(inputs, true).then((data) => {
                 setResposta(data.resposta);
                 alert(data.resposta);
             }
             );
+            navigate("../createquiz");
+            window.location.reload();
+            } else {
+                alert("Submit: You must enter all fields");
+            }
+
         } else if (buttonClick === "draft") {
             API.createQuiz(inputs, false).then((data) => {
                 setResposta(data.resposta);
                 alert(data.resposta);
             }
             );
+            navigate("../createquiz/drafts");
+            window.location.reload();
         }
         
-        navigate(-1);
-        //window.location.reload();
+
     };
 
     let options = [];

@@ -23,7 +23,7 @@ urlpatterns = [
 
     #CREATE QUIZ
     path("quizzes/", views.create_quiz_view),
-    path("quizzes/<int:id>/", views.edit_quiz_view),
+	path("quizzes/<int:id>/", views.edit_quiz_view),
     path("quiz/<int:pk>/info/", views.get_info_quiz_view),
     path("myquizzes/", views.get_user_quizzes_view),
     path("quiz/<int:id>/reviews/", views.get_reviews_of_a_quiz_view),
@@ -32,8 +32,9 @@ urlpatterns = [
     path("drafts/", views.get_drafts_view),
     path("draft/<int:id>/", views.get_draft_info_view),
 
+    #REVIEWS
+    path("review/quiz/<int:pk>/", views.get_info_review_view),
     path("review/create/", views.create_review_view),
-    # ADDED IN ORDER TO GET THE NECCESSARY INFO OF THE PAGE
     path("review/quizzes/", views.get_quizzes_of_a_reviewer_view),
     #path("review/quiz/<int:id>/", views.get_quiz_info_review_view),
 
@@ -51,8 +52,6 @@ urlpatterns = [
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("token/blacklist/", TokenBlacklistView.as_view(), name="token_blacklist"),
     path("register/", views.register_view),
-
-    path("draft/info/<int:id>/", views.get_draft_info_view),
 
     path("quiz/import/", views.import_xml),
     path("quiz/export/", views.export_xml),

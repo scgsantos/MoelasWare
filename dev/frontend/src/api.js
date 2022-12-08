@@ -267,6 +267,10 @@ class API {
         return this.makeJSONRequest(`quizzes/${quiz_id}/revisions/`);
     }
 
+    static getInfoReview(pk) {
+        return this.makeJSONRequest("review/quiz/" + pk.toString() + "/");
+    }
+
     // Get a quizz's reviews
     static getQuizzReview(quiz_id) {
         return this.makeJSONRequest(`quizzes/${quiz_id}/reviews/`);
@@ -304,7 +308,7 @@ class API {
     }
 
     static getDrafts() {
-        return this.makeRequest("drafts/");
+        return this.makeJSONRequest("drafts/");
     }
 
     static getDraftById(quiz_id) {

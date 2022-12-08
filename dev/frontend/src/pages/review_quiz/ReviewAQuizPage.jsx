@@ -30,7 +30,6 @@ function ReviewAQuizPage() {
   useEffect(() => {
     API.getInfoReview(id)
         .then((data) => {
-            console.log(data);
             setLoading(true);
             setQuiz(data);
         });
@@ -111,12 +110,17 @@ function ReviewAQuizPage() {
                 "accepted": true,
                 "comment": justification
               };
-              API.createReview(args)
+              if (justification !== ""){
+                API.createReview(args)
               .then(
                 alert("Quiz Accepted")
               ).then(
                 navigate(REVIEW_URL)
               )
+              } else {
+                alert("You need to insert a valid justification");
+              }
+              
             }}>ACCEPT</button>
 
             <button className="btn success" onClick={() => {
@@ -125,12 +129,16 @@ function ReviewAQuizPage() {
                   "accepted": false,
                   "comment": justification
                 };
-                API.createReview(args)
+                if (justification !== ""){
+                  API.createReview(args)
                 .then(
                   alert("Quiz Rejected")
                 ).then(
                   navigate(REVIEW_URL)
                 )
+                } else {
+                  alert("You need to insert a valid justification");
+                }
               }}>REJECT</button>
 
             <button className="btn success" onClick={() => {navigate(REVIEW_URL)}}>CANCEL</button>

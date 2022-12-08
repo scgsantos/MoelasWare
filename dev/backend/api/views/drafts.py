@@ -10,7 +10,7 @@ from api.views import QuizSerializer, QuizAnswerSerializer
 def get_drafts_view(request):
 
     user = request.user
-    info = Quiz.objects.filter(author__user__username=user, approved=False).filter(finished = False).order_by("creation_date")
+    info = Quiz.objects.filter(author__user__username=user, approved=False, finished = False).order_by("creation_date")
     
     if not info.exists():
         return JsonResponse({"error":True, "message":"No drafts found"})
@@ -18,7 +18,6 @@ def get_drafts_view(request):
     quizzes = []
     for i in range(len(info)):
         quizzes.append([info[i].name, info[i].id, info[i].creation_date])
-
 
     return JsonResponse({"quizzes": quizzes, "error":False, "message":""}, status=200)
 

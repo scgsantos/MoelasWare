@@ -6,6 +6,7 @@ import { Pie } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Profile() {
+    document.documentElement.style.setProperty("--base", "var(--beige)");
     const [tags, setTags] = useState([]);
     const [frequency, setFrequency] = useState([]);
     const [user, setUser] = useState("Nothing");
@@ -51,17 +52,17 @@ export default function Profile() {
                         labels: tags,
                         datasets: [
                             {
-                                label: "Number of correct answers",
+                                label: "Correct quizzes",
                                 data: frequency,
                                 backgroundColor: [
-                                    "rgba(0, 0, 0, 0.8)",
+                                    "rgba(255, 255, 255, 0)",
                                 ],
                                 borderColor: [
                                     "rgba(0, 0, 0, 1)",
                                 ],
-                                hoverOffset: 20,
-                                borderWidth: 3,
-                                offset: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                hoverBackgroundColor: "rgba(0, 0, 0, 1)",
+                                hoverOffset: 0,
+                                borderWidth: 1,
                             },
                         ],
                     }}

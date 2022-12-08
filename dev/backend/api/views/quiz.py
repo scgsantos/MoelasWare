@@ -290,11 +290,6 @@ def create_quiz_view(request):
     else:
         response = {"resposta": "Saved as Draft"}
 
-    if request.data["flag"]:
-        response = finish_quiz(quiz, quizzes)
-    else:
-        response = {"resposta": "Saved as Draft"}
-
     return JsonResponse(response)
 
 
@@ -410,7 +405,6 @@ def edit_quiz_view(request, id):
         response = {"resposta": "Saved as Draft"}
     return JsonResponse(response)
 
-
 def finish_quiz(quiz: Quiz, quiz_answers: list):
 
     quiz_ready = False
@@ -432,16 +426,27 @@ def finish_quiz(quiz: Quiz, quiz_answers: list):
         if i.correct:
             correct_answer = True
 
+    flag = False
     if not correct_answer or not quiz_ready or not quiz_answers_ready:
         response = {"resposta": f"Your quiz {quiz.name} has been saved"}
+        flag = False
         # response = {'resposta' : f"Your quiz has been saved (unfinished){[quiz.name, quiz.id]}"}
     else:
         response = {"resposta": f"Your quiz {quiz.name} has been finished successfully"}
+        flag = True
         # response = {'resposta' : f"Your quiz has been finished successfully{[quiz.name, quiz.id]}"}
 
+    if flag:
+        Review.objects.filter(quiz = quiz).delete()
         users = User.objects.exclude(user__username = quiz.author.user.username)
         users = list(users)
+        users_filtered = []
+        for i in users:
+            if Quiz.objects.filter(author = i).count() > 0:
+                users_filtered.append(i)
+                
         reviewers_list = random.sample(users,3)
+        reviewers_list = random.sample(users_filtered,3)
 
       
         for i in reviewers_list:
@@ -453,16 +458,7 @@ def finish_quiz(quiz: Quiz, quiz_answers: list):
 
         quiz.finished = True
         quiz.save()
-    """
-    print(quiz.id, "---", quiz.name, "---", quiz.question, "---", quiz.description)
 
-    for i in quiz.tags.all():
-        print("TAG -->", i.text)
-
-    for i in QuizAnswer.objects.filter(quiz = quiz):
-        print(i.text, "--", i.justification, "---", i.correct)
-
-    """
     return response
 
 

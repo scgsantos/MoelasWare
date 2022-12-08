@@ -81,16 +81,18 @@ def create_review_view(request):
         review.pending = False
         review.accepted = serializer["accepted"]
 
-        quiz_reviews = Review.objects.filter(quiz = review.quiz).filter(accepted = False).filter(pending = False)
 
-        if quiz_reviews.exists():
+        if not review.accepted:
             review.quiz.approved = False
+            review.quiz.finished = False
 
         if Review.objects.filter(quiz = review.quiz).filter(accepted = True).filter(pending = False).count() == 3:
             review.quiz.approved = True
+            
 
         review.comment = serializer["comment"]
         review.save()
+        review.quiz.save()
         return JsonResponse(serializer)
 
     return JsonResponse({"error": "Bad data"})

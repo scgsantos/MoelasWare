@@ -76,6 +76,34 @@ function EditQuiz() {
         });
     }
 
+    function verifyParameters(input){
+        let info = input.info, flag = true;
+        //console.log(Object.keys(input).length)
+        if (Object.keys(info).length !== 5 || Object.keys(input).length !== 7 || info.correct === "") flag = false;
+        //console.log("FLAG = ", flag);
+
+        Object.entries(info).forEach(([key, value]) => {
+            //console.log("'%s' INFO",value);
+                if (value == "" || value == undefined || value == "undefined"){
+                    //console.log("INFO '%s' '%s'",value, key);
+                    flag = false;
+                }           
+        });
+        //console.log("FLAG = ", flag);
+        Object.entries(input).forEach(([key, value]) => {
+            if (key !== "info"){
+                //console.log(value);
+                Object.entries(value).forEach(([key1, value1]) => {
+                    if (value1 == "" || value1 == undefined || value == "undefined"){
+                        flag = false;
+                    } 
+            });
+            }
+        });
+        //console.log("FLAG = ", flag);
+        return flag;
+    }
+
     function handleAnswerChange(event) {
         setInputs({
             ...inputs,
@@ -89,16 +117,21 @@ function EditQuiz() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (buttonClick === "submit") {
-            API.editQuiz(inputs, id, true).then((data) =>{
-                alert(data.resposta);
-            });
+            if (verifyParameters(inputs)){
+                API.editQuiz(inputs, id, true).then((data) =>{
+                    alert(data.resposta);
+                    navigate(-1);
+                    navigate("../createquiz");
+                });
+            } else {
+                alert("Submit: You must enter all fields");
+            }
         } else if (buttonClick === "draft") {
             API.editQuiz(inputs, id, false).then((data) => {
                 alert(data.resposta);
+                navigate("../createquiz/drafts");
             });
         }
-        navigate(-1);
-        //window.location.reload(true);
     };
 
     let options = [];
