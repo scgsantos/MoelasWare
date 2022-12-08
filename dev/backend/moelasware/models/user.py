@@ -14,4 +14,3 @@ class User(models.Model):
     """
 
     user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
-    

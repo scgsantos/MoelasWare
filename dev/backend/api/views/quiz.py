@@ -6,18 +6,18 @@ from xml.etree.ElementTree import ElementTree, fromstring
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User as AuthUser
 from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
 
 from api.serializers import (
     GetQuizReviewNewSerializer,
+    GetTestSerializer,
     QuizAnswerSerializer,
     QuizFinishedSerializer,
     QuizSerializer,
-    GetTestSerializer
 )
-from moelasware.models import Quiz, QuizAnswer, Review, Tag, User, Test
-from django.shortcuts import get_object_or_404
+from moelasware.models import Quiz, QuizAnswer, Review, Tag, Test, User
 
 
 @api_view(["GET"])

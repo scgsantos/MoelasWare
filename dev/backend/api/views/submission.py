@@ -1,6 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.http.response import HttpResponseBadRequest, HttpResponseNotFound, HttpResponseForbidden
+from django.http.response import (
+    HttpResponseBadRequest,
+    HttpResponseForbidden,
+    HttpResponseNotFound,
+)
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -13,8 +17,6 @@ from api.serializers import (
     SubmissionSerializer,
 )
 from moelasware.models import Quiz, QuizAnswer, Submission, SubmissionAnswer, Test, User
-from django.contrib.auth.decorators import login_required
-
 
 
 @api_view(["GET", "POST"])
@@ -131,7 +133,7 @@ def get_self_submission_view(request, pk, user):
     submission_answers_serializer = SubmissionAnswerSerializer(
         submission_answers, many=True
     )
-    
+
     # append the quizz id to the submission answer
     for submission_answer in submission_answers_serializer.data:
         # from the quizz answer get the quiz id
@@ -153,7 +155,11 @@ def get_self_submission_view(request, pk, user):
         for quiz_id in [quiz["id"] for quiz in quizzes_serializer.data]
     }
     return JsonResponse(
-        {"answers": grouped_answers, "quizzes": quizzes_serializer.data, "grade": grade},
+        {
+            "answers": grouped_answers,
+            "quizzes": quizzes_serializer.data,
+            "grade": grade,
+        },
         status=status.HTTP_200_OK,
     )
 
@@ -239,6 +245,7 @@ def create_submission(request, pk, user):
         status=status.HTTP_200_OK,
     )
 
+
 def get_submission_grade(pk_test, user):
     """
     Function that gets the grade of a submission
@@ -250,7 +257,9 @@ def get_submission_grade(pk_test, user):
 
     # check if the user is the owner of the submission
     if submission.submitter != user:
-        stringified = json.dumps({"error": "You are not allowed to see this submission"})
+        stringified = json.dumps(
+            {"error": "You are not allowed to see this submission"}
+        )
         return HttpResponseForbidden(stringified)
 
     grade = 0
@@ -269,53 +278,52 @@ def get_submission_grade(pk_test, user):
 
     return grade
 
+
 def create_submission_from_test(test, user, answers):
-        # create a submission from the answers according to this json:
-        """
-        {
-            "answers": [
-                {
-                    "quiz_id": 1,
-                    "quiz_answers": 1
-                },
-                {
-                    "quiz_id": 2,
-                    "quiz_answers": 2
-                }
-            ]
-        }
-        """
+    # create a submission from the answers according to this json:
+    """
+    {
+        "answers": [
+            {
+                "quiz_id": 1,
+                "quiz_answers": 1
+            },
+            {
+                "quiz_id": 2,
+                "quiz_answers": 2
+            }
+        ]
+    }
+    """
 
-        # create a submission and calculate a grade
-        submission = Submission.objects.create(
-            test=test,
-            submitter=user,
-        )
-        grade = 0
-        # add answers to this submission
-        for answer in answers:
-            quiz_id = answer.get("quiz_id", None)
-            quiz_answers = answer.get("quiz_answers", None)
+    # create a submission and calculate a grade
+    submission = Submission.objects.create(
+        test=test,
+        submitter=user,
+    )
+    grade = 0
+    # add answers to this submission
+    for answer in answers:
+        quiz_id = answer.get("quiz_id", None)
+        quiz_answers = answer.get("quiz_answers", None)
 
-            quiz_answer_obj = QuizAnswer.objects.get(pk=quiz_answers)
+        quiz_answer_obj = QuizAnswer.objects.get(pk=quiz_answers)
 
-            if quiz_answer_obj.correct is True:
-                grade += 1
+        if quiz_answer_obj.correct is True:
+            grade += 1
 
-            if quiz_answer_obj is None:
-                raise ValueError("QuizAnswer not found")
+        if quiz_answer_obj is None:
+            raise ValueError("QuizAnswer not found")
 
-            # chck if quizz answer is in quizz
-            if quiz_answer_obj.quiz.pk != quiz_id:
-                raise ValueError("QuizAnswer not in quiz")
+        # chck if quizz answer is in quizz
+        if quiz_answer_obj.quiz.pk != quiz_id:
+            raise ValueError("QuizAnswer not in quiz")
 
-            # create a submission answer
-            SubmissionAnswer.objects.create(
-                submission=submission, answer=quiz_answer_obj
-                )
+        # create a submission answer
+        SubmissionAnswer.objects.create(submission=submission, answer=quiz_answer_obj)
 
-        # get the numb of quizzes from the test
-        num_quizzes = Quiz.objects.filter(test=test).count()
+    # get the numb of quizzes from the test
+    num_quizzes = Quiz.objects.filter(test=test).count()
 
-        grade = grade / num_quizzes * 100
-        return submission, grade
+    grade = grade / num_quizzes * 100
+    return submission, grade
