@@ -28,6 +28,22 @@
 ## Alternative Path 
 
 ##** TESTS **
+
+###Test 1 - [Name]
+* User
+[...]
+* System
+[...]
+* OK/NOK 
+
+###Test 2 - [Name]
+* User
+[...]
+* System
+[...]
+* OK/NOK 
+
+
 * Test should be submitted to the database
 * Is the test is removed from the list of the user's recommended tests
 * Is the user redirected to the home page
