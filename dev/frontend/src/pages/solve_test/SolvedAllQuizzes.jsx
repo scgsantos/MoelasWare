@@ -66,7 +66,7 @@ function QuestionSolving(props) {
         </div>
         <div className="TestSelection-quizcenter mt-2">
           <span className='TestSelection-sub-title mt-2'>Your final test grade was</span>
-          <span className='TestSelection-main-name mt-2'>{location.state ? location.state.grade : grade} %</span>
+          <span className='TestSelection-main-name mt-2'>{location.state ? Math.round(location.state.grade) : Math.round(grade)}%</span>
         </div>
 
         <div className="TestSelection-bottomcenterntns mt-10">

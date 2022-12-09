@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
 import API from "api.js";
+import { MY_QUIZZES_URL, DRAFTS_URL } from "urls.js";
+
 
 function EditQuiz() {
     document.documentElement.style.setProperty("--base", "var(--blue)");
@@ -120,8 +122,7 @@ function EditQuiz() {
             if (verifyParameters(inputs)){
                 API.editQuiz(inputs, id, true).then((data) =>{
                     alert(data.resposta);
-                    navigate(-1);
-                    navigate("../createquiz");
+                    navigate(MY_QUIZZES_URL);
                 });
             } else {
                 alert("Submit: You must enter all fields");
@@ -129,7 +130,7 @@ function EditQuiz() {
         } else if (buttonClick === "draft") {
             API.editQuiz(inputs, id, false).then((data) => {
                 alert(data.resposta);
-                navigate("../createquiz/drafts");
+                navigate(DRAFTS_URL);
             });
         }
     };
@@ -187,7 +188,7 @@ function EditQuiz() {
             <main className="container" id="newquiz">
                 <h1 className="title">CREATE A QUIZ</h1>
                 <h2>EDIT QUIZ</h2>
-                <form autocomplete="off" onSubmit={handleSubmit}>
+                <form autoComplete="off" onSubmit={handleSubmit}>
                     <div className="newquiz">
                         <div className="name-container">
                             <label>

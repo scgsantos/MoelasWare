@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import API from 'api.js';
+import { USERS_URL } from "urls";
+
 
 function UsersList() {
   const [query, setQuery] = useState("");
@@ -29,7 +31,7 @@ function UsersList() {
 
   const handleBtnClick = (selectedBtn) => {
     setSelectedBtn(selectedBtn);
-    navigate(`./${selectedBtn.target.id}`);
+    navigate(USERS_URL + "/" + selectedBtn.target.id);
   };
 
   return (

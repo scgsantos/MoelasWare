@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from 'api.js';
+import { TESTS_URL, USERS_URL } from "urls";
 
 function History(props) {
   const userHistHeader = ["TEST NAME", "TAG", "AUTHOR"];
@@ -22,7 +23,7 @@ function History(props) {
       <div
         role="button"
         className="history-wrapper"
-        onClick={() => navigate(-1)}
+        onClick={() => navigate(USERS_URL)}
       >
         <div
           role="button"
@@ -60,7 +61,7 @@ function History(props) {
       <div
         role="button"
         className="history-wrapper"
-        onClick={() => navigate(-1)}
+        onClick={() => navigate(TESTS_URL)}
       >
         <div
           role="button"

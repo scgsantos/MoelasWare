@@ -44,7 +44,7 @@ class Quiz(models.Model):
 
     creation_date = models.DateField(default=datetime.date.today)
     approved = models.BooleanField(default=False)
-
+    rejected = models.BooleanField(default=False)
     review_count = models.IntegerField(default=0)
 
     objects = QuizManager()

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import API from "api.js";
+import { MY_QUIZZES_URL } from "urls";
 
 function NewQuiz() {
     document.documentElement.style.setProperty("--base", "var(--blue)");
@@ -60,10 +61,10 @@ function NewQuiz() {
                 API.createQuiz(inputs, true).then((data) => {
                 setResposta(data.resposta);
                 alert(data.resposta);
+                navigate(MY_QUIZZES_URL);
+                window.location.reload();
             }
             );
-            navigate("../createquiz");
-            window.location.reload();
             } else {
                 alert("Submit: You must enter all fields");
             }
@@ -72,13 +73,11 @@ function NewQuiz() {
             API.createQuiz(inputs, false).then((data) => {
                 setResposta(data.resposta);
                 alert(data.resposta);
+                navigate("../createquiz/drafts");
+                window.location.reload();
             }
             );
-            navigate("../createquiz/drafts");
-            window.location.reload();
         }
-        
-
     };
 
     let options = [];
@@ -130,7 +129,7 @@ function NewQuiz() {
             <main className="container" id="newquiz">
                 <h1 className="title">CREATE A QUIZ</h1>
                 <h2>NEW QUIZ</h2>
-                <form autocomplete="off" onSubmit={handleSubmit}>
+                <form autoComplete="off" onSubmit={handleSubmit}>
                     <div className="newquiz">
                         <div className="name-container">
                             <label>

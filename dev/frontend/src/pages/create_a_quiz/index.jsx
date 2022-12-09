@@ -3,6 +3,8 @@ import { useNavigate, Outlet } from "react-router-dom";
 import API from "api.js";
 import Button from "components/CreateQuizButton.jsx";
 import "pages/create_a_quiz/CreateQuiz.css";
+import { QUIZ_INFO_URL, DRAFTS_URL, CREATE_QUIZ_URL } from "urls";
+
 
 const CreateQuiz = () => {
     document.documentElement.style.setProperty("--base", "var(--blue)");
@@ -23,17 +25,17 @@ const CreateQuiz = () => {
     const navigate = useNavigate();
 
     const handleClick = (e) => {
-        navigate(`./myquiz/${e}`);
+        navigate(QUIZ_INFO_URL + e);
     };
     return (
         <React.Fragment>
             <main className="container" id="createquiz">
                 <h1 className="title">CREATE A QUIZ</h1>
 
-                <Button to="./new" className="createquiznav" text="NEW QUIZ" />
+                <Button to={CREATE_QUIZ_URL} className="createquiznav" text="NEW QUIZ" />
 
                 <Button
-                    to="./drafts"
+                    to={DRAFTS_URL}
                     className="createquiznav"
                     text="DRAFTS"
                 />

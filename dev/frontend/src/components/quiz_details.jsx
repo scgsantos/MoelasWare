@@ -24,7 +24,6 @@ function MyQuiz() {
             }
         });
     }, []);
-    console.log(reviews);
 
     let options = [];
     for (let i = 0; i < answers.length; i++) {

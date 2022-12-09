@@ -3,6 +3,7 @@ import API from "api.js";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Drafts.css";
+import { EDIT_QUIZ_URL } from "urls";
 
 function Drafts() {
     document.documentElement.style.setProperty("--base", "var(--blue)");
@@ -12,7 +13,7 @@ function Drafts() {
     const navigate = useNavigate();
 
     const handleClick = (e) => {
-        navigate(`../createquiz/edit/${e}`);
+        navigate(EDIT_QUIZ_URL + e);
     };
 
     useEffect(() => {

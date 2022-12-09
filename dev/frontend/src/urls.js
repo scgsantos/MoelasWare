@@ -19,6 +19,13 @@ const TEST_GRADE_URL = "/test/grade";
 const REVIEW_URL = "/review";
 const REVIEW_QUIZ_URL = "/review/quiz/";
 
+const MY_QUIZZES_URL = "/createquiz";
+const DRAFTS_URL = "/createquiz/drafts";
+const CREATE_QUIZ_URL = "/createquiz/new/";
+const EDIT_QUIZ_URL = "/createquiz/edit/";
+const QUIZ_INFO_URL = "/createquiz/myquiz/";
+
+
 export {
     AUTH_URL,
     LOGOUT_URL,
@@ -37,4 +44,9 @@ export {
     TEST_GRADE_URL,
     REVIEW_URL,
     REVIEW_QUIZ_URL,
+    MY_QUIZZES_URL,
+    CREATE_QUIZ_URL,
+    DRAFTS_URL,
+    EDIT_QUIZ_URL,
+    QUIZ_INFO_URL
 };

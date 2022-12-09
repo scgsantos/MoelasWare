@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import API from 'api.js';
+import { TESTS_URL } from "urls";
 function TestsList() {
   const [tests, setTests] = useState([]);
   const testsHeader = [
@@ -22,7 +23,7 @@ function TestsList() {
 
   const handleBtnClick = (selectedBtn) => {
     setSelectedBtn(selectedBtn);
-    navigate(`./${selectedBtn.target.id}`);
+    navigate(TESTS_URL + "/" + selectedBtn.target.id);
   };
   return (
     <section id="tests">

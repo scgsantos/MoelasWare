@@ -235,7 +235,7 @@
     /* Safari support */
     -webkit-appearance: none;
 
-    background: transparent;
+    background-color: white; /*changed due to css conflict*/
     border-radius: 50%;
     cursor: pointer;
     height: 0.8rem;
@@ -243,7 +243,7 @@
     align-self: center;
 }
 
-.newquiz input[type=radio]:checked {
+.newquiz input[type=radio]:checked { 
     background-color: black;
 }
 

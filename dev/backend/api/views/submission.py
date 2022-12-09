@@ -20,9 +20,9 @@ from moelasware.models import Quiz, QuizAnswer, Submission, SubmissionAnswer, Te
 
 
 @api_view(["GET", "POST"])
+@login_required
 def submission_view(request, pk):
-    user = User.objects.get(pk=1)
-
+    user = User.objects.get(user__username = request.user)
     proxy = {
         "GET": get_self_submission_view,
         "POST": create_submission,
@@ -106,8 +106,7 @@ def get_self_submission_view(request, pk, user):
     """
     Function that gets a submission from a test. Should we allow the user to get someone else's submission?
     """
-
-    # check if the uer is able to solve the test
+    # check if the user is able to solve the test
     if Quiz.objects.filter(author=user).exists() is False:
         # You should just return a simple plain-text response, no need for JSON. Use HttpResponseForbidden.
         stringified = json.dumps({"error": "You are not allowed to solve this test"})
@@ -164,7 +163,7 @@ def get_self_submission_view(request, pk, user):
     )
 
 
-# @login_required
+@login_required
 def create_submission(request, pk, user):
     """
     Function that creates a submission from a test
@@ -180,7 +179,7 @@ def create_submission(request, pk, user):
             }
         ]
     """
-    # check if the uer is able to solve the test
+    # check if the user is able to solve the test
     if Quiz.objects.filter(author=user).exists() is False:
         # You should just return a simple plain-text response, no need for JSON. Use HttpResponseForbidden.
         stringified = json.dumps({"error": "You are not allowed to solve this test"})
@@ -231,8 +230,8 @@ def get_submission_grade(pk_test, user):
     """
 
     # get the SubmissionAnswer from pk of the test, get the latest submission
-
     submission = Submission.objects.filter(test__id=pk_test, submitter=user).last()
+
 
     # check if the user is the owner of the submission
     if submission.submitter != user:
