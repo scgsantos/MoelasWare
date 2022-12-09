@@ -23,7 +23,7 @@ The email and password are entered in the systems database
 - 2. The user clicks "Register" and the data is kept
 - 3. The user receives a success confirmation message
 
-## Extensions
+## Alternative Path
 
 * 1.    (a) User inserts a different password than the one inserted before and tries to click the "Submit" button
             1. User is show the error "Passwords do not match" without leaving the registration page and is able to change the password in order to match them

@@ -21,7 +21,7 @@
 *   2. The user inserts the name/email of one user 
 *   3. The user displayed has a button which will lead to all tests taken by him/her
 
-## **Extensions or Alternative Paths**
+## Alternative Path
 
 * 1.    (a) There are no registered users or tests
             1. A message is displayed informing there are no users or tests

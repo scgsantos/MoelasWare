@@ -28,7 +28,7 @@
 * 3. The quizzes are displayed with the user's answers in yellow and the correct answers in green
 * 4. The user can see the justification given by the quizzes author to each question
 
-## Extensions
+## Alternative Path
 
 * 1.    (a) The user wants to stop solving the test
             1. The user presses a button that is displayed that will lead him to the tests menu, the test is saved and he will be able to finish it in the future

@@ -25,7 +25,7 @@ The user can see on his profile the number of quizzes he has answered filtered b
 * 1. The user enters his profile page
 * 2. The user can see a pie chart with the number of quizzes he answered with every tag 
 
-## Extensions
+## Alternative Path
 
 * 1.    (a) The User hasn't completed any test
             1. The pie chart appears empty

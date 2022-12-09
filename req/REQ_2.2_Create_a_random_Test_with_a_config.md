@@ -27,7 +27,7 @@
 6. The user submits the test.
 7. The test is shown to the user.
 
-## Extensions
+## Alternative Path
 
 * 6.    (a) The system fails selecting the quizzes because there aren't enough quizzes:
             1. The system shows a message suggesting a lower number of quizzes and the user go back to "Create a random test with a config" page.

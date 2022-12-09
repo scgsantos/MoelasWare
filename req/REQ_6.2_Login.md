@@ -24,7 +24,7 @@ User can access the website and has a authentication token that identifies him
 * 3. The user receives a success confirmation message
 * 4. The user enters the landing page and has a authentication token 
 
-## Extensions
+## Alternative Path
 * 1.    (a) User tries to login with registered email but the introduced password doesn't match the registered password
             1. User is shown the error "Wrong Credentials" without leaving the login page
             2. User is able to retry the login

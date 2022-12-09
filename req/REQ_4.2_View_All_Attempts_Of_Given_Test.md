@@ -18,11 +18,12 @@
 *  When selecting a particular test from the list, all the users that took that test are displayed
 
 ## **Happy Path**
-*   1. Whenever the user reaches History & Hall of Fame page a list with all the tests is displayed
-*   2. The user chooses one of the displayed tests 
-*   3. All participants in that test are displayed sorted in descending test score
+1. Whenever the user reaches History & Hall of Fame he chooses the "Tests" option
+2. A list with all the tests is displayed
+3. The User clicks the "history" button of a specific test 
+4. All participants in that test are displayed sorted in descending test score
 
-## Extensions or Alternative Paths
+## Alternative Path
 
 * 1.    (a) There are no registered users or tests
             1. A message is displayed informing there are no users or tests

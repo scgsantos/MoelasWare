@@ -25,7 +25,7 @@
 *   2. In this page he can search a Test by its name or choose a filter by tag
 *   3. The user can select a quiz he wishes to solve
 
-## Extensions 
+## Alternative Path 
 
 ##** TESTS **
 * Test should be submitted to the database

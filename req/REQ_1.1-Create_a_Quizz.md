@@ -17,13 +17,15 @@
 
 ##** Success Guarantee**
 
-The user submits a new Quiz, with a name, a description and a category (tag)
+The user submits a new Quiz with: a name, a tag, a question, a description, 6 possible answers (being only 1 correct) and a justification for all the possible answers.
 
 ##** Main Success Scenario**
-
-1. User gets a form like page where they fill the quiz with: a name (which will act as a identifier for the quizz), a description and a question, which as 6 possible answers with only 1 being the correct one and a justification for each answer
-2. User applies a category (tag) from a pre-conditioned list (1), and submits the quiz
-3. User receives a notification which says that the quiz was submited for review
+1. The user gets to a form like page.
+2. The user inputs a name, a description and a question. He also chooses one tag from the *Pre-conditioned quiz tags* (1).
+3. The user inputs a answers in the six options, giving them a justification.
+4. The user clicks a check-bubble to indicate the right answer
+5. The user chooses either "Submit" or "Save as draft".
+6. User receives a notification with the state of the quiz
 
 ###(1) Pre-conditioned quiz tags
 - PM  (Gestão de projecto)
@@ -40,12 +42,20 @@ The user submits a new Quiz, with a name, a description and a category (tag)
 - RSK (Risk management)
 
 
-## Extensions
+## Alternative Path
+
+1. (a) Web failure of any sort during creation:
+        1. Quiz current state is saved as a draft and the user can finish the submition later
+        
+1. (a) The user selects "Submit"
+        1. (a) All the information hasn't yet been filled:
+                1.The app alerts the user with the following mensage:  "Submit: You must enter all fields".
+        2 (a) Every information is filled correctly
+                1. The app sends the quiz for review
+                2. The app alerts the user with the following message: (à espera que funfe)
+
+        
+
 		
-* 1. (a) The conditions about filling a quiz are not met:
-        1. The app does not let you submit the quiz if you have not chosen a question name, descrition and/or a category for the quiz 
-		2. Quiz is saved if it was not completed but had the question name and the category filled, being added to the list of unfinished quizzes
-		
-* 2. (a) Web failure of any sort during submission:
-		1. Quiz current state is saved and can be submited in the resume a previously created quiz option
+
 

@@ -20,7 +20,7 @@
 
 ## **Happy Path**
 * The reviewer has a review-list page
-* The reviewer can see a selection of reviews that have been assigned to him
+* In this page, the reviewer can see a selection of reviews that have been assigned to him
 * The reviewer can select a quiz that he wants to start reviewing
 
 

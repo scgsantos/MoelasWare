@@ -25,7 +25,7 @@ A test is created with the selected quizzes and a name.
 5. The user submits the test.
 6. The test is shown to the user.
 
-## Extensions
+## Alternative Path
 * 2.    (a)  There are no valid quizzes to be chosen for the selected tags
             1. The system shows a message suggesting other tags.
 

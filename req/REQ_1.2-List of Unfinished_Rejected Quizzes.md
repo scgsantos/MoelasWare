@@ -25,7 +25,7 @@
 2. User selects the quiz he desires to finish/remake and is redirected to the create a quiz page with all the data he previously added. Also can
 
 
-## Extensions
+## Alternative Path
 
 * 1. (a) User has more than 24 unfinished/rejected quizzes:
         1. Only the first 24 will appear and while he finishes them, the other ones will take the first ones place

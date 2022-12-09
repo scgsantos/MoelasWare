@@ -25,7 +25,7 @@ A test is created with random quizzes and a name.
 4. The user gives the test a name.
 5. The user submits the test.
 
-## Extensions
+## Alternative Path
 
 * 1.    (a) The system fails selecting the quizzes because there aren't enough quizzes:
             1. The system shows a message suggesting a lower number of quizzes and the user go back to "Create a random test" page.

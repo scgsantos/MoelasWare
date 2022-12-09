@@ -28,7 +28,7 @@ User goal
 3. User receives a notification which says that the quiz was submited for review
 
 
-## Extensions
+## Alternative Path
 
 * 1. (a) Web failure of any sort during submission:
 		1. Quiz current state is saved and can be submited in the resume a previously created quiz option

@@ -26,7 +26,7 @@
 *   2. The user can submit the test
 *   3. The user gets a confirmation message that the solution has been submited  
 
-## Extensions
+## Alternative Path
 
 * 1.    (a) The user doesn't answer all the quizzes
             1. The user gets a warning to finish all the quizzes
