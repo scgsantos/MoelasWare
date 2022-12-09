@@ -22,5 +22,15 @@ Roles: `-`
 
 ### 4
 
-* Finished: #293, #355, #382
+* Finished: #293
+* Pending: 
+
+### 5
+
+* Finished: #355, #382
+* Pending: 
+
+### 6
+
+* Finished: #612, #615
 * Pending: 
