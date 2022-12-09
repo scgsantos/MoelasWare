@@ -147,6 +147,10 @@ class API {
         });
     }
 
+    static getvalid() {
+        return this.makeJSONRequest("review/validate/");
+    }
+
     static getQuizzesOfReviewer() {
         return this.makeJSONRequest("review/quizzes/");
     }

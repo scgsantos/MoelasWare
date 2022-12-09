@@ -134,8 +134,8 @@ def get_quiz_info_review_view(request, id):
 
 @api_view(["GET"])
 @login_required
-def get_if_has_done_quiz(request):
-    data = request.data["args"]
+def get_if_has_done_quiz_view(request):
+    
     user = User.objects.filter(user__username=request.user)
 
     if not user.exists():

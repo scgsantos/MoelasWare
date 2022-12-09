@@ -33,6 +33,7 @@ urlpatterns = [
     path("review/quiz/<int:pk>/", views.get_info_review_view),
     path("review/create/", views.create_review_view),
     path("review/quizzes/", views.get_quizzes_of_a_reviewer_view),
+    path("review/validate/", views.get_if_has_done_quiz_view),
     # path("review/quiz/<int:id>/", views.get_quiz_info_review_view),
     # HALL OF FAME
     path("fame/users/", views.hall_of_fame_view),

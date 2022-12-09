@@ -14,10 +14,24 @@ function ReviewQuizPage() {
   //loading
   const [isLoaded, setLoading] = useState(false);
 
+  const [isValid, setIsValid] = useState(false);
+
   let navigate = useNavigate();
 
   //fetch quiz from the backend and log it to the console
   useEffect(() => {
+    API.getvalid()
+    .then(
+      (data) => {
+        if (data["valid"] === 1) {
+          setIsValid(true);
+        }
+        else {
+          return;
+        }
+      }
+    )
+
     API.getQuizzesOfReviewer()
     .then(
         (data) => {
@@ -54,7 +68,9 @@ function ReviewQuizPage() {
         <ul className='pad'>
           {
           (() => {
-            if (error) {
+            if(!isValid) {
+              return <ul className="pad" style={{"marginTop":"100px"}}>You must create a quiz before reviewing one</ul>;
+            } else if (error) {
               return <ul className="pad" style={{"marginTop":"100px"}}>There are no quizzes to review</ul>;
             } else if (!isLoaded) {
               return <ul className="pad" style={{"marginTop":"100px"}}>Loading...</ul>;
