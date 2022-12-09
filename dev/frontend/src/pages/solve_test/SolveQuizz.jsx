@@ -96,11 +96,11 @@ function SolveQuizz() {
     localStorage.setItem('subs#' + test, JSON.stringify(submissionAnswers));
 
     // user can't submit if there are empty answers
-    if (checkEmptyAnswers()) {
+    /* if (checkEmptyAnswers()) {
       console.log("empty answers");
       setopenNoAnswers(true);
       return;
-    }
+    } */
     // check if there are more than 1 answer for a question
     if (checkMoreThanTwoAnswers()) {
       console.log("more than 1 answer");
