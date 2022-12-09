@@ -192,32 +192,11 @@ def create_submission(request, pk, user):
     # get the answers from the request body
     answers = request.data.get("answers", None)
 
-    # check if the answers are valid
-    if not answers:
-        return HttpResponseBadRequest("No answers provided")
-
-    if not isinstance(answers, list):
-        return HttpResponseBadRequest("Answers must be a list")
-
     # TODO: not sure if this is intended or not, can a user Repeat Quizzes? If so this should be changed
     # check if user alreadysubmitted the quizz in this test
     # if Submission.objects.filter(test__id=pk, user=user).exists():
     #    return HttpResponseBadRequest('You already submitted this test')
-
-    # check if the answers are valid
-    for answer in answers:
-        if not isinstance(answer, dict):
-            return HttpResponseBadRequest("Answers must be a list of dicts")
-
-        if not answer.get("quiz_id", None):
-            return HttpResponseBadRequest("Answers must have a quiz_id")
-
-        if not answer.get("quiz_answers", None):
-            return HttpResponseBadRequest("Answers must have a quiz_answers")
-
-        if not isinstance(answer.get("quiz_answers", None), int):
-            return HttpResponseBadRequest("quiz_answers must be a int")
-
+    
     # check if the answers are valid
     for answer in answers:
         quiz_id = answer.get("quiz_id", None)
@@ -306,6 +285,8 @@ def create_submission_from_test(test, user, answers):
     for answer in answers:
         quiz_id = answer.get("quiz_id", None)
         quiz_answers = answer.get("quiz_answers", None)
+        if quiz_answers is None:
+            continue
 
         quiz_answer_obj = QuizAnswer.objects.get(pk=quiz_answers)
 

@@ -237,7 +237,6 @@ function SolveQuizz() {
 
           <div className="TestSelection-bottomcenterntns">
             <button className='TestSelection-button' onClick={() => {
-              console.log("gdfehwfhjds");
               submitAnswers();
             }}>Submit answers</button>
             <Popup

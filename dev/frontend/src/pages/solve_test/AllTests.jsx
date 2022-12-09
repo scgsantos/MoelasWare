@@ -105,7 +105,7 @@ function MainSelectionPage() {
           <span>Loading...</span>
         </div>
       ) : (
-        tests.length === 0 ? (
+        tests && tests.length === 0 ? (
           <div className="TestSelection-centerLoad">
             <span>No tests available</span>
           </div>) : (
