@@ -12,6 +12,7 @@ Example:
 """
 import datetime
 import argparse
+import itertools
 
 import matplotlib.pyplot as plt
 import requests
@@ -70,10 +71,15 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="Grab time tracking info from GitLab and plot it"
     )
-    parser.add_argument("group", type=int, help="The target group number")
-    parser.add_argument("sprint", type=int, help="The target sprint number")
+    parser.add_argument("group", default=None, help="The target group number")
+    parser.add_argument("sprint", default=None, help="The target sprint number")
 
-    return parser.parse_args()
+    args = parser.parse_args()
+    # quick and dirty
+    args.group = None if args.group.casefold() == "all" else int(args.group)
+    args.sprint = None if args.sprint.casefold() == "all" else f"Sprint {int(args.sprint)}"
+
+    return args
 
 
 def read_gitlab_token():
@@ -98,10 +104,13 @@ def format_timedelta(delta):
 def time_tracking(token, user, milestone):
     print(f"Requesting info for {user[1]} ({user[0]})")
     total_time = 0
+    params = {"assignee_username": user[0], "per_page": 100}
+    if milestone is not None:
+        params["milestone"] = milestone
     request = requests.get(
         REQUEST_URL,
         headers={"Private-Token": token},
-        params={"assignee_username": user[0], "milestone": milestone},
+        params=params,
     )
     request.raise_for_status()
 
@@ -117,8 +126,10 @@ def run():
     args = parse_args()
     token = read_gitlab_token()
 
-    milestone = f"Sprint {args.sprint}"
-    group = GROUPS[args.group - 1]
+    milestone = args.sprint
+    # flatten groups if "all"
+    group = {k: v for k, v in itertools.chain.from_iterable(i.items() for i in GROUPS)} if args.group is None else GROUPS[args.group - 1]
+    title = f"Time Tracking - {milestone or 'All'} - Group {args.group or 'All'}"
     total_time_list = []
     results = []
 
@@ -134,12 +145,12 @@ def run():
     plt.bar([n.replace(" ", "\n") for n in group.values()], total_time_list)
 
     plt.ylabel("Total Time (Hours)")
-    plt.title(f"Time Tracking - {milestone} - Group {args.group}")
+    plt.title(title)
     for i, _ in enumerate(group):
         plt.text(i - 0.25, 2, results[i])
 
     fig.savefig(
-        f"Time Tracking - {milestone} - Group {args.group}.svg",
+        f"{title}.svg",
         bbox_inches="tight",
         dpi=150,
     )
