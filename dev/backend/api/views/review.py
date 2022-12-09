@@ -130,3 +130,24 @@ def get_quiz_info_review_view(request, id):
     chosen_quiz = get_object_or_404(Review, id=id)
     serializer = GetReviewSerializer(chosen_quiz).data
     return JsonResponse({"reviewer": serializer})
+
+
+@api_view(["GET"])
+@login_required
+def get_if_has_done_quiz(request):
+    data = request.data["args"]
+    user = User.objects.filter(user__username=request.user)
+
+    if not user.exists():
+        return HttpResponseBadRequest("User not found")
+
+    user = user[0]
+
+    quiz = Quiz.objects.filter(author=user)
+
+    validated = 0
+
+    if quiz.exists():
+        validated = 1
+
+    return JsonResponse({"valid": validated})
