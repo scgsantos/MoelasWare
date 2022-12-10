@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import API from "api.js";
-import { MY_QUIZZES_URL } from "urls";
+import { MY_QUIZZES_URL, DRAFTS_URL } from "urls";
 
 function NewQuiz() {
     document.documentElement.style.setProperty("--base", "var(--blue)");
@@ -62,7 +62,7 @@ function NewQuiz() {
                 setResposta(data.resposta);
                 alert(data.resposta);
                 navigate(MY_QUIZZES_URL);
-                window.location.reload();
+                // window.location.reload();
             }
             );
             } else {
@@ -73,8 +73,8 @@ function NewQuiz() {
             API.createQuiz(inputs, false).then((data) => {
                 setResposta(data.resposta);
                 alert(data.resposta);
-                navigate("../createquiz/drafts");
-                window.location.reload();
+                navigate(DRAFTS_URL);
+                // window.location.reload();
             }
             );
         }
