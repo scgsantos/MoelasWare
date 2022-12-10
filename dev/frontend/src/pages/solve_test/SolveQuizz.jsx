@@ -103,12 +103,12 @@ function SolveQuizz() {
     } */
     // check if there are more than 1 answer for a question
     if (checkMoreThanTwoAnswers()) {
-      console.log("more than 1 answer");
+      // console.log("more than 1 answer");
       setopenMoreThanOne(true);
       return;
     }
     setLoading(true);
-    console.log(submissionAnswers);
+    // console.log(submissionAnswers);
 
     // transform the submissionAnswers to the correct format, by making quiz_answers an integer
     let subCorrectFormat = submissionAnswers;

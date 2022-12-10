@@ -40,7 +40,7 @@ function Profile() {
                 setUser(data.user);
             } else {
                 setUser(data.user);
-                console.log(data.profile);
+                // console.log(data.profile);
                 Object.entries(data.profile).forEach(([key, value]) => {
                     if (value != 0){
                     getTag.push(key);

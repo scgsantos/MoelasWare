@@ -16,7 +16,6 @@ def profile_view(request):
         return JsonResponse(
             {"user": user.user.username, "error": True, "message": "User not found"}
         )
-        # return HttpResponseNotFound("User not found")
 
     user = user[0]
 
@@ -26,12 +25,15 @@ def profile_view(request):
         return JsonResponse(
             {"user": user.user.username, "error": True, "message": "No tests found"}
         )
-        # return HttpResponseNotFound("Submissions not found")
 
     correct_answers = SubmissionAnswer.objects.filter(answer__correct=True).filter(
         submission__submitter=user
     )
     number_of_correct_answers = correct_answers.count()
+    if not number_of_correct_answers:
+        return JsonResponse(
+            {"user": user.user.username, "error": True, "message": "No correct answers"}
+        )
 
     tags = {}
     for i in Tag.objects.all():

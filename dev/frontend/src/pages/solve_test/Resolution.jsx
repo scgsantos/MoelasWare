@@ -46,7 +46,7 @@ function CheckAnswers() {
       setQuizzRes(data); // questions and stuff
       setError(null);
     }).catch((error) => {
-      console.log(error);
+      // console.log(error);
       setError("Error: " + error);
     }).finally(() => {
       setLoading(false);

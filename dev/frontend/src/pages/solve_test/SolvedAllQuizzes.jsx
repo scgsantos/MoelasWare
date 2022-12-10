@@ -39,7 +39,7 @@ function QuestionSolving(props) {
       getGrade();
     }
   }, []);
-  console.log(error);
+  // console.log(error);
 
   if (error) {
     return (
