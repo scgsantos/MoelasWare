@@ -19,7 +19,7 @@
 
 ##** Success Guarantee **
 
-The user can see on his profile the number of quizzes he has answered filtered by tags
+The user can see on his profile the number of quizzes he has answered displayed by tags
 
 ##** Happy Path **
 * 1. The user enters his profile page
@@ -29,6 +29,21 @@ The user can see on his profile the number of quizzes he has answered filtered b
 
 * 1.    (a) The User hasn't completed any test
             1. The pie chart appears empty
+
+##**Case Tests**
+
+###Test 1 – Displays all tests
+
+** User **
+* 1. User opens Profile Page
+
+** System **
+* 1. Displays a pie chart tagged with all the tags used by the user
+* 2. The pie chart has the right percentages of tests solved by tags   
+
+** OK/NOK **
+
+
 
 ##** Layouts **
 
