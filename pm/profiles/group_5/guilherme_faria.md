@@ -11,13 +11,26 @@ Roles: `-`
 * Pending:
 
 ### 2
+
 * Finished: #50, #63 , #68
-* Pending: 
+* Pending:
 
 ### 3
+
 * Finished: #105, #132, #136, #178, #215, #232
-* Pending: 
+* Pending:
 
 ### 4
+
 * Finished: #263, #310, #311, #332
+* Pending:
+
+### 5
+
+* Finished: #390, #425, #426, #427, #429, #507, #508
+* Pending:
+
+### 6
+
+* Finished: #607, #608, #631
 * Pending:
